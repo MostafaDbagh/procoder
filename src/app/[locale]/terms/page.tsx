@@ -1,45 +1,52 @@
-"use client";
+import type { Metadata } from "next";
+import { setRequestLocale } from "next-intl/server";
+import TermsContent from "./TermsContent";
 
-import { useTranslations } from "next-intl";
-import { AnimatedSection } from "@/components/AnimatedSection";
-import { FileText } from "lucide-react";
+const SITE_URL = process.env.SITE_URL || "https://procoder.com";
 
-export default function TermsPage() {
-  const t = useTranslations("terms");
+const meta = {
+  en: {
+    title: "Terms of Service",
+    description:
+      "ProCoder's terms of service. Review our terms and conditions for using our kids' educational platform and courses.",
+  },
+  ar: {
+    title: "شروط الخدمة",
+    description:
+      "شروط الخدمة لبروكودر. راجع الشروط والأحكام لاستخدام منصتنا التعليمية ودوراتنا للأطفال.",
+  },
+};
 
-  const sections = [
-    { title: t("s1Title"), content: t("s1Content") },
-    { title: t("s2Title"), content: t("s2Content") },
-    { title: t("s3Title"), content: t("s3Content") },
-    { title: t("s4Title"), content: t("s4Content") },
-    { title: t("s5Title"), content: t("s5Content") },
-    { title: t("s6Title"), content: t("s6Content") },
-  ];
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const lang = locale === "ar" ? "ar" : "en";
+  const alt = lang === "en" ? "ar" : "en";
 
-  return (
-    <div className="py-12 sm:py-20">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AnimatedSection className="text-center mb-12">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-400 to-purple flex items-center justify-center mx-auto mb-5">
-            <FileText className="w-8 h-8 text-white" />
-          </div>
-          <h1 className="text-3xl sm:text-4xl font-bold mb-4">{t("title")}</h1>
-          <p className="text-muted">{t("lastUpdated")}</p>
-        </AnimatedSection>
+  return {
+    title: meta[lang].title,
+    description: meta[lang].description,
+    alternates: {
+      canonical: `${SITE_URL}/${lang}/terms`,
+      languages: { [alt]: `${SITE_URL}/${alt}/terms` },
+    },
+    openGraph: {
+      title: meta[lang].title,
+      description: meta[lang].description,
+      url: `${SITE_URL}/${lang}/terms`,
+    },
+  };
+}
 
-        <AnimatedSection delay={0.1}>
-          <div className="bg-surface rounded-2xl border border-border p-7 sm:p-9 space-y-8">
-            <p className="text-muted leading-relaxed">{t("intro")}</p>
-
-            {sections.map((s, i) => (
-              <div key={i}>
-                <h2 className="text-xl font-semibold mb-3">{s.title}</h2>
-                <p className="text-muted leading-relaxed whitespace-pre-line">{s.content}</p>
-              </div>
-            ))}
-          </div>
-        </AnimatedSection>
-      </div>
-    </div>
-  );
+export default async function TermsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  return <TermsContent />;
 }

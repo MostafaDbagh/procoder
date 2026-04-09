@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { LocaleHtmlAttrs } from "@/components/LocaleHtmlAttrs";
+import { QueryProvider } from "@/components/QueryProvider";
 import {
   OrganizationSchema,
   WebsiteSchema,
@@ -35,15 +36,17 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <ThemeProvider>
-        <LocaleHtmlAttrs locale={locale} />
-        <OrganizationSchema />
-        <WebsiteSchema />
-        <FAQSchema />
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
-      </ThemeProvider>
+      <QueryProvider>
+        <ThemeProvider>
+          <LocaleHtmlAttrs locale={locale} />
+          <OrganizationSchema />
+          <WebsiteSchema />
+          <FAQSchema />
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </ThemeProvider>
+      </QueryProvider>
     </NextIntlClientProvider>
   );
 }
