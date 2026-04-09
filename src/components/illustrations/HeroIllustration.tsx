@@ -283,46 +283,44 @@ export function HeroIllustration() {
         </motion.g>
       </motion.g>
 
-      {/* HTML */}
+      {/* Arabic */}
       <motion.g {...floatAnim(1, 3.2)}>
         <motion.g {...pulseAnim(0.4)}>
           <rect x="25" y="195" width="68" height="28" rx="14" fill="#D4A46A" opacity="0.12" />
           <rect x="25" y="195" width="68" height="28" rx="14" stroke="#D4A46A" strokeWidth="1" opacity="0.3" fill="none" />
           <text x="59" y="214" textAnchor="middle" fontSize="13" fontWeight="700" fontFamily="system-ui, sans-serif" fill="#D4A46A" opacity="0.85">
-            HTML
+            Arabic
           </text>
         </motion.g>
       </motion.g>
 
       {/* JS */}
-      <motion.g {...floatAnim(1.5, 2.6)}>
-        <motion.g {...pulseAnim(1)}>
-          <rect x="475" y="200" width="48" height="28" rx="14" fill="#D4A46A" opacity="0.12" />
-          <rect x="475" y="200" width="48" height="28" rx="14" stroke="#D4A46A" strokeWidth="1" opacity="0.3" fill="none" />
-          <text x="499" y="219" textAnchor="middle" fontSize="14" fontWeight="800" fontFamily="system-ui, sans-serif" fill="#D4A46A" opacity="0.9">
-            JS
-          </text>
-        </motion.g>
-      </motion.g>
+      <g>
+        <rect x="475" y="200" width="48" height="28" rx="14" fill="#D4A46A" opacity="0.12" />
+        <rect x="475" y="200" width="48" height="28" rx="14" stroke="#D4A46A" strokeWidth="1" opacity="0.3" fill="none" />
+        <text x="499" y="219" textAnchor="middle" fontSize="14" fontWeight="800" fontFamily="system-ui, sans-serif" fill="#D4A46A" opacity="0.9">
+          JS
+        </text>
+      </g>
 
-      {/* CSS */}
+      {/* Robotics */}
       <motion.g {...floatAnim(0.8, 3)}>
         <motion.g {...pulseAnim(1.5)}>
-          <rect x="488" y="280" width="55" height="28" rx="14" fill="#5B7FD6" opacity="0.12" />
-          <rect x="488" y="280" width="55" height="28" rx="14" stroke="#5B7FD6" strokeWidth="1" opacity="0.3" fill="none" />
-          <text x="515" y="299" textAnchor="middle" fontSize="13" fontWeight="700" fontFamily="system-ui, sans-serif" fill="#5B7FD6" opacity="0.8">
-            CSS
+          <rect x="474" y="280" width="82" height="28" rx="14" fill="#10B981" opacity="0.12" />
+          <rect x="474" y="280" width="82" height="28" rx="14" stroke="#10B981" strokeWidth="1" opacity="0.3" fill="none" />
+          <text x="515" y="299" textAnchor="middle" fontSize="12" fontWeight="700" fontFamily="system-ui, sans-serif" fill="#10B981" opacity="0.85">
+            Robotics
           </text>
         </motion.g>
       </motion.g>
 
-      {/* React */}
+      {/* Web Development */}
       <motion.g {...floatAnim(2, 3.3)}>
         <motion.g {...pulseAnim(0.6)}>
-          <rect x="10" y="350" width="65" height="28" rx="14" fill="#5CC4A0" opacity="0.12" />
-          <rect x="10" y="350" width="65" height="28" rx="14" stroke="#5CC4A0" strokeWidth="1" opacity="0.3" fill="none" />
-          <text x="42" y="369" textAnchor="middle" fontSize="12" fontWeight="700" fontFamily="system-ui, sans-serif" fill="#5CC4A0" opacity="0.85">
-            React
+          <rect x="215" y="420" width="130" height="28" rx="14" fill="#5CC4A0" opacity="0.12" />
+          <rect x="215" y="420" width="130" height="28" rx="14" stroke="#5CC4A0" strokeWidth="1" opacity="0.3" fill="none" />
+          <text x="280" y="439" textAnchor="middle" fontSize="11" fontWeight="700" fontFamily="system-ui, sans-serif" fill="#5CC4A0" opacity="0.85">
+            Web Development
           </text>
         </motion.g>
       </motion.g>
