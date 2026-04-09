@@ -61,15 +61,20 @@ const levelColors: Record<string, string> = {
 };
 
 interface CourseCardProps {
-  course: Course;
+  course: Course & { _title?: string; _desc?: string };
   index?: number;
+  title?: string;
+  description?: string;
 }
 
-export function CourseCard({ course, index = 0 }: CourseCardProps) {
+export function CourseCard({ course, index = 0, title, description }: CourseCardProps) {
   const t = useTranslations("courseData");
   const ct = useTranslations("courses");
   const Icon = iconMap[course.iconName] || BookOpen;
   const colors = categoryColors[course.category] || categoryColors.programming;
+
+  const courseTitle = title || (course.titleKey ? t(course.titleKey) : course._title || "");
+  const courseDesc = description || (course.descKey ? t(course.descKey) : course._desc || "");
 
   return (
     <motion.div
@@ -101,14 +106,14 @@ export function CourseCard({ course, index = 0 }: CourseCardProps) {
             </div>
 
             <h3 className="text-lg font-bold mt-4 group-hover:text-primary transition-colors leading-snug">
-              {t(course.titleKey)}
+              {courseTitle}
             </h3>
           </div>
 
           {/* Content */}
           <div className="px-6 py-5">
             <p className="text-sm text-muted leading-relaxed mb-5 line-clamp-2">
-              {t(course.descKey)}
+              {courseDesc}
             </p>
 
             {/* Meta row */}

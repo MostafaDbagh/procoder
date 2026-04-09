@@ -173,6 +173,7 @@ export default function CourseDetailPage() {
         open={enrollOpen}
         onClose={() => setEnrollOpen(false)}
         courseTitle={ct(course.titleKey)}
+        courseId={course.id}
       />
     </div>
   );

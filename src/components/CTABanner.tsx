@@ -13,9 +13,13 @@ export function CTABanner() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <AnimatedSection>
           <div className="relative overflow-hidden rounded-3xl bg-primary p-8 sm:p-16 text-center">
-            {/* Decorative blobs */}
-            <div className="absolute top-0 right-0 w-40 sm:w-64 h-40 sm:h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-            <div className="absolute bottom-0 left-0 w-32 sm:w-48 h-32 sm:h-48 bg-white/10 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2" />
+            {/* Colored bubbles */}
+            <div className="absolute -top-10 -right-10 w-36 sm:w-52 h-36 sm:h-52 bg-purple/40 rounded-full blur-2xl" />
+            <div className="absolute -bottom-12 -left-10 w-40 sm:w-56 h-40 sm:h-56 bg-mint/30 rounded-full blur-2xl" />
+            <div className="absolute top-1/4 -left-6 w-28 sm:w-40 h-28 sm:h-40 bg-orange/25 rounded-full blur-2xl" />
+            <div className="absolute -bottom-8 right-1/4 w-32 sm:w-44 h-32 sm:h-44 bg-pink/30 rounded-full blur-2xl" />
+            <div className="absolute top-1/3 right-[10%] w-24 sm:w-36 h-24 sm:h-36 bg-white/10 rounded-full blur-xl" />
+            <div className="absolute bottom-1/3 left-[15%] w-20 sm:w-28 h-20 sm:h-28 bg-purple-light/25 rounded-full blur-xl" />
 
             <div className="relative">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 text-white/90 text-sm font-medium mb-6">

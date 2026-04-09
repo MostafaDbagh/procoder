@@ -15,10 +15,13 @@ import {
   FileText,
 } from "lucide-react";
 
+import { createEnrollment } from "@/lib/api";
+
 interface EnrollModalProps {
   open: boolean;
   onClose: () => void;
   courseTitle: string;
+  courseId: string;
 }
 
 const STEPS = 4;
@@ -29,7 +32,7 @@ const selectCls =
   "w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none";
 const labelCls = "block text-sm font-medium mb-2";
 
-export function EnrollModal({ open, onClose, courseTitle }: EnrollModalProps) {
+export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModalProps) {
   const t = useTranslations("enroll");
   const [step, setStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
@@ -69,12 +72,43 @@ export function EnrollModal({ open, onClose, courseTitle }: EnrollModalProps) {
         : [...p.preferredDays, day],
     }));
 
+  const [error, setError] = useState("");
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    await new Promise((r) => setTimeout(r, 1800));
-    setSubmitting(false);
-    setSuccess(true);
+    setError("");
+    try {
+      await createEnrollment({
+        parentName: form.parentName,
+        email: form.email,
+        phone: form.phone,
+        relationship: form.relationship,
+        childName: form.childName,
+        childAge: Number(form.childAge),
+        childGender: form.childGender || undefined,
+        gradeLevel: form.gradeLevel,
+        schoolName: form.schoolName || undefined,
+        previousExperience: form.previousExperience || undefined,
+        courseId,
+        courseTitle,
+        preferredDays: form.preferredDays,
+        preferredTime: form.preferredTime,
+        timezone: form.timezone || undefined,
+        sessionFormat: form.sessionFormat,
+        startDate: form.startDate || undefined,
+        learningGoals: form.learningGoals || undefined,
+        specialNeeds: form.specialNeeds || undefined,
+        howDidYouHear: form.howDidYouHear || undefined,
+        agreeTerms: form.agreeTerms,
+        agreePhotos: form.agreePhotos || undefined,
+      });
+      setSuccess(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Enrollment failed. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleClose = () => {
