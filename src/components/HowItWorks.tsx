@@ -70,17 +70,17 @@ export function HowItWorks() {
               transition={{ duration: 0.45, delay: i * 0.12 }}
             >
               {/* Step card */}
-              <div className={`${step.bg} ${step.border} border rounded-2xl px-7 py-5 flex items-center justify-between`}>
-                <h3 className="text-lg sm:text-xl font-extrabold text-foreground">
+              <div className={`${step.bg} ${step.border} border rounded-2xl px-5 sm:px-7 py-4 sm:py-5 flex items-center justify-between gap-3`}>
+                <h3 className="text-base sm:text-xl font-extrabold text-foreground">
                   {step.title}
                 </h3>
-                <span className="text-muted text-sm font-medium whitespace-nowrap ml-4">
+                <span className="text-muted text-xs sm:text-sm font-medium whitespace-nowrap">
                   Step {i + 1}
                 </span>
               </div>
 
               {/* Description */}
-              <div className={`ml-5 mt-0 border-l-2 ${step.line} pl-6 py-5`}>
+              <div className={`ml-4 sm:ml-5 mt-0 border-l-2 ${step.line} pl-4 sm:pl-6 py-4 sm:py-5`}>
                 <p className="text-muted leading-relaxed text-base">
                   {step.desc}
                 </p>

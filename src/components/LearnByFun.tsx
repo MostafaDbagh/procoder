@@ -130,7 +130,7 @@ export function LearnByFun() {
           </p>
         </AnimatedSection>
 
-        <div className="grid sm:grid-cols-3 gap-7">
+        <div className="grid sm:grid-cols-3 gap-5 sm:gap-7">
           {cards.map((card, i) => (
             <AnimatedCard key={i} delay={i * 0.12}>
               <div className="relative h-full group">

@@ -48,7 +48,7 @@ export function FAQ() {
         {/* Tabs */}
         <AnimatedSection delay={0.1} className="mb-10">
           <div className="flex justify-center">
-            <div className="inline-flex gap-1 p-1.5 bg-surface rounded-2xl border border-border">
+            <div className="flex flex-wrap justify-center gap-2 sm:gap-1 p-1.5 bg-surface rounded-2xl border border-border w-full sm:w-auto">
               {tabs.map((tab) => (
                 <button
                   key={tab}
@@ -56,7 +56,7 @@ export function FAQ() {
                     setActiveTab(tab);
                     setOpenId(null);
                   }}
-                  className={`px-5 sm:px-6 py-2.5 rounded-xl text-sm font-semibold transition-all whitespace-nowrap ${
+                  className={`px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
                     activeTab === tab
                       ? "bg-primary text-white shadow-md"
                       : "text-muted hover:text-foreground"
