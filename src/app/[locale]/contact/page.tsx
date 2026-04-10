@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { setRequestLocale } from "next-intl/server";
 import ContactContent from "./ContactContent";
 
@@ -52,5 +53,9 @@ export default async function ContactPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return <ContactContent />;
+  return (
+    <Suspense>
+      <ContactContent />
+    </Suspense>
+  );
 }

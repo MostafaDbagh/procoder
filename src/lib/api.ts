@@ -112,3 +112,63 @@ export function sendContactMessage(
     body: JSON.stringify(data),
   });
 }
+
+// --- Admin Auth ---
+
+export interface LoginResponse {
+  token: string;
+  user: { id: string; name: string; email: string; role: string };
+}
+
+export function adminLogin(
+  email: string,
+  password: string
+): Promise<LoginResponse> {
+  return request("/auth/login", {
+    method: "POST",
+    body: JSON.stringify({ email, password }),
+  });
+}
+
+// --- Admin Courses ---
+
+export interface CreateCourseData {
+  slug: string;
+  category: string;
+  ageMin: number;
+  ageMax: number;
+  level: string;
+  lessons: number;
+  durationWeeks: number;
+  iconName: string;
+  color: string;
+  title: { en: string; ar: string };
+  description: { en: string; ar: string };
+  skills: { en: string[]; ar: string[] };
+  price: number;
+  currency: string;
+}
+
+function authRequest<T>(
+  endpoint: string,
+  token: string,
+  options?: RequestInit
+): Promise<T> {
+  return request<T>(endpoint, {
+    ...options,
+    headers: {
+      ...options?.headers,
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
+export function createCourse(
+  data: CreateCourseData,
+  token: string
+): Promise<APICourse> {
+  return authRequest<APICourse>("/courses", token, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}

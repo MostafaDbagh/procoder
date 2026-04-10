@@ -136,6 +136,16 @@ export function CategorySection() {
             <CategoryCard key={cat.key} cat={cat} i={i + 3} t={t} />
           ))}
         </div>
+
+        {/* View all courses link */}
+        <AnimatedSection delay={0.5} className="text-center mt-14">
+          <LocalizedLink
+            href="/courses"
+            className="inline-flex items-center gap-2 text-primary font-semibold text-base hover:underline underline-offset-4 transition-all"
+          >
+            {t("title")} →
+          </LocalizedLink>
+        </AnimatedSection>
       </div>
     </section>
   );

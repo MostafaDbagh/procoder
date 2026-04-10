@@ -28,6 +28,7 @@ export function Navbar() {
     { href: "/courses", label: t("courses") },
     { href: "/recommend", label: t("recommend") },
     { href: "/about", label: t("about") },
+    { href: "/contact", label: t("contact") },
     { href: "/dashboard", label: t("dashboard") },
   ];
 

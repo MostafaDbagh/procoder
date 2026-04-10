@@ -5,6 +5,7 @@ import { LearnByFun } from "@/components/LearnByFun";
 import { CategorySection } from "@/components/CategorySection";
 import { HowItWorks } from "@/components/HowItWorks";
 import { CTABanner } from "@/components/CTABanner";
+import { MeetOurStars } from "@/components/MeetOurStars";
 import { FAQ } from "@/components/FAQ";
 
 const SITE_URL = process.env.SITE_URL || "https://procoder.com";
@@ -66,6 +67,7 @@ export default async function HomePage({
       <LearnByFun />
       <CategorySection />
       <HowItWorks />
+      <MeetOurStars />
       <FAQ />
       <CTABanner />
     </>

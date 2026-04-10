@@ -1,8 +1,10 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { LocalizedLink } from "@/components/LocalizedLink";
 import { AnimatedSection } from "./AnimatedSection";
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
 function GrowthIcon() {
   return (
@@ -88,6 +90,17 @@ export function HowItWorks() {
             </motion.div>
           ))}
         </div>
+
+        {/* Book Free Trial link */}
+        <AnimatedSection delay={0.5} className="text-center mt-10">
+          <LocalizedLink
+            href="/contact?subject=Book%20a%20Free%20Trial%20Class"
+            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl bg-primary text-white font-semibold text-base shadow-md shadow-primary/10 hover:shadow-lg hover:scale-[1.02] transition-all"
+          >
+            {t("step2Title")}
+            <ArrowRight className="w-5 h-5" />
+          </LocalizedLink>
+        </AnimatedSection>
       </div>
     </section>
   );

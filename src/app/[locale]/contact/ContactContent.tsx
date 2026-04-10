@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { AnimatedSection, AnimatedCard } from "@/components/AnimatedSection";
 import { motion } from "framer-motion";
@@ -17,13 +18,23 @@ import {
 
 export default function ContactContent() {
   const t = useTranslations("contact");
+  const searchParams = useSearchParams();
 
   const [form, setForm] = useState({
     name: "",
     email: "",
+    phone: "",
     subject: "",
     message: "",
   });
+
+  // Pre-fill subject from URL query param
+  useEffect(() => {
+    const subject = searchParams.get("subject");
+    if (subject) {
+      setForm((prev) => ({ ...prev, subject }));
+    }
+  }, [searchParams]);
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
 
@@ -83,7 +94,7 @@ export default function ContactContent() {
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div>
                       <label className="block text-sm font-medium mb-2">
-                        {t("nameLabel")}
+                        {t("nameLabel")} <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
@@ -102,7 +113,6 @@ export default function ContactContent() {
                       </label>
                       <input
                         type="email"
-                        required
                         value={form.email}
                         onChange={(e) =>
                           setForm({ ...form, email: e.target.value })
@@ -114,11 +124,25 @@ export default function ContactContent() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-2">
+                      {t("phoneLabel")} <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      value={form.phone}
+                      onChange={(e) =>
+                        setForm({ ...form, phone: e.target.value })
+                      }
+                      placeholder={t("phonePlaceholder")}
+                      className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">
                       {t("subjectLabel")}
                     </label>
                     <input
                       type="text"
-                      required
                       value={form.subject}
                       onChange={(e) =>
                         setForm({ ...form, subject: e.target.value })
@@ -129,7 +153,7 @@ export default function ContactContent() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-2">
-                      {t("messageLabel")}
+                      {t("messageLabel")} <span className="text-red-500">*</span>
                     </label>
                     <textarea
                       required

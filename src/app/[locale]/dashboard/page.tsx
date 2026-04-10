@@ -14,7 +14,9 @@ import {
   Bot,
   BookMarked,
   PenTool,
+  Plus,
 } from "lucide-react";
+import { LocalizedLink } from "@/components/LocalizedLink";
 
 const stats = [
   { key: "coursesEnrolled", value: "3", icon: BookOpen, color: "text-primary" },
@@ -89,8 +91,20 @@ export default function DashboardPage() {
           </div>
         </AnimatedSection>
 
+        {/* Admin */}
+        <AnimatedSection delay={0.3} className="mb-10">
+          <h2 className="text-xl font-bold mb-5">Admin</h2>
+          <LocalizedLink
+            href="/dashboard/courses/create"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-primary text-white font-semibold shadow-lg shadow-primary/10 hover:shadow-xl hover:scale-[1.02] transition-all"
+          >
+            <Plus className="w-5 h-5" />
+            Create New Course
+          </LocalizedLink>
+        </AnimatedSection>
+
         {/* Recommended */}
-        <AnimatedSection delay={0.3}>
+        <AnimatedSection delay={0.4}>
           <h2 className="text-xl font-bold mb-5">{t("recommended")}</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {recommendedCourses.map((course, i) => (
