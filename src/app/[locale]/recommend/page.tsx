@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import RecommendContent from "./RecommendContent";
+import { getCoursesISR } from "@/lib/server-api";
 
 const SITE_URL = process.env.SITE_URL || "https://procoder.com";
 
@@ -52,5 +53,6 @@ export default async function RecommendPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return <RecommendContent />;
+  const initialCourses = await getCoursesISR();
+  return <RecommendContent initialCourses={initialCourses} />;
 }

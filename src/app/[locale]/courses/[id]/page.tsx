@@ -1,14 +1,20 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { getTranslations } from "next-intl/server";
-import { courses } from "@/data/courses";
+import { courses as staticCourses } from "@/data/courses";
 import CourseDetailContent from "./CourseDetailContent";
 import { BreadcrumbSchema } from "@/components/StructuredData";
+import { getCourseISR, getCourseSlugsISR } from "@/lib/server-api";
 
 const SITE_URL = process.env.SITE_URL || "https://procoder.com";
 
-export function generateStaticParams() {
-  return courses.map((course) => ({ id: course.id }));
+export async function generateStaticParams() {
+  const slugs = await getCourseSlugsISR();
+  const merged = new Set([
+    ...slugs,
+    ...staticCourses.map((c) => c.id),
+  ]);
+  return [...merged].map((id) => ({ id }));
 }
 
 export async function generateMetadata({
@@ -20,16 +26,30 @@ export async function generateMetadata({
   const lang = locale === "ar" ? "ar" : "en";
   const alt = lang === "en" ? "ar" : "en";
 
-  const course = courses.find((c) => c.id === id);
-  if (!course) {
+  const apiCourse = await getCourseISR(id);
+  const staticCourse = staticCourses.find((c) => c.id === id);
+
+  if (!apiCourse && !staticCourse) {
     return { title: "Course Not Found" };
   }
 
   const ct = await getTranslations({ locale, namespace: "courseData" });
-  const title = ct(course.titleKey);
-  const description = ct(course.descKey);
-  const ageRange = `${course.ageMin}–${course.ageMax}`;
-  const seoDescription = `${description} For ages ${ageRange}. ${course.level.charAt(0).toUpperCase() + course.level.slice(1)} level, ${course.lessons} lessons over ${course.durationWeeks} weeks.`;
+  let title: string;
+  let seoDescription: string;
+
+  if (apiCourse) {
+    title = lang === "ar" ? apiCourse.title.ar : apiCourse.title.en;
+    const body =
+      lang === "ar" ? apiCourse.description.ar : apiCourse.description.en;
+    const ageRange = `${apiCourse.ageMin}–${apiCourse.ageMax}`;
+    seoDescription = `${body} For ages ${ageRange}. ${apiCourse.level.charAt(0).toUpperCase() + apiCourse.level.slice(1)} level, ${apiCourse.lessons} lessons over ${apiCourse.durationWeeks} weeks.`;
+  } else {
+    const sc = staticCourse!;
+    title = ct(sc.titleKey);
+    const description = ct(sc.descKey);
+    const ageRange = `${sc.ageMin}–${sc.ageMax}`;
+    seoDescription = `${description} For ages ${ageRange}. ${sc.level.charAt(0).toUpperCase() + sc.level.slice(1)} level, ${sc.lessons} lessons over ${sc.durationWeeks} weeks.`;
+  }
 
   return {
     title,
@@ -59,46 +79,66 @@ export default async function CourseDetailPage({
   const { locale, id } = await params;
   setRequestLocale(locale);
 
-  const course = courses.find((c) => c.id === id);
-  const ct = course ? await getTranslations({ locale, namespace: "courseData" }) : null;
+  const apiCourse = await getCourseISR(id);
+  const staticCourse = staticCourses.find((c) => c.id === id);
+  const ct = staticCourse
+    ? await getTranslations({ locale, namespace: "courseData" })
+    : null;
 
-  const courseSchema = course && ct ? {
-    "@context": "https://schema.org",
-    "@type": "Course",
-    name: ct(course.titleKey),
-    description: ct(course.descKey),
-    provider: {
-      "@type": "Organization",
-      name: "ProCoder",
-      url: "https://procoder.com",
-    },
-    educationalLevel: course.level,
-    courseMode: "online",
-    availableLanguage: ["English", "Arabic"],
-    numberOfCredits: course.lessons,
-    timeRequired: `P${course.durationWeeks}W`,
-    audience: {
-      "@type": "EducationalAudience",
-      educationalRole: "student",
-      suggestedMinAge: course.ageMin,
-      suggestedMaxAge: course.ageMax,
-    },
-    offers: {
-      "@type": "Offer",
-      category: "Paid",
-      availability: "https://schema.org/InStock",
-    },
-    hasCourseInstance: {
-      "@type": "CourseInstance",
-      courseMode: "online",
-      instructor: {
-        "@type": "Person",
-        name: "ProCoder Instructor",
-      },
-    },
-  } : null;
+  const courseSchema =
+    apiCourse || (staticCourse && ct)
+      ? {
+          "@context": "https://schema.org",
+          "@type": "Course",
+          name: apiCourse
+            ? locale === "ar"
+              ? apiCourse.title.ar
+              : apiCourse.title.en
+            : ct!(staticCourse!.titleKey),
+          description: apiCourse
+            ? locale === "ar"
+              ? apiCourse.description.ar
+              : apiCourse.description.en
+            : ct!(staticCourse!.descKey),
+          provider: {
+            "@type": "Organization",
+            name: "ProCoder",
+            url: "https://procoder.com",
+          },
+          educationalLevel: apiCourse?.level ?? staticCourse!.level,
+          courseMode: "online",
+          availableLanguage: ["English", "Arabic"],
+          numberOfCredits: apiCourse?.lessons ?? staticCourse!.lessons,
+          timeRequired: `P${apiCourse?.durationWeeks ?? staticCourse!.durationWeeks}W`,
+          audience: {
+            "@type": "EducationalAudience",
+            educationalRole: "student",
+            suggestedMinAge: apiCourse?.ageMin ?? staticCourse!.ageMin,
+            suggestedMaxAge: apiCourse?.ageMax ?? staticCourse!.ageMax,
+          },
+          offers: {
+            "@type": "Offer",
+            category: "Paid",
+            availability: "https://schema.org/InStock",
+          },
+          hasCourseInstance: {
+            "@type": "CourseInstance",
+            courseMode: "online",
+            instructor: {
+              "@type": "Person",
+              name: "ProCoder Instructor",
+            },
+          },
+        }
+      : null;
 
-  const courseTitle = course && ct ? ct(course.titleKey) : id;
+  const courseTitle = apiCourse
+    ? locale === "ar"
+      ? apiCourse.title.ar
+      : apiCourse.title.en
+    : staticCourse && ct
+      ? ct(staticCourse.titleKey)
+      : id;
 
   return (
     <>

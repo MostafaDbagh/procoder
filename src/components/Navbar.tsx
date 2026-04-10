@@ -27,9 +27,10 @@ export function Navbar() {
     { href: "/", label: t("home") },
     { href: "/courses", label: t("courses") },
     { href: "/recommend", label: t("recommend") },
+    { href: "/challenge", label: t("challenge") },
+    { href: "/parents", label: t("parents") },
     { href: "/about", label: t("about") },
     { href: "/contact", label: t("contact") },
-    { href: "/dashboard", label: t("dashboard") },
   ];
 
   const switchLocale = () => {
@@ -39,7 +40,7 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-xl bg-surface/80 border-b border-border">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav className="max-w-[96rem] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <LocalizedLink href="/" className="flex items-center gap-2 group">
@@ -75,7 +76,7 @@ export function Navbar() {
           <div className="flex items-center gap-2">
             <LocalizedLink
               href="/contact"
-              className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold shadow-md shadow-primary/10 hover:shadow-lg hover:scale-[1.02] transition-all"
+              className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold shadow-md shadow-primary/10 hover:shadow-lg hover:scale-[1.02] transition-all md:me-5"
             >
               {t("bookDemo")}
             </LocalizedLink>

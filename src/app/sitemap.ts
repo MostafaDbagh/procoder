@@ -1,9 +1,15 @@
 import type { MetadataRoute } from "next";
-import { courses } from "@/data/courses";
+import { courses as staticCourses } from "@/data/courses";
+import { getCoursesISR } from "@/lib/server-api";
 
 const SITE_URL = process.env.SITE_URL || "https://procoder.com";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const apiCourses = await getCoursesISR();
+  const slugSet = new Set<string>([
+    ...(apiCourses?.map((c) => c.slug) ?? []),
+    ...staticCourses.map((c) => c.id),
+  ]);
   const locales = ["en", "ar"];
   const now = new Date();
 
@@ -11,6 +17,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "", priority: 1.0, changeFrequency: "weekly" as const },
     { path: "/courses", priority: 0.9, changeFrequency: "weekly" as const },
     { path: "/recommend", priority: 0.8, changeFrequency: "monthly" as const },
+    { path: "/challenge", priority: 0.75, changeFrequency: "weekly" as const },
+    { path: "/parents", priority: 0.85, changeFrequency: "monthly" as const },
     { path: "/about", priority: 0.7, changeFrequency: "monthly" as const },
     { path: "/contact", priority: 0.6, changeFrequency: "monthly" as const },
     { path: "/privacy", priority: 0.3, changeFrequency: "yearly" as const },
@@ -37,18 +45,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   }
 
-  // Course detail pages
+  // Course detail pages (admin catalog + static fallback slugs)
   for (const locale of locales) {
-    for (const course of courses) {
+    for (const slug of slugSet) {
       entries.push({
-        url: `${SITE_URL}/${locale}/courses/${course.id}`,
+        url: `${SITE_URL}/${locale}/courses/${slug}`,
         lastModified: now,
         changeFrequency: "monthly",
         priority: 0.8,
         alternates: {
           languages: {
-            en: `${SITE_URL}/en/courses/${course.id}`,
-            ar: `${SITE_URL}/ar/courses/${course.id}`,
+            en: `${SITE_URL}/en/courses/${slug}`,
+            ar: `${SITE_URL}/ar/courses/${slug}`,
           },
         },
       });

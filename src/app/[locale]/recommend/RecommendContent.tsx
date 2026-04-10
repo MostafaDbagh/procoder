@@ -2,16 +2,17 @@
 
 import { useState, useMemo, useRef } from "react";
 import { useTranslations, useLocale } from "next-intl";
-import { courses, type Category, type Level } from "@/data/courses";
+import { courses as staticCourses, type Category, type Level } from "@/data/courses";
 import { CourseCard } from "@/components/CourseCard";
 import { AnimatedSection } from "@/components/AnimatedSection";
-import { getAIRecommendation } from "@/lib/api";
+import { getAIRecommendation, type APICourse } from "@/lib/api";
+import { apiCoursesToCatalog } from "@/lib/catalog";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Sparkles,
   RotateCcw,
   SendHorizonal,
-  MessageCircle,
+  ClipboardList,
   Bot,
   Loader2,
 } from "lucide-react";
@@ -25,9 +26,20 @@ const interestOptions: { key: string; category: Category | "programming" }[] = [
   { key: "gaming", category: "programming" },
 ];
 
-export default function RecommendContent() {
+type Props = {
+  initialCourses: APICourse[] | null;
+};
+
+export default function RecommendContent({ initialCourses }: Props) {
   const t = useTranslations("recommend");
   const locale = useLocale();
+
+  const catalog = useMemo(() => {
+    if (initialCourses && initialCourses.length > 0) {
+      return apiCoursesToCatalog(initialCourses, locale);
+    }
+    return staticCourses;
+  }, [initialCourses, locale]);
 
   // === Tab state ===
   const [tab, setTab] = useState<"form" | "ai">("ai");
@@ -58,7 +70,7 @@ export default function RecommendContent() {
     const cats = interests.map(
       (i) => interestOptions.find((o) => o.key === i)?.category
     );
-    return courses
+    return catalog
       .filter((c) => {
         const ageMatch = age >= c.ageMin && age <= c.ageMax;
         const catMatch = cats.includes(c.category);
@@ -74,11 +86,11 @@ export default function RecommendContent() {
         return bExact - aExact;
       })
       .slice(0, 6);
-  }, [age, interests, level]);
+  }, [age, interests, level, catalog]);
 
   const aiRecommendedCourses = useMemo(
-    () => courses.filter((c) => aiCourseIds.includes(c.id)),
-    [aiCourseIds]
+    () => catalog.filter((c) => aiCourseIds.includes(c.id)),
+    [aiCourseIds, catalog]
   );
 
   const handleSubmit = () => {
@@ -159,7 +171,7 @@ export default function RecommendContent() {
                   : "text-muted hover:text-foreground"
               }`}
             >
-              <MessageCircle className="w-4 h-4" />
+              <Sparkles className="w-4 h-4" />
               {t("aiTab")}
             </button>
             <button
@@ -170,7 +182,7 @@ export default function RecommendContent() {
                   : "text-muted hover:text-foreground"
               }`}
             >
-              <Sparkles className="w-4 h-4" />
+              <ClipboardList className="w-4 h-4" />
               {t("formTab")}
             </button>
           </div>

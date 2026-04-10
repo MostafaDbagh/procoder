@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import AboutContent from "./AboutContent";
+import { getTeamPublicISR } from "@/lib/server-api";
 
 const SITE_URL = process.env.SITE_URL || "https://procoder.com";
 
@@ -52,5 +53,6 @@ export default async function AboutPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return <AboutContent />;
+  const cmsTeam = await getTeamPublicISR();
+  return <AboutContent cmsTeam={cmsTeam} />;
 }

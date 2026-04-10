@@ -4,6 +4,12 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
+  /**
+   * Do NOT add a catch-all rewrite `/api/:path* → Express`.
+   * It runs before App Router API routes, so POST /api/recommend would bypass
+   * `src/app/api/recommend/route.ts` and hit Express directly (HTML errors if that route fails).
+   * The recommend Route Handler proxies to stem-Be; set BACKEND_URL on deploy.
+   */
   headers: async () => [
     {
       source: "/(.*)",

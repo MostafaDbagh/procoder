@@ -11,7 +11,7 @@ export function Footer() {
 
   return (
     <footer className="bg-surface border-t border-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {/* Brand */}
           <div>
@@ -45,6 +45,11 @@ export function Footer() {
               <li>
                 <LocalizedLink href="/recommend" className="text-sm text-muted hover:text-primary transition-colors">
                   {nav("recommend")}
+                </LocalizedLink>
+              </li>
+              <li>
+                <LocalizedLink href="/challenge" className="text-sm text-muted hover:text-primary transition-colors">
+                  {nav("challenge")}
                 </LocalizedLink>
               </li>
               <li>

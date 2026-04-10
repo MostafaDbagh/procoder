@@ -1,8 +1,9 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { AnimatedSection, AnimatedCard } from "@/components/AnimatedSection";
 import { motion } from "framer-motion";
+import type { APITeamMember } from "@/lib/server-api";
 import {
   Sparkles,
   Rocket,
@@ -18,8 +19,14 @@ import {
   ExternalLink,
 } from "lucide-react";
 
-export default function AboutContent() {
+type AboutContentProps = {
+  cmsTeam: APITeamMember[] | null;
+};
+
+export default function AboutContent({ cmsTeam }: AboutContentProps) {
   const t = useTranslations("about");
+  const locale = useLocale();
+  const lang = locale === "ar" ? "ar" : "en";
 
   const values = [
     { icon: Heart, title: t("value1Title"), desc: t("value1Desc"), color: "from-pink-400 to-rose-400" },
@@ -28,14 +35,37 @@ export default function AboutContent() {
     { icon: Globe, title: t("value4Title"), desc: t("value4Desc"), color: "from-blue-400 to-cyan-400" },
   ];
 
-  const team = [
-    { name: t("member1Name"), role: t("member1Role"), avatar: "M", color: "from-blue-400 to-primary" },
-    { name: t("member2Name"), role: t("member2Role"), avatar: "S", color: "from-purple to-violet-400" },
-    { name: t("member3Name"), role: t("member3Role"), avatar: "A", color: "from-emerald-400 to-teal-400" },
-    { name: t("member4Name"), role: t("member4Role"), avatar: "L", color: "from-pink-400 to-rose-400" },
-    { name: t("member5Name"), role: t("member5Role"), avatar: "K", color: "from-amber-400 to-orange-400" },
-    { name: t("member6Name"), role: t("member6Role"), avatar: "N", color: "from-cyan-400 to-blue-400" },
+  type TeamRow = {
+    id: string;
+    name: string;
+    role: string;
+    avatar: string;
+    color: string;
+    linkedin?: string;
+  };
+
+  const fallbackTeam: TeamRow[] = [
+    { id: "static-1", name: t("member1Name"), role: t("member1Role"), avatar: "M", color: "from-blue-400 to-primary" },
+    { id: "static-2", name: t("member2Name"), role: t("member2Role"), avatar: "S", color: "from-purple to-violet-400" },
+    { id: "static-3", name: t("member3Name"), role: t("member3Role"), avatar: "A", color: "from-emerald-400 to-teal-400" },
+    { id: "static-4", name: t("member4Name"), role: t("member4Role"), avatar: "L", color: "from-pink-400 to-rose-400" },
+    { id: "static-5", name: t("member5Name"), role: t("member5Role"), avatar: "K", color: "from-amber-400 to-orange-400" },
+    { id: "static-6", name: t("member6Name"), role: t("member6Role"), avatar: "N", color: "from-cyan-400 to-blue-400" },
   ];
+
+  const team: TeamRow[] =
+    cmsTeam && cmsTeam.length > 0
+      ? [...cmsTeam]
+          .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+          .map((m) => ({
+            id: String(m._id),
+            name: lang === "ar" ? m.name.ar : m.name.en,
+            role: lang === "ar" ? m.role.ar : m.role.en,
+            avatar: m.avatar,
+            color: m.color || "from-blue-400 to-cyan-400",
+            linkedin: m.linkedin?.trim() || undefined,
+          }))
+      : fallbackTeam;
 
   const stats = [
     { value: "500+", label: t("statStudents"), icon: Users },
@@ -143,17 +173,24 @@ export default function AboutContent() {
         </AnimatedSection>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {team.map((member, i) => (
-            <AnimatedCard key={i} delay={i * 0.08}>
+            <AnimatedCard key={member.id} delay={i * 0.08}>
               <div className="bg-surface rounded-2xl border border-border p-7 text-center">
                 <div className={`w-20 h-20 rounded-full bg-gradient-to-br ${member.color} flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold`}>
                   {member.avatar}
                 </div>
                 <h3 className="text-lg font-semibold mb-1">{member.name}</h3>
                 <p className="text-muted text-sm mb-3">{member.role}</p>
-                <button className="inline-flex items-center gap-1 text-primary text-sm hover:underline">
-                  <ExternalLink className="w-4 h-4" />
-                  LinkedIn
-                </button>
+                {member.linkedin ? (
+                  <a
+                    href={member.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-primary text-sm hover:underline"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    LinkedIn
+                  </a>
+                ) : null}
               </div>
             </AnimatedCard>
           ))}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import DashboardContent from "./DashboardContent";
+import { getCoursesISR } from "@/lib/server-api";
 
 const SITE_URL = process.env.SITE_URL || "https://procoder.com";
 
@@ -32,5 +33,6 @@ export default async function DashboardPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return <DashboardContent />;
+  const initialCourses = await getCoursesISR();
+  return <DashboardContent initialCourses={initialCourses} />;
 }
