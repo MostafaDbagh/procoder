@@ -3,6 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import { getTranslations } from "next-intl/server";
 import { courses } from "@/data/courses";
 import CourseDetailContent from "./CourseDetailContent";
+import { BreadcrumbSchema } from "@/components/StructuredData";
 
 const SITE_URL = process.env.SITE_URL || "https://procoder.com";
 
@@ -55,7 +56,64 @@ export default async function CourseDetailPage({
 }: {
   params: Promise<{ locale: string; id: string }>;
 }) {
-  const { locale } = await params;
+  const { locale, id } = await params;
   setRequestLocale(locale);
-  return <CourseDetailContent />;
+
+  const course = courses.find((c) => c.id === id);
+  const ct = course ? await getTranslations({ locale, namespace: "courseData" }) : null;
+
+  const courseSchema = course && ct ? {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    name: ct(course.titleKey),
+    description: ct(course.descKey),
+    provider: {
+      "@type": "Organization",
+      name: "ProCoder",
+      url: "https://procoder.com",
+    },
+    educationalLevel: course.level,
+    courseMode: "online",
+    availableLanguage: ["English", "Arabic"],
+    numberOfCredits: course.lessons,
+    timeRequired: `P${course.durationWeeks}W`,
+    audience: {
+      "@type": "EducationalAudience",
+      educationalRole: "student",
+      suggestedMinAge: course.ageMin,
+      suggestedMaxAge: course.ageMax,
+    },
+    offers: {
+      "@type": "Offer",
+      category: "Paid",
+      availability: "https://schema.org/InStock",
+    },
+    hasCourseInstance: {
+      "@type": "CourseInstance",
+      courseMode: "online",
+      instructor: {
+        "@type": "Person",
+        name: "ProCoder Instructor",
+      },
+    },
+  } : null;
+
+  const courseTitle = course && ct ? ct(course.titleKey) : id;
+
+  return (
+    <>
+      <BreadcrumbSchema items={[
+        { name: "Home", url: `${SITE_URL}/${locale}` },
+        { name: "Courses", url: `${SITE_URL}/${locale}/courses` },
+        { name: courseTitle, url: `${SITE_URL}/${locale}/courses/${id}` },
+      ]} />
+      {courseSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
+        />
+      )}
+      <CourseDetailContent />
+    </>
+  );
 }

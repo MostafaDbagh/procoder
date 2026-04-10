@@ -1,13 +1,15 @@
-"use client";
-
-import { useEffect } from "react";
+import Script from "next/script";
 
 export function LocaleHtmlAttrs({ locale }: { locale: string }) {
-  useEffect(() => {
-    const html = document.documentElement;
-    html.lang = locale;
-    html.dir = locale === "ar" ? "rtl" : "ltr";
-  }, [locale]);
+  const dir = locale === "ar" ? "rtl" : "ltr";
 
-  return null;
+  return (
+    <Script
+      id="locale-attrs"
+      strategy="beforeInteractive"
+      dangerouslySetInnerHTML={{
+        __html: `document.documentElement.lang="${locale}";document.documentElement.dir="${dir}";`,
+      }}
+    />
+  );
 }

@@ -12,14 +12,14 @@ const SITE_URL = process.env.SITE_URL || "https://procoder.com";
 
 const meta = {
   en: {
-    title: "ProCoder — Fun Coding, Robotics & Quran Classes for Kids",
+    title: "ProCoder — Kids Coding, Robotics & Quran Classes | Saudi Arabia, UAE, GCC & Worldwide",
     description:
-      "Interactive online courses in Programming, Robotics, Algorithms, Arabic & Quran for children ages 6–18. Small live classes with expert instructors. Free trial available!",
+      "Online coding, robotics, algorithms, Arabic & Quran courses for kids ages 6–18. Live small-group classes with certified instructors. Serving Saudi Arabia, UAE, Qatar, Kuwait, Oman, Bahrain, Turkey, Canada, US & Europe. Free trial!",
   },
   ar: {
-    title: "بروكودر — دروس ممتعة في البرمجة والروبوتات والقرآن للأطفال",
+    title: "بروكودر — دروس البرمجة والروبوتات والقرآن للأطفال | السعودية، الإمارات، الخليج والعالم",
     description:
-      "دورات تفاعلية عبر الإنترنت في البرمجة والروبوتات والخوارزميات واللغة العربية والقرآن للأطفال من 6 إلى 18 سنة. فصول مباشرة صغيرة مع مدرسين خبراء.",
+      "دورات أونلاين في البرمجة والروبوتات والخوارزميات والعربية والقرآن للأطفال ٦–١٨ سنة. فصول مباشرة مع مدرسين معتمدين. نخدم السعودية والإمارات وقطر والكويت وعمان والبحرين وتركيا وكندا وأمريكا وأوروبا. حصة تجريبية مجانية!",
   },
 };
 

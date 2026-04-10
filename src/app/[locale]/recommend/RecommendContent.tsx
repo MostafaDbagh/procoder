@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { courses, type Category, type Level } from "@/data/courses";
 import { CourseCard } from "@/components/CourseCard";
 import { AnimatedSection } from "@/components/AnimatedSection";
+import { getAIRecommendation } from "@/lib/api";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Sparkles,
@@ -101,18 +102,7 @@ export default function RecommendContent() {
     setAiCourseIds([]);
 
     try {
-      const res = await fetch("/api/recommend", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: chatInput.trim(), locale }),
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || "Request failed");
-      }
-
-      const data = await res.json();
+      const data = await getAIRecommendation(chatInput.trim(), locale);
       setAiMessage(data.message || "");
       setAiCourseIds(data.ids || []);
       setShowAiResults(true);

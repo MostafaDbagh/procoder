@@ -38,6 +38,10 @@ export async function generateMetadata({
       description: meta[lang].description,
       url: `${SITE_URL}/${lang}/privacy`,
     },
+    twitter: {
+      title: meta[lang].title,
+      description: meta[lang].description,
+    },
   };
 }
 

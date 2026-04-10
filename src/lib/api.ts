@@ -130,6 +130,23 @@ export function adminLogin(
   });
 }
 
+// --- AI Recommendation ---
+
+export interface RecommendResponse {
+  ids: string[];
+  message: string;
+}
+
+export function getAIRecommendation(
+  message: string,
+  locale: string
+): Promise<RecommendResponse> {
+  return request<RecommendResponse>("/recommend", {
+    method: "POST",
+    body: JSON.stringify({ message, locale }),
+  });
+}
+
 // --- Admin Courses ---
 
 export interface CreateCourseData {

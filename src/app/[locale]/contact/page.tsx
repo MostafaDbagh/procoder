@@ -7,14 +7,14 @@ const SITE_URL = process.env.SITE_URL || "https://procoder.com";
 
 const meta = {
   en: {
-    title: "Contact Us",
+    title: "Contact ProCoder — Book a Free Trial Class | Saudi Arabia, UAE, GCC",
     description:
-      "Get in touch with ProCoder. Questions about our kids coding, robotics, or Quran courses? We'd love to hear from you.",
+      "Contact ProCoder to book a free trial class or ask about our kids coding, robotics, Arabic & Quran courses. We serve families in Saudi Arabia, UAE, Qatar, Kuwait, Oman, Turkey, Canada, US & Europe.",
   },
   ar: {
-    title: "تواصل معنا",
+    title: "تواصل مع بروكودر — احجز حصة تجريبية مجانية | السعودية والإمارات والخليج",
     description:
-      "تواصل مع بروكودر. هل لديك أسئلة حول دوراتنا في البرمجة والروبوتات والقرآن للأطفال؟ يسعدنا سماع منك.",
+      "تواصل مع بروكودر لحجز حصة تجريبية مجانية أو الاستفسار عن دورات البرمجة والروبوتات والعربية والقرآن. نخدم العائلات في السعودية والإمارات وقطر والكويت وعمان وتركيا وكندا وأمريكا وأوروبا.",
   },
 };
 
