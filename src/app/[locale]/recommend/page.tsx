@@ -7,14 +7,14 @@ const SITE_URL = process.env.SITE_URL || "https://procoder.com";
 
 const meta = {
   en: {
-    title: "AI Course Recommendations for Kids | Find the Perfect Class",
+    title: "Course finder for kids | ProCoder",
     description:
-      "Use our AI-powered tool to find the ideal coding, robotics, Arabic or Quran course for your child. Personalized recommendations based on age, interests & skill level. Available in Saudi Arabia, UAE, GCC, Turkey, Canada, US & Europe.",
+      "Answer a few questions to match your child to the right live class. Ages 6–18.",
   },
   ar: {
-    title: "توصيات ذكية للدورات | اعثر على الدورة المثالية لطفلك",
+    title: "أداة اختيار الدورة لطفلك | بروكودر",
     description:
-      "استخدم أداتنا الذكية لإيجاد دورة البرمجة أو الروبوتات أو العربية أو القرآن المثالية لطفلك. توصيات مخصصة حسب العمر والاهتمامات. متاح في السعودية والإمارات والخليج وتركيا وكندا وأمريكا وأوروبا.",
+      "بضع أسئلة لاقتراح الحصة المناسبة. للأعمار ٦–١٨.",
   },
 };
 

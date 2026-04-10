@@ -8,12 +8,12 @@ const meta = {
   en: {
     title: "Privacy Policy",
     description:
-      "ProCoder's privacy policy. Learn how we protect your child's data and comply with COPPA guidelines for children's online safety.",
+      "How ProCoder handles children’s data and online safety (COPPA-aware).",
   },
   ar: {
     title: "سياسة الخصوصية",
     description:
-      "سياسة الخصوصية لبروكودر. تعرف على كيفية حماية بيانات طفلك والامتثال لإرشادات سلامة الأطفال عبر الإنترنت.",
+      "كيف تتعامل بروكودر مع بيانات الأطفال والسلامة عبر الإنترنت.",
   },
 };
 

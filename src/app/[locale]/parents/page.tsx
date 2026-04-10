@@ -7,14 +7,14 @@ const SITE_URL = process.env.SITE_URL || "https://procoder.com";
 
 const meta = {
   en: {
-    title: "For Parents — Track Your Child's Progress | ProCoder",
+    title: "Parents | Progress & attendance",
     description:
-      "ProCoder's parent portal: real-time progress reports, attendance tracking, instructor notes, session recordings, and a dedicated dashboard. We treat every child like family. Saudi Arabia, UAE, GCC.",
+      "One dashboard for progress, attendance, and teacher notes.",
   },
   ar: {
-    title: "لأولياء الأمور — تابع تقدم طفلك | بروكودر",
+    title: "لأولياء الأمور | التقدم والحضور",
     description:
-      "بوابة أولياء الأمور في بروكودر: تقارير تقدم فورية، تتبع الحضور، ملاحظات المعلمين، تسجيلات الجلسات، ولوحة تحكم مخصصة. نعامل كل طفل كأنه من العائلة.",
+      "لوحة واحدة للتقدم والحضور وملاحظات المعلم.",
   },
 };
 

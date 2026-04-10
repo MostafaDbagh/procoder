@@ -6,7 +6,7 @@ export function OrganizationSchema() {
     "@type": "EducationalOrganization",
     name: "ProCoder",
     description:
-      "Online coding, robotics, algorithms, Arabic & Quran courses for kids ages 6–18. Live classes with certified instructors across Saudi Arabia, UAE, GCC, Turkey, Canada, US & Europe.",
+      "Live online STEM & Quran for ages 6–18: small groups, certified teachers, English & Arabic. GCC & worldwide.",
     url: SITE_URL,
     logo: `${SITE_URL}/logo.png`,
     image: `${SITE_URL}/og-image.png`,
@@ -75,14 +75,14 @@ export function OrganizationSchema() {
 
 export function FAQSchema() {
   const faqs = [
-    { q: "What age group are ProCoder courses designed for?", a: "All our programs are designed for children aged 6–18 years, with structured learning paths tailored to their age and skill level. We recommend at least two sessions (1 hour each) per week." },
-    { q: "How is my child's data and privacy protected?", a: "We take data privacy extremely seriously. All data is encrypted, we comply with COPPA guidelines, and we never share personal information with third parties. Parents have full control over their child's account." },
-    { q: "Does my child need prior experience?", a: "Not at all! Our courses are designed for all skill levels. Beginners start with fundamentals, and we have advanced tracks for experienced students. Our AI recommendation system finds the perfect starting point." },
-    { q: "Do you offer free trial classes?", a: "Yes! We offer a completely free trial class with no obligation. Your child can experience a full session with one of our certified instructors to see if the program is a good fit." },
-    { q: "How are ProCoder classes conducted?", a: "Classes are conducted live online in small groups (4–8 students) or 1-on-1 with qualified instructors using interactive tools, screen sharing, and hands-on coding environments." },
-    { q: "What devices are needed for classes?", a: "A laptop or desktop with a stable internet connection. For programming courses, we use browser-based tools — no installation required. For robotics, we ship kits to your address." },
-    { q: "Which countries does ProCoder serve?", a: "We serve families in Saudi Arabia, UAE, Qatar, Kuwait, Oman, Bahrain, Turkey, Syria, Canada, United States, United Kingdom, Germany, France, Netherlands, Sweden, and Australia. Classes are available in English and Arabic." },
-    { q: "Can I reschedule or cancel classes?", a: "Yes. You can reschedule a class up to 4 hours before the session at no extra charge. We offer flexible subscription plans that allow you to pause or adjust your schedule anytime." },
+    { q: "What age group are ProCoder courses designed for?", a: "Ages 6–18 with paths by level. Most students take about two 1-hour live sessions per week." },
+    { q: "How is my child's data and privacy protected?", a: "Encryption, COPPA-aware practices, and no selling of child data. Parents control student accounts." },
+    { q: "Does my child need prior experience?", a: "No—beginners start with fundamentals; advanced tracks exist too. Our course finder helps pick a level." },
+    { q: "Do you offer free trial classes?", a: "Yes: one free live session, no obligation." },
+    { q: "How are ProCoder classes conducted?", a: "Live online in small groups or 1:1 with screen share, guided practice, and interactive tools." },
+    { q: "What devices are needed for classes?", a: "Laptop or desktop plus stable internet. Coding runs in the browser; robotics kits ship where needed." },
+    { q: "Which countries does ProCoder serve?", a: "GCC, Turkey, North America, Europe, and more—in English or Arabic." },
+    { q: "Can I reschedule or cancel classes?", a: "Reschedule up to 4 hours before class; plans can pause when your schedule changes." },
   ];
 
   const data = {
@@ -105,7 +105,7 @@ export function WebsiteSchema() {
     name: "ProCoder",
     url: SITE_URL,
     description:
-      "Online learning platform for children ages 6–18. Live courses in Programming, Robotics, Algorithms, Arabic Language, and Quran Studies. Serving Saudi Arabia, UAE, GCC, Turkey, Canada, US & Europe.",
+      "Live kids’ classes in programming, robotics, algorithms, Arabic, and Quran (ages 6–18). English & Arabic.",
     inLanguage: ["en", "ar"],
     potentialAction: {
       "@type": "SearchAction",
@@ -150,7 +150,7 @@ export function LocalBusinessSchema() {
             "@context": "https://schema.org",
             "@type": "EducationalOrganization",
             name: `ProCoder ${loc.city}`,
-            description: `Online coding, robotics & Quran classes for kids in ${loc.city}. Ages 6–18. Free trial available.`,
+            description: `Live coding, robotics & Quran for kids in ${loc.city}. Ages 6–18. Free trial.`,
             url: SITE_URL,
             telephone: "+966500000000",
             email: "hello@procoder.com",

@@ -8,12 +8,12 @@ const meta = {
   en: {
     title: "Terms of Service",
     description:
-      "ProCoder's terms of service. Review our terms and conditions for using our kids' educational platform and courses.",
+      "Terms for using ProCoder’s kids’ learning platform and live classes.",
   },
   ar: {
     title: "شروط الخدمة",
     description:
-      "شروط الخدمة لبروكودر. راجع الشروط والأحكام لاستخدام منصتنا التعليمية ودوراتنا للأطفال.",
+      "شروط استخدام منصة بروكودر والحصص المباشرة للأطفال.",
   },
 };
 

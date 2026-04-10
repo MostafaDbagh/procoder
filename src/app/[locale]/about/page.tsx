@@ -7,14 +7,14 @@ const SITE_URL = process.env.SITE_URL || "https://procoder.com";
 
 const meta = {
   en: {
-    title: "About ProCoder — Our Team, Vision & Mission | Saudi Arabia, UAE, GCC",
+    title: "About ProCoder | Team & mission",
     description:
-      "ProCoder is a bilingual kids learning platform serving Saudi Arabia, UAE, Qatar, Kuwait, Oman, Bahrain, Turkey, Canada, US & Europe. Meet our certified instructors and learn about our vision for STEM & Quran education.",
+      "STEM and Quran for kids with bilingual support and certified instructors. GCC & worldwide.",
   },
   ar: {
-    title: "عن بروكودر — فريقنا ورؤيتنا ومهمتنا | السعودية والإمارات والخليج",
+    title: "عن بروكودر | الفريق والرسالة",
     description:
-      "بروكودر منصة تعليمية ثنائية اللغة للأطفال تخدم السعودية والإمارات وقطر والكويت وعمان والبحرين وتركيا وكندا وأمريكا وأوروبا. تعرف على مدرسينا المعتمدين ورؤيتنا لتعليم العلوم والقرآن.",
+      "تعليم علوم وقرآن للأطفال بدعم ثنائي اللغة ومدرسين معتمدين. الخليج والعالم.",
   },
 };
 
