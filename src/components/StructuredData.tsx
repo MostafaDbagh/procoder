@@ -1,7 +1,23 @@
-const SITE_URL = "https://procoder.com";
+const SITE_URL = (process.env.SITE_URL || "https://procoder.com").replace(/\/$/, "");
+/** Public contact only — set in Vercel env; never put API keys in NEXT_PUBLIC_* . */
+const PUBLIC_CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim();
+const PUBLIC_CONTACT_PHONE = process.env.NEXT_PUBLIC_CONTACT_PHONE?.trim();
+
+function organizationContactPoints() {
+  if (!PUBLIC_CONTACT_EMAIL && !PUBLIC_CONTACT_PHONE) return undefined;
+  const cp: Record<string, unknown> = {
+    "@type": "ContactPoint",
+    contactType: "customer service",
+    availableLanguage: ["English", "Arabic"],
+    areaServed: ["SA", "AE", "QA", "KW", "BH", "OM", "TR", "CA", "US", "GB", "DE", "FR"],
+  };
+  if (PUBLIC_CONTACT_EMAIL) cp.email = PUBLIC_CONTACT_EMAIL;
+  if (PUBLIC_CONTACT_PHONE) cp.telephone = PUBLIC_CONTACT_PHONE;
+  return [cp];
+}
 
 export function OrganizationSchema() {
-  const data = {
+  const data: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
     name: "ProCoder",
@@ -17,16 +33,6 @@ export function OrganizationSchema() {
       "Egypt", "Lebanon", "Canada", "United States", "United Kingdom",
       "Germany", "France", "Netherlands", "Sweden", "Australia",
     ].map((name) => ({ "@type": "Country", name })),
-    contactPoint: [
-      {
-        "@type": "ContactPoint",
-        email: "hello@procoder.com",
-        telephone: "+966500000000",
-        contactType: "customer service",
-        availableLanguage: ["English", "Arabic"],
-        areaServed: ["SA", "AE", "QA", "KW", "BH", "OM", "TR", "CA", "US", "GB", "DE", "FR"],
-      },
-    ],
     address: {
       "@type": "PostalAddress",
       addressLocality: "Riyadh",
@@ -40,7 +46,11 @@ export function OrganizationSchema() {
       bestRating: "5",
       worstRating: "1",
     },
-    hasOfferCatalog: {
+  };
+  const cps = organizationContactPoints();
+  if (cps) data.contactPoint = cps;
+
+  data.hasOfferCatalog = {
       "@type": "OfferCatalog",
       name: "ProCoder Courses",
       itemListElement: [
@@ -67,8 +77,7 @@ export function OrganizationSchema() {
           courseOffer("Quran Memorization (Hifz)", "10-18", "Intermediate", 40, 20),
         ]),
       ],
-    },
-  };
+    };
 
   return <JsonLd data={data} />;
 }
@@ -143,17 +152,13 @@ export function LocalBusinessSchema() {
 
   return (
     <>
-      {locations.map((loc) => (
-        <JsonLd
-          key={loc.city}
-          data={{
+      {locations.map((loc) => {
+        const locData: Record<string, unknown> = {
             "@context": "https://schema.org",
             "@type": "EducationalOrganization",
             name: `ProCoder ${loc.city}`,
             description: `Live coding, robotics & Quran for kids in ${loc.city}. Ages 6–18. Free trial.`,
             url: SITE_URL,
-            telephone: "+966500000000",
-            email: "hello@procoder.com",
             address: {
               "@type": "PostalAddress",
               addressLocality: loc.city,
@@ -172,9 +177,11 @@ export function LocalBusinessSchema() {
               opens: "09:00",
               closes: "17:00",
             },
-          }}
-        />
-      ))}
+        };
+        if (PUBLIC_CONTACT_PHONE) locData.telephone = PUBLIC_CONTACT_PHONE;
+        if (PUBLIC_CONTACT_EMAIL) locData.email = PUBLIC_CONTACT_EMAIL;
+        return <JsonLd key={loc.city} data={locData} />;
+      })}
     </>
   );
 }
