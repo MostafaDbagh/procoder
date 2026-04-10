@@ -13,6 +13,7 @@ import {
   Loader2,
   Heart,
 } from "lucide-react";
+import { apiRoot } from "@/lib/api";
 
 interface AuthModalProps {
   open: boolean;
@@ -45,7 +46,7 @@ export function AuthModal({ open, onClose, defaultTab = "signup" }: AuthModalPro
   const [signupForm, setSignupForm] = useState({ name: "", email: "", phone: "", password: "" });
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
 
-  const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+  const API = apiRoot();
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();

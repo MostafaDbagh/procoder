@@ -2,7 +2,7 @@
  * Base URL for Express: must be the `/api` prefix (e.g. `/api` or `http://localhost:5000/api`).
  * If NEXT_PUBLIC_API_URL is set to an origin only (e.g. `http://localhost:3000`), `/api` is appended * so requests hit `/api/recommend`, not `/recommend` (which would 404 as an HTML page).
  */
-function apiRoot(): string {
+export function apiRoot(): string {
   const raw = process.env.NEXT_PUBLIC_API_URL?.trim();
   if (typeof window !== "undefined") {
     if (!raw) return "/api";
