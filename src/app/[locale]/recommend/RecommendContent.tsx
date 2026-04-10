@@ -58,6 +58,7 @@ export default function RecommendContent({ initialCourses }: Props) {
   const [aiError, setAiError] = useState("");
   const [showAiResults, setShowAiResults] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const aiInFlightRef = useRef(false);
 
   const toggleInterest = (key: string) => {
     setInterests((prev) =>
@@ -94,7 +95,7 @@ export default function RecommendContent({ initialCourses }: Props) {
   );
 
   const handleSubmit = () => {
-    if (age && interests.length > 0 && level) {
+    if (age != null && interests.length > 0 && level) {
       setShowResults(true);
     }
   };
@@ -106,33 +107,59 @@ export default function RecommendContent({ initialCourses }: Props) {
     setShowResults(false);
   };
 
-  const handleAiSubmit = async () => {
-    if (!chatInput.trim() || chatLoading) return;
+  const AI_REQUEST_MS = 120_000;
+
+  const runAiRecommendation = async (rawMessage: string) => {
+    const message = rawMessage.trim();
+    if (!message || aiInFlightRef.current) return;
+    aiInFlightRef.current = true;
+
+    setChatInput(message);
     setChatLoading(true);
     setAiError("");
     setAiMessage("");
     setAiCourseIds([]);
 
+    const ac = new AbortController();
+    const timer = setTimeout(() => ac.abort(), AI_REQUEST_MS);
+
     try {
-      const data = await getAIRecommendation(chatInput.trim(), locale);
+      const data = await getAIRecommendation(message, locale, {
+        signal: ac.signal,
+      });
       setAiMessage(data.message || "");
       setAiCourseIds(data.ids || []);
       setShowAiResults(true);
     } catch (err) {
+      const aborted =
+        err instanceof Error &&
+        (err.name === "AbortError" || err.message === "The user aborted a request.");
       setAiError(
-        err instanceof Error ? err.message : "Something went wrong"
+        aborted
+          ? t("aiTimeout")
+          : err instanceof Error
+            ? err.message
+            : "Something went wrong"
       );
     } finally {
+      clearTimeout(timer);
+      aiInFlightRef.current = false;
       setChatLoading(false);
     }
   };
 
+  const handleAiSubmit = () => {
+    void runAiRecommendation(chatInput);
+  };
+
   const handleAiReset = () => {
+    aiInFlightRef.current = false;
     setChatInput("");
     setAiMessage("");
     setAiCourseIds([]);
     setAiError("");
     setShowAiResults(false);
+    setChatLoading(false);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -142,7 +169,7 @@ export default function RecommendContent({ initialCourses }: Props) {
     }
   };
 
-  const isValid = age && interests.length > 0 && level;
+  const isValid = Boolean(age != null && interests.length > 0 && level);
 
   return (
     <div className="py-12 sm:py-20">
@@ -164,6 +191,7 @@ export default function RecommendContent({ initialCourses }: Props) {
         <AnimatedSection delay={0.1} className="mb-8">
           <div className="flex gap-2 p-1.5 bg-surface rounded-2xl border border-border">
             <button
+              type="button"
               onClick={() => setTab("ai")}
               className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all ${
                 tab === "ai"
@@ -175,6 +203,7 @@ export default function RecommendContent({ initialCourses }: Props) {
               {t("aiTab")}
             </button>
             <button
+              type="button"
               onClick={() => setTab("form")}
               className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all ${
                 tab === "form"
@@ -218,9 +247,10 @@ export default function RecommendContent({ initialCourses }: Props) {
                     {[t("aiExample1"), t("aiExample2"), t("aiExample3")].map(
                       (example, i) => (
                         <button
+                          type="button"
                           key={i}
                           onClick={() => {
-                            setChatInput(example);
+                            void runAiRecommendation(example);
                             inputRef.current?.focus();
                           }}
                           className="px-3.5 py-2 rounded-xl bg-background border border-border text-sm text-muted hover:text-foreground hover:border-primary/30 transition-all text-left"
@@ -244,9 +274,11 @@ export default function RecommendContent({ initialCourses }: Props) {
                     className="w-full px-5 py-4 pe-14 rounded-2xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none resize-none"
                   />
                   <button
+                    type="button"
+                    aria-label={t("aiSend")}
                     onClick={handleAiSubmit}
                     disabled={!chatInput.trim() || chatLoading}
-                    className={`absolute bottom-3 end-3 p-2.5 rounded-xl transition-all ${
+                    className={`absolute bottom-3 end-3 z-20 p-2.5 rounded-xl transition-all ${
                       chatInput.trim() && !chatLoading
                         ? "bg-primary text-white shadow-md hover:shadow-lg"
                         : "bg-border text-muted cursor-not-allowed"
@@ -319,6 +351,7 @@ export default function RecommendContent({ initialCourses }: Props) {
 
               <div className="text-center">
                 <button
+                  type="button"
                   onClick={handleAiReset}
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-border text-foreground font-medium hover:border-primary hover:text-primary transition-colors"
                 >
@@ -346,6 +379,7 @@ export default function RecommendContent({ initialCourses }: Props) {
                   <div className="flex flex-wrap gap-2">
                     {Array.from({ length: 13 }, (_, i) => i + 6).map((a) => (
                       <button
+                        type="button"
                         key={a}
                         onClick={() => setAge(a)}
                         className={`w-12 h-12 rounded-xl text-sm font-semibold transition-all ${
@@ -371,6 +405,7 @@ export default function RecommendContent({ initialCourses }: Props) {
                   <div className="flex flex-wrap gap-3">
                     {interestOptions.map((opt) => (
                       <button
+                        type="button"
                         key={opt.key}
                         onClick={() => toggleInterest(opt.key)}
                         className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all ${
@@ -394,6 +429,7 @@ export default function RecommendContent({ initialCourses }: Props) {
                     {(["beginner", "intermediate", "advanced"] as const).map(
                       (l) => (
                         <button
+                          type="button"
                           key={l}
                           onClick={() => setLevel(l)}
                           className={`w-full text-left px-5 py-3.5 rounded-xl text-sm font-medium transition-all ${
@@ -411,6 +447,7 @@ export default function RecommendContent({ initialCourses }: Props) {
 
                 {/* Submit */}
                 <button
+                  type="button"
                   onClick={handleSubmit}
                   disabled={!isValid}
                   className={`w-full py-4 rounded-2xl font-semibold text-lg transition-all flex items-center justify-center gap-2 ${
@@ -453,6 +490,7 @@ export default function RecommendContent({ initialCourses }: Props) {
 
               <div className="text-center">
                 <button
+                  type="button"
                   onClick={handleReset}
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-border text-foreground font-medium hover:border-primary hover:text-primary transition-colors"
                 >

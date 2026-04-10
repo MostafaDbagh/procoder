@@ -14,6 +14,12 @@
     "menu": "Menu",
     "bookDemo": "Book a Free Trial Class"
   },
+  "notFound": {
+    "title": "Page not found",
+    "description": "This page doesn’t exist or may have moved. Try the links below.",
+    "home": "Back to home",
+    "courses": "Browse courses"
+  },
   "hero": {
     "title": "Kids Learn Coding, Robotics & Quran Online",
     "subtitle": "Live small-group classes for ages 6–18: programming, robotics, algorithms, Arabic & Quran — with bilingual instructors.",
@@ -149,7 +155,9 @@
     "aiExample1": "My 8 year old loves games and wants to learn coding",
     "aiExample2": "I want my 12 year old to start learning Quran recitation",
     "aiExample3": "My daughter is 14 and interested in building robots",
-    "aiPlaceholder": "Describe your child's interests, age, and what they'd like to learn..."
+    "aiPlaceholder": "Describe your child's interests, age, and what they'd like to learn...",
+    "aiSend": "Get recommendations",
+    "aiTimeout": "That took too long (server may be waking up). Please try again."
   },
   "challenge": {
     "badge": "Free mini-challenge · No account needed",

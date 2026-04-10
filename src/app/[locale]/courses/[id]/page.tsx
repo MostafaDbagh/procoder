@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { getTranslations } from "next-intl/server";
 import { courses as staticCourses } from "@/data/courses";
@@ -81,6 +82,10 @@ export default async function CourseDetailPage({
 
   const apiCourse = await getCourseISR(id);
   const staticCourse = staticCourses.find((c) => c.id === id);
+  if (!apiCourse && !staticCourse) {
+    notFound();
+  }
+
   const ct = staticCourse
     ? await getTranslations({ locale, namespace: "courseData" })
     : null;

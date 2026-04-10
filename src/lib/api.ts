@@ -202,11 +202,13 @@ export interface RecommendResponse {
 
 export function getAIRecommendation(
   message: string,
-  locale: string
+  locale: string,
+  init?: Pick<RequestInit, "signal">
 ): Promise<RecommendResponse> {
   return request<RecommendResponse>("/recommend", {
     method: "POST",
     body: JSON.stringify({ message, locale }),
+    signal: init?.signal,
   });
 }
 
