@@ -5,7 +5,12 @@ import { useTranslations, useLocale } from "next-intl";
 import { useAuth } from "@/hooks/useAuth";
 import { isParentPortalRole } from "@/lib/auth-flow";
 import { useRouter } from "@/i18n/navigation";
-import { fetchParentDashboard, type ParentDashboardData, type APICourse } from "@/lib/api";
+import {
+  fetchParentDashboard,
+  type ParentDashboardData,
+  type APICourse,
+  type EnrollmentWithCourse,
+} from "@/lib/api";
 import { CourseCard } from "@/components/CourseCard";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { motion, AnimatePresence } from "framer-motion";
@@ -36,6 +41,43 @@ const statusColors: Record<string, { bg: string; text: string; label: string }> 
   completed: { bg: "bg-violet-100 dark:bg-violet-950/30", text: "text-violet-700 dark:text-violet-400", label: "Completed" },
   cancelled: { bg: "bg-red-100 dark:bg-red-950/30", text: "text-red-700 dark:text-red-400", label: "Cancelled" },
 };
+
+function childGroupKey(e: Pick<EnrollmentWithCourse, "childName" | "childStudentId">) {
+  const n = String(e.childName || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+  const id = String(e.childStudentId || "")
+    .trim()
+    .toLowerCase();
+  return `${n}|||${id}`;
+}
+
+type ChildEnrollmentGroup = {
+  key: string;
+  childName: string;
+  childAge?: number;
+  gradeLevel?: string;
+  enrollments: EnrollmentWithCourse[];
+};
+
+function groupEnrollmentsByChild(enrollments: EnrollmentWithCourse[]): ChildEnrollmentGroup[] {
+  const map = new Map<string, ChildEnrollmentGroup>();
+  for (const e of enrollments) {
+    const key = childGroupKey(e);
+    if (!map.has(key)) {
+      map.set(key, {
+        key,
+        childName: e.childName,
+        childAge: e.childAge,
+        gradeLevel: e.gradeLevel,
+        enrollments: [],
+      });
+    }
+    map.get(key)!.enrollments.push(e);
+  }
+  return [...map.values()];
+}
 
 type Props = { initialCourses: APICourse[] | null };
 
@@ -140,6 +182,7 @@ export default function DashboardContent({ initialCourses }: Props) {
   if (!data) return null;
 
   const { profile, stats, enrollments, recommended } = data;
+  const enrollmentsByChild = groupEnrollmentsByChild(enrollments);
 
   return (
     <div className="py-8 sm:py-14">
@@ -200,67 +243,105 @@ export default function DashboardContent({ initialCourses }: Props) {
           </div>
 
           {enrollments.length > 0 ? (
-            <div className="space-y-3">
+            <div className="space-y-8">
+              {enrollmentsByChild.length > 1 && (
+                <p className="text-sm font-semibold text-muted -mb-2">{t("yourChildren")}</p>
+              )}
               <AnimatePresence>
-                {enrollments.map((enrollment, i) => {
-                  const s = statusColors[enrollment.status] || statusColors.pending;
-                  const courseTitle = enrollment.course
-                    ? enrollment.course.title[lang]
-                    : enrollment.courseTitle || enrollment.courseId;
-
+                {enrollmentsByChild.map((group, gIdx) => {
+                  const agePart =
+                    typeof group.childAge === "number"
+                      ? t("childAgePart", { age: group.childAge })
+                      : "";
+                  const gradePart = group.gradeLevel
+                    ? t("childGradePart", { grade: group.gradeLevel })
+                    : "";
                   return (
                     <motion.div
-                      key={enrollment._id}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.3 + i * 0.05 }}
-                      className="bg-surface rounded-2xl border border-border p-5 hover:shadow-md transition-shadow"
+                      key={group.key}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.28 + gIdx * 0.06 }}
+                      className="space-y-3"
                     >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <div className="flex items-start gap-4">
-                          {/* Color dot */}
-                          <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${enrollment.course?.color || "from-primary to-primary"} flex items-center justify-center shrink-0`}>
-                            <Play className="w-5 h-5 text-white" />
-                          </div>
-                          <div>
-                            <h3 className="font-semibold">{courseTitle}</h3>
-                            <div className="flex flex-wrap items-center gap-3 text-xs text-muted mt-1">
-                              <span className="flex items-center gap-1">
-                                <User className="w-3 h-3" />
-                                {enrollment.childName}, {enrollment.childAge}
-                              </span>
-                              <span className="flex items-center gap-1">
-                                <Calendar className="w-3 h-3" />
-                                {enrollment.preferredDays?.join(", ") || "Flexible"}
-                              </span>
-                              <span className="flex items-center gap-1">
-                                <Clock className="w-3 h-3" />
-                                {enrollment.preferredTime || "Flexible"}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center gap-3 sm:shrink-0">
-                          <span className={`px-3 py-1 rounded-full text-xs font-semibold ${s.bg} ${s.text}`}>
-                            {s.label}
-                          </span>
-                          <ChevronRight className="w-4 h-4 text-muted" />
-                        </div>
+                      <div className="flex flex-wrap items-baseline justify-between gap-2 px-0.5">
+                        <h3 className="text-base font-semibold">
+                          {t("childMeta", {
+                            name: group.childName,
+                            agePart,
+                            gradePart,
+                          })}
+                        </h3>
+                        <span className="text-xs text-muted">
+                          {t("enrollmentsForChild", { count: group.enrollments.length })}
+                        </span>
                       </div>
+                      <div className="space-y-3">
+                        {group.enrollments.map((enrollment, i) => {
+                          const s = statusColors[enrollment.status] || statusColors.pending;
+                          const courseTitle = enrollment.course
+                            ? enrollment.course.title[lang]
+                            : enrollment.courseTitle || enrollment.courseId;
+                          const animIndex = gIdx * 8 + i;
+                          return (
+                            <motion.div
+                              key={enrollment._id}
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: 0.3 + animIndex * 0.04 }}
+                              className="bg-surface rounded-2xl border border-border p-5 hover:shadow-md transition-shadow"
+                            >
+                              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                <div className="flex items-start gap-4">
+                                  <div
+                                    className={`w-12 h-12 rounded-xl bg-gradient-to-br ${enrollment.course?.color || "from-primary to-primary"} flex items-center justify-center shrink-0`}
+                                  >
+                                    <Play className="w-5 h-5 text-white" />
+                                  </div>
+                                  <div>
+                                    <h4 className="font-semibold">{courseTitle}</h4>
+                                    <div className="flex flex-wrap items-center gap-3 text-xs text-muted mt-1">
+                                      <span className="flex items-center gap-1">
+                                        <Calendar className="w-3 h-3" />
+                                        {enrollment.preferredDays?.join(", ") || "Flexible"}
+                                      </span>
+                                      <span className="flex items-center gap-1">
+                                        <Clock className="w-3 h-3" />
+                                        {enrollment.preferredTime || "Flexible"}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
 
-                      {/* Progress bar for active */}
-                      {enrollment.status === "active" && enrollment.course && (
-                        <div className="mt-4 pt-3 border-t border-border">
-                          <div className="flex justify-between text-xs text-muted mb-1.5">
-                            <span>Progress</span>
-                            <span>{Math.round((enrollment.course.lessons * 0.4))} / {enrollment.course.lessons} lessons</span>
-                          </div>
-                          <div className="h-2 bg-border rounded-full overflow-hidden">
-                            <div className="h-full bg-primary rounded-full" style={{ width: "40%" }} />
-                          </div>
-                        </div>
-                      )}
+                                <div className="flex items-center gap-3 sm:shrink-0">
+                                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${s.bg} ${s.text}`}>
+                                    {s.label}
+                                  </span>
+                                  <ChevronRight className="w-4 h-4 text-muted" />
+                                </div>
+                              </div>
+
+                              {enrollment.status === "active" && enrollment.course && (
+                                <div className="mt-4 pt-3 border-t border-border">
+                                  <div className="flex justify-between text-xs text-muted mb-1.5">
+                                    <span>Progress</span>
+                                    <span>
+                                      {Math.round(enrollment.course.lessons * 0.4)} /{" "}
+                                      {enrollment.course.lessons} lessons
+                                    </span>
+                                  </div>
+                                  <div className="h-2 bg-border rounded-full overflow-hidden">
+                                    <div
+                                      className="h-full bg-primary rounded-full"
+                                      style={{ width: "40%" }}
+                                    />
+                                  </div>
+                                </div>
+                              )}
+                            </motion.div>
+                          );
+                        })}
+                      </div>
                     </motion.div>
                   );
                 })}

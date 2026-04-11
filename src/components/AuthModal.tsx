@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -21,6 +21,14 @@ interface AuthModalProps {
   defaultTab?: "signup" | "login";
   /** Instructor flow: correct header + login only (no parent signup tab). */
   variant?: "parent" | "instructor";
+}
+
+/** Distinct learners from matching enrollments (parent may have multiple children). */
+interface SignupMatchedChild {
+  childName: string;
+  childAge?: number;
+  gradeLevel?: string;
+  enrollmentCount: number;
 }
 
 const inputCls =
@@ -50,8 +58,16 @@ export function AuthModal({
   const [confirmPassword, setConfirmPassword] = useState("");
   const [signupForm, setSignupForm] = useState({ name: "", email: "", phone: "", password: "" });
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
+  /** Parent signup: must match an existing enrollment (name + email or phone). */
+  const [signupEligibility, setSignupEligibility] = useState<"idle" | "checking" | "yes" | "no">(
+    "idle"
+  );
+  const [signupMatchedChildren, setSignupMatchedChildren] = useState<SignupMatchedChild[]>([]);
+  const signupCheckSeq = useRef(0);
 
   const API = apiRoot();
+
+  const emailLooksValid = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
 
   useEffect(() => {
     if (!open) return;
@@ -64,11 +80,78 @@ export function AuthModal({
     setConfirmPassword("");
     setSignupForm({ name: "", email: "", phone: "", password: "" });
     setLoginForm({ email: "", password: "" });
+    setSignupEligibility("idle");
+    setSignupMatchedChildren([]);
     setTab(isInstructor ? "login" : defaultTab);
   }, [open, defaultTab, isInstructor]);
 
+  useEffect(() => {
+    if (!open || tab !== "signup" || isInstructor) {
+      setSignupEligibility("idle");
+      setSignupMatchedChildren([]);
+      return;
+    }
+    const name = signupForm.name.trim();
+    const email = signupForm.email.trim();
+    const phoneDigits = signupForm.phone.replace(/\D/g, "");
+    if (name.length < 2 || (!emailLooksValid(email) && phoneDigits.length < 8)) {
+      setSignupEligibility("idle");
+      setSignupMatchedChildren([]);
+      return;
+    }
+
+    const handle = window.setTimeout(() => {
+      const seq = ++signupCheckSeq.current;
+      setSignupEligibility("checking");
+      void (async () => {
+        try {
+          const res = await fetch(`${API}/auth/check-parent-signup`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name,
+              email: emailLooksValid(email) ? email : "",
+              phone: signupForm.phone,
+            }),
+          });
+          const data = (await res.json().catch(() => ({}))) as {
+            eligible?: boolean;
+            children?: SignupMatchedChild[];
+          };
+          if (signupCheckSeq.current !== seq) return;
+          if (!res.ok) {
+            setSignupEligibility("no");
+            setSignupMatchedChildren([]);
+            return;
+          }
+          const ok = Boolean(data.eligible);
+          setSignupEligibility(ok ? "yes" : "no");
+          setSignupMatchedChildren(
+            ok && Array.isArray(data.children) ? data.children : []
+          );
+        } catch {
+          if (signupCheckSeq.current !== seq) return;
+          setSignupEligibility("no");
+          setSignupMatchedChildren([]);
+        }
+      })();
+    }, 450);
+
+    return () => window.clearTimeout(handle);
+  }, [open, tab, isInstructor, signupForm.name, signupForm.email, signupForm.phone, API]);
+
+  const signupCanSubmit =
+    !isInstructor &&
+    tab === "signup" &&
+    signupEligibility === "yes" &&
+    signupForm.name.trim().length >= 2 &&
+    emailLooksValid(signupForm.email) &&
+    signupForm.phone.trim().length > 0 &&
+    signupForm.password.length >= 6;
+
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!signupCanSubmit) return;
     setSubmitting(true);
     setError("");
     try {
@@ -266,11 +349,61 @@ export function AuthModal({
                         />
                       </div>
 
+                      <p className="text-xs text-muted leading-relaxed">
+                        {t("signupEnrollmentHint")}
+                      </p>
+
+                      {signupEligibility === "checking" && (
+                        <p className="text-sm text-muted flex items-center gap-2">
+                          <Loader2 className="h-4 w-4 shrink-0 animate-spin" aria-hidden />
+                          {t("signupEligibilityChecking")}
+                        </p>
+                      )}
+                      {signupEligibility === "no" &&
+                        signupForm.name.trim().length >= 2 &&
+                        (emailLooksValid(signupForm.email) ||
+                          signupForm.phone.replace(/\D/g, "").length >= 8) && (
+                          <p className="text-sm text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 px-4 py-2 rounded-xl">
+                            {t("signupNoEnrollment")}
+                          </p>
+                        )}
+
+                      {signupEligibility === "yes" && signupMatchedChildren.length > 0 && (
+                        <div className="rounded-xl border border-emerald-200 dark:border-emerald-900/40 bg-emerald-50/80 dark:bg-emerald-950/25 px-4 py-3 space-y-2">
+                          <p className="text-sm font-semibold text-emerald-900 dark:text-emerald-200 flex items-center gap-2">
+                            <GraduationCap className="w-4 h-4 shrink-0" aria-hidden />
+                            {t("signupMatchedChildrenTitle")}
+                          </p>
+                          <p className="text-xs text-emerald-800/90 dark:text-emerald-300/90">
+                            {t("signupMatchedChildrenSubtitle")}
+                          </p>
+                          <ul className="list-disc ps-5 space-y-1.5 text-sm text-foreground">
+                            {signupMatchedChildren.map((c, idx) => (
+                              <li key={`${c.childName}-${idx}`}>
+                                <span className="font-medium">{c.childName}</span>
+                                {typeof c.childAge === "number"
+                                  ? t("signupMatchedChildAge", { age: c.childAge })
+                                  : null}
+                                {c.gradeLevel ? ` · ${c.gradeLevel}` : ""}
+                                <span className="text-muted">
+                                  {" "}
+                                  — {t("signupMatchedChildCourses", { count: c.enrollmentCount })}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
                       {error && (
                         <p className="text-sm text-red-500 bg-red-50 dark:bg-red-950/30 px-4 py-2 rounded-xl">{error}</p>
                       )}
 
-                      <button type="submit" disabled={submitting} className="w-full py-3.5 rounded-2xl bg-primary text-white font-semibold shadow-md shadow-primary/10 hover:shadow-lg hover:scale-[1.01] transition-all disabled:opacity-70">
+                      <button
+                        type="submit"
+                        disabled={submitting || !signupCanSubmit}
+                        className="w-full py-3.5 rounded-2xl bg-primary text-white font-semibold shadow-md shadow-primary/10 hover:shadow-lg hover:scale-[1.01] transition-all disabled:opacity-70 disabled:cursor-not-allowed"
+                      >
                         {submitting ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : t("signupButton")}
                       </button>
                     </motion.form>

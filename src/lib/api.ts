@@ -161,6 +161,9 @@ export interface PromoQuoteResponse {
   listPrice: number;
   courseDiscountPercent: number;
   priceAfterCourseDiscount: number;
+  firstTimeParentDiscountPercent: number;
+  firstTimeParentDiscountAmount: number;
+  priceAfterFirstTimeDiscount: number;
   promoCode: string | null;
   promoError: string | null;
   promoApplied: {
@@ -174,13 +177,16 @@ export interface PromoQuoteResponse {
 
 export function quotePromo(
   courseId: string,
-  promoCode?: string
+  promoCode?: string,
+  parentEmail?: string
 ): Promise<PromoQuoteResponse> {
+  const email = parentEmail?.trim();
   return request<PromoQuoteResponse>("/promos/quote", {
     method: "POST",
     body: JSON.stringify({
       courseId,
       ...(promoCode?.trim() ? { promoCode: promoCode.trim() } : {}),
+      ...(email ? { parentEmail: email } : {}),
     }),
   });
 }
@@ -190,6 +196,9 @@ export interface EnrollmentPricingSnapshot {
   currency: string;
   courseDiscountPercent: number;
   priceAfterCourseDiscount: number;
+  firstTimeParentDiscountPercent?: number;
+  firstTimeParentDiscountAmount?: number;
+  priceAfterFirstTimeDiscount?: number;
   promoCodeApplied: string | null;
   promoDiscountAmount: number;
   amountDue: number;
@@ -338,7 +347,10 @@ export interface EnrollmentWithCourse {
   email: string;
   phone: string;
   childName: string;
+  /** Disambiguates siblings with the same display name (from enrollment form). */
+  childStudentId?: string;
   childAge: number;
+  gradeLevel?: string;
   courseId: string;
   courseTitle?: string;
   status: "pending" | "confirmed" | "active" | "completed" | "cancelled";

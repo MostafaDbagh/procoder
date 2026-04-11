@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import {
   adminFetch,
@@ -17,6 +17,19 @@ import {
 function teamSkillsToCsv(v: unknown): string {
   if (!Array.isArray(v)) return "";
   return v.map((x) => String(x).trim()).filter(Boolean).join(", ");
+}
+
+/** Browser preview for team photos (Express serves `/uploads/...` on the API origin). */
+function teamPhotoPreviewSrc(photoUrl: string): string {
+  const s = photoUrl.trim();
+  if (!s) return "";
+  if (s.startsWith("http://") || s.startsWith("https://")) return s;
+  const base = (
+    typeof process !== "undefined"
+      ? process.env.NEXT_PUBLIC_API_ORIGIN?.replace(/\/$/, "")
+      : ""
+  ) || "http://127.0.0.1:5000";
+  return `${base.replace(/\/$/, "")}${s.startsWith("/") ? s : `/${s}`}`;
 }
 
 type Tab =
@@ -97,7 +110,7 @@ function normalizePagedResponse<T>(
 }
 
 /** All catalog and payment UI is USD ($) only. */
-function formatMoney(amount: number, _currency?: string) {
+function formatMoney(amount: number) {
   try {
     return new Intl.NumberFormat(undefined, {
       style: "currency",
@@ -107,6 +120,116 @@ function formatMoney(amount: number, _currency?: string) {
   } catch {
     return `$${amount.toFixed(2)}`;
   }
+}
+
+const ENROLLMENT_PAYMENT_OPTIONS = [
+  { value: "none", label: "Not set / unpaid" },
+  { value: "paid", label: "Paid in full" },
+  { value: "half", label: "Half paid (50%)" },
+  { value: "deposit_15", label: "15% deposit paid" },
+] as const;
+
+function enrollmentDetailDisplay(v: unknown): string {
+  if (v == null || v === "") return "—";
+  if (typeof v === "boolean") return v ? "Yes" : "No";
+  if (Array.isArray(v))
+    return v.length > 0 ? v.map((x) => String(x)).join(", ") : "—";
+  const s = String(v).trim();
+  return s || "—";
+}
+
+function EnrollmentFormDataSection({
+  enrollment: e,
+}: {
+  enrollment: Record<string, unknown>;
+}) {
+  const money = (n: unknown) =>
+    n != null && n !== "" && Number.isFinite(Number(n))
+      ? formatMoney(Number(n))
+      : "—";
+  const row = (label: string, value: ReactNode) => (
+    <div
+      key={label}
+      className="grid grid-cols-[minmax(0,128px)_1fr] gap-x-3 gap-y-1 border-b border-slate-800/60 py-2 text-xs last:border-0 sm:grid-cols-[minmax(0,160px)_1fr]"
+    >
+      <span className="text-slate-500">{label}</span>
+      <span className="break-words text-slate-200">{value}</span>
+    </div>
+  );
+  const sid = String(e.childStudentId ?? "").trim();
+
+  return (
+    <div className="space-y-4">
+      <div className="rounded-lg border border-slate-800 bg-slate-900/40 p-3">
+        <h4 className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+          Parent
+        </h4>
+        {row("Name", enrollmentDetailDisplay(e.parentName))}
+        {row("Email", enrollmentDetailDisplay(e.email))}
+        {row("Phone", enrollmentDetailDisplay(e.phone))}
+        {row("Relationship", enrollmentDetailDisplay(e.relationship))}
+      </div>
+      <div className="rounded-lg border border-slate-800 bg-slate-900/40 p-3">
+        <h4 className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+          Child
+        </h4>
+        {row("Name", enrollmentDetailDisplay(e.childName))}
+        {row("Age", enrollmentDetailDisplay(e.childAge))}
+        {row("Gender", enrollmentDetailDisplay(e.childGender))}
+        {row("Grade", enrollmentDetailDisplay(e.gradeLevel))}
+        {sid ? row("Student ID", sid) : null}
+        {row("Previous experience", enrollmentDetailDisplay(e.previousExperience))}
+      </div>
+      <div className="rounded-lg border border-slate-800 bg-slate-900/40 p-3">
+        <h4 className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+          Course & schedule
+        </h4>
+        {row("Course", enrollmentDetailDisplay(e.courseId))}
+        {row("Title", enrollmentDetailDisplay(e.courseTitle))}
+        {row("Preferred days", enrollmentDetailDisplay(e.preferredDays))}
+        {row("Preferred time", enrollmentDetailDisplay(e.preferredTime))}
+        {row("Session format", enrollmentDetailDisplay(e.sessionFormat))}
+        {row("Start preference", enrollmentDetailDisplay(e.startDate))}
+        {enrollmentDetailDisplay(e.timezone) !== "—"
+          ? row("Timezone", enrollmentDetailDisplay(e.timezone))
+          : null}
+        {enrollmentDetailDisplay(e.schoolName) !== "—"
+          ? row("School", enrollmentDetailDisplay(e.schoolName))
+          : null}
+      </div>
+      <div className="rounded-lg border border-slate-800 bg-slate-900/40 p-3">
+        <h4 className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+          Additional
+        </h4>
+        {row("Learning goals", enrollmentDetailDisplay(e.learningGoals))}
+        {row("Special needs", enrollmentDetailDisplay(e.specialNeeds))}
+        {row("How they heard about us", enrollmentDetailDisplay(e.howDidYouHear))}
+        {row("Agreed to terms", enrollmentDetailDisplay(e.agreeTerms))}
+        {row("Photo consent", enrollmentDetailDisplay(e.agreePhotos))}
+      </div>
+      <div className="rounded-lg border border-slate-800 bg-slate-900/40 p-3">
+        <h4 className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+          Pricing snapshot
+        </h4>
+        {row("List price", money(e.listPrice))}
+        {row("Course discount %", enrollmentDetailDisplay(e.courseDiscountPercent))}
+        {row("After course discount", money(e.priceAfterCourseDiscount))}
+        {Number(e.firstTimeParentDiscountAmount ?? 0) > 0 ? (
+          <>
+            {row(
+              "First enrollment discount",
+              `${String(e.firstTimeParentDiscountPercent ?? "")}% (${money(e.firstTimeParentDiscountAmount)})`
+            )}
+            {row("After first-time discount", money(e.priceAfterFirstTimeDiscount))}
+          </>
+        ) : null}
+        {row("Promo code", enrollmentDetailDisplay(e.promoCodeApplied))}
+        {row("Promo discount", money(e.promoDiscountAmount))}
+        {row("Amount due", money(e.amountDue))}
+        {row("Submitted", enrollmentDetailDisplay(e.createdAt))}
+      </div>
+    </div>
+  );
 }
 
 type Overview = {
@@ -495,6 +618,28 @@ export default function AdminDashboard() {
         body: JSON.stringify({ status }),
       });
       await loadEnrollments();
+      setEnrollmentDetail((prev) =>
+        prev && String(prev.enrollment._id) === id
+          ? { ...prev, enrollment: { ...prev.enrollment, status } }
+          : prev
+      );
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Update failed");
+    }
+  };
+
+  const patchEnrollmentPaymentStatus = async (id: string, paymentStatus: string) => {
+    try {
+      await adminFetch(`/enrollments/${id}/payment-status`, {
+        method: "PATCH",
+        body: JSON.stringify({ paymentStatus }),
+      });
+      await loadEnrollments();
+      setEnrollmentDetail((prev) =>
+        prev && String(prev.enrollment._id) === id
+          ? { ...prev, enrollment: { ...prev.enrollment, paymentStatus } }
+          : prev
+      );
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Update failed");
     }
@@ -815,7 +960,7 @@ export default function AdminDashboard() {
                                     {cur}
                                   </td>
                                   <td className="py-1">
-                                    {formatMoney(amt, cur)}
+                                    {formatMoney(amt)}
                                   </td>
                                 </tr>
                               ))
@@ -862,7 +1007,7 @@ export default function AdminDashboard() {
                                     {cur}
                                   </td>
                                   <td className="py-1">
-                                    {formatMoney(amt, cur)}
+                                    {formatMoney(amt)}
                                   </td>
                                 </tr>
                               ))
@@ -909,10 +1054,10 @@ export default function AdminDashboard() {
                               </td>
                               <td className="py-1">{r.enrollmentCount}</td>
                               <td className="py-1">
-                                {formatMoney(r.unitPrice, r.currency)}
+                                {formatMoney(r.unitPrice)}
                               </td>
                               <td className="py-1">
-                                {formatMoney(r.subtotal, r.currency)}
+                                {formatMoney(r.subtotal)}
                               </td>
                             </tr>
                           ))
@@ -978,10 +1123,10 @@ export default function AdminDashboard() {
                                     {cur}
                                   </td>
                                   <td className="py-1">
-                                    {formatMoney(v.net, cur)}
+                                    {formatMoney(v.net)}
                                   </td>
                                   <td className="py-1">
-                                    {formatMoney(v.gross, cur)}
+                                    {formatMoney(v.gross)}
                                   </td>
                                   <td className="py-1">{v.count}</td>
                                 </tr>
@@ -1152,10 +1297,7 @@ export default function AdminDashboard() {
                         </td>
                         <td className="p-2">{String(c.category)}</td>
                         <td className="p-2 text-slate-200">
-                          {formatMoney(
-                            Number(c.price ?? 0),
-                            String(c.currency ?? "USD")
-                          )}
+                          {formatMoney(Number(c.price ?? 0))}
                         </td>
                         <td className="p-2 text-slate-300">
                           {Number(c.discountPercent ?? 0) > 0
@@ -1168,7 +1310,7 @@ export default function AdminDashboard() {
                               (r) => r.courseSlug === String(c.slug)
                             );
                             return row
-                              ? formatMoney(row.subtotal, row.currency)
+                              ? formatMoney(row.subtotal)
                               : "—";
                           })()}
                         </td>
@@ -1333,6 +1475,7 @@ export default function AdminDashboard() {
                       <th className="p-2">Child</th>
                       <th className="p-2">Course</th>
                       <th className="p-2">Status</th>
+                      <th className="p-2">Payment</th>
                       <th className="p-2">Actions</th>
                     </tr>
                   </thead>
@@ -1370,6 +1513,24 @@ export default function AdminDashboard() {
                             ].map((s) => (
                               <option key={s} value={s}>
                                 {s}
+                              </option>
+                            ))}
+                          </select>
+                        </td>
+                        <td className="p-2">
+                          <select
+                            value={String(r.paymentStatus ?? "none")}
+                            onChange={(e) =>
+                              patchEnrollmentPaymentStatus(
+                                String(r._id),
+                                e.target.value
+                              )
+                            }
+                            className="max-w-[9rem] rounded border border-slate-700 bg-slate-950 px-1.5 py-1 text-xs"
+                          >
+                            {ENROLLMENT_PAYMENT_OPTIONS.map((o) => (
+                              <option key={o.value} value={o.value}>
+                                {o.label}
                               </option>
                             ))}
                           </select>
@@ -1594,10 +1755,7 @@ export default function AdminDashboard() {
                           {String(r.enrollment ?? "")}
                         </td>
                         <td className="p-2">
-                          {formatMoney(
-                            Number(r.amountCents ?? 0) / 100,
-                            String(r.currency ?? "USD")
-                          )}
+                          {formatMoney(Number(r.amountCents ?? 0) / 100)}
                         </td>
                         <td className="p-2 capitalize">
                           {String(r.status ?? "").replace(/_/g, " ")}
@@ -2025,13 +2183,70 @@ export default function AdminDashboard() {
                 Close
               </button>
             </div>
+            <section className="mb-6 space-y-3 rounded-lg border border-slate-800 bg-slate-900/30 p-4">
+              <h3 className="text-xs font-medium uppercase tracking-wide text-slate-500">
+                Status & payment
+              </h3>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <label className="block text-xs text-slate-500">
+                  Enrollment status
+                  <select
+                    value={String(enrollmentDetail.enrollment.status ?? "pending")}
+                    onChange={(ev) =>
+                      patchEnrollmentStatus(
+                        String(enrollmentDetail.enrollment._id),
+                        ev.target.value
+                      )
+                    }
+                    className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white"
+                  >
+                    {[
+                      "pending",
+                      "confirmed",
+                      "active",
+                      "completed",
+                      "cancelled",
+                    ].map((s) => (
+                      <option key={s} value={s}>
+                        {s}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="block text-xs text-slate-500">
+                  Payment received
+                  <select
+                    value={String(
+                      enrollmentDetail.enrollment.paymentStatus ?? "none"
+                    )}
+                    onChange={(ev) =>
+                      patchEnrollmentPaymentStatus(
+                        String(enrollmentDetail.enrollment._id),
+                        ev.target.value
+                      )
+                    }
+                    className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white"
+                  >
+                    {ENROLLMENT_PAYMENT_OPTIONS.map((o) => (
+                      <option key={o.value} value={o.value}>
+                        {o.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+              <p className="text-[11px] text-slate-600">
+                Payment options are for your records (cash, transfer, partial
+                payments). They are not synced from Stripe automatically.
+              </p>
+            </section>
             <section className="mb-6 space-y-2">
               <h3 className="text-xs font-medium uppercase tracking-wide text-slate-500">
-                Form data
+                Enrollment information
               </h3>
-              <pre className="max-h-48 overflow-auto rounded-lg bg-slate-900/80 p-3 text-xs text-slate-300">
-                {JSON.stringify(enrollmentDetail.enrollment, null, 2)}
-              </pre>
+              <EnrollmentFormDataSection
+                enrollment={enrollmentDetail.enrollment}
+              />
             </section>
             <section className="mb-6 space-y-2">
               <h3 className="text-xs font-medium uppercase tracking-wide text-slate-500">
@@ -3686,6 +3901,10 @@ function TeamFormModal({
     roleEn: initialRoleEn || (isNew ? defaultRole.en : ""),
     roleAr: initialRoleAr || (isNew ? defaultRole.ar : ""),
     avatar: String(initial.avatar ?? "PC"),
+    photoUrl: String((initial as { photoUrl?: string }).photoUrl ?? ""),
+    photoPublicId: String(
+      (initial as { photoPublicId?: string }).photoPublicId ?? ""
+    ),
     color: resolveTeamCardGradient(String(initial.color ?? "")),
     headerColor: String(initial.headerColor ?? "bg-primary"),
     order: Number(initial.order ?? 0),
@@ -3705,6 +3924,7 @@ function TeamFormModal({
     if (isNew && !initialRoleEn && !initialRoleAr) return defaultRole.id;
     return teamRolePresetId(initialRoleEn, initialRoleAr);
   });
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
   const save = async () => {
     const skillsEn = form.skillsEnCsv
@@ -3733,6 +3953,8 @@ function TeamFormModal({
       locationAr: form.locationAr.trim(),
       flag: form.flag.trim().slice(0, 16),
       bio: { en: form.bioEn.trim(), ar: form.bioAr.trim() },
+      photoUrl: form.photoUrl.trim(),
+      photoPublicId: form.photoPublicId.trim(),
     };
     if (isNew) {
       await adminFetch("/team", { method: "POST", body: JSON.stringify(body) });
@@ -3823,6 +4045,67 @@ function TeamFormModal({
             }
             className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
           />
+          <label className="block text-slate-400">
+            <span className="mb-1 block text-xs">Profile photo (optional)</span>
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+              disabled={uploadingPhoto}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                e.target.value = "";
+                if (!file) return;
+                void (async () => {
+                  setUploadingPhoto(true);
+                  try {
+                    const fd = new FormData();
+                    fd.append("photo", file);
+                    const data = await adminFetch<{
+                      photoUrl: string;
+                      photoPublicId?: string;
+                    }>("/team/upload", { method: "POST", body: fd });
+                    setForm((f) => ({
+                      ...f,
+                      photoUrl: data.photoUrl,
+                      photoPublicId: String(data.photoPublicId ?? ""),
+                    }));
+                  } catch (err) {
+                    alert(
+                      err instanceof Error ? err.message : "Upload failed"
+                    );
+                  } finally {
+                    setUploadingPhoto(false);
+                  }
+                })();
+              }}
+              className="block w-full text-xs text-slate-300 file:mr-2 file:rounded file:border-0 file:bg-slate-700 file:px-2 file:py-1 file:text-white"
+            />
+            {form.photoUrl ? (
+              <div className="mt-2 flex items-center gap-3">
+                {/* eslint-disable-next-line @next/next/no-img-element -- preview from API /uploads */}
+                <img
+                  src={teamPhotoPreviewSrc(form.photoUrl)}
+                  alt=""
+                  className="h-16 w-16 rounded-full border border-slate-600 object-cover"
+                />
+                <button
+                  type="button"
+                  onClick={() =>
+                    setForm((f) => ({ ...f, photoUrl: "", photoPublicId: "" }))
+                  }
+                  className="text-xs text-red-400 hover:underline"
+                >
+                  Remove photo
+                </button>
+              </div>
+            ) : null}
+            {uploadingPhoto ? (
+              <p className="mt-1 text-xs text-slate-500">Uploading…</p>
+            ) : null}
+            <p className="mt-1 text-[11px] text-slate-600">
+              Max 2MB. Production: set NEXT_PUBLIC_API_ORIGIN to your API URL (no /api) if preview breaks.
+            </p>
+          </label>
           <label className="block text-slate-400">
             <span className="mb-1 block text-xs">Card gradient (About)</span>
             <select

@@ -104,6 +104,7 @@ type StarRow = {
   location: string;
   flag: string;
   bio: string;
+  photoUrl?: string;
 };
 
 function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
@@ -183,14 +184,22 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
               className="snap-start shrink-0 w-[300px] sm:w-[330px] max-w-[330px] self-start"
             >
               <div
-                className="bg-surface rounded-2xl border border-border overflow-hidden"
+                className="bg-surface rounded-2xl border border-border overflow-hidden relative"
                 style={{ height: isExpanded ? "auto" : 460 }}
               >
                 <div
                   className={`group ${member.headerColor} transition-all duration-500 ease-in-out h-36 hover:h-[370px] cursor-pointer`}
                 />
+                {member.photoUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element -- dynamic API-hosted uploads
+                  <img
+                    src={member.photoUrl}
+                    alt={member.name}
+                    className="absolute left-1/2 top-[4.25rem] z-10 h-[5.5rem] w-[5.5rem] -translate-x-1/2 rounded-full border-4 border-surface object-cover bg-surface shadow-md pointer-events-none"
+                  />
+                ) : null}
 
-                <div className="px-6 pt-5 pb-3">
+                <div className={`px-6 pb-3 ${member.photoUrl ? "pt-12" : "pt-5"}`}>
                   <h3 className="text-xl font-bold mb-1">{member.name}</h3>
                   <div className="flex items-center gap-1.5 mb-3">
                     <Star className="w-5 h-5 fill-amber-400 text-amber-400" />
@@ -347,6 +356,7 @@ export function MeetOurStars({ cmsTeam }: MeetOurStarsProps) {
             rawReviews === undefined || rawReviews === null
               ? 0
               : Math.max(0, Math.floor(Number(rawReviews)));
+          const photoUrl = String(m.photoUrl ?? "").trim() || undefined;
           return {
             key: String(m._id),
             name: lang === "ar" ? m.name.ar : m.name.en,
@@ -358,6 +368,7 @@ export function MeetOurStars({ cmsTeam }: MeetOurStarsProps) {
             location,
             flag: String(m.flag ?? "").trim(),
             bio,
+            photoUrl,
           };
         });
     }
@@ -369,6 +380,7 @@ export function MeetOurStars({ cmsTeam }: MeetOurStarsProps) {
       reviews: row.reviews,
       experience: row.experience,
       skills: row.skills,
+      photoUrl: undefined,
       location:
         lang === "ar"
           ? row.location === "Saudi Arabia"

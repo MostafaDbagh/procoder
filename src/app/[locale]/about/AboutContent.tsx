@@ -43,15 +43,16 @@ export default function AboutContent({ cmsTeam }: AboutContentProps) {
     avatar: string;
     color: string;
     linkedin?: string;
+    photoUrl?: string;
   };
 
   const fallbackTeam: TeamRow[] = [
-    { id: "static-1", name: t("member1Name"), role: t("member1Role"), avatar: "M", color: "from-blue-400 to-primary" },
-    { id: "static-2", name: t("member2Name"), role: t("member2Role"), avatar: "S", color: "from-purple to-violet-400" },
-    { id: "static-3", name: t("member3Name"), role: t("member3Role"), avatar: "A", color: "from-emerald-400 to-teal-400" },
-    { id: "static-4", name: t("member4Name"), role: t("member4Role"), avatar: "L", color: "from-pink-400 to-rose-400" },
-    { id: "static-5", name: t("member5Name"), role: t("member5Role"), avatar: "K", color: "from-amber-400 to-orange-400" },
-    { id: "static-6", name: t("member6Name"), role: t("member6Role"), avatar: "N", color: "from-cyan-400 to-blue-400" },
+    { id: "static-1", name: t("member1Name"), role: t("member1Role"), avatar: "M", color: "from-blue-400 to-primary", photoUrl: undefined },
+    { id: "static-2", name: t("member2Name"), role: t("member2Role"), avatar: "S", color: "from-purple to-violet-400", photoUrl: undefined },
+    { id: "static-3", name: t("member3Name"), role: t("member3Role"), avatar: "A", color: "from-emerald-400 to-teal-400", photoUrl: undefined },
+    { id: "static-4", name: t("member4Name"), role: t("member4Role"), avatar: "L", color: "from-pink-400 to-rose-400", photoUrl: undefined },
+    { id: "static-5", name: t("member5Name"), role: t("member5Role"), avatar: "K", color: "from-amber-400 to-orange-400", photoUrl: undefined },
+    { id: "static-6", name: t("member6Name"), role: t("member6Role"), avatar: "N", color: "from-cyan-400 to-blue-400", photoUrl: undefined },
   ];
 
   const team: TeamRow[] =
@@ -65,6 +66,7 @@ export default function AboutContent({ cmsTeam }: AboutContentProps) {
             avatar: m.avatar,
             color: resolveTeamCardGradient(m.color),
             linkedin: m.linkedin?.trim() || undefined,
+            photoUrl: m.photoUrl?.trim() || undefined,
           }))
       : fallbackTeam;
 
@@ -176,8 +178,19 @@ export default function AboutContent({ cmsTeam }: AboutContentProps) {
           {team.map((member, i) => (
             <AnimatedCard key={member.id} delay={i * 0.08}>
               <div className="bg-surface rounded-2xl border border-border p-7 text-center">
-                <div className={`w-20 h-20 rounded-full bg-gradient-to-br ${member.color} flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold`}>
-                  {member.avatar}
+                <div
+                  className={`w-20 h-20 rounded-full bg-gradient-to-br ${member.color} flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold overflow-hidden shrink-0`}
+                >
+                  {member.photoUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element -- dynamic API-hosted uploads
+                    <img
+                      src={member.photoUrl}
+                      alt={member.name}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    member.avatar
+                  )}
                 </div>
                 <h3 className="text-lg font-semibold mb-1">{member.name}</h3>
                 <p className="text-muted text-sm mb-3">{member.role}</p>

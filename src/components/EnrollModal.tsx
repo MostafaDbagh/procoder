@@ -54,16 +54,14 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
     phone: "",
     relationship: "",
     childName: "",
-    childStudentId: "",
     childAge: "",
     childGender: "",
-    schoolName: "",
     gradeLevel: "",
     previousExperience: "",
     preferredDays: [] as string[],
     preferredTime: "",
-    timezone: "",
-    sessionFormat: "",
+    /** Fixed to online live only (see schedule step). */
+    sessionFormat: "online_live",
     startDate: "",
     learningGoals: "",
     specialNeeds: "",
@@ -82,7 +80,8 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
       setQuoteLoading(true);
       setQuoteErr("");
       try {
-        const q = await quotePromo(courseId, code);
+        const email = form.email.trim() || undefined;
+        const q = await quotePromo(courseId, code, email);
         setPriceQuote(q);
       } catch (e) {
         setPriceQuote(null);
@@ -91,7 +90,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
         setQuoteLoading(false);
       }
     },
-    [courseId]
+    [courseId, form.email]
   );
 
   useEffect(() => {
@@ -123,17 +122,14 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
         phone: form.phone,
         relationship: form.relationship,
         childName: form.childName,
-        childStudentId: form.childStudentId.trim() || undefined,
         childAge: Number(form.childAge),
         childGender: form.childGender || undefined,
         gradeLevel: form.gradeLevel,
-        schoolName: form.schoolName || undefined,
         previousExperience: form.previousExperience || undefined,
         courseId,
         courseTitle,
         preferredDays: form.preferredDays,
         preferredTime: form.preferredTime,
-        timezone: form.timezone || undefined,
         sessionFormat: form.sessionFormat,
         startDate: form.startDate || undefined,
         learningGoals: form.learningGoals || undefined,
@@ -179,16 +175,13 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
         phone: "",
         relationship: "",
         childName: "",
-        childStudentId: "",
         childAge: "",
         childGender: "",
-        schoolName: "",
         gradeLevel: "",
         previousExperience: "",
         preferredDays: [],
         preferredTime: "",
-        timezone: "",
-        sessionFormat: "",
+        sessionFormat: "online_live",
         startDate: "",
         learningGoals: "",
         specialNeeds: "",
@@ -206,7 +199,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
       case 2:
         return form.childName && form.childAge && form.gradeLevel;
       case 3:
-        return form.preferredDays.length > 0 && form.preferredTime && form.sessionFormat;
+        return form.preferredDays.length > 0 && !!form.preferredTime;
       case 4:
         return form.agreeTerms;
       default:
@@ -419,18 +412,6 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
                             </select>
                           </div>
                         </div>
-                        <div>
-                          <label className={labelCls}>{t("childStudentId")}</label>
-                          <input
-                            type="text"
-                            value={form.childStudentId}
-                            onChange={(e) => set("childStudentId", e.target.value)}
-                            placeholder={t("childStudentIdPlaceholder")}
-                            className={inputCls}
-                            autoComplete="off"
-                          />
-                          <p className="mt-1 text-xs text-muted">{t("childStudentIdHelp")}</p>
-                        </div>
                         <div className="grid sm:grid-cols-2 gap-4">
                           <div>
                             <label className={labelCls}>{t("childGender")}</label>
@@ -451,10 +432,6 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
                               <option value="10-12">{t("grade10_12")}</option>
                             </select>
                           </div>
-                        </div>
-                        <div>
-                          <label className={labelCls}>{t("schoolName")}</label>
-                          <input type="text" value={form.schoolName} onChange={(e) => set("schoolName", e.target.value)} placeholder={t("schoolPlaceholder")} className={inputCls} />
                         </div>
                         <div>
                           <label className={labelCls}>{t("previousExperience")}</label>
@@ -520,30 +497,17 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
                             ))}
                           </div>
                         </div>
-                        <div className="grid sm:grid-cols-2 gap-4">
-                          <div>
-                            <label className={labelCls}>{t("sessionFormat")} *</label>
-                            <select required value={form.sessionFormat} onChange={(e) => set("sessionFormat", e.target.value)} className={selectCls}>
-                              <option value="">{t("selectFormat")}</option>
-                              <option value="online_live">{t("onlineLive")}</option>
-                              <option value="online_recorded">{t("onlineRecorded")}</option>
-                              <option value="in_person">{t("inPerson")}</option>
-                              <option value="hybrid">{t("hybrid")}</option>
-                            </select>
-                          </div>
-                          <div>
-                            <label className={labelCls}>{t("timezone")}</label>
-                            <select value={form.timezone} onChange={(e) => set("timezone", e.target.value)} className={selectCls}>
-                              <option value="">{t("selectTimezone")}</option>
-                              <option value="AST">AST (UTC+3) — Arabia</option>
-                              <option value="GST">GST (UTC+4) — Gulf</option>
-                              <option value="EET">EET (UTC+2) — Egypt</option>
-                              <option value="CET">CET (UTC+1) — Europe</option>
-                              <option value="GMT">GMT (UTC+0) — UK</option>
-                              <option value="EST">EST (UTC-5) — US East</option>
-                              <option value="PST">PST (UTC-8) — US West</option>
-                            </select>
-                          </div>
+                        <div>
+                          <label className={labelCls}>{t("sessionFormat")}</label>
+                          <select
+                            disabled
+                            value={form.sessionFormat}
+                            className={`${selectCls} opacity-80 cursor-not-allowed`}
+                            aria-label={t("sessionFormat")}
+                          >
+                            <option value="online_live">{t("onlineLive")}</option>
+                          </select>
+                          <p className="mt-1 text-xs text-muted">{t("sessionFormatOnlineOnly")}</p>
                         </div>
                         <div>
                           <label className={labelCls}>{t("startDate")}</label>
@@ -610,6 +574,35 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
                                   )}
                                 </span>
                               </li>
+                              {(priceQuote.firstTimeParentDiscountAmount ?? 0) > 0 ? (
+                                <>
+                                  <li className="flex justify-between gap-2">
+                                    <span>
+                                      {t("firstTimeParentDiscount", {
+                                        pct: priceQuote.firstTimeParentDiscountPercent,
+                                      })}
+                                    </span>
+                                    <span className="text-emerald-600 dark:text-emerald-400 tabular-nums">
+                                      −
+                                      {formatCoursePrice(
+                                        priceQuote.firstTimeParentDiscountAmount,
+                                        priceQuote.currency,
+                                        locale
+                                      )}
+                                    </span>
+                                  </li>
+                                  <li className="flex justify-between gap-2 text-foreground">
+                                    <span>{t("afterFirstTimeDiscount")}</span>
+                                    <span className="tabular-nums">
+                                      {formatCoursePrice(
+                                        priceQuote.priceAfterFirstTimeDiscount,
+                                        priceQuote.currency,
+                                        locale
+                                      )}
+                                    </span>
+                                  </li>
+                                </>
+                              ) : null}
                               {priceQuote.promoDiscountAmount > 0 ? (
                                 <li className="flex justify-between gap-2">
                                   <span>{t("promoSavings")}</span>
@@ -672,7 +665,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
                         <div>
                           <label className={labelCls}>{t("howDidYouHear")}</label>
                           <select value={form.howDidYouHear} onChange={(e) => set("howDidYouHear", e.target.value)} className={selectCls}>
-                            <option value="">{t("selectSource")}</option>
+                            <option value="">{t("selectSourceOptional")}</option>
                             <option value="social_media">{t("socialMedia")}</option>
                             <option value="friend">{t("friend")}</option>
                             <option value="school">{t("school")}</option>

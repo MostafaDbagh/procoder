@@ -2,12 +2,11 @@
  * ProCoder enrollment & instruction flow (how the product fits together)
  *
  * 1. **Parent enrolls a child** — Public `POST /api/enrollments` (no auth). Each row is one
- *    `Enrollment`: parent contact + `childName`, optional `childStudentId`, `courseId` (course slug), etc.
+ *    `Enrollment`: parent contact + `childName`, `courseId` (course slug), etc. (`childStudentId` may be stored empty.)
  *
  * 2. **Uniqueness** — For non-cancelled enrollments, the combination
  *    `(courseId, parent email, childName, childStudentId)` is unique. The same child cannot be enrolled
- *    twice in the same course while active. Two siblings with the same display name must use different
- *    `childStudentId` values (e.g. national ID, nickname).
+ *    twice in the same course while active. The public form may omit `childStudentId` (empty string).
  *
  * 3. **Course ↔ students** — A course (`Course` by `slug`) has **many** enrollments; each enrollment is
  *    one seat for one child in that course.

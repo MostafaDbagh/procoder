@@ -9,11 +9,18 @@ export function serverApiRoot(): string {
   return "http://127.0.0.1:5000/api";
 }
 
+/** API origin without trailing slash (for absolutizing `/uploads/...` paths). */
+export function apiOriginFromServerApiRoot(): string {
+  return serverApiRoot().replace(/\/api\/?$/, "");
+}
+
 export interface APITeamMember {
   _id: string;
   name: { en: string; ar: string };
   role: { en: string; ar: string };
   avatar: string;
+  /** Absolute URL (set by getTeamPublicISR) or omitted when no photo. */
+  photoUrl?: string;
   color: string;
   headerColor?: string;
   linkedin?: string;
@@ -27,6 +34,30 @@ export interface APITeamMember {
   locationAr?: string;
   flag?: string;
   bio?: { en?: string; ar?: string };
+}
+
+function absolutizeTeamPhotoUrl(
+  photoUrl: string | undefined | null,
+  apiOrigin: string
+): string | undefined {
+  const s = photoUrl?.trim();
+  if (!s) return undefined;
+  if (s.startsWith("http://") || s.startsWith("https://")) return s;
+  const base = apiOrigin.replace(/\/$/, "");
+  return `${base}${s.startsWith("/") ? s : `/${s}`}`;
+}
+
+function normalizeTeamMembersForPublic(
+  members: APITeamMember[],
+  apiOrigin: string
+): APITeamMember[] {
+  return members.map((m) => {
+    const clone = { ...m } as APITeamMember & { photoPublicId?: string };
+    delete clone.photoPublicId;
+    const raw = clone.photoUrl;
+    const abs = absolutizeTeamPhotoUrl(raw, apiOrigin);
+    return abs ? { ...clone, photoUrl: abs } : { ...clone };
+  });
 }
 
 export interface PublicMonthlyChallenge {
@@ -98,7 +129,8 @@ export async function getTeamPublicISR(): Promise<APITeamMember[] | null> {
     });
     if (!res.ok) return null;
     const data = (await res.json()) as APITeamMember[];
-    return Array.isArray(data) ? data : null;
+    if (!Array.isArray(data)) return null;
+    return normalizeTeamMembersForPublic(data, apiOriginFromServerApiRoot());
   } catch {
     return null;
   }
@@ -107,7 +139,7 @@ export async function getTeamPublicISR(): Promise<APITeamMember[] | null> {
 export async function getChallengePublicLatestISR(): Promise<PublicMonthlyChallenge | null> {
   try {
     const res = await fetch(`${serverApiRoot()}/challenges/public/latest`, {
-      next: { revalidate: 120 },
+      next: { revalidate: 300 },
     });
     if (res.status === 404) return null;
     if (!res.ok) return null;

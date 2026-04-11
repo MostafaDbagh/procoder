@@ -19,10 +19,11 @@ export type PasswordInputProps = Omit<
 export function PasswordInput({
   wrapperClassName = "",
   inputClassName,
-  className: _omit,
+  className,
   disabled,
   ...props
 }: PasswordInputProps) {
+  void className;
   const [show, setShow] = useState(false);
 
   return (
