@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { isInstructorPortalRole, isParentPortalRole } from "@/lib/auth-flow";
@@ -8,8 +9,9 @@ import { AuthModal } from "@/components/AuthModal";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { Loader2, User } from "lucide-react";
 
-export default function InstructorLoginContent() {
+export default function InstructorLoginContent({ idleSignOut = false }: { idleSignOut?: boolean }) {
   const router = useRouter();
+  const t = useTranslations("common");
   const { loading: authLoading, isAuthenticated, role } = useAuth();
   const [authOpen, setAuthOpen] = useState(false);
 
@@ -39,6 +41,14 @@ export default function InstructorLoginContent() {
           <User className="h-10 w-10 text-primary" />
         </div>
         <h1 className="mb-3 text-2xl font-bold">Instructor sign-in</h1>
+        {idleSignOut && (
+          <p
+            role="status"
+            className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-900/40 dark:bg-amber-950/30 dark:text-amber-200"
+          >
+            {t("sessionIdleLogout")}
+          </p>
+        )}
         <p className="mb-6 text-muted">Sign in with your instructor account to open the portal.</p>
         <button
           type="button"

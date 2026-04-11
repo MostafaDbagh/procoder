@@ -240,7 +240,8 @@
     "back": "Back",
     "search": "Search",
     "loading": "Loading...",
-    "years": "years"
+    "years": "years",
+    "sessionIdleLogout": "You were signed out after 30 minutes of inactivity."
   },
   "about": {
     "badge": "About ProCoder",

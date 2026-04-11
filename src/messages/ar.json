@@ -240,7 +240,8 @@
     "back": "رجوع",
     "search": "بحث",
     "loading": "جاري التحميل...",
-    "years": "سنوات"
+    "years": "سنوات",
+    "sessionIdleLogout": "تم تسجيل خروجك بعد 30 دقيقة من عدم النشاط."
   },
   "about": {
     "badge": "عن ProCoder",

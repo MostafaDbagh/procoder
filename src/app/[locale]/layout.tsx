@@ -8,6 +8,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { LocaleHtmlAttrs } from "@/components/LocaleHtmlAttrs";
 import { QueryProvider } from "@/components/QueryProvider";
+import { SessionIdleGuard } from "@/components/SessionIdleGuard";
 import {
   OrganizationSchema,
   WebsiteSchema,
@@ -38,6 +39,7 @@ export default async function LocaleLayout({
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <QueryProvider>
+        <SessionIdleGuard />
         <ThemeProvider>
           <LocaleHtmlAttrs />
           <OrganizationSchema />

@@ -26,10 +26,14 @@ export async function generateMetadata({
 
 export default async function InstructorLoginPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams?: Promise<{ idle?: string }>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return <InstructorLoginContent />;
+  const sp = (await searchParams) ?? {};
+  const idleSignOut = sp.idle === "1";
+  return <InstructorLoginContent idleSignOut={idleSignOut} />;
 }
