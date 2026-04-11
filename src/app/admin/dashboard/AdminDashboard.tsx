@@ -657,6 +657,17 @@ export default function AdminDashboard() {
     }
   };
 
+  const deleteContact = async (id: string) => {
+    if (!confirm("Delete this contact message permanently?")) return;
+    try {
+      await adminFetch(`/contact/${id}`, { method: "DELETE" });
+      await loadContacts();
+      await loadOverview();
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Failed");
+    }
+  };
+
   const deactivateCourse = async (slug: string) => {
     if (!confirm(`Deactivate course "${slug}"?`)) return;
     try {
@@ -1952,6 +1963,7 @@ export default function AdminDashboard() {
                       <th className="p-2">Email</th>
                       <th className="p-2">Subject</th>
                       <th className="p-2">Status</th>
+                      <th className="p-2 w-24">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1985,6 +1997,15 @@ export default function AdminDashboard() {
                               </option>
                             ))}
                           </select>
+                        </td>
+                        <td className="p-2">
+                          <button
+                            type="button"
+                            onClick={() => deleteContact(String(r._id))}
+                            className="rounded border border-red-900/60 bg-red-950/40 px-2 py-1 text-xs text-red-200 hover:bg-red-950/70"
+                          >
+                            Delete
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -2901,7 +2922,10 @@ function CourseFormModal({
     skillsAr: "",
     price: 0,
     discountPercent: 0,
+    imageUrl: "",
+    imagePublicId: "",
   });
+  const [uploadingCourseImage, setUploadingCourseImage] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -2952,6 +2976,8 @@ function CourseFormModal({
           skillsAr: (skills?.ar ?? []).join(", "),
           price: Number(c.price ?? 0),
           discountPercent: Number(c.discountPercent ?? 0),
+          imageUrl: String((c as { imageUrl?: string }).imageUrl ?? ""),
+          imagePublicId: String((c as { imagePublicId?: string }).imagePublicId ?? ""),
         });
       } finally {
         setLoading(false);
@@ -2994,6 +3020,8 @@ function CourseFormModal({
         100,
         Math.max(0, Number(form.discountPercent) || 0)
       ),
+      imageUrl: form.imageUrl.trim(),
+      imagePublicId: form.imagePublicId.trim(),
     };
     try {
       if (mode === "create") {
@@ -3239,6 +3267,64 @@ function CourseFormModal({
               }
               className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
             />
+            <label className="block text-slate-400">
+              <span className="mb-1 block text-xs">Course cover image</span>
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                disabled={uploadingCourseImage}
+                className="w-full text-xs text-slate-300 file:mr-2 file:rounded file:border-0 file:bg-slate-700 file:px-2 file:py-1 file:text-white"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  e.target.value = "";
+                  if (!file) return;
+                  void (async () => {
+                    setUploadingCourseImage(true);
+                    try {
+                      const fd = new FormData();
+                      fd.append("photo", file);
+                      const data = await adminFetch<{
+                        photoUrl: string;
+                        photoPublicId?: string;
+                      }>("/courses/upload", { method: "POST", body: fd });
+                      setForm((f) => ({
+                        ...f,
+                        imageUrl: data.photoUrl,
+                        imagePublicId: String(data.photoPublicId ?? ""),
+                      }));
+                    } finally {
+                      setUploadingCourseImage(false);
+                    }
+                  })();
+                }}
+              />
+            </label>
+            {form.imageUrl ? (
+              <div className="flex flex-wrap items-center gap-3">
+                {/* eslint-disable-next-line @next/next/no-img-element -- preview URL from API / Cloudinary */}
+                <img
+                  src={teamPhotoPreviewSrc(form.imageUrl)}
+                  alt=""
+                  className="h-20 w-36 rounded-lg border border-slate-600 object-cover"
+                />
+                <button
+                  type="button"
+                  className="text-xs text-red-400 hover:underline"
+                  onClick={() =>
+                    setForm((f) => ({
+                      ...f,
+                      imageUrl: "",
+                      imagePublicId: "",
+                    }))
+                  }
+                >
+                  Remove image
+                </button>
+              </div>
+            ) : null}
+            {uploadingCourseImage ? (
+              <p className="text-xs text-slate-500">Uploading…</p>
+            ) : null}
           </div>
         )}
         <div className="mt-6 flex justify-end gap-2">

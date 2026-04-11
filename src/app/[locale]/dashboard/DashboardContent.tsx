@@ -459,8 +459,9 @@ export default function DashboardContent({ initialCourses }: Props) {
                     titleKey: "",
                     descKey: "",
                     skillKeys: [],
-                    _title: course.title[lang],
+                                       _title: course.title[lang],
                     _desc: course.description[lang],
+                    imageUrl: course.imageUrl?.trim() || undefined,
                   }}
                   index={i}
                   title={course.title[lang]}

@@ -22,6 +22,7 @@ import {
   Gamepad2,
 } from "lucide-react";
 import type { Course } from "@/data/courses";
+import { publicOrAbsoluteAssetUrl } from "@/lib/mediaUrls";
 
 const iconMap: Record<string, React.ElementType> = {
   Blocks, Code2, Globe, Bot, Cpu, Brain, Trophy, BookOpen, PenTool, BookMarked, Star, Gamepad2,
@@ -77,6 +78,7 @@ export function CourseCard({ course, index = 0, title, description }: CourseCard
 
   const courseTitle = title || (course.titleKey ? t(course.titleKey) : course._title || "");
   const courseDesc = description || (course.descKey ? t(course.descKey) : course._desc || "");
+  const coverSrc = course.imageUrl ? publicOrAbsoluteAssetUrl(course.imageUrl) : "";
 
   return (
     <motion.div
@@ -94,8 +96,23 @@ export function CourseCard({ course, index = 0, title, description }: CourseCard
             <div className="absolute bottom-[-15px] left-[-15px] w-20 h-20 rounded-full bg-white/20 dark:bg-white/5" />
 
             <div className="relative flex items-start justify-between">
-              <div className={`w-14 h-14 rounded-2xl bg-white dark:bg-surface flex items-center justify-center shadow-sm ${colors.accent}`}>
-                <Icon className="w-7 h-7" />
+              <div
+                className={`w-14 h-14 rounded-2xl overflow-hidden shrink-0 flex items-center justify-center shadow-sm ${
+                  course.imageUrl
+                    ? "bg-white/90 dark:bg-white/10 ring-1 ring-white/30"
+                    : `bg-white dark:bg-surface ${colors.accent}`
+                }`}
+              >
+                {coverSrc ? (
+                  // eslint-disable-next-line @next/next/no-img-element -- dynamic catalog URLs (Cloudinary or API)
+                  <img
+                    src={coverSrc}
+                    alt=""
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <Icon className="w-7 h-7" />
+                )}
               </div>
               <div className="flex gap-1.5">
                 <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${colors.badge}`}>

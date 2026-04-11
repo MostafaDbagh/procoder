@@ -103,6 +103,9 @@ export interface APICourse {
   discountPercent?: number;
   isActive: boolean;
   enrollmentCount: number;
+  /** Cover image (Cloudinary or `/uploads/courses/...`). */
+  imageUrl?: string;
+  imagePublicId?: string;
 }
 
 export function fetchCourses(params?: {
@@ -295,6 +298,8 @@ export interface CreateCourseData {
   currency: string;
   /** 0–100 catalog discount (optional). */
   discountPercent?: number;
+  imageUrl?: string;
+  imagePublicId?: string;
 }
 
 function authRequest<T>(

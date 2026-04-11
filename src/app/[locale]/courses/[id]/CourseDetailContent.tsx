@@ -9,6 +9,7 @@ import { useCourse } from "@/hooks/useCourses";
 import { AnimatedSection } from "@/components/AnimatedSection";
 import { EnrollModal } from "@/components/EnrollModal";
 import { formatCoursePrice, priceAfterCourseDiscount } from "@/lib/formatCoursePrice";
+import { publicOrAbsoluteAssetUrl } from "@/lib/mediaUrls";
 import { motion } from "framer-motion";
 import {
   ArrowLeft,
@@ -56,6 +57,7 @@ export default function CourseDetailContent() {
           apiCourse.discountPercent ?? 0
         ),
         showPrice: true,
+        imageUrl: apiCourse.imageUrl?.trim() || undefined,
       }
     : staticCourse
     ? {
@@ -78,6 +80,7 @@ export default function CourseDetailContent() {
           0
         ),
         showPrice: (staticCourse.price ?? 0) > 0,
+        imageUrl: undefined as string | undefined,
       }
     : null;
 
@@ -104,6 +107,11 @@ export default function CourseDetailContent() {
     );
   }
 
+  const coverSrc =
+    course.imageUrl?.trim()
+      ? publicOrAbsoluteAssetUrl(course.imageUrl)
+      : "";
+
   const info = [
     { icon: Users, label: t("ageGroup"), value: `${course.ageMin}–${course.ageMax}` },
     { icon: BarChart3, label: t("level"), value: common(course.level as "beginner" | "intermediate" | "advanced") },
@@ -125,7 +133,20 @@ export default function CourseDetailContent() {
         </AnimatedSection>
 
         <AnimatedSection delay={0.1}>
-          <div className={`rounded-3xl bg-gradient-to-br ${course.color} p-8 sm:p-12 mb-8 relative overflow-hidden`}>
+          <div
+            className={`rounded-3xl p-8 sm:p-12 mb-8 relative overflow-hidden ${
+              coverSrc ? "" : `bg-gradient-to-br ${course.color}`
+            }`}
+            style={
+              coverSrc
+                ? {
+                    backgroundImage: `linear-gradient(to bottom right, rgba(0,0,0,0.58), rgba(0,0,0,0.42)), url(${coverSrc})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }
+                : undefined
+            }
+          >
             <div className="absolute inset-0 bg-white/10" />
             <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/10" />
             <div className="absolute -bottom-10 -left-10 w-48 h-48 rounded-full bg-white/10" />

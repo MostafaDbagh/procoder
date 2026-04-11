@@ -60,6 +60,18 @@ function normalizeTeamMembersForPublic(
   });
 }
 
+function absolutizeCourseImage(course: APICourse, apiOrigin: string): APICourse {
+  const raw = course.imageUrl?.trim();
+  if (!raw || raw.startsWith("http://") || raw.startsWith("https://")) {
+    return course;
+  }
+  const base = apiOrigin.replace(/\/$/, "");
+  return {
+    ...course,
+    imageUrl: `${base}${raw.startsWith("/") ? raw : `/${raw}`}`,
+  };
+}
+
 export interface PublicMonthlyChallenge {
   _id: string;
   slug: string;
@@ -95,7 +107,9 @@ export async function getCoursesISR(): Promise<APICourse[] | null> {
     });
 
     if (!res.ok) return null;
-    return res.json();
+    const list = (await res.json()) as APICourse[];
+    const origin = apiOriginFromServerApiRoot();
+    return list.map((c) => absolutizeCourseImage(c, origin));
   } catch {
     return null;
   }
@@ -116,7 +130,8 @@ export async function getCourseISR(slug: string): Promise<APICourse | null> {
     });
 
     if (!res.ok) return null;
-    return res.json();
+    const c = (await res.json()) as APICourse;
+    return absolutizeCourseImage(c, apiOriginFromServerApiRoot());
   } catch {
     return null;
   }

@@ -23,6 +23,8 @@ export interface Course {
   /** Set when listing from API (MongoDB catalog price). */
   price?: number;
   currency?: string;
+  /** Set from API when a cover image was uploaded. */
+  imageUrl?: string;
 }
 
 export const courses: Course[] = [

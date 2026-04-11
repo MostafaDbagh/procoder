@@ -5,6 +5,7 @@ import { AnimatedSection, AnimatedCard } from "@/components/AnimatedSection";
 import { motion } from "framer-motion";
 import type { APITeamMember } from "@/lib/server-api";
 import { resolveTeamCardGradient } from "@/lib/teamStarPresets";
+import { publicOrAbsoluteAssetUrl } from "@/lib/mediaUrls";
 import {
   Sparkles,
   Rocket,
@@ -184,7 +185,7 @@ export default function AboutContent({ cmsTeam }: AboutContentProps) {
                   {member.photoUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element -- dynamic API-hosted uploads
                     <img
-                      src={member.photoUrl}
+                      src={publicOrAbsoluteAssetUrl(member.photoUrl)}
                       alt={member.name}
                       className="h-full w-full object-cover"
                     />

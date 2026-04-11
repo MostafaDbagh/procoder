@@ -21,5 +21,6 @@ export function apiCoursesToCatalog(
     skillKeys: [],
     _title: locale === "ar" ? c.title.ar : c.title.en,
     _desc: locale === "ar" ? c.description.ar : c.description.en,
+    imageUrl: c.imageUrl?.trim() || undefined,
   }));
 }

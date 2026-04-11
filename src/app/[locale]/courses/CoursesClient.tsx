@@ -53,6 +53,7 @@ function apiToLocal(c: APICourse, locale: string) {
     skillKeys: [] as string[],
     price: typeof c.price === "number" ? c.price : undefined,
     currency: c.currency || "USD",
+    imageUrl: c.imageUrl?.trim() || undefined,
   };
 }
 
