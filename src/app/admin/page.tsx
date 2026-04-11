@@ -13,7 +13,7 @@ export default function AdminHomePage() {
   }, [router]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center text-slate-400">
+    <div className="flex min-h-screen items-center justify-center text-muted">
       Redirecting…
     </div>
   );

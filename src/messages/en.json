@@ -111,9 +111,12 @@
     "duration": "weeks",
     "enrollNow": "Enroll Now",
     "learnMore": "Learn More",
-    "noCourses": "No courses match your filters. Try adjusting your selection."
+    "noCourses": "No courses match your filters. Try adjusting your selection.",
+    "free": "Free"
   },
   "courseDetail": {
+    "price": "Price",
+    "savePercent": "Save {pct}%",
     "ageGroup": "Age Group",
     "level": "Level",
     "duration": "Duration",
@@ -215,7 +218,15 @@
     "about": "About Us",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
-    "email": "hello@procoder.com"
+    "email": "hello@procoder.com",
+    "memberAccess": "Member access",
+    "parentDashboardLink": "Parent dashboard",
+    "instructorPortalLink": "Instructor portal",
+    "adminLoginLink": "Admin login"
+  },
+  "authModal": {
+    "instructorTitle": "Instructor sign-in",
+    "instructorSubtitle": "Sign in with the instructor account from ProCoder."
   },
   "common": {
     "enrollNow": "Enroll Now",
@@ -353,6 +364,9 @@
     "childInfoDesc": "Help us personalize the learning experience for your child.",
     "childName": "Child's Full Name",
     "childNamePlaceholder": "Enter child's name",
+    "childStudentId": "Student ID (optional)",
+    "childStudentIdPlaceholder": "e.g. nickname or ID — only if you need to tell two same-name children apart",
+    "childStudentIdHelp": "One active enrollment per child per course. If two children share the same name, enter a different Student ID for each.",
     "childAge": "Age",
     "selectAge": "Select age",
     "childGender": "Gender",
@@ -405,6 +419,17 @@
     "specificDate": "I have a specific date in mind",
     "additionalTitle": "Additional Details",
     "additionalDesc": "Anything else that helps us create the best experience.",
+    "priceBreakdownTitle": "Pricing",
+    "listPrice": "List price",
+    "courseDiscount": "Course discount ({pct}%)",
+    "afterCourseDiscount": "After course discount",
+    "promoSavings": "Promo discount",
+    "amountDue": "You pay",
+    "promoLabel": "Promo code (optional)",
+    "promoPlaceholder": "e.g. WELCOME10",
+    "promoApply": "Apply",
+    "promoChecking": "Checking…",
+    "successAmountDue": "Amount recorded for this enrollment: {amount}",
     "learningGoals": "Learning Goals",
     "goalsPlaceholder": "What do you hope your child will achieve? (e.g. build a game, prepare for competition, improve Quran recitation...)",
     "specialNeeds": "Special Needs or Accommodations",
@@ -469,6 +494,7 @@
     "heroSubtitle": "We treat every student like family. Real-time progress tracking, attendance alerts, instructor notes, and a dedicated parent dashboard — because you deserve full transparency.",
     "heroCta": "Create Parent Account",
     "heroLogin": "Already have an account? Log in",
+    "openDashboard": "Open parent dashboard",
 
     "trustTitle": "Why Parents Trust ProCoder",
     "trustSubtitle": "We go beyond teaching — we partner with you to nurture your child's growth",

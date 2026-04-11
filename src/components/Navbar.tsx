@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, startTransition } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { LocalizedLink } from "@/components/LocalizedLink";
@@ -20,7 +20,9 @@ export function Navbar() {
   // click unmounts the menu before the transition runs, which can cancel navigation
   // and leave you on the previous page.
   useEffect(() => {
-    setMobileOpen(false);
+    startTransition(() => {
+      setMobileOpen(false);
+    });
   }, [pathname, locale]);
 
   const links = [

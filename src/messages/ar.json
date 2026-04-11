@@ -111,9 +111,12 @@
     "duration": "أسابيع",
     "enrollNow": "سجّل الآن",
     "learnMore": "اعرف المزيد",
-    "noCourses": "لا توجد دورات تطابق فلاترك. جرّب تعديل اختيارك."
+    "noCourses": "لا توجد دورات تطابق فلاترك. جرّب تعديل اختيارك.",
+    "free": "مجاني"
   },
   "courseDetail": {
+    "price": "السعر",
+    "savePercent": "\u0648\u0641\u0631 {pct}\u066a",
     "ageGroup": "الفئة العمرية",
     "level": "المستوى",
     "duration": "المدة",
@@ -215,7 +218,15 @@
     "about": "من نحن",
     "privacy": "سياسة الخصوصية",
     "terms": "شروط الخدمة",
-    "email": "hello@procoder.com"
+    "email": "hello@procoder.com",
+    "memberAccess": "دخول الأعضاء",
+    "parentDashboardLink": "لوحة ولي الأمر",
+    "instructorPortalLink": "بوابة المدرّس",
+    "adminLoginLink": "دخول الإدارة"
+  },
+  "authModal": {
+    "instructorTitle": "تسجيل دخول المدرّس",
+    "instructorSubtitle": "سجّل الدخول بحساب المدرّس الموفّر من بروكودر."
   },
   "common": {
     "enrollNow": "سجّل الآن",
@@ -353,6 +364,9 @@
     "childInfoDesc": "ساعدنا في تخصيص تجربة التعلم لطفلك.",
     "childName": "اسم الطفل الكامل",
     "childNamePlaceholder": "أدخل اسم الطفل",
+    "childStudentId": "رقم هوية الطالب (اختياري)",
+    "childStudentIdPlaceholder": "مثل لقب أو رقم — إذا كان لديك طفلان بنفس الاسم",
+    "childStudentIdHelp": "تسجيل واحد نشط لكل طفل في الدورة. إذا تشابه الاسم، أدخل رقم هوية مختلف لكل طفل.",
     "childAge": "العمر",
     "selectAge": "اختر العمر",
     "childGender": "الجنس",
@@ -405,6 +419,17 @@
     "specificDate": "لدي تاريخ محدد",
     "additionalTitle": "تفاصيل إضافية",
     "additionalDesc": "أي شيء آخر يساعدنا في تقديم أفضل تجربة.",
+    "priceBreakdownTitle": "التسعير",
+    "listPrice": "السعر الأساسي",
+    "courseDiscount": "\u062e\u0635\u0645 \u0627\u0644\u062f\u0648\u0631\u0629 ({pct}\u066a)",
+    "afterCourseDiscount": "بعد خصم الدورة",
+    "promoSavings": "خصم الكود الترويجي",
+    "amountDue": "المبلغ المستحق",
+    "promoLabel": "كود خصم (اختياري)",
+    "promoPlaceholder": "مثال: WELCOME10",
+    "promoApply": "تطبيق",
+    "promoChecking": "جاري التحقق…",
+    "successAmountDue": "المبلغ المسجّل لهذا التسجيل: {amount}",
     "learningGoals": "أهداف التعلم",
     "goalsPlaceholder": "ماذا تأمل أن يحقق طفلك؟ (مثلاً: بناء لعبة، التحضير لمسابقة، تحسين تلاوة القرآن...)",
     "specialNeeds": "احتياجات خاصة أو تسهيلات",
@@ -466,6 +491,7 @@
     "heroSubtitle": "نعامل كل طالب كأنه من العائلة. تتبع تقدم فوري، تنبيهات حضور، ملاحظات المعلمين، ولوحة تحكم خاصة للوالدين — لأنك تستحق الشفافية الكاملة.",
     "heroCta": "إنشاء حساب ولي أمر",
     "heroLogin": "لديك حساب بالفعل؟ سجل دخول",
+    "openDashboard": "فتح لوحة ولي الأمر",
     "trustTitle": "لماذا يثق الآباء ببروكودر",
     "trustSubtitle": "نتجاوز التعليم — نشاركك في رعاية نمو طفلك",
     "trust1Title": "تقارير التقدم",

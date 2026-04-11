@@ -1,15 +1,16 @@
 import type { NextRequest } from "next/server";
-import {
-  forwardStemBeApi,
-  segmentsFromPathnameOrParams,
-} from "@/lib/api-proxy";
+import { forwardStemBeApi } from "@/lib/api-proxy";
 
-type Ctx = { params: Promise<{ path?: string | string[] }> };
+type Ctx = { params: Promise<{ rest?: string[] }> };
+
+function segmentsFromRest(rest: string[] | undefined): string[] {
+  const tail = Array.isArray(rest) ? rest : [];
+  return ["categories", ...tail];
+}
 
 async function handle(req: NextRequest, ctx: Ctx) {
-  const params = await ctx.params;
-  const segments = segmentsFromPathnameOrParams(req, params.path);
-  return forwardStemBeApi(req, segments);
+  const { rest } = await ctx.params;
+  return forwardStemBeApi(req, segmentsFromRest(rest));
 }
 
 export async function GET(req: NextRequest, ctx: Ctx) {

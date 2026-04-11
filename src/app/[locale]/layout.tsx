@@ -39,7 +39,7 @@ export default async function LocaleLayout({
     <NextIntlClientProvider locale={locale} messages={messages}>
       <QueryProvider>
         <ThemeProvider>
-          <LocaleHtmlAttrs locale={locale} />
+          <LocaleHtmlAttrs />
           <OrganizationSchema />
           <WebsiteSchema />
           <FAQSchema />

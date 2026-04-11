@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, startTransition } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { useAuth } from "@/hooks/useAuth";
+import { isParentPortalRole } from "@/lib/auth-flow";
+import { useRouter } from "@/i18n/navigation";
 import { fetchParentDashboard, type ParentDashboardData, type APICourse } from "@/lib/api";
 import { CourseCard } from "@/components/CourseCard";
-import { AuthModal } from "@/components/AuthModal";
+import { LocalizedLink } from "@/components/LocalizedLink";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   BookOpen,
@@ -38,28 +40,55 @@ const statusColors: Record<string, { bg: string; text: string; label: string }> 
 type Props = { initialCourses: APICourse[] | null };
 
 export default function DashboardContent({ initialCourses }: Props) {
+  void initialCourses; // passed from page for future ISR-enriched recommendations
   const t = useTranslations("dashboard");
   const locale = useLocale();
   const lang = locale === "ar" ? "ar" : "en";
-  const { token, loading: authLoading, isAuthenticated, logout } = useAuth();
+  const { token, loading: authLoading, isAuthenticated, role, logout } = useAuth();
+  const router = useRouter();
 
   const [data, setData] = useState<ParentDashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [authOpen, setAuthOpen] = useState(false);
+
+  useEffect(() => {
+    if (authLoading || !isAuthenticated || !token) return;
+    if (role && !isParentPortalRole(role)) {
+      router.replace("/instructor");
+    }
+  }, [authLoading, isAuthenticated, token, role, router]);
 
   useEffect(() => {
     if (authLoading) return;
     if (!token) {
-      setLoading(false);
+      startTransition(() => setLoading(false));
       return;
     }
+    if (role && !isParentPortalRole(role)) return;
+    startTransition(() => {
+      setLoading(true);
+      setError("");
+    });
     fetchParentDashboard(token)
-      .then((d) => { setData(d); setLoading(false); })
-      .catch((err) => { setError(err.message); setLoading(false); });
-  }, [token, authLoading]);
+      .then((d) => {
+        setData(d);
+        startTransition(() => setLoading(false));
+      })
+      .catch((err) => {
+        setError(err.message);
+        startTransition(() => setLoading(false));
+      });
+  }, [token, authLoading, role]);
 
-  // Not authenticated — show login prompt
+  if (!authLoading && isAuthenticated && role && !isParentPortalRole(role)) {
+    return (
+      <div className="flex justify-center py-32">
+        <Loader2 className="w-8 h-8 text-primary animate-spin" aria-label="Redirecting" />
+      </div>
+    );
+  }
+
+  // Not authenticated — show login prompt (visitor → member auth)
   if (!authLoading && !isAuthenticated) {
     return (
       <div className="py-20 sm:py-32">
@@ -69,13 +98,18 @@ export default function DashboardContent({ initialCourses }: Props) {
           </div>
           <h1 className="text-2xl font-bold mb-3">Welcome to Your Dashboard</h1>
           <p className="text-muted mb-8">Sign in to track your child&apos;s progress, view enrollments, and manage your account.</p>
-          <button
-            onClick={() => setAuthOpen(true)}
-            className="px-8 py-3.5 rounded-2xl bg-primary text-white font-semibold shadow-md shadow-primary/10 hover:shadow-lg hover:scale-[1.02] transition-all"
+          <p className="text-sm text-muted mb-6">
+            Teaching on ProCoder?{" "}
+            <LocalizedLink href="/instructor/login" className="text-primary font-medium hover:underline">
+              Instructor sign-in
+            </LocalizedLink>
+          </p>
+          <LocalizedLink
+            href="/parent/login"
+            className="inline-flex px-8 py-3.5 rounded-2xl bg-primary text-white font-semibold shadow-md shadow-primary/10 hover:shadow-lg hover:scale-[1.02] transition-all"
           >
-            Sign In / Create Account
-          </button>
-          <AuthModal open={authOpen} onClose={() => { setAuthOpen(false); window.location.reload(); }} />
+            Sign in / Create account
+          </LocalizedLink>
         </div>
       </div>
     );

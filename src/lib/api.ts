@@ -99,6 +99,8 @@ export interface APICourse {
   skills: { en: string[]; ar: string[] };
   price: number;
   currency: string;
+  /** 0–100: percent off list `price` for display, quotes, and enrollments. */
+  discountPercent?: number;
   isActive: boolean;
   enrollmentCount: number;
 }
@@ -130,6 +132,8 @@ export interface EnrollmentData {
   phone: string;
   relationship: string;
   childName: string;
+  /** Optional: distinguishes siblings with the same name in the same course. */
+  childStudentId?: string;
   childAge: number;
   childGender?: string;
   gradeLevel: string;
@@ -145,16 +149,67 @@ export interface EnrollmentData {
   learningGoals?: string;
   specialNeeds?: string;
   howDidYouHear?: string;
-  agreeTerms: boolean;
+   agreeTerms: boolean;
   agreePhotos?: boolean;
+  /** Optional promo; validated server-side against course and limits. */
+  promoCode?: string;
+}
+
+export interface PromoQuoteResponse {
+  courseId: string;
+  currency: string;
+  listPrice: number;
+  courseDiscountPercent: number;
+  priceAfterCourseDiscount: number;
+  promoCode: string | null;
+  promoError: string | null;
+  promoApplied: {
+    code: string;
+    discountType: string;
+    discountValue: number;
+  } | null;
+  promoDiscountAmount: number;
+  amountDue: number;
+}
+
+export function quotePromo(
+  courseId: string,
+  promoCode?: string
+): Promise<PromoQuoteResponse> {
+  return request<PromoQuoteResponse>("/promos/quote", {
+    method: "POST",
+    body: JSON.stringify({
+      courseId,
+      ...(promoCode?.trim() ? { promoCode: promoCode.trim() } : {}),
+    }),
+  });
+}
+
+export interface EnrollmentPricingSnapshot {
+  listPrice: number;
+  currency: string;
+  courseDiscountPercent: number;
+  priceAfterCourseDiscount: number;
+  promoCodeApplied: string | null;
+  promoDiscountAmount: number;
+  amountDue: number;
 }
 
 export function createEnrollment(
   data: EnrollmentData
-): Promise<{ message: string; enrollment: { id: string; status: string } }> {
+): Promise<{
+  message: string;
+  enrollment: { id: string; status: string };
+  pricing?: EnrollmentPricingSnapshot;
+}> {
+  const { promoCode, ...rest } = data;
   return request("/enrollments", {
     method: "POST",
-    body: JSON.stringify({ ...data, agreeTerms: String(data.agreeTerms) }),
+    body: JSON.stringify({
+      ...rest,
+      agreeTerms: String(data.agreeTerms),
+      ...(promoCode?.trim() ? { promoCode: promoCode.trim() } : {}),
+    }),
   });
 }
 
@@ -229,6 +284,8 @@ export interface CreateCourseData {
   skills: { en: string[]; ar: string[] };
   price: number;
   currency: string;
+  /** 0–100 catalog discount (optional). */
+  discountPercent?: number;
 }
 
 function authRequest<T>(

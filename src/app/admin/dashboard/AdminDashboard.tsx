@@ -7,14 +7,97 @@ import {
   clearAdminToken,
   getAdminToken,
 } from "@/lib/admin-api";
+import { PasswordInput } from "@/components/PasswordInput";
 
 type Tab =
   | "overview"
   | "courses"
+  | "categories"
   | "enrollments"
   | "contacts"
   | "challenges"
-  | "team";
+  | "team"
+  | "users"
+  | "payments"
+  | "promos";
+
+type AdminCategoryRow = {
+  _id: string;
+  slug: string;
+  title: { en: string; ar: string };
+  sortOrder: number;
+  isActive: boolean;
+};
+
+type Paginated<T> = {
+  items: T[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+};
+
+type ListMeta = {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+};
+
+const PAGE_SIZE = 15;
+
+const emptyMeta: ListMeta = {
+  total: 0,
+  page: 1,
+  limit: PAGE_SIZE,
+  totalPages: 1,
+};
+
+/** stem-Be may return `{ items, total, ... }` or a legacy JSON array. */
+function normalizePagedResponse<T>(
+  data: unknown,
+  defaultLimit: number
+): { items: T[]; meta: ListMeta } {
+  if (Array.isArray(data)) {
+    const n = data.length;
+    return {
+      items: data as T[],
+      meta: {
+        total: n,
+        page: 1,
+        limit: n > 0 ? n : defaultLimit,
+        totalPages: 1,
+      },
+    };
+  }
+  if (data && typeof data === "object" && data !== null && "items" in data) {
+    const p = data as Partial<Paginated<T>>;
+    const items = Array.isArray(p.items) ? p.items : [];
+    return {
+      items,
+      meta: {
+        total: p.total ?? items.length,
+        page: p.page ?? 1,
+        limit: p.limit ?? defaultLimit,
+        totalPages: p.totalPages ?? 1,
+      },
+    };
+  }
+  return { items: [], meta: { ...emptyMeta } };
+}
+
+function formatMoney(amount: number, currency: string) {
+  const code = (currency || "USD").toUpperCase();
+  try {
+    return new Intl.NumberFormat(undefined, {
+      style: "currency",
+      currency: code,
+      maximumFractionDigits: 2,
+    }).format(amount);
+  } catch {
+    return `${amount.toFixed(2)} ${code}`;
+  }
+}
 
 type Overview = {
   users: { total: number; byRole: Record<string, number> };
@@ -31,12 +114,50 @@ type Overview = {
     published: number;
     emailSignups: number;
   };
+  revenue?: {
+    note: string;
+    committed: {
+      statuses: string[];
+      byCurrency: Record<string, number>;
+      enrollmentCount: number;
+    };
+    pipeline: {
+      statuses: string;
+      byCurrency: Record<string, number>;
+      enrollmentCount: number;
+    };
+    byCourse: {
+      courseSlug: string;
+      titleEn: string;
+      currency: string;
+      unitPrice: number;
+      enrollmentCount: number;
+      subtotal: number;
+    }[];
+  };
+  payments?: {
+    note: string;
+    configured: boolean;
+    succeeded: {
+      byCurrency: Record<
+        string,
+        { gross: number; net: number; count: number }
+      >;
+      paymentCount: number;
+    };
+    byStatus: Record<string, number>;
+    pendingCheckoutSessions: number;
+  };
 };
 
 const TABS: { id: Tab; label: string }[] = [
   { id: "overview", label: "Overview" },
   { id: "courses", label: "Courses" },
+  { id: "categories", label: "Categories" },
   { id: "enrollments", label: "Enrollments" },
+  { id: "users", label: "Users" },
+  { id: "payments", label: "Payments" },
+  { id: "promos", label: "Promos" },
   { id: "contacts", label: "Contact" },
   { id: "challenges", label: "Challenges" },
   { id: "team", label: "Team" },
@@ -49,9 +170,17 @@ export default function AdminDashboard() {
   const [err, setErr] = useState("");
 
   const [courses, setCourses] = useState<Record<string, unknown>[]>([]);
+  const [coursesMeta, setCoursesMeta] = useState<ListMeta>(emptyMeta);
+  const [coursesPage, setCoursesPage] = useState(1);
   const [courseFilter, setCourseFilter] = useState({ active: "", category: "" });
 
+  const [categoryOptions, setCategoryOptions] = useState<AdminCategoryRow[]>(
+    []
+  );
+
   const [enrollments, setEnrollments] = useState<Record<string, unknown>[]>([]);
+  const [enrollmentsMeta, setEnrollmentsMeta] = useState<ListMeta>(emptyMeta);
+  const [enrollmentsPage, setEnrollmentsPage] = useState(1);
   const [enrFilter, setEnrFilter] = useState({
     status: "",
     courseId: "",
@@ -59,6 +188,8 @@ export default function AdminDashboard() {
   });
 
   const [contacts, setContacts] = useState<Record<string, unknown>[]>([]);
+  const [contactsMeta, setContactsMeta] = useState<ListMeta>(emptyMeta);
+  const [contactsPage, setContactsPage] = useState(1);
   const [conFilter, setConFilter] = useState({
     status: "",
     q: "",
@@ -66,11 +197,59 @@ export default function AdminDashboard() {
   });
 
   const [challenges, setChallenges] = useState<Record<string, unknown>[]>([]);
+  const [challengesMeta, setChallengesMeta] = useState<ListMeta>(emptyMeta);
+  const [challengesPage, setChallengesPage] = useState(1);
   const [chFilter, setChFilter] = useState({ q: "", published: "" });
 
   const [team, setTeam] = useState<Record<string, unknown>[]>([]);
+  const [teamMeta, setTeamMeta] = useState<ListMeta>(emptyMeta);
+  const [teamPage, setTeamPage] = useState(1);
   const [teamFilter, setTeamFilter] = useState({ active: "" });
 
+  const [users, setUsers] = useState<Record<string, unknown>[]>([]);
+  const [usersMeta, setUsersMeta] = useState<ListMeta>(emptyMeta);
+  const [usersPage, setUsersPage] = useState(1);
+  const [userFilter, setUserFilter] = useState({
+    q: "",
+    role: "",
+    active: "",
+  });
+  const [userEdit, setUserEdit] = useState<Record<string, unknown> | null>(
+    null
+  );
+  const [inviteForm, setInviteForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+  });
+
+  const [payments, setPayments] = useState<Record<string, unknown>[]>([]);
+  const [paymentsMeta, setPaymentsMeta] = useState<ListMeta>(emptyMeta);
+  const [paymentsPage, setPaymentsPage] = useState(1);
+  const [payFilter, setPayFilter] = useState({ status: "" });
+
+  const [promos, setPromos] = useState<Record<string, unknown>[]>([]);
+  const [promosMeta, setPromosMeta] = useState<ListMeta>(emptyMeta);
+  const [promosPage, setPromosPage] = useState(1);
+  const [promoFilter, setPromoFilter] = useState({ q: "", active: "" });
+  const [promoModal, setPromoModal] = useState<
+    null | { mode: "create" } | { mode: "edit"; id: string }
+  >(null);
+
+  const [enrollmentDetail, setEnrollmentDetail] = useState<{
+    enrollment: Record<string, unknown>;
+    linkedUser: Record<string, unknown> | null;
+    instructorNotes: Record<string, unknown>[];
+  } | null>(null);
+
+  const [categories, setCategories] = useState<AdminCategoryRow[]>([]);
+  const [categoriesMeta, setCategoriesMeta] = useState<ListMeta>(emptyMeta);
+  const [categoriesPage, setCategoriesPage] = useState(1);
+  const [categoryModal, setCategoryModal] = useState<{
+    mode: "create" | "edit";
+    slug?: string;
+  } | null>(null);
   const [courseModal, setCourseModal] = useState<{
     mode: "create" | "edit";
     slug?: string;
@@ -96,59 +275,159 @@ export default function AdminDashboard() {
     setOverview(data);
   }, []);
 
+  const loadCategoryOptions = useCallback(async () => {
+    try {
+      const raw = await adminFetch<unknown>(
+        `/categories/admin/list?page=1&limit=200`
+      );
+      const { items } = normalizePagedResponse<AdminCategoryRow>(
+        raw,
+        PAGE_SIZE
+      );
+      setCategoryOptions(items);
+    } catch {
+      setCategoryOptions([]);
+    }
+  }, []);
+
   const loadCourses = useCallback(async () => {
     const q = new URLSearchParams();
     if (courseFilter.active === "true" || courseFilter.active === "false")
       q.set("active", courseFilter.active);
     if (courseFilter.category) q.set("category", courseFilter.category);
-    const data = await adminFetch<Record<string, unknown>[]>(
-      `/courses/admin/list?${q}`
+    q.set("page", String(coursesPage));
+    q.set("limit", String(PAGE_SIZE));
+    const raw = await adminFetch<unknown>(`/courses/admin/list?${q}`);
+    const { items, meta } = normalizePagedResponse<Record<string, unknown>>(
+      raw,
+      PAGE_SIZE
     );
-    setCourses(data);
-  }, [courseFilter]);
+    setCourses(items);
+    setCoursesMeta(meta);
+  }, [courseFilter, coursesPage]);
+
+  const loadCategoriesPage = useCallback(async () => {
+    const q = new URLSearchParams();
+    q.set("page", String(categoriesPage));
+    q.set("limit", String(PAGE_SIZE));
+    const raw = await adminFetch<unknown>(`/categories/admin/list?${q}`);
+    const { items, meta } = normalizePagedResponse<AdminCategoryRow>(
+      raw,
+      PAGE_SIZE
+    );
+    setCategories(items);
+    setCategoriesMeta(meta);
+  }, [categoriesPage]);
 
   const loadEnrollments = useCallback(async () => {
     const q = new URLSearchParams();
     if (enrFilter.status) q.set("status", enrFilter.status);
     if (enrFilter.courseId) q.set("courseId", enrFilter.courseId);
     if (enrFilter.q) q.set("q", enrFilter.q);
-    const data = await adminFetch<Record<string, unknown>[]>(
-      `/enrollments?${q}`
+    q.set("page", String(enrollmentsPage));
+    q.set("limit", String(PAGE_SIZE));
+    const raw = await adminFetch<unknown>(`/enrollments?${q}`);
+    const { items, meta } = normalizePagedResponse<Record<string, unknown>>(
+      raw,
+      PAGE_SIZE
     );
-    setEnrollments(data);
-  }, [enrFilter]);
+    setEnrollments(items);
+    setEnrollmentsMeta(meta);
+  }, [enrFilter, enrollmentsPage]);
 
   const loadContacts = useCallback(async () => {
     const q = new URLSearchParams();
     if (conFilter.status) q.set("status", conFilter.status);
     if (conFilter.q) q.set("q", conFilter.q);
     if (conFilter.challengeOnly) q.set("challengeOnly", "true");
-    const data = await adminFetch<Record<string, unknown>[]>(
-      `/contact?${q}`
+    q.set("page", String(contactsPage));
+    q.set("limit", String(PAGE_SIZE));
+    const raw = await adminFetch<unknown>(`/contact?${q}`);
+    const { items, meta } = normalizePagedResponse<Record<string, unknown>>(
+      raw,
+      PAGE_SIZE
     );
-    setContacts(data);
-  }, [conFilter]);
+    setContacts(items);
+    setContactsMeta(meta);
+  }, [conFilter, contactsPage]);
 
   const loadChallenges = useCallback(async () => {
     const q = new URLSearchParams();
     if (chFilter.q) q.set("q", chFilter.q);
     if (chFilter.published === "true" || chFilter.published === "false")
       q.set("published", chFilter.published);
-    const data = await adminFetch<Record<string, unknown>[]>(
-      `/challenges?${q}`
+    q.set("page", String(challengesPage));
+    q.set("limit", String(PAGE_SIZE));
+    const raw = await adminFetch<unknown>(`/challenges?${q}`);
+    const { items, meta } = normalizePagedResponse<Record<string, unknown>>(
+      raw,
+      PAGE_SIZE
     );
-    setChallenges(data);
-  }, [chFilter]);
+    setChallenges(items);
+    setChallengesMeta(meta);
+  }, [chFilter, challengesPage]);
 
   const loadTeam = useCallback(async () => {
     const q = new URLSearchParams();
     if (teamFilter.active === "true" || teamFilter.active === "false")
       q.set("active", teamFilter.active);
-    const data = await adminFetch<Record<string, unknown>[]>(
-      `/team/admin/list?${q}`
+    q.set("page", String(teamPage));
+    q.set("limit", String(PAGE_SIZE));
+    const raw = await adminFetch<unknown>(`/team/admin/list?${q}`);
+    const { items, meta } = normalizePagedResponse<Record<string, unknown>>(
+      raw,
+      PAGE_SIZE
     );
-    setTeam(data);
-  }, [teamFilter]);
+    setTeam(items);
+    setTeamMeta(meta);
+  }, [teamFilter, teamPage]);
+
+  const loadUsers = useCallback(async () => {
+    const q = new URLSearchParams();
+    if (userFilter.q) q.set("q", userFilter.q);
+    if (userFilter.role) q.set("role", userFilter.role);
+    if (userFilter.active === "true" || userFilter.active === "false")
+      q.set("active", userFilter.active);
+    q.set("page", String(usersPage));
+    q.set("limit", String(PAGE_SIZE));
+    const raw = await adminFetch<unknown>(`/admin/users?${q}`);
+    const { items, meta } = normalizePagedResponse<Record<string, unknown>>(
+      raw,
+      PAGE_SIZE
+    );
+    setUsers(items);
+    setUsersMeta(meta);
+  }, [userFilter, usersPage]);
+
+  const loadPayments = useCallback(async () => {
+    const q = new URLSearchParams();
+    if (payFilter.status) q.set("status", payFilter.status);
+    q.set("page", String(paymentsPage));
+    q.set("limit", String(PAGE_SIZE));
+    const raw = await adminFetch<unknown>(`/admin/payments?${q}`);
+    const { items, meta } = normalizePagedResponse<Record<string, unknown>>(
+      raw,
+      PAGE_SIZE
+    );
+    setPayments(items);
+    setPaymentsMeta(meta);
+  }, [payFilter, paymentsPage]);
+
+  const loadPromos = useCallback(async () => {
+    const q = new URLSearchParams();
+    if (promoFilter.active === "true" || promoFilter.active === "false")
+      q.set("active", promoFilter.active);
+    if (promoFilter.q.trim()) q.set("q", promoFilter.q.trim());
+    q.set("page", String(promosPage));
+    q.set("limit", String(PAGE_SIZE));
+    const raw = await adminFetch<unknown>(`/admin/promos?${q}`);
+    const { items, meta } = normalizePagedResponse<Record<string, unknown>>(
+      raw,
+      PAGE_SIZE
+    );
+    setPromos(items);
+    setPromosMeta(meta);
+  }, [promoFilter, promosPage]);
 
   useEffect(() => {
     if (!getAdminToken()) return;
@@ -156,8 +435,16 @@ export default function AdminDashboard() {
     (async () => {
       try {
         if (tab === "overview") await loadOverview();
-        if (tab === "courses") await loadCourses();
+        if (tab === "courses") {
+          await loadCategoryOptions();
+          await loadCourses();
+          await loadOverview();
+        }
+        if (tab === "categories") await loadCategoriesPage();
         if (tab === "enrollments") await loadEnrollments();
+        if (tab === "users") await loadUsers();
+        if (tab === "payments") await loadPayments();
+        if (tab === "promos") await loadPromos();
         if (tab === "contacts") await loadContacts();
         if (tab === "challenges") await loadChallenges();
         if (tab === "team") await loadTeam();
@@ -175,10 +462,15 @@ export default function AdminDashboard() {
     tab,
     loadOverview,
     loadCourses,
+    loadCategoryOptions,
+    loadCategoriesPage,
     loadEnrollments,
     loadContacts,
     loadChallenges,
     loadTeam,
+    loadUsers,
+    loadPayments,
+    loadPromos,
   ]);
 
   const logout = () => {
@@ -221,6 +513,17 @@ export default function AdminDashboard() {
     }
   };
 
+  const removeCategory = async (slug: string) => {
+    if (!confirm(`Remove or deactivate category "${slug}"?`)) return;
+    try {
+      await adminFetch(`/categories/${slug}`, { method: "DELETE" });
+      await loadCategoriesPage();
+      await loadCategoryOptions();
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Failed");
+    }
+  };
+
   const deleteChallenge = async (id: string) => {
     if (!confirm("Delete this challenge permanently?")) return;
     try {
@@ -243,8 +546,126 @@ export default function AdminDashboard() {
     }
   };
 
+  const submitInviteInstructor = async () => {
+    try {
+      const body: Record<string, string> = {
+        name: inviteForm.name.trim(),
+        email: inviteForm.email.trim(),
+      };
+      if (inviteForm.phone.trim()) body.phone = inviteForm.phone.trim();
+      if (inviteForm.password.trim()) body.password = inviteForm.password.trim();
+      const res = await adminFetch<{
+        temporaryPassword?: string;
+        user?: Record<string, unknown>;
+      }>("/admin/users/invite-instructor", {
+        method: "POST",
+        body: JSON.stringify(body),
+      });
+      const msg = res.temporaryPassword
+        ? `Instructor created. Temporary password: ${res.temporaryPassword}`
+        : "Instructor created.";
+      alert(msg);
+      setInviteForm({ name: "", email: "", phone: "", password: "" });
+      await loadUsers();
+      await loadOverview();
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Invite failed");
+    }
+  };
+
+  const saveUserEdit = async () => {
+    if (!userEdit?._id) return;
+    try {
+      await adminFetch(`/admin/users/${String(userEdit._id)}`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          role: userEdit.role,
+          isActive: userEdit.isActive,
+          name: String(userEdit.name ?? "").trim(),
+          phone: String(userEdit.phone ?? "").trim(),
+        }),
+      });
+      setUserEdit(null);
+      await loadUsers();
+      await loadOverview();
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Update failed");
+    }
+  };
+
+  const resetUserPassword = async (id: string) => {
+    const pw = window.prompt("New password (min 8 characters):");
+    if (!pw || pw.length < 8) {
+      setErr("Password must be at least 8 characters");
+      return;
+    }
+    try {
+      await adminFetch(`/admin/users/${id}/reset-password`, {
+        method: "POST",
+        body: JSON.stringify({ newPassword: pw }),
+      });
+      alert("Password updated.");
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Reset failed");
+    }
+  };
+
+  const openEnrollmentDetail = async (id: string) => {
+    try {
+      const data = await adminFetch<{
+        enrollment: Record<string, unknown>;
+        linkedUser: Record<string, unknown> | null;
+        instructorNotes: Record<string, unknown>[];
+      }>(`/admin/enrollments/${id}/detail`);
+      setEnrollmentDetail(data);
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Failed to load detail");
+    }
+  };
+
+  const createStripeCheckout = async (enrollmentId: string) => {
+    try {
+      const data = await adminFetch<{ url?: string }>(
+        "/admin/payments/checkout-session",
+        {
+          method: "POST",
+          body: JSON.stringify({ enrollmentId }),
+        }
+      );
+      if (data.url) {
+        window.open(data.url, "_blank", "noopener,noreferrer");
+      } else {
+        setErr("Stripe did not return a checkout URL");
+      }
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Checkout failed");
+    }
+  };
+
+  const patchPromo = async (id: string, patch: Record<string, unknown>) => {
+    try {
+      await adminFetch(`/admin/promos/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify(patch),
+      });
+      await loadPromos();
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Promo update failed");
+    }
+  };
+
+  const deletePromo = async (id: string, code: string) => {
+    if (!confirm(`Delete promo "${code}"?`)) return;
+    try {
+      await adminFetch(`/admin/promos/${id}`, { method: "DELETE" });
+      await loadPromos();
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Delete failed");
+    }
+  };
+
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen w-full bg-slate-950 text-slate-100">
       <aside className="hidden w-52 shrink-0 border-r border-slate-800 bg-slate-900/50 p-4 md:block">
         <div className="mb-8 font-semibold text-white">Admin</div>
         <nav className="space-y-1">
@@ -331,21 +752,301 @@ export default function AdminDashboard() {
                 value={overview.challenges.emailSignups}
                 hint="Contact subject filter"
               />
+              {overview.revenue ? (
+                <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-4 sm:col-span-2 lg:col-span-3">
+                  <h3 className="mb-1 text-sm font-medium text-slate-300">
+                    Revenue (estimated from course list price)
+                  </h3>
+                  <p className="mb-4 text-xs text-slate-500">
+                    {overview.revenue.note}
+                  </p>
+                  <div className="grid gap-6 lg:grid-cols-2">
+                    <div>
+                      <h4 className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-400">
+                        Committed (
+                        {overview.revenue.committed.statuses.join(", ")})
+                      </h4>
+                      <p className="mb-2 text-xs text-slate-500">
+                        {overview.revenue.committed.enrollmentCount} enrollment
+                        {overview.revenue.committed.enrollmentCount !== 1
+                          ? "s"
+                          : ""}
+                      </p>
+                      <table className="w-full text-left text-xs">
+                        <thead>
+                          <tr className="text-slate-500">
+                            <th className="py-1 pr-4">Currency</th>
+                            <th className="py-1">Total</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {Object.keys(overview.revenue.committed.byCurrency)
+                            .length === 0 ? (
+                            <tr>
+                              <td
+                                colSpan={2}
+                                className="py-2 text-slate-500"
+                              >
+                                No amounts (check course prices or enrollments).
+                              </td>
+                            </tr>
+                          ) : (
+                            Object.entries(
+                              overview.revenue.committed.byCurrency
+                            )
+                              .sort(([a], [b]) => a.localeCompare(b))
+                              .map(([cur, amt]) => (
+                                <tr key={cur} className="text-slate-300">
+                                  <td className="py-1 pr-4 font-mono">
+                                    {cur}
+                                  </td>
+                                  <td className="py-1">
+                                    {formatMoney(amt, cur)}
+                                  </td>
+                                </tr>
+                              ))
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div>
+                      <h4 className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-400">
+                        Pipeline ({overview.revenue.pipeline.statuses})
+                      </h4>
+                      <p className="mb-2 text-xs text-slate-500">
+                        {overview.revenue.pipeline.enrollmentCount} enrollment
+                        {overview.revenue.pipeline.enrollmentCount !== 1
+                          ? "s"
+                          : ""}
+                      </p>
+                      <table className="w-full text-left text-xs">
+                        <thead>
+                          <tr className="text-slate-500">
+                            <th className="py-1 pr-4">Currency</th>
+                            <th className="py-1">Total</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {Object.keys(overview.revenue.pipeline.byCurrency)
+                            .length === 0 ? (
+                            <tr>
+                              <td
+                                colSpan={2}
+                                className="py-2 text-slate-500"
+                              >
+                                No amounts.
+                              </td>
+                            </tr>
+                          ) : (
+                            Object.entries(
+                              overview.revenue.pipeline.byCurrency
+                            )
+                              .sort(([a], [b]) => a.localeCompare(b))
+                              .map(([cur, amt]) => (
+                                <tr key={cur} className="text-slate-300">
+                                  <td className="py-1 pr-4 font-mono">
+                                    {cur}
+                                  </td>
+                                  <td className="py-1">
+                                    {formatMoney(amt, cur)}
+                                  </td>
+                                </tr>
+                              ))
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <h4 className="mb-2 mt-6 text-xs font-medium uppercase tracking-wide text-slate-400">
+                    By course (committed enrollments)
+                  </h4>
+                  <div className="overflow-x-auto">
+                    <table className="w-full min-w-[640px] text-left text-xs">
+                      <thead>
+                        <tr className="text-slate-500">
+                          <th className="py-1">Course</th>
+                          <th className="py-1">Title</th>
+                          <th className="py-1">Qty</th>
+                          <th className="py-1">Unit</th>
+                          <th className="py-1">Subtotal</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {overview.revenue.byCourse.length === 0 ? (
+                          <tr>
+                            <td
+                              colSpan={5}
+                              className="py-3 text-slate-500"
+                            >
+                              No committed enrollments yet.
+                            </td>
+                          </tr>
+                        ) : (
+                          overview.revenue.byCourse.map((r) => (
+                            <tr
+                              key={r.courseSlug}
+                              className="border-t border-slate-800/80 text-slate-300"
+                            >
+                              <td className="py-1 font-mono">
+                                {r.courseSlug}
+                              </td>
+                              <td className="py-1 max-w-[200px] truncate">
+                                {r.titleEn}
+                              </td>
+                              <td className="py-1">{r.enrollmentCount}</td>
+                              <td className="py-1">
+                                {formatMoney(r.unitPrice, r.currency)}
+                              </td>
+                              <td className="py-1">
+                                {formatMoney(r.subtotal, r.currency)}
+                              </td>
+                            </tr>
+                          ))
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              ) : null}
+              {overview.payments ? (
+                <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-4 sm:col-span-2 lg:col-span-3">
+                  <h3 className="mb-1 text-sm font-medium text-slate-300">
+                    Payments (Stripe)
+                  </h3>
+                  <p className="mb-4 text-xs text-slate-500">
+                    {overview.payments.note}{" "}
+                    {overview.payments.configured
+                      ? "Keys detected on API."
+                      : "Set STRIPE_SECRET_KEY and STRIPE_WEBHOOK_SECRET on stem-Be."}
+                  </p>
+                  <div className="grid gap-4 lg:grid-cols-2">
+                    <div>
+                      <h4 className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-400">
+                        Succeeded (net / gross by currency)
+                      </h4>
+                      <p className="mb-2 text-xs text-slate-500">
+                        {overview.payments.succeeded.paymentCount} payment
+                        {overview.payments.succeeded.paymentCount !== 1
+                          ? "s"
+                          : ""}{" "}
+                        · Pending sessions:{" "}
+                        {overview.payments.pendingCheckoutSessions}
+                      </p>
+                      <table className="w-full text-left text-xs">
+                        <thead>
+                          <tr className="text-slate-500">
+                            <th className="py-1 pr-4">Currency</th>
+                            <th className="py-1">Net</th>
+                            <th className="py-1">Gross</th>
+                            <th className="py-1">#</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {Object.keys(
+                            overview.payments.succeeded.byCurrency
+                          ).length === 0 ? (
+                            <tr>
+                              <td
+                                colSpan={4}
+                                className="py-2 text-slate-500"
+                              >
+                                No succeeded payments recorded yet.
+                              </td>
+                            </tr>
+                          ) : (
+                            Object.entries(
+                              overview.payments.succeeded.byCurrency
+                            )
+                              .sort(([a], [b]) => a.localeCompare(b))
+                              .map(([cur, v]) => (
+                                <tr key={cur} className="text-slate-300">
+                                  <td className="py-1 pr-4 font-mono">
+                                    {cur}
+                                  </td>
+                                  <td className="py-1">
+                                    {formatMoney(v.net, cur)}
+                                  </td>
+                                  <td className="py-1">
+                                    {formatMoney(v.gross, cur)}
+                                  </td>
+                                  <td className="py-1">{v.count}</td>
+                                </tr>
+                              ))
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div>
+                      <h4 className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-400">
+                        By status
+                      </h4>
+                      <table className="w-full max-w-md text-left text-xs">
+                        <tbody>
+                          {Object.entries(overview.payments.byStatus)
+                            .sort(([a], [b]) => a.localeCompare(b))
+                            .map(([st, n]) => (
+                              <tr key={st} className="text-slate-300">
+                                <td className="py-1 pr-4 capitalize">
+                                  {st.replace(/_/g, " ")}
+                                </td>
+                                <td className="py-1">{n}</td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
               <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-4 sm:col-span-2 lg:col-span-3">
                 <h3 className="mb-2 text-sm font-medium text-slate-300">
                   Users by role
                 </h3>
-                <pre className="overflow-x-auto text-xs text-slate-400">
-                  {JSON.stringify(overview.users.byRole, null, 2)}
-                </pre>
+                <table className="w-full max-w-md text-left text-xs">
+                  <thead>
+                    <tr className="text-slate-500">
+                      <th className="py-1 pr-4">Role</th>
+                      <th className="py-1">Count</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.entries(overview.users.byRole)
+                      .sort(([a], [b]) => a.localeCompare(b))
+                      .map(([role, count]) => (
+                        <tr key={role} className="text-slate-300">
+                          <td className="py-1 pr-4 capitalize">
+                            {role.replace(/_/g, " ")}
+                          </td>
+                          <td className="py-1">{count}</td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
               </div>
               <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-4 sm:col-span-2 lg:col-span-3">
                 <h3 className="mb-2 text-sm font-medium text-slate-300">
                   Enrollments by status
                 </h3>
-                <pre className="overflow-x-auto text-xs text-slate-400">
-                  {JSON.stringify(overview.enrollments.byStatus, null, 2)}
-                </pre>
+                <table className="w-full max-w-md text-left text-xs">
+                  <thead>
+                    <tr className="text-slate-500">
+                      <th className="py-1 pr-4">Status</th>
+                      <th className="py-1">Count</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.entries(overview.enrollments.byStatus)
+                      .sort(([a], [b]) => a.localeCompare(b))
+                      .map(([status, count]) => (
+                        <tr key={status} className="text-slate-300">
+                          <td className="py-1 pr-4 capitalize">
+                            {status.replace(/_/g, " ")}
+                          </td>
+                          <td className="py-1">{count}</td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
               </div>
               <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-4 sm:col-span-2 lg:col-span-3">
                 <h3 className="mb-2 text-sm font-medium text-slate-300">
@@ -377,25 +1078,30 @@ export default function AdminDashboard() {
                 <FilterSelect
                   label="Active"
                   value={courseFilter.active}
-                  onChange={(v) =>
-                    setCourseFilter((f) => ({ ...f, active: v }))
-                  }
+                  onChange={(v) => {
+                    setCoursesPage(1);
+                    setCourseFilter((f) => ({ ...f, active: v }));
+                  }}
                   options={[
                     { value: "", label: "All" },
                     { value: "true", label: "Active" },
                     { value: "false", label: "Inactive" },
                   ]}
                 />
-                <input
-                  placeholder="category filter"
+                <FilterSelect
+                  label="Category"
                   value={courseFilter.category}
-                  onChange={(e) =>
-                    setCourseFilter((f) => ({
-                      ...f,
-                      category: e.target.value,
-                    }))
-                  }
-                  className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm"
+                  onChange={(v) => {
+                    setCoursesPage(1);
+                    setCourseFilter((f) => ({ ...f, category: v }));
+                  }}
+                  options={[
+                    { value: "", label: "All" },
+                    ...categoryOptions.map((c) => ({
+                      value: c.slug,
+                      label: `${c.slug} — ${c.title.en}`,
+                    })),
+                  ]}
                 />
                 <button
                   type="button"
@@ -406,12 +1112,15 @@ export default function AdminDashboard() {
                 </button>
               </div>
               <div className="overflow-x-auto rounded-xl border border-slate-800">
-                <table className="w-full min-w-[640px] text-left text-sm">
+                <table className="w-full min-w-[960px] text-left text-sm">
                   <thead className="border-b border-slate-800 text-slate-500">
                     <tr>
                       <th className="p-2">Slug</th>
                       <th className="p-2">Title (en)</th>
                       <th className="p-2">Category</th>
+                      <th className="p-2">List price</th>
+                      <th className="p-2">Cat. discount</th>
+                      <th className="p-2">Committed revenue (overview)</th>
                       <th className="p-2">Active</th>
                       <th className="p-2">Enrolled*</th>
                       <th className="p-2" />
@@ -428,6 +1137,27 @@ export default function AdminDashboard() {
                           {String((c.title as { en?: string })?.en ?? "")}
                         </td>
                         <td className="p-2">{String(c.category)}</td>
+                        <td className="p-2 text-slate-200">
+                          {formatMoney(
+                            Number(c.price ?? 0),
+                            String(c.currency ?? "USD")
+                          )}
+                        </td>
+                        <td className="p-2 text-slate-300">
+                          {Number(c.discountPercent ?? 0) > 0
+                            ? `${Number(c.discountPercent)}%`
+                            : "—"}
+                        </td>
+                        <td className="p-2 text-slate-200">
+                          {(() => {
+                            const row = overview?.revenue?.byCourse?.find(
+                              (r) => r.courseSlug === String(c.slug)
+                            );
+                            return row
+                              ? formatMoney(row.subtotal, row.currency)
+                              : "—";
+                          })()}
+                        </td>
                         <td className="p-2">{String(c.isActive)}</td>
                         <td className="p-2">{String(c.enrollmentCount ?? 0)}</td>
                         <td className="p-2 space-x-2">
@@ -460,9 +1190,91 @@ export default function AdminDashboard() {
                   </tbody>
                 </table>
               </div>
+                           <PaginationBar
+                meta={coursesMeta}
+                noun="courses"
+                onPageChange={setCoursesPage}
+              />
               <p className="text-xs text-slate-500">
-                * enrollmentCount is maintained on the Course document when new
-                enrollments are submitted.
+                * enrollmentCount is incremented on every enrollment submission
+                (all statuses). <strong>Committed revenue</strong> uses
+                confirmed, active, and completed enrollments; amounts prefer each
+                enrollment&apos;s <code className="text-slate-400">amountDue</code>{" "}
+                when set, otherwise the catalog price after <strong>Cat. discount</strong>.
+                Stripe Checkout uses the enrollment&apos;s amount due.
+              </p>
+            </div>
+          )}
+
+          {tab === "categories" && (
+            <div className="space-y-4">
+              <div className="flex flex-wrap items-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setCategoryModal({ mode: "create" })}
+                  className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white"
+                >
+                  New category
+                </button>
+              </div>
+              <div className="overflow-x-auto rounded-xl border border-slate-800">
+                <table className="w-full min-w-[560px] text-left text-sm">
+                  <thead className="border-b border-slate-800 text-slate-500">
+                    <tr>
+                      <th className="p-2">Slug</th>
+                      <th className="p-2">Title (en)</th>
+                      <th className="p-2">Title (ar)</th>
+                      <th className="p-2">Sort</th>
+                      <th className="p-2">Active</th>
+                      <th className="p-2" />
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {categories.map((c) => (
+                      <tr
+                        key={c.slug}
+                        className="border-t border-slate-800/80"
+                      >
+                        <td className="p-2 font-mono text-xs">{c.slug}</td>
+                        <td className="p-2">{c.title.en}</td>
+                        <td className="p-2">{c.title.ar}</td>
+                        <td className="p-2">{c.sortOrder}</td>
+                        <td className="p-2">{String(c.isActive)}</td>
+                        <td className="p-2 space-x-2">
+                          <button
+                            type="button"
+                            className="text-primary text-xs"
+                            onClick={() =>
+                              setCategoryModal({
+                                mode: "edit",
+                                slug: c.slug,
+                              })
+                            }
+                          >
+                            Edit
+                          </button>
+                          <button
+                            type="button"
+                            className="text-red-400 text-xs"
+                            onClick={() => removeCategory(c.slug)}
+                          >
+                            Remove
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <PaginationBar
+                meta={categoriesMeta}
+                noun="categories"
+                onPageChange={setCategoriesPage}
+              />
+              <p className="text-xs text-slate-500">
+                Remove deletes the row only if no course uses the slug; otherwise
+                the category is deactivated. New courses require an active
+                category.
               </p>
             </div>
           )}
@@ -473,25 +1285,28 @@ export default function AdminDashboard() {
                 <input
                   placeholder="status"
                   value={enrFilter.status}
-                  onChange={(e) =>
-                    setEnrFilter((f) => ({ ...f, status: e.target.value }))
-                  }
+                  onChange={(e) => {
+                    setEnrollmentsPage(1);
+                    setEnrFilter((f) => ({ ...f, status: e.target.value }));
+                  }}
                   className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm"
                 />
                 <input
                   placeholder="courseId"
                   value={enrFilter.courseId}
-                  onChange={(e) =>
-                    setEnrFilter((f) => ({ ...f, courseId: e.target.value }))
-                  }
+                  onChange={(e) => {
+                    setEnrollmentsPage(1);
+                    setEnrFilter((f) => ({ ...f, courseId: e.target.value }));
+                  }}
                   className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm"
                 />
                 <input
                   placeholder="search email / name"
                   value={enrFilter.q}
-                  onChange={(e) =>
-                    setEnrFilter((f) => ({ ...f, q: e.target.value }))
-                  }
+                  onChange={(e) => {
+                    setEnrollmentsPage(1);
+                    setEnrFilter((f) => ({ ...f, q: e.target.value }));
+                  }}
                   className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm"
                 />
               </div>
@@ -504,6 +1319,7 @@ export default function AdminDashboard() {
                       <th className="p-2">Child</th>
                       <th className="p-2">Course</th>
                       <th className="p-2">Status</th>
+                      <th className="p-2">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -544,11 +1360,376 @@ export default function AdminDashboard() {
                             ))}
                           </select>
                         </td>
+                        <td className="p-2 space-x-2 whitespace-nowrap">
+                          <button
+                            type="button"
+                            className="text-primary text-xs"
+                            onClick={() =>
+                              openEnrollmentDetail(String(r._id))
+                            }
+                          >
+                            Detail
+                          </button>
+                          <button
+                            type="button"
+                            className="text-slate-300 text-xs"
+                            onClick={() =>
+                              createStripeCheckout(String(r._id))
+                            }
+                          >
+                            Stripe pay
+                          </button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
+              <PaginationBar
+                meta={enrollmentsMeta}
+                noun="enrollments"
+                onPageChange={setEnrollmentsPage}
+              />
+            </div>
+          )}
+
+          {tab === "users" && (
+            <div className="space-y-4">
+              <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-4">
+                <h3 className="mb-3 text-sm font-medium text-slate-300">
+                  Invite instructor
+                </h3>
+                <div className="flex flex-wrap gap-3">
+                  <input
+                    placeholder="Name"
+                    value={inviteForm.name}
+                    onChange={(e) =>
+                      setInviteForm((f) => ({ ...f, name: e.target.value }))
+                    }
+                    className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm"
+                  />
+                  <input
+                    placeholder="Email"
+                    type="email"
+                    value={inviteForm.email}
+                    onChange={(e) =>
+                      setInviteForm((f) => ({ ...f, email: e.target.value }))
+                    }
+                    className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm"
+                  />
+                  <input
+                    placeholder="Phone (optional)"
+                    value={inviteForm.phone}
+                    onChange={(e) =>
+                      setInviteForm((f) => ({ ...f, phone: e.target.value }))
+                    }
+                    className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm"
+                  />
+                  <PasswordInput
+                    placeholder="Password (optional — auto if empty)"
+                    value={inviteForm.password}
+                    onChange={(e) =>
+                      setInviteForm((f) => ({ ...f, password: e.target.value }))
+                    }
+                    inputClassName="min-w-[12rem] rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => void submitInviteInstructor()}
+                    className="rounded-lg bg-primary px-4 py-2 text-sm text-white"
+                  >
+                    Create instructor
+                  </button>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <input
+                  placeholder="Search name / email"
+                  value={userFilter.q}
+                  onChange={(e) => {
+                    setUsersPage(1);
+                    setUserFilter((f) => ({ ...f, q: e.target.value }));
+                  }}
+                  className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm"
+                />
+                <FilterSelect
+                  label="Role"
+                  value={userFilter.role}
+                  onChange={(v) => {
+                    setUsersPage(1);
+                    setUserFilter((f) => ({ ...f, role: v }));
+                  }}
+                  options={[
+                    { value: "", label: "All roles" },
+                    { value: "parent", label: "Parent" },
+                    { value: "student", label: "Student" },
+                    { value: "instructor", label: "Instructor" },
+                    { value: "admin", label: "Admin" },
+                  ]}
+                />
+                <FilterSelect
+                  label="Active"
+                  value={userFilter.active}
+                  onChange={(v) => {
+                    setUsersPage(1);
+                    setUserFilter((f) => ({ ...f, active: v }));
+                  }}
+                  options={[
+                    { value: "", label: "All" },
+                    { value: "true", label: "Active" },
+                    { value: "false", label: "Inactive" },
+                  ]}
+                />
+              </div>
+              <div className="overflow-x-auto rounded-xl border border-slate-800">
+                <table className="w-full min-w-[880px] text-left text-sm">
+                  <thead className="border-b border-slate-800 text-slate-500">
+                    <tr>
+                      <th className="p-2">Email</th>
+                      <th className="p-2">Name</th>
+                      <th className="p-2">Role</th>
+                      <th className="p-2">Active</th>
+                      <th className="p-2" />
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {users.map((r) => (
+                      <tr
+                        key={String(r._id)}
+                        className="border-t border-slate-800/80"
+                      >
+                        <td className="p-2 text-xs">{String(r.email)}</td>
+                        <td className="p-2">{String(r.name)}</td>
+                        <td className="p-2 capitalize">{String(r.role)}</td>
+                        <td className="p-2">{String(r.isActive)}</td>
+                        <td className="p-2 space-x-2">
+                          <button
+                            type="button"
+                            className="text-primary text-xs"
+                            onClick={() => setUserEdit({ ...r })}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            type="button"
+                            className="text-slate-300 text-xs"
+                            onClick={() =>
+                              resetUserPassword(String(r._id))
+                            }
+                          >
+                            Reset password
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <PaginationBar
+                meta={usersMeta}
+                noun="users"
+                onPageChange={setUsersPage}
+              />
+            </div>
+          )}
+
+          {tab === "payments" && (
+            <div className="space-y-4">
+              <div className="flex flex-wrap gap-3">
+                <FilterSelect
+                  label="Status"
+                  value={payFilter.status}
+                  onChange={(v) => {
+                    setPaymentsPage(1);
+                    setPayFilter((f) => ({ ...f, status: v }));
+                  }}
+                  options={[
+                    { value: "", label: "All" },
+                    { value: "pending", label: "Pending" },
+                    { value: "succeeded", label: "Succeeded" },
+                    { value: "failed", label: "Failed" },
+                    { value: "refunded", label: "Refunded" },
+                    {
+                      value: "partially_refunded",
+                      label: "Partially refunded",
+                    },
+                  ]}
+                />
+              </div>
+              <div className="overflow-x-auto rounded-xl border border-slate-800">
+                <table className="w-full min-w-[720px] text-left text-sm">
+                  <thead className="border-b border-slate-800 text-slate-500">
+                    <tr>
+                      <th className="p-2">Date</th>
+                      <th className="p-2">Enrollment</th>
+                      <th className="p-2">Amount</th>
+                      <th className="p-2">Status</th>
+                      <th className="p-2">Stripe</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {payments.map((r) => (
+                      <tr
+                        key={String(r._id)}
+                        className="border-t border-slate-800/80"
+                      >
+                        <td className="p-2 text-xs text-slate-400">
+                          {String(r.createdAt ?? "").slice(0, 19)}
+                        </td>
+                        <td className="p-2 font-mono text-xs">
+                          {String(r.enrollment ?? "")}
+                        </td>
+                        <td className="p-2">
+                          {formatMoney(
+                            Number(r.amountCents ?? 0) / 100,
+                            String(r.currency ?? "USD")
+                          )}
+                        </td>
+                        <td className="p-2 capitalize">
+                          {String(r.status ?? "").replace(/_/g, " ")}
+                        </td>
+                        <td className="p-2 max-w-[140px] truncate text-xs font-mono">
+                          {String(
+                            r.stripePaymentIntentId ||
+                              r.stripeCheckoutSessionId ||
+                              "—"
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <PaginationBar
+                meta={paymentsMeta}
+                noun="payments"
+                onPageChange={setPaymentsPage}
+              />
+              <p className="text-xs text-slate-500">
+                Create Checkout links from the Enrollments tab (“Stripe pay”).
+                Webhook{" "}
+                <code className="text-slate-400">/api/webhooks/stripe</code>{" "}
+                records success and refunds.
+              </p>
+            </div>
+          )}
+
+          {tab === "promos" && (
+            <div className="space-y-4">
+              <div className="flex flex-wrap items-end gap-3">
+                <label className="flex flex-col gap-1 text-xs text-slate-500">
+                  Search
+                  <input
+                    value={promoFilter.q}
+                    onChange={(e) => {
+                      setPromosPage(1);
+                      setPromoFilter((f) => ({ ...f, q: e.target.value }));
+                    }}
+                    className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white"
+                  />
+                </label>
+                <FilterSelect
+                  label="Active"
+                  value={promoFilter.active}
+                  onChange={(v) => {
+                    setPromosPage(1);
+                    setPromoFilter((f) => ({ ...f, active: v }));
+                  }}
+                  options={[
+                    { value: "", label: "All" },
+                    { value: "true", label: "Active" },
+                    { value: "false", label: "Inactive" },
+                  ]}
+                />
+                <button
+                  type="button"
+                  onClick={() => setPromoModal({ mode: "create" })}
+                  className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white"
+                >
+                  New promo
+                </button>
+              </div>
+              <div className="overflow-x-auto rounded-xl border border-slate-800">
+                <table className="w-full min-w-[900px] text-left text-sm">
+                  <thead className="border-b border-slate-800 text-slate-500">
+                    <tr>
+                      <th className="p-2">Code</th>
+                      <th className="p-2">Type</th>
+                      <th className="p-2">Value</th>
+                      <th className="p-2">Uses</th>
+                      <th className="p-2">Courses</th>
+                      <th className="p-2">Active</th>
+                      <th className="p-2" />
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {promos.map((r) => {
+                      const id = String(r._id ?? "");
+                      const code = String(r.code ?? "");
+                      const maxU = r.maxUses as number | null | undefined;
+                      const used = Number(r.usedCount ?? 0);
+                      const slugs = (r.courseSlugs as string[] | undefined) ?? [];
+                      return (
+                        <tr
+                          key={id || code}
+                          className="border-t border-slate-800/80"
+                        >
+                          <td className="p-2 font-mono text-xs">{code}</td>
+                          <td className="p-2">{String(r.discountType)}</td>
+                          <td className="p-2">
+                            {String(r.discountValue)} {String(r.currency ?? "")}
+                          </td>
+                          <td className="p-2 text-xs">
+                            {used}
+                            {maxU != null ? ` / ${maxU}` : ""}
+                          </td>
+                          <td className="p-2 text-xs max-w-[200px] truncate">
+                            {slugs.length ? slugs.join(", ") : "All"}
+                          </td>
+                          <td className="p-2">{String(r.isActive)}</td>
+                          <td className="p-2 space-x-2 whitespace-nowrap">
+                            <button
+                              type="button"
+                              className="text-primary text-xs"
+                              onClick={() => setPromoModal({ mode: "edit", id })}
+                            >
+                              Edit
+                            </button>
+                            <button
+                              type="button"
+                              className="text-slate-400 text-xs"
+                              onClick={() =>
+                                void patchPromo(id, {
+                                  isActive: !Boolean(r.isActive),
+                                })
+                              }
+                            >
+                              {r.isActive ? "Deactivate" : "Activate"}
+                            </button>
+                            <button
+                              type="button"
+                              className="text-red-400 text-xs"
+                              onClick={() => void deletePromo(id, code)}
+                            >
+                              Delete
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+              <PaginationBar
+                meta={promosMeta}
+                noun="promos"
+                onPageChange={setPromosPage}
+              />
+              <p className="text-xs text-slate-500">
+                Promo codes apply on top of the course catalog discount. Leave
+                course slugs empty for all courses, or list comma-separated
+                slugs to restrict.
+              </p>
             </div>
           )}
 
@@ -558,29 +1739,32 @@ export default function AdminDashboard() {
                 <input
                   placeholder="status (new/read/replied)"
                   value={conFilter.status}
-                  onChange={(e) =>
-                    setConFilter((f) => ({ ...f, status: e.target.value }))
-                  }
+                  onChange={(e) => {
+                    setContactsPage(1);
+                    setConFilter((f) => ({ ...f, status: e.target.value }));
+                  }}
                   className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm"
                 />
                 <input
                   placeholder="search"
                   value={conFilter.q}
-                  onChange={(e) =>
-                    setConFilter((f) => ({ ...f, q: e.target.value }))
-                  }
+                  onChange={(e) => {
+                    setContactsPage(1);
+                    setConFilter((f) => ({ ...f, q: e.target.value }));
+                  }}
                   className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm"
                 />
                 <label className="flex items-center gap-2 text-sm text-slate-400">
                   <input
                     type="checkbox"
                     checked={conFilter.challengeOnly}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      setContactsPage(1);
                       setConFilter((f) => ({
                         ...f,
                         challengeOnly: e.target.checked,
-                      }))
-                    }
+                      }));
+                    }}
                   />
                   Challenge signups only
                 </label>
@@ -633,6 +1817,11 @@ export default function AdminDashboard() {
                   </tbody>
                 </table>
               </div>
+              <PaginationBar
+                meta={contactsMeta}
+                noun="messages"
+                onPageChange={setContactsPage}
+              />
             </div>
           )}
 
@@ -642,17 +1831,19 @@ export default function AdminDashboard() {
                 <input
                   placeholder="search"
                   value={chFilter.q}
-                  onChange={(e) =>
-                    setChFilter((f) => ({ ...f, q: e.target.value }))
-                  }
+                  onChange={(e) => {
+                    setChallengesPage(1);
+                    setChFilter((f) => ({ ...f, q: e.target.value }));
+                  }}
                   className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm"
                 />
                 <FilterSelect
                   label="Published"
                   value={chFilter.published}
-                  onChange={(v) =>
-                    setChFilter((f) => ({ ...f, published: v }))
-                  }
+                  onChange={(v) => {
+                    setChallengesPage(1);
+                    setChFilter((f) => ({ ...f, published: v }));
+                  }}
                   options={[
                     { value: "", label: "All" },
                     { value: "true", label: "Yes" },
@@ -711,6 +1902,11 @@ export default function AdminDashboard() {
                   </tbody>
                 </table>
               </div>
+              <PaginationBar
+                meta={challengesMeta}
+                noun="challenges"
+                onPageChange={setChallengesPage}
+              />
             </div>
           )}
 
@@ -720,9 +1916,10 @@ export default function AdminDashboard() {
                 <FilterSelect
                   label="Active"
                   value={teamFilter.active}
-                  onChange={(v) =>
-                    setTeamFilter((f) => ({ ...f, active: v }))
-                  }
+                  onChange={(v) => {
+                    setTeamPage(1);
+                    setTeamFilter((f) => ({ ...f, active: v }));
+                  }}
                   options={[
                     { value: "", label: "All" },
                     { value: "true", label: "Active" },
@@ -787,10 +1984,182 @@ export default function AdminDashboard() {
                   </tbody>
                 </table>
               </div>
+              <PaginationBar
+                meta={teamMeta}
+                noun="members"
+                onPageChange={setTeamPage}
+              />
             </div>
           )}
         </main>
       </div>
+
+      {enrollmentDetail && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
+          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-slate-700 bg-slate-950 p-6 text-sm text-slate-200 shadow-xl">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-white">
+                Enrollment detail
+              </h2>
+              <button
+                type="button"
+                className="rounded-lg border border-slate-600 px-3 py-1 text-slate-300"
+                onClick={() => setEnrollmentDetail(null)}
+              >
+                Close
+              </button>
+            </div>
+            <section className="mb-6 space-y-2">
+              <h3 className="text-xs font-medium uppercase tracking-wide text-slate-500">
+                Form data
+              </h3>
+              <pre className="max-h-48 overflow-auto rounded-lg bg-slate-900/80 p-3 text-xs text-slate-300">
+                {JSON.stringify(enrollmentDetail.enrollment, null, 2)}
+              </pre>
+            </section>
+            <section className="mb-6 space-y-2">
+              <h3 className="text-xs font-medium uppercase tracking-wide text-slate-500">
+                Linked account (same email)
+              </h3>
+              {enrollmentDetail.linkedUser ? (
+                <>
+                  <p className="text-xs text-slate-400">
+                    {String(enrollmentDetail.linkedUser.name)} ·{" "}
+                    {String(enrollmentDetail.linkedUser.role)} · active:{" "}
+                    {String(enrollmentDetail.linkedUser.isActive)}
+                  </p>
+                  <p className="text-xs text-slate-500">Profile children:</p>
+                  <pre className="max-h-40 overflow-auto rounded-lg bg-slate-900/80 p-3 text-xs text-slate-300">
+                    {JSON.stringify(
+                      enrollmentDetail.linkedUser.children ?? [],
+                      null,
+                      2
+                    )}
+                  </pre>
+                </>
+              ) : (
+                <p className="text-slate-500">
+                  No user account with this enrollment email.
+                </p>
+              )}
+            </section>
+            <section className="space-y-2">
+              <h3 className="text-xs font-medium uppercase tracking-wide text-slate-500">
+                Instructor notes
+              </h3>
+              {enrollmentDetail.instructorNotes.length === 0 ? (
+                <p className="text-slate-500">No notes for this enrollment.</p>
+              ) : (
+                <ul className="space-y-3">
+                  {enrollmentDetail.instructorNotes.map((n) => (
+                    <li
+                      key={String(n._id)}
+                      className="rounded-lg border border-slate-800 bg-slate-900/50 p-3"
+                    >
+                      <div className="text-xs text-slate-500">
+                        {String(n.instructorName ?? "")} ·{" "}
+                        {String(n.type ?? "")} ·{" "}
+                        {String(n.createdAt ?? "").slice(0, 19)}
+                      </div>
+                      <div className="mt-1 font-medium text-slate-200">
+                        {String(n.title ?? "")}
+                      </div>
+                      <div className="mt-1 text-slate-400">
+                        {String(n.body ?? "")}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          </div>
+        </div>
+      )}
+
+      {userEdit && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
+          <div className="w-full max-w-md rounded-2xl border border-slate-700 bg-slate-950 p-6 text-sm text-slate-200 shadow-xl">
+            <h2 className="mb-4 text-lg font-semibold text-white">Edit user</h2>
+            <div className="space-y-3">
+              <label className="block text-xs text-slate-500">Name</label>
+              <input
+                value={String(userEdit.name ?? "")}
+                onChange={(e) =>
+                  setUserEdit((u) =>
+                    u ? { ...u, name: e.target.value } : u
+                  )
+                }
+                className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2"
+              />
+              <label className="block text-xs text-slate-500">Phone</label>
+              <input
+                value={String(userEdit.phone ?? "")}
+                onChange={(e) =>
+                  setUserEdit((u) =>
+                    u ? { ...u, phone: e.target.value } : u
+                  )
+                }
+                className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2"
+              />
+              <label className="block text-xs text-slate-500">Role</label>
+              <select
+                value={String(userEdit.role ?? "parent")}
+                onChange={(e) =>
+                  setUserEdit((u) => (u ? { ...u, role: e.target.value } : u))
+                }
+                className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2"
+              >
+                {["parent", "student", "instructor", "admin"].map((role) => (
+                  <option key={role} value={role}>
+                    {role}
+                  </option>
+                ))}
+              </select>
+              <label className="flex items-center gap-2 text-slate-300">
+                <input
+                  type="checkbox"
+                  checked={Boolean(userEdit.isActive)}
+                  onChange={(e) =>
+                    setUserEdit((u) =>
+                      u ? { ...u, isActive: e.target.checked } : u
+                    )
+                  }
+                />
+                Active
+              </label>
+            </div>
+            <div className="mt-6 flex justify-end gap-2">
+              <button
+                type="button"
+                className="rounded-lg border border-slate-600 px-4 py-2 text-slate-300"
+                onClick={() => setUserEdit(null)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="rounded-lg bg-primary px-4 py-2 text-white"
+                onClick={() => void saveUserEdit()}
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {categoryModal && (
+        <CategoryFormModal
+          mode={categoryModal.mode}
+          slug={categoryModal.slug}
+          onClose={() => setCategoryModal(null)}
+          onSaved={async () => {
+            setCategoryModal(null);
+            await loadCategoriesPage();
+            await loadCategoryOptions();
+          }}
+        />
+      )}
 
       {courseModal && (
         <CourseFormModal
@@ -801,6 +2170,19 @@ export default function AdminDashboard() {
             setCourseModal(null);
             await loadCourses();
             await loadOverview();
+          }}
+        />
+      )}
+
+      {promoModal && (
+        <PromoFormModal
+          key={promoModal.mode === "edit" ? promoModal.id : "create"}
+          mode={promoModal.mode}
+          promoId={promoModal.mode === "edit" ? promoModal.id : undefined}
+          onClose={() => setPromoModal(null)}
+          onSaved={async () => {
+            setPromoModal(null);
+            await loadPromos();
           }}
         />
       )}
@@ -852,6 +2234,42 @@ function StatCard({
   );
 }
 
+function PaginationBar({
+  meta,
+  onPageChange,
+  noun = "rows",
+}: {
+  meta: ListMeta;
+  onPageChange: (page: number) => void;
+  noun?: string;
+}) {
+  return (
+    <div className="flex flex-wrap items-center justify-between gap-2 border-t border-slate-800/80 pt-3 text-sm text-slate-400">
+      <span>
+        Page {meta.page} of {meta.totalPages} — {meta.total} {noun}
+      </span>
+      <div className="flex gap-2">
+        <button
+          type="button"
+          disabled={meta.page <= 1}
+          onClick={() => onPageChange(meta.page - 1)}
+          className="rounded-lg border border-slate-700 px-3 py-1.5 text-slate-200 hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          Previous
+        </button>
+        <button
+          type="button"
+          disabled={meta.page >= meta.totalPages}
+          onClick={() => onPageChange(meta.page + 1)}
+          className="rounded-lg border border-slate-700 px-3 py-1.5 text-slate-200 hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function FilterSelect({
   label,
   value,
@@ -881,6 +2299,305 @@ function FilterSelect({
   );
 }
 
+function promoDateToLocalInput(iso: string | Date | undefined | null): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+function hydratePromoForm(row: Record<string, unknown>) {
+  const slugs = (row.courseSlugs as string[] | undefined) ?? [];
+  return {
+    code: String(row.code ?? ""),
+    discountType: (row.discountType === "fixed" ? "fixed" : "percent") as
+      | "percent"
+      | "fixed",
+    discountValue: Number(row.discountValue ?? 0),
+    description: String(row.description ?? ""),
+    maxUses:
+      row.maxUses != null && row.maxUses !== "" ? String(row.maxUses) : "",
+    validFrom: promoDateToLocalInput(row.validFrom as string | undefined),
+    validUntil: promoDateToLocalInput(row.validUntil as string | undefined),
+    courseSlugs: slugs.join(", "),
+    isActive: row.isActive !== false,
+  };
+}
+
+function defaultPromoForm() {
+  return {
+    code: "",
+    discountType: "percent" as "percent" | "fixed",
+    discountValue: 10,
+    description: "",
+    maxUses: "",
+    validFrom: "",
+    validUntil: "",
+    courseSlugs: "",
+    isActive: true,
+  };
+}
+
+function PromoFormModal({
+  mode,
+  promoId,
+  onClose,
+  onSaved,
+}: {
+  mode: "create" | "edit";
+  promoId?: string;
+  onClose: () => void;
+  onSaved: () => Promise<void>;
+}) {
+  const [loading, setLoading] = useState(mode === "edit");
+  const [saveErr, setSaveErr] = useState("");
+  const [usedCount, setUsedCount] = useState<number | null>(null);
+  const [form, setForm] = useState(defaultPromoForm);
+
+  useEffect(() => {
+    if (mode !== "edit" || !promoId) {
+      setLoading(false);
+      setUsedCount(null);
+      setForm(defaultPromoForm());
+      return;
+    }
+    let cancelled = false;
+    setLoading(true);
+    setSaveErr("");
+    (async () => {
+      try {
+        const row = await adminFetch<Record<string, unknown>>(
+          `/admin/promos/${promoId}`
+        );
+        if (cancelled) return;
+        setForm(hydratePromoForm(row));
+        setUsedCount(
+          row.usedCount != null ? Number(row.usedCount) : null
+        );
+      } catch (e) {
+        if (!cancelled) {
+          setSaveErr(e instanceof Error ? e.message : "Load failed");
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [mode, promoId]);
+
+  const buildPayload = (forCreate: boolean): Record<string, unknown> => {
+    const courseSlugs = form.courseSlugs
+      .split(",")
+      .map((s) => s.trim().toLowerCase())
+      .filter(Boolean);
+    const base: Record<string, unknown> = {
+      discountType: form.discountType,
+      discountValue: Number(form.discountValue),
+      currency: "USD",
+      isActive: form.isActive,
+      description: form.description.trim(),
+      maxUses: form.maxUses.trim() ? Number(form.maxUses) : null,
+      validFrom: form.validFrom
+        ? new Date(form.validFrom).toISOString()
+        : null,
+      validUntil: form.validUntil
+        ? new Date(form.validUntil).toISOString()
+        : null,
+      courseSlugs,
+    };
+    if (forCreate) {
+      base.code = form.code.trim();
+    }
+    return base;
+  };
+
+  const save = async () => {
+    setSaveErr("");
+    if (mode === "create" && !form.code.trim()) {
+      setSaveErr("Code is required");
+      return;
+    }
+    try {
+      if (mode === "create") {
+        await adminFetch("/admin/promos", {
+          method: "POST",
+          body: JSON.stringify(buildPayload(true)),
+        });
+      } else if (promoId) {
+        await adminFetch(`/admin/promos/${promoId}`, {
+          method: "PATCH",
+          body: JSON.stringify(buildPayload(false)),
+        });
+      }
+      await onSaved();
+    } catch (e) {
+      setSaveErr(e instanceof Error ? e.message : "Save failed");
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
+      <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-slate-700 bg-slate-900 p-6">
+        <h2 className="text-lg font-semibold text-white">
+          {mode === "create" ? "New promo code" : "Edit promo code"}
+        </h2>
+        {mode === "edit" && usedCount != null ? (
+          <p className="mt-2 text-xs text-slate-500">
+            Redemptions recorded: <span className="text-slate-300">{usedCount}</span>{" "}
+            (code cannot be changed)
+          </p>
+        ) : null}
+        {saveErr ? (
+          <p className="mt-3 rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-300">
+            {saveErr}
+          </p>
+        ) : null}
+        {loading ? (
+          <p className="mt-4 text-slate-400">Loading…</p>
+        ) : (
+        <div className="mt-4 grid gap-3 text-sm">
+          <label className="block text-slate-400">
+            <span className="mb-1 block text-xs">Code</span>
+            <input
+              value={form.code}
+              readOnly={mode === "edit"}
+              onChange={(e) => setForm((f) => ({ ...f, code: e.target.value }))}
+              className={`w-full rounded border border-slate-700 bg-slate-950 px-2 py-1 font-mono uppercase ${
+                mode === "edit" ? "opacity-70 cursor-not-allowed" : ""
+              }`}
+            />
+          </label>
+          <div className="grid grid-cols-2 gap-2">
+            <label className="block text-slate-400">
+              <span className="mb-1 block text-xs">Type</span>
+              <select
+                value={form.discountType}
+                onChange={(e) =>
+                  setForm((f) => ({
+                    ...f,
+                    discountType: e.target.value as "percent" | "fixed",
+                  }))
+                }
+                className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              >
+                <option value="percent">Percent</option>
+                <option value="fixed">Fixed amount</option>
+              </select>
+            </label>
+            <label className="block text-slate-400">
+              <span className="mb-1 block text-xs">Value</span>
+              <input
+                type="number"
+                min={0.01}
+                step={0.01}
+                value={form.discountValue}
+                onChange={(e) =>
+                  setForm((f) => ({
+                    ...f,
+                    discountValue: Number(e.target.value),
+                  }))
+                }
+                className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              />
+            </label>
+          </div>
+          <p className="text-xs text-slate-500">
+            Fixed-amount promos are in <span className="text-slate-400">USD</span> only.
+          </p>
+          <label className="block text-slate-400">
+            <span className="mb-1 block text-xs">Max uses (empty = unlimited)</span>
+            <input
+              value={form.maxUses}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, maxUses: e.target.value }))
+              }
+              className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+            />
+          </label>
+          <div className="grid grid-cols-2 gap-2">
+            <label className="block text-slate-400">
+              <span className="mb-1 block text-xs">Valid from</span>
+              <input
+                type="datetime-local"
+                value={form.validFrom}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, validFrom: e.target.value }))
+                }
+                className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              />
+            </label>
+            <label className="block text-slate-400">
+              <span className="mb-1 block text-xs">Valid until</span>
+              <input
+                type="datetime-local"
+                value={form.validUntil}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, validUntil: e.target.value }))
+                }
+                className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              />
+            </label>
+          </div>
+          <label className="block text-slate-400">
+            <span className="mb-1 block text-xs">
+              Course slugs (comma-separated, empty = all)
+            </span>
+            <input
+              value={form.courseSlugs}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, courseSlugs: e.target.value }))
+              }
+              placeholder="python-for-kids, robotics-101"
+              className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+            />
+          </label>
+          <label className="block text-slate-400">
+            <span className="mb-1 block text-xs">Description</span>
+            <input
+              value={form.description}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, description: e.target.value }))
+              }
+              className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+            />
+          </label>
+          <label className="flex items-center gap-2 text-slate-300">
+            <input
+              type="checkbox"
+              checked={form.isActive}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, isActive: e.target.checked }))
+              }
+            />
+            Active
+          </label>
+        </div>
+        )}
+        <div className="mt-6 flex justify-end gap-2">
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg border border-slate-600 px-4 py-2 text-sm"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            disabled={loading}
+            onClick={() => void save()}
+            className="rounded-lg bg-primary px-4 py-2 text-sm text-white disabled:opacity-50"
+          >
+            {mode === "create" ? "Create" : "Save"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function CourseFormModal({
   mode,
   slug,
@@ -893,6 +2610,8 @@ function CourseFormModal({
   onSaved: () => Promise<void>;
 }) {
   const [loading, setLoading] = useState(mode === "edit");
+  const [saveErr, setSaveErr] = useState("");
+  const [catRows, setCatRows] = useState<AdminCategoryRow[]>([]);
   const [form, setForm] = useState({
     slug: "",
     category: "programming",
@@ -910,8 +2629,29 @@ function CourseFormModal({
     skillsEn: "",
     skillsAr: "",
     price: 0,
-    currency: "USD",
+    discountPercent: 0,
   });
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const raw = await adminFetch<unknown>(
+          "/categories/admin/list?page=1&limit=200"
+        );
+        const { items } = normalizePagedResponse<AdminCategoryRow>(
+          raw,
+          PAGE_SIZE
+        );
+        if (!cancelled) setCatRows(items);
+      } catch {
+        if (!cancelled) setCatRows([]);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (mode !== "edit" || !slug) return;
@@ -940,7 +2680,7 @@ function CourseFormModal({
           skillsEn: (skills?.en ?? []).join(", "),
           skillsAr: (skills?.ar ?? []).join(", "),
           price: Number(c.price ?? 0),
-          currency: String(c.currency ?? "USD"),
+          discountPercent: Number(c.discountPercent ?? 0),
         });
       } finally {
         setLoading(false);
@@ -949,14 +2689,19 @@ function CourseFormModal({
   }, [mode, slug]);
 
   const save = async () => {
+    setSaveErr("");
+    const lessons = Math.max(1, Number(form.lessons) || 1);
+    const durationWeeks = Math.max(1, Number(form.durationWeeks) || 1);
+    const ageMin = Math.min(18, Math.max(6, Number(form.ageMin) || 6));
+    const ageMax = Math.min(18, Math.max(6, Number(form.ageMax) || 18));
     const body = {
-      slug: form.slug,
-      category: form.category,
-      ageMin: form.ageMin,
-      ageMax: form.ageMax,
+      slug: form.slug.trim(),
+      category: String(form.category).trim().toLowerCase(),
+      ageMin: Math.min(ageMin, ageMax),
+      ageMax: Math.max(ageMin, ageMax),
       level: form.level,
-      lessons: form.lessons,
-      durationWeeks: form.durationWeeks,
+      lessons,
+      durationWeeks,
       iconName: form.iconName,
       color: form.color,
       title: { en: form.titleEn, ar: form.titleAr },
@@ -965,18 +2710,30 @@ function CourseFormModal({
         en: form.skillsEn.split(",").map((s) => s.trim()).filter(Boolean),
         ar: form.skillsAr.split(",").map((s) => s.trim()).filter(Boolean),
       },
-      price: form.price,
-      currency: form.currency,
+      price:
+        Math.round(Math.max(0, Number(form.price) || 0) * 100) / 100,
+      currency: "USD",
+      discountPercent: Math.min(
+        100,
+        Math.max(0, Number(form.discountPercent) || 0)
+      ),
     };
-    if (mode === "create") {
-      await adminFetch("/courses", { method: "POST", body: JSON.stringify(body) });
-    } else {
-      await adminFetch(`/courses/${slug}`, {
-        method: "PUT",
-        body: JSON.stringify(body),
-      });
+    try {
+      if (mode === "create") {
+        await adminFetch("/courses", {
+          method: "POST",
+          body: JSON.stringify(body),
+        });
+      } else {
+        await adminFetch(`/courses/${slug}`, {
+          method: "PUT",
+          body: JSON.stringify(body),
+        });
+      }
+      await onSaved();
+    } catch (e) {
+      setSaveErr(e instanceof Error ? e.message : "Save failed");
     }
-    await onSaved();
   };
 
   return (
@@ -985,67 +2742,168 @@ function CourseFormModal({
         <h2 className="text-lg font-semibold text-white">
           {mode === "create" ? "New course" : "Edit course"}
         </h2>
+        {saveErr ? (
+          <p className="mt-3 rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-300">
+            {saveErr}
+          </p>
+        ) : null}
         {loading ? (
           <p className="mt-4 text-slate-400">Loading…</p>
         ) : (
           <div className="mt-4 grid gap-3 text-sm">
-            <input
-              placeholder="slug"
-              disabled={mode === "edit"}
-              value={form.slug}
-              onChange={(e) => setForm((f) => ({ ...f, slug: e.target.value }))}
-              className="rounded border border-slate-700 bg-slate-950 px-2 py-1 disabled:opacity-60"
-            />
+            <label className="block text-slate-400">
+              <span className="mb-1 block text-xs">Slug (URL id)</span>
+              <input
+                placeholder="e.g. my-new-course"
+                disabled={mode === "edit"}
+                value={form.slug}
+                onChange={(e) => setForm((f) => ({ ...f, slug: e.target.value }))}
+                className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1 disabled:opacity-60"
+              />
+            </label>
             <div className="grid grid-cols-2 gap-2">
-              <input
-                type="number"
-                value={form.ageMin}
-                onChange={(e) =>
-                  setForm((f) => ({ ...f, ageMin: +e.target.value }))
-                }
-                className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
-              />
-              <input
-                type="number"
-                value={form.ageMax}
-                onChange={(e) =>
-                  setForm((f) => ({ ...f, ageMax: +e.target.value }))
-                }
-                className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
-              />
+              <label className="block text-slate-400">
+                <span className="mb-1 block text-xs">Age min</span>
+                <input
+                  type="number"
+                  min={6}
+                  max={18}
+                  value={form.ageMin}
+                  onChange={(e) =>
+                    setForm((f) => ({ ...f, ageMin: +e.target.value }))
+                  }
+                  className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+                />
+              </label>
+              <label className="block text-slate-400">
+                <span className="mb-1 block text-xs">Age max</span>
+                <input
+                  type="number"
+                  min={6}
+                  max={18}
+                  value={form.ageMax}
+                  onChange={(e) =>
+                    setForm((f) => ({ ...f, ageMax: +e.target.value }))
+                  }
+                  className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+                />
+              </label>
             </div>
-            <select
-              value={form.category}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, category: e.target.value }))
-              }
-              className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
-            >
-              {[
-                "programming",
-                "robotics",
-                "algorithms",
-                "arabic",
-                "quran",
-              ].map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
-            <select
-              value={form.level}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, level: e.target.value }))
-              }
-              className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
-            >
-              {["beginner", "intermediate", "advanced"].map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
+            <div className="grid grid-cols-2 gap-2">
+              <label className="block text-slate-400">
+                <span className="mb-1 block text-xs">Lessons</span>
+                <input
+                  type="number"
+                  min={1}
+                  value={form.lessons}
+                  onChange={(e) =>
+                    setForm((f) => ({ ...f, lessons: +e.target.value }))
+                  }
+                  className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+                />
+              </label>
+              <label className="block text-slate-400">
+                <span className="mb-1 block text-xs">Duration (weeks)</span>
+                <input
+                  type="number"
+                  min={1}
+                  value={form.durationWeeks}
+                  onChange={(e) =>
+                    setForm((f) => ({ ...f, durationWeeks: +e.target.value }))
+                  }
+                  className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+                />
+              </label>
+            </div>
+            <label className="block text-slate-400">
+              <span className="mb-1 block text-xs">Category</span>
+              <select
+                value={form.category}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, category: e.target.value }))
+                }
+                className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              >
+                {(catRows.filter(
+                  (r) => r.isActive || r.slug === form.category
+                ).length
+                  ? catRows.filter(
+                      (r) => r.isActive || r.slug === form.category
+                    )
+                  : [
+                      "programming",
+                      "robotics",
+                      "algorithms",
+                      "arabic",
+                      "quran",
+                    ].map((slug) => ({
+                      slug,
+                      title: { en: slug, ar: slug },
+                    }))
+                ).map((c) => (
+                  <option key={c.slug} value={c.slug}>
+                    {c.title.en} ({c.slug})
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="block text-slate-400">
+              <span className="mb-1 block text-xs">Level</span>
+              <select
+                value={form.level}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, level: e.target.value }))
+                }
+                className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              >
+                {["beginner", "intermediate", "advanced"].map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <p className="rounded-lg border border-amber-500/25 bg-amber-500/10 px-3 py-2 text-xs text-amber-100/90">
+              <strong>List price</strong> drives catalog revenue estimates.{" "}
+              <strong>Catalog discount</strong> is a percent off that list price
+              before promo codes. Stripe Checkout charges the enrollment&apos;s{" "}
+              <strong>amount due</strong> (after catalog + promo).
+            </p>
+            <label className="block text-slate-400">
+              <span className="mb-1 block text-xs">Price (USD)</span>
+              <input
+                type="number"
+                min={0}
+                step={0.01}
+                value={form.price}
+                onChange={(e) =>
+                  setForm((f) => ({
+                    ...f,
+                    price: Math.max(0, Number(e.target.value) || 0),
+                  }))
+                }
+                className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              />
+            </label>
+            <label className="block text-slate-400">
+              <span className="mb-1 block text-xs">Catalog discount (%)</span>
+              <input
+                type="number"
+                min={0}
+                max={100}
+                value={form.discountPercent}
+                onChange={(e) =>
+                  setForm((f) => ({
+                    ...f,
+                    discountPercent: Math.min(
+                      100,
+                      Math.max(0, Number(e.target.value) || 0)
+                    ),
+                  }))
+                }
+                className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              />
+            </label>
             <input
               placeholder="title EN"
               value={form.titleEn}
@@ -1108,7 +2966,7 @@ function CourseFormModal({
           </button>
           <button
             type="button"
-            onClick={() => save().catch(console.error)}
+            onClick={() => void save()}
             disabled={loading}
             className="rounded-lg bg-primary px-4 py-2 text-sm text-white disabled:opacity-50"
           >
@@ -1118,6 +2976,200 @@ function CourseFormModal({
       </div>
     </div>
   );
+}
+
+function CategoryFormModal({
+  mode,
+  slug,
+  onClose,
+  onSaved,
+}: {
+  mode: "create" | "edit";
+  slug?: string;
+  onClose: () => void;
+  onSaved: () => Promise<void>;
+}) {
+  const [loading, setLoading] = useState(mode === "edit");
+  const [saveErr, setSaveErr] = useState("");
+  const [form, setForm] = useState({
+    slug: "",
+    titleEn: "",
+    titleAr: "",
+    sortOrder: 100,
+    isActive: true,
+  });
+
+  useEffect(() => {
+    if (mode !== "edit" || !slug) return;
+    (async () => {
+      try {
+        const c = await adminFetch<AdminCategoryRow>(
+          `/categories/admin/by-slug/${slug}`
+        );
+        setForm({
+          slug: c.slug,
+          titleEn: c.title.en,
+          titleAr: c.title.ar,
+          sortOrder: c.sortOrder,
+          isActive: c.isActive,
+        });
+      } catch {
+        setSaveErr("Failed to load category");
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [mode, slug]);
+
+  const save = async () => {
+    setSaveErr("");
+    try {
+      if (mode === "create") {
+        await adminFetch("/categories", {
+          method: "POST",
+          body: JSON.stringify({
+            slug: form.slug.trim().toLowerCase(),
+            title: { en: form.titleEn.trim(), ar: form.titleAr.trim() },
+            sortOrder: Number(form.sortOrder) || 0,
+            isActive: form.isActive,
+          }),
+        });
+      } else if (slug) {
+        await adminFetch(`/categories/${slug}`, {
+          method: "PUT",
+          body: JSON.stringify({
+            title: { en: form.titleEn.trim(), ar: form.titleAr.trim() },
+            sortOrder: Number(form.sortOrder) || 0,
+            isActive: form.isActive,
+          }),
+        });
+      }
+      await onSaved();
+    } catch (e) {
+      setSaveErr(e instanceof Error ? e.message : "Save failed");
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
+      <div className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl border border-slate-700 bg-slate-900 p-6">
+        <h2 className="text-lg font-semibold text-white">
+          {mode === "create" ? "New category" : "Edit category"}
+        </h2>
+        {saveErr ? (
+          <p className="mt-3 rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-300">
+            {saveErr}
+          </p>
+        ) : null}
+        {loading ? (
+          <p className="mt-4 text-slate-400">Loading…</p>
+        ) : (
+          <div className="mt-4 grid gap-3 text-sm">
+            <label className="block text-slate-400">
+              <span className="mb-1 block text-xs">Slug (kebab-case)</span>
+              <input
+                placeholder="e.g. data-science"
+                disabled={mode === "edit"}
+                value={form.slug}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, slug: e.target.value }))
+                }
+                className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1 disabled:opacity-60"
+              />
+            </label>
+            <input
+              placeholder="Title EN"
+              value={form.titleEn}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, titleEn: e.target.value }))
+              }
+              className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
+            />
+            <input
+              placeholder="Title AR"
+              value={form.titleAr}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, titleAr: e.target.value }))
+              }
+              className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
+            />
+            <label className="block text-slate-400">
+              <span className="mb-1 block text-xs">Sort order</span>
+              <input
+                type="number"
+                value={form.sortOrder}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, sortOrder: +e.target.value }))
+                }
+                className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              />
+            </label>
+            <label className="flex items-center gap-2 text-slate-300">
+              <input
+                type="checkbox"
+                checked={form.isActive}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, isActive: e.target.checked }))
+                }
+              />
+              Active (listed publicly; required for new courses)
+            </label>
+          </div>
+        )}
+        <div className="mt-6 flex justify-end gap-2">
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg border border-slate-600 px-4 py-2 text-sm"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={() => void save()}
+            disabled={loading}
+            className="rounded-lg bg-primary px-4 py-2 text-sm text-white disabled:opacity-50"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+type ChallengeStepForm = {
+  titleEn: string;
+  titleAr: string;
+  bodyEn: string;
+  bodyAr: string;
+};
+
+const EMPTY_CHALLENGE_STEP: ChallengeStepForm = {
+  titleEn: "",
+  titleAr: "",
+  bodyEn: "",
+  bodyAr: "",
+};
+
+function challengeStepsFromInitial(
+  raw: unknown,
+  isNew: boolean
+): ChallengeStepForm[] {
+  if (!Array.isArray(raw) || raw.length === 0) {
+    return isNew
+      ? Array.from({ length: 4 }, () => ({ ...EMPTY_CHALLENGE_STEP }))
+      : [{ ...EMPTY_CHALLENGE_STEP }];
+  }
+  return raw.map((item) => {
+    const o = item as Record<string, unknown>;
+    return {
+      titleEn: String(o.titleEn ?? ""),
+      titleAr: String(o.titleAr ?? ""),
+      bodyEn: String(o.bodyEn ?? ""),
+      bodyAr: String(o.bodyAr ?? ""),
+    };
+  });
 }
 
 function ChallengeFormModal({
@@ -1130,6 +3182,7 @@ function ChallengeFormModal({
   onSaved: () => Promise<void>;
 }) {
   const isNew = !initial._id;
+  const [saveErr, setSaveErr] = useState("");
   const [form, setForm] = useState({
     slug: String(initial.slug ?? ""),
     monthKey: String(initial.monthKey ?? ""),
@@ -1139,105 +3192,326 @@ function ChallengeFormModal({
     titleAr: String(initial.titleAr ?? ""),
     subtitleEn: String(initial.subtitleEn ?? ""),
     subtitleAr: String(initial.subtitleAr ?? ""),
+    formTitleEn: String(initial.formTitleEn ?? ""),
+    formTitleAr: String(initial.formTitleAr ?? ""),
+    formSubtitleEn: String(initial.formSubtitleEn ?? ""),
+    formSubtitleAr: String(initial.formSubtitleAr ?? ""),
     hintBodyEn: String(initial.hintBodyEn ?? ""),
     hintBodyAr: String(initial.hintBodyAr ?? ""),
     isPublished: Boolean(initial.isPublished),
-    stepsJson: JSON.stringify(initial.steps ?? [], null, 2),
   });
+  const [steps, setSteps] = useState<ChallengeStepForm[]>(() =>
+    challengeStepsFromInitial(initial.steps, isNew)
+  );
+
+  const updateStep = (
+    index: number,
+    patch: Partial<ChallengeStepForm>
+  ) => {
+    setSteps((prev) =>
+      prev.map((s, i) => (i === index ? { ...s, ...patch } : s))
+    );
+  };
+
+  const addStep = () => {
+    setSteps((prev) => [...prev, { ...EMPTY_CHALLENGE_STEP }]);
+  };
+
+  const removeStep = (index: number) => {
+    setSteps((prev) =>
+      prev.length <= 1 ? prev : prev.filter((_, i) => i !== index)
+    );
+  };
 
   const save = async () => {
-    let steps: unknown[] = [];
-    try {
-      steps = JSON.parse(form.stepsJson) as unknown[];
-    } catch {
-      alert("Steps must be valid JSON array");
-      return;
-    }
+    setSaveErr("");
+    const stepsPayload = steps.map((s) => ({
+      titleEn: s.titleEn.trim(),
+      titleAr: s.titleAr.trim(),
+      bodyEn: s.bodyEn.trim(),
+      bodyAr: s.bodyAr.trim(),
+    }));
     const body = {
-      slug: form.slug,
-      monthKey: form.monthKey,
-      badgeEn: form.badgeEn,
-      badgeAr: form.badgeAr,
-      titleEn: form.titleEn,
-      titleAr: form.titleAr,
-      subtitleEn: form.subtitleEn,
-      subtitleAr: form.subtitleAr,
-      hintBodyEn: form.hintBodyEn,
-      hintBodyAr: form.hintBodyAr,
+      slug: form.slug.trim(),
+      monthKey: form.monthKey.trim(),
+      badgeEn: form.badgeEn.trim(),
+      badgeAr: form.badgeAr.trim(),
+      titleEn: form.titleEn.trim(),
+      titleAr: form.titleAr.trim(),
+      subtitleEn: form.subtitleEn.trim(),
+      subtitleAr: form.subtitleAr.trim(),
+      formTitleEn: form.formTitleEn.trim(),
+      formTitleAr: form.formTitleAr.trim(),
+      formSubtitleEn: form.formSubtitleEn.trim(),
+      formSubtitleAr: form.formSubtitleAr.trim(),
+      hintBodyEn: form.hintBodyEn.trim(),
+      hintBodyAr: form.hintBodyAr.trim(),
       isPublished: form.isPublished,
-      steps,
+      steps: stepsPayload,
     };
-    if (isNew) {
-      await adminFetch("/challenges", {
-        method: "POST",
-        body: JSON.stringify(body),
-      });
-    } else {
-      await adminFetch(`/challenges/${String(initial._id)}`, {
-        method: "PUT",
-        body: JSON.stringify(body),
-      });
+    try {
+      if (isNew) {
+        await adminFetch("/challenges", {
+          method: "POST",
+          body: JSON.stringify(body),
+        });
+      } else {
+        await adminFetch(`/challenges/${String(initial._id)}`, {
+          method: "PUT",
+          body: JSON.stringify(body),
+        });
+      }
+      await onSaved();
+    } catch (e) {
+      setSaveErr(e instanceof Error ? e.message : "Save failed");
     }
-    await onSaved();
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-      <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-slate-700 bg-slate-900 p-6">
+      <div className="max-h-[92vh] w-full max-w-3xl overflow-y-auto rounded-2xl border border-slate-700 bg-slate-900 p-6">
         <h2 className="text-lg font-semibold text-white">
           {isNew ? "New challenge" : "Edit challenge"}
         </h2>
-        <div className="mt-4 grid gap-2 text-sm">
-          <input
-            placeholder="slug"
-            value={form.slug}
-            disabled={!isNew}
-            onChange={(e) => setForm((f) => ({ ...f, slug: e.target.value }))}
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
-          />
-          <input
-            placeholder="monthKey YYYY-MM"
-            value={form.monthKey}
-            onChange={(e) =>
-              setForm((f) => ({ ...f, monthKey: e.target.value }))
-            }
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
-          />
-          <input
-            placeholder="title EN"
-            value={form.titleEn}
-            onChange={(e) =>
-              setForm((f) => ({ ...f, titleEn: e.target.value }))
-            }
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
-          />
-          <input
-            placeholder="title AR"
-            value={form.titleAr}
-            onChange={(e) =>
-              setForm((f) => ({ ...f, titleAr: e.target.value }))
-            }
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
-          />
-          <label className="flex items-center gap-2 text-slate-400">
-            <input
-              type="checkbox"
-              checked={form.isPublished}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, isPublished: e.target.checked }))
-              }
-            />
-            Published
-          </label>
-          <textarea
-            value={form.stepsJson}
-            onChange={(e) =>
-              setForm((f) => ({ ...f, stepsJson: e.target.value }))
-            }
-            className="font-mono text-xs rounded border border-slate-700 bg-slate-950 px-2 py-1"
-            rows={8}
-            placeholder='[{"titleEn":"","titleAr":"","bodyEn":"","bodyAr":""}]'
-          />
+        <p className="mt-1 text-xs text-slate-500">
+          Steps match the public challenge page: Step 1…N with title and
+          description (EN/AR). The hint and signup block use the fields below.
+        </p>
+        {saveErr ? (
+          <p className="mt-3 rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-300">
+            {saveErr}
+          </p>
+        ) : null}
+        <div className="mt-4 space-y-6 text-sm">
+          <section className="space-y-2">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+              Basics
+            </h3>
+            <div className="grid gap-2 sm:grid-cols-2">
+              <input
+                placeholder="Slug (unique)"
+                value={form.slug}
+                disabled={!isNew}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, slug: e.target.value }))
+                }
+                className="rounded border border-slate-700 bg-slate-950 px-2 py-1 disabled:opacity-60 sm:col-span-2"
+              />
+              <input
+                placeholder="Month key (YYYY-MM)"
+                value={form.monthKey}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, monthKey: e.target.value }))
+                }
+                className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              />
+              <label className="flex items-center gap-2 text-slate-400 sm:col-span-2">
+                <input
+                  type="checkbox"
+                  checked={form.isPublished}
+                  onChange={(e) =>
+                    setForm((f) => ({ ...f, isPublished: e.target.checked }))
+                  }
+                />
+                Published
+              </label>
+              <input
+                placeholder="Badge EN (pill)"
+                value={form.badgeEn}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, badgeEn: e.target.value }))
+                }
+                className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              />
+              <input
+                placeholder="Badge AR"
+                value={form.badgeAr}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, badgeAr: e.target.value }))
+                }
+                className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              />
+              <input
+                placeholder="Title EN"
+                value={form.titleEn}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, titleEn: e.target.value }))
+                }
+                className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              />
+              <input
+                placeholder="Title AR"
+                value={form.titleAr}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, titleAr: e.target.value }))
+                }
+                className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              />
+              <input
+                placeholder="Subtitle EN"
+                value={form.subtitleEn}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, subtitleEn: e.target.value }))
+                }
+                className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              />
+              <input
+                placeholder="Subtitle AR"
+                value={form.subtitleAr}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, subtitleAr: e.target.value }))
+                }
+                className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              />
+            </div>
+          </section>
+
+          <section className="space-y-3">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                Steps (how it works)
+              </h3>
+              <button
+                type="button"
+                onClick={addStep}
+                className="rounded-lg border border-slate-600 px-3 py-1 text-xs text-slate-300 hover:bg-slate-800"
+              >
+                Add step
+              </button>
+            </div>
+            <div className="space-y-4">
+              {steps.map((step, index) => (
+                <div
+                  key={index}
+                  className="rounded-xl border border-slate-700 bg-slate-950/50 p-4"
+                >
+                  <div className="mb-3 flex items-center justify-between gap-2">
+                    <span className="text-sm font-medium text-white">
+                      Step {index + 1}
+                    </span>
+                    {steps.length > 1 ? (
+                      <button
+                        type="button"
+                        onClick={() => removeStep(index)}
+                        className="text-xs text-red-400 hover:underline"
+                      >
+                        Remove
+                      </button>
+                    ) : null}
+                  </div>
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    <input
+                      placeholder="Step title (EN)"
+                      value={step.titleEn}
+                      onChange={(e) =>
+                        updateStep(index, { titleEn: e.target.value })
+                      }
+                      className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
+                    />
+                    <input
+                      placeholder="Step title (AR)"
+                      value={step.titleAr}
+                      onChange={(e) =>
+                        updateStep(index, { titleAr: e.target.value })
+                      }
+                      className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
+                    />
+                    <label className="block text-slate-500 sm:col-span-2">
+                      <span className="mb-1 block text-xs">
+                        Description (EN)
+                      </span>
+                      <textarea
+                        placeholder="What participants do in this step…"
+                        value={step.bodyEn}
+                        onChange={(e) =>
+                          updateStep(index, { bodyEn: e.target.value })
+                        }
+                        className="min-h-[72px] w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+                        rows={3}
+                      />
+                    </label>
+                    <label className="block text-slate-500 sm:col-span-2">
+                      <span className="mb-1 block text-xs">
+                        Description (AR)
+                      </span>
+                      <textarea
+                        placeholder="وصف الخطوة…"
+                        value={step.bodyAr}
+                        onChange={(e) =>
+                          updateStep(index, { bodyAr: e.target.value })
+                        }
+                        className="min-h-[72px] w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+                        rows={3}
+                      />
+                    </label>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="space-y-2">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+              Hint & signup section
+            </h3>
+            <div className="grid gap-2 sm:grid-cols-2">
+              <input
+                placeholder="Form heading EN (optional)"
+                value={form.formTitleEn}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, formTitleEn: e.target.value }))
+                }
+                className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              />
+              <input
+                placeholder="Form heading AR"
+                value={form.formTitleAr}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, formTitleAr: e.target.value }))
+                }
+                className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              />
+              <input
+                placeholder="Form subtitle EN"
+                value={form.formSubtitleEn}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, formSubtitleEn: e.target.value }))
+                }
+                className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              />
+              <input
+                placeholder="Form subtitle AR"
+                value={form.formSubtitleAr}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, formSubtitleAr: e.target.value }))
+                }
+                className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              />
+            </div>
+            <label className="block text-slate-500">
+              <span className="mb-1 block text-xs">Hint body (EN)</span>
+              <textarea
+                value={form.hintBodyEn}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, hintBodyEn: e.target.value }))
+                }
+                className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+                rows={3}
+                placeholder="Tips shown in the collapsible hint…"
+              />
+            </label>
+            <label className="block text-slate-500">
+              <span className="mb-1 block text-xs">Hint body (AR)</span>
+              <textarea
+                value={form.hintBodyAr}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, hintBodyAr: e.target.value }))
+                }
+                className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+                rows={3}
+              />
+            </label>
+          </section>
         </div>
         <div className="mt-6 flex justify-end gap-2">
           <button
@@ -1249,7 +3523,7 @@ function ChallengeFormModal({
           </button>
           <button
             type="button"
-            onClick={() => save().catch(console.error)}
+            onClick={() => void save()}
             className="rounded-lg bg-primary px-4 py-2 text-sm text-white"
           >
             Save
@@ -1258,6 +3532,32 @@ function ChallengeFormModal({
       </div>
     </div>
   );
+}
+
+const TEAM_ROLE_PRESETS: { id: string; en: string; ar: string }[] = [
+  { id: "instructor", en: "Instructor", ar: "مدرب" },
+  { id: "lead_instructor", en: "Lead Instructor", ar: "مدرب رئيسي" },
+  { id: "curriculum", en: "Curriculum Lead", ar: "قائد المنهج" },
+  { id: "stem", en: "STEM Specialist", ar: "أخصائي STEM" },
+  {
+    id: "arabic_quran",
+    en: "Arabic & Quran Specialist",
+    ar: "أخصائي العربية والقرآن",
+  },
+  { id: "operations", en: "Operations Manager", ar: "مدير العمليات" },
+  { id: "customer_success", en: "Customer Success", ar: "نجاح العملاء" },
+  { id: "cofounder", en: "Co-Founder", ar: "شريك مؤسس" },
+  { id: "ceo", en: "CEO", ar: "الرئيس التنفيذي" },
+];
+
+function teamRolePresetId(
+  roleEn: string,
+  roleAr: string
+): string | "custom" {
+  const found = TEAM_ROLE_PRESETS.find(
+    (p) => p.en === roleEn && p.ar === roleAr
+  );
+  return found?.id ?? "custom";
 }
 
 function TeamFormModal({
@@ -1272,15 +3572,22 @@ function TeamFormModal({
   const isNew = !initial._id;
   const name = initial.name as { en?: string; ar?: string } | undefined;
   const role = initial.role as { en?: string; ar?: string } | undefined;
+  const initialRoleEn = String(role?.en ?? "");
+  const initialRoleAr = String(role?.ar ?? "");
+  const defaultRole = TEAM_ROLE_PRESETS[0];
   const [form, setForm] = useState({
     nameEn: String(name?.en ?? ""),
     nameAr: String(name?.ar ?? ""),
-    roleEn: String(role?.en ?? ""),
-    roleAr: String(role?.ar ?? ""),
+    roleEn: initialRoleEn || (isNew ? defaultRole.en : ""),
+    roleAr: initialRoleAr || (isNew ? defaultRole.ar : ""),
     avatar: String(initial.avatar ?? "PC"),
     color: String(initial.color ?? "from-blue-400 to-cyan-400"),
     order: Number(initial.order ?? 0),
     linkedin: String(initial.linkedin ?? ""),
+  });
+  const [rolePresetId, setRolePresetId] = useState<string>(() => {
+    if (isNew && !initialRoleEn && !initialRoleAr) return defaultRole.id;
+    return teamRolePresetId(initialRoleEn, initialRoleAr);
   });
 
   const save = async () => {
@@ -1326,22 +3633,49 @@ function TeamFormModal({
             }
             className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
           />
-          <input
-            placeholder="Role EN"
-            value={form.roleEn}
-            onChange={(e) =>
-              setForm((f) => ({ ...f, roleEn: e.target.value }))
-            }
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
-          />
-          <input
-            placeholder="Role AR"
-            value={form.roleAr}
-            onChange={(e) =>
-              setForm((f) => ({ ...f, roleAr: e.target.value }))
-            }
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
-          />
+          <label className="block text-slate-400">
+            <span className="mb-1 block text-xs">Role</span>
+            <select
+              value={rolePresetId}
+              onChange={(e) => {
+                const id = e.target.value;
+                setRolePresetId(id);
+                if (id === "custom") return;
+                const p = TEAM_ROLE_PRESETS.find((x) => x.id === id);
+                if (p) {
+                  setForm((f) => ({ ...f, roleEn: p.en, roleAr: p.ar }));
+                }
+              }}
+              className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1 text-white"
+            >
+              {TEAM_ROLE_PRESETS.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.en} — {p.ar}
+                </option>
+              ))}
+              <option value="custom">Custom…</option>
+            </select>
+          </label>
+          {rolePresetId === "custom" ? (
+            <>
+              <input
+                placeholder="Role EN"
+                value={form.roleEn}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, roleEn: e.target.value }))
+                }
+                className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              />
+              <input
+                placeholder="Role AR"
+                value={form.roleAr}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, roleAr: e.target.value }))
+                }
+                className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              />
+            </>
+          ) : null}
           <input
             placeholder="Avatar1-2 chars"
             value={form.avatar}

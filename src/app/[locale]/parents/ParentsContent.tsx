@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { AnimatedSection, AnimatedCard } from "@/components/AnimatedSection";
 import { AuthModal } from "@/components/AuthModal";
+import { LocalizedLink } from "@/components/LocalizedLink";
 import { motion } from "framer-motion";
 import {
   Heart,
@@ -21,6 +22,7 @@ import {
   ArrowRight,
   UserPlus,
   Star,
+  LayoutDashboard,
 } from "lucide-react";
 
 export default function ParentsContent() {
@@ -76,13 +78,25 @@ export default function ParentsContent() {
                 {t("heroSubtitle")}
               </p>
 
-              <button
-                onClick={() => setAuthOpen(true)}
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl bg-primary text-white font-semibold shadow-md shadow-primary/10 hover:shadow-lg hover:scale-[1.02] transition-all"
-              >
-                <UserPlus className="w-5 h-5" />
-                {t("heroCta")} / {t("loginLink")}
-              </button>
+              <div className="flex flex-col sm:flex-row flex-wrap gap-3">
+                <button
+                  type="button"
+                  onClick={() => setAuthOpen(true)}
+                  className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-primary text-white font-semibold shadow-md shadow-primary/10 hover:shadow-lg hover:scale-[1.02] transition-all"
+                >
+                  <UserPlus className="w-5 h-5 shrink-0" />
+                  {t("heroCta")} / {t("loginLink")}
+                </button>
+                <LocalizedLink
+                  href="/parent/login"
+                  className="group inline-flex items-center justify-center gap-3 px-7 py-3.5 rounded-2xl border-2 border-border bg-surface text-foreground font-semibold shadow-sm transition-all hover:border-primary/45 hover:bg-primary/[0.06] hover:text-primary hover:shadow-md hover:scale-[1.02] dark:hover:bg-primary/10"
+                >
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
+                    <LayoutDashboard className="w-5 h-5" aria-hidden />
+                  </span>
+                  <span>{t("openDashboard")}</span>
+                </LocalizedLink>
+              </div>
             </motion.div>
 
             {/* Illustration — dashboard mockup */}

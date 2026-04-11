@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo, startTransition } from "react";
+import { parseMemberJwtRole } from "@/lib/auth-flow";
 
 export function useAuth() {
   const [token, setToken] = useState<string | null>(null);
@@ -8,9 +9,13 @@ export function useAuth() {
 
   useEffect(() => {
     const stored = localStorage.getItem("token");
-    setToken(stored);
-    setLoading(false);
+    startTransition(() => {
+      setToken(stored);
+      setLoading(false);
+    });
   }, []);
+
+  const role = useMemo(() => parseMemberJwtRole(token), [token]);
 
   const logout = useCallback(() => {
     localStorage.removeItem("token");
@@ -22,5 +27,13 @@ export function useAuth() {
     setToken(newToken);
   }, []);
 
-  return { token, loading, isAuthenticated: !!token, login, logout };
+  return {
+    token,
+    loading,
+    isAuthenticated: !!token,
+       /** From member JWT (`localStorage.token`); undefined if logged out or payload missing role. */
+    role,
+    login,
+    logout,
+  };
 }

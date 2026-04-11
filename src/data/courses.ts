@@ -20,6 +20,9 @@ export interface Course {
   titleKey: string;
   descKey: string;
   skillKeys: string[];
+  /** Set when listing from API (MongoDB catalog price). */
+  price?: number;
+  currency?: string;
 }
 
 export const courses: Course[] = [
@@ -41,6 +44,8 @@ export const courses: Course[] = [
       "scratch_skill3",
       "scratch_skill4",
     ],
+    price: 299,
+    currency: "USD",
   },
   {
     id: "python",
@@ -60,6 +65,8 @@ export const courses: Course[] = [
       "python_skill3",
       "python_skill4",
     ],
+    price: 399,
+    currency: "USD",
   },
   {
     id: "webdev",
@@ -79,6 +86,8 @@ export const courses: Course[] = [
       "webdev_skill3",
       "webdev_skill4",
     ],
+    price: 599,
+    currency: "USD",
   },
   {
     id: "robot-basics",
@@ -98,6 +107,8 @@ export const courses: Course[] = [
       "robot_basics_skill3",
       "robot_basics_skill4",
     ],
+    price: 349,
+    currency: "USD",
   },
   {
     id: "robot-advanced",
@@ -117,6 +128,8 @@ export const courses: Course[] = [
       "robot_adv_skill3",
       "robot_adv_skill4",
     ],
+    price: 649,
+    currency: "USD",
   },
   {
     id: "algo-intro",
@@ -136,6 +149,8 @@ export const courses: Course[] = [
       "algo_intro_skill3",
       "algo_intro_skill4",
     ],
+    price: 389,
+    currency: "USD",
   },
   {
     id: "algo-competitive",
@@ -155,6 +170,8 @@ export const courses: Course[] = [
       "algo_comp_skill3",
       "algo_comp_skill4",
     ],
+    price: 799,
+    currency: "USD",
   },
   {
     id: "arabic-reading",
@@ -174,6 +191,8 @@ export const courses: Course[] = [
       "arabic_reading_skill3",
       "arabic_reading_skill4",
     ],
+    price: 279,
+    currency: "USD",
   },
   {
     id: "arabic-grammar",
@@ -193,6 +212,8 @@ export const courses: Course[] = [
       "arabic_grammar_skill3",
       "arabic_grammar_skill4",
     ],
+    price: 439,
+    currency: "USD",
   },
   {
     id: "quran-recitation",
@@ -212,6 +233,8 @@ export const courses: Course[] = [
       "quran_recitation_skill3",
       "quran_recitation_skill4",
     ],
+    price: 329,
+    currency: "USD",
   },
   {
     id: "quran-memorization",
@@ -231,6 +254,8 @@ export const courses: Course[] = [
       "quran_memorization_skill3",
       "quran_memorization_skill4",
     ],
+    price: 649,
+    currency: "USD",
   },
   {
     id: "gamedev",
@@ -250,6 +275,8 @@ export const courses: Course[] = [
       "gamedev_skill3",
       "gamedev_skill4",
     ],
+    price: 499,
+    currency: "USD",
   },
 ];
 

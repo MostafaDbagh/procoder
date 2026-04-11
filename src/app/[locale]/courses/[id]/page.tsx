@@ -125,6 +125,12 @@ export default async function CourseDetailPage({
             "@type": "Offer",
             category: "Paid",
             availability: "https://schema.org/InStock",
+            ...(apiCourse && apiCourse.price > 0
+              ? {
+                  price: String(apiCourse.price),
+                  priceCurrency: (apiCourse.currency || "USD").toUpperCase(),
+                }
+              : {}),
           },
           hasCourseInstance: {
             "@type": "CourseInstance",

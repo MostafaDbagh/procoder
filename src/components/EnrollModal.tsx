@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useState, useEffect, useCallback } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
@@ -15,7 +15,12 @@ import {
   FileText,
 } from "lucide-react";
 
-import { createEnrollment } from "@/lib/api";
+import {
+  createEnrollment,
+  quotePromo,
+  type PromoQuoteResponse,
+} from "@/lib/api";
+import { formatCoursePrice } from "@/lib/formatCoursePrice";
 
 interface EnrollModalProps {
   open: boolean;
@@ -34,9 +39,14 @@ const labelCls = "block text-sm font-medium mb-2";
 
 export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModalProps) {
   const t = useTranslations("enroll");
+  const locale = useLocale();
   const [step, setStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [successAmount, setSuccessAmount] = useState<{
+    amountDue: number;
+    currency: string;
+  } | null>(null);
 
   const [form, setForm] = useState({
     parentName: "",
@@ -44,6 +54,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
     phone: "",
     relationship: "",
     childName: "",
+    childStudentId: "",
     childAge: "",
     childGender: "",
     schoolName: "",
@@ -60,6 +71,33 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
     agreeTerms: false,
     agreePhotos: false,
   });
+
+  const [promoInput, setPromoInput] = useState("");
+  const [priceQuote, setPriceQuote] = useState<PromoQuoteResponse | null>(null);
+  const [quoteLoading, setQuoteLoading] = useState(false);
+  const [quoteErr, setQuoteErr] = useState("");
+
+  const refreshQuote = useCallback(
+    async (code?: string) => {
+      setQuoteLoading(true);
+      setQuoteErr("");
+      try {
+        const q = await quotePromo(courseId, code);
+        setPriceQuote(q);
+      } catch (e) {
+        setPriceQuote(null);
+        setQuoteErr(e instanceof Error ? e.message : "Quote failed");
+      } finally {
+        setQuoteLoading(false);
+      }
+    },
+    [courseId]
+  );
+
+  useEffect(() => {
+    if (!open || step !== 4) return;
+    void refreshQuote();
+  }, [open, step, refreshQuote]);
 
   const set = (key: string, value: string | boolean | string[]) =>
     setForm((p) => ({ ...p, [key]: value }));
@@ -79,12 +117,13 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
     setSubmitting(true);
     setError("");
     try {
-      await createEnrollment({
+      const res = await createEnrollment({
         parentName: form.parentName,
         email: form.email,
         phone: form.phone,
         relationship: form.relationship,
         childName: form.childName,
+        childStudentId: form.childStudentId.trim() || undefined,
         childAge: Number(form.childAge),
         childGender: form.childGender || undefined,
         gradeLevel: form.gradeLevel,
@@ -102,7 +141,20 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
         howDidYouHear: form.howDidYouHear || undefined,
         agreeTerms: form.agreeTerms,
         agreePhotos: form.agreePhotos || undefined,
+        promoCode: promoInput.trim() || undefined,
       });
+      if (
+        res.pricing &&
+        typeof res.pricing.amountDue === "number" &&
+        res.pricing.amountDue > 0
+      ) {
+        setSuccessAmount({
+          amountDue: res.pricing.amountDue,
+          currency: res.pricing.currency,
+        });
+      } else {
+        setSuccessAmount(null);
+      }
       setSuccess(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Enrollment failed. Please try again.");
@@ -115,13 +167,19 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
     onClose();
     setTimeout(() => {
       setSuccess(false);
+      setSuccessAmount(null);
       setStep(1);
+      setError("");
+      setPromoInput("");
+      setPriceQuote(null);
+      setQuoteErr("");
       setForm({
         parentName: "",
         email: "",
         phone: "",
         relationship: "",
         childName: "",
+        childStudentId: "",
         childAge: "",
         childGender: "",
         schoolName: "",
@@ -177,6 +235,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
           />
 
           <motion.div
+            data-testid="enroll-modal"
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -255,6 +314,17 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
                   </div>
                   <h3 className="text-xl font-bold mb-2">{t("successTitle")}</h3>
                   <p className="text-muted mb-6 max-w-sm mx-auto">{t("successDesc")}</p>
+                  {successAmount ? (
+                    <p className="text-sm text-foreground font-medium mb-6">
+                      {t("successAmountDue", {
+                        amount: formatCoursePrice(
+                          successAmount.amountDue,
+                          successAmount.currency,
+                          locale
+                        ),
+                      })}
+                    </p>
+                  ) : null}
                   <button
                     onClick={handleClose}
                     className="px-8 py-3 rounded-xl bg-primary text-white font-semibold hover:scale-[1.02] transition-transform"
@@ -264,6 +334,14 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit}>
+                  {error ? (
+                    <div
+                      role="alert"
+                      className="mx-5 mb-4 rounded-xl bg-red-500/10 border border-red-500/20 px-4 py-3 text-sm text-red-600 dark:text-red-400"
+                    >
+                      {error}
+                    </div>
+                  ) : null}
                   <AnimatePresence mode="wait">
                     {/* STEP 1 — Parent Info */}
                     {step === 1 && (
@@ -281,7 +359,15 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
                         <div className="grid sm:grid-cols-2 gap-4">
                           <div>
                             <label className={labelCls}>{t("parentName")} *</label>
-                            <input type="text" required value={form.parentName} onChange={(e) => set("parentName", e.target.value)} placeholder={t("namePlaceholder")} className={inputCls} />
+                            <input
+                              type="text"
+                              required
+                              data-testid="enroll-parent-name"
+                              value={form.parentName}
+                              onChange={(e) => set("parentName", e.target.value)}
+                              placeholder={t("namePlaceholder")}
+                              className={inputCls}
+                            />
                           </div>
                           <div>
                             <label className={labelCls}>{t("relationship")} *</label>
@@ -332,6 +418,18 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
                               ))}
                             </select>
                           </div>
+                        </div>
+                        <div>
+                          <label className={labelCls}>{t("childStudentId")}</label>
+                          <input
+                            type="text"
+                            value={form.childStudentId}
+                            onChange={(e) => set("childStudentId", e.target.value)}
+                            placeholder={t("childStudentIdPlaceholder")}
+                            className={inputCls}
+                            autoComplete="off"
+                          />
+                          <p className="mt-1 text-xs text-muted">{t("childStudentIdHelp")}</p>
                         </div>
                         <div className="grid sm:grid-cols-2 gap-4">
                           <div>
@@ -472,6 +570,96 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
                         <div className="mb-5">
                           <h3 className="text-lg font-semibold">{t("additionalTitle")}</h3>
                           <p className="text-sm text-muted">{t("additionalDesc")}</p>
+                        </div>
+                        <div className="rounded-xl border border-border bg-background/50 p-4 space-y-3">
+                          <p className="text-sm font-semibold">{t("priceBreakdownTitle")}</p>
+                          {quoteLoading && !priceQuote ? (
+                            <p className="text-xs text-muted">{t("promoChecking")}</p>
+                          ) : null}
+                          {priceQuote ? (
+                            <ul className="text-xs text-muted space-y-1">
+                              <li className="flex justify-between gap-2">
+                                <span>{t("listPrice")}</span>
+                                <span className="text-foreground tabular-nums">
+                                  {formatCoursePrice(priceQuote.listPrice, priceQuote.currency, locale)}
+                                </span>
+                              </li>
+                              {priceQuote.courseDiscountPercent > 0 ? (
+                                <li className="flex justify-between gap-2">
+                                  <span>
+                                    {t("courseDiscount", { pct: priceQuote.courseDiscountPercent })}
+                                  </span>
+                                  <span className="text-emerald-600 dark:text-emerald-400 tabular-nums">
+                                    −{" "}
+                                    {formatCoursePrice(
+                                      priceQuote.listPrice -
+                                        priceQuote.priceAfterCourseDiscount,
+                                      priceQuote.currency,
+                                      locale
+                                    )}
+                                  </span>
+                                </li>
+                              ) : null}
+                              <li className="flex justify-between gap-2 font-medium text-foreground">
+                                <span>{t("afterCourseDiscount")}</span>
+                                <span className="tabular-nums">
+                                  {formatCoursePrice(
+                                    priceQuote.priceAfterCourseDiscount,
+                                    priceQuote.currency,
+                                    locale
+                                  )}
+                                </span>
+                              </li>
+                              {priceQuote.promoDiscountAmount > 0 ? (
+                                <li className="flex justify-between gap-2">
+                                  <span>{t("promoSavings")}</span>
+                                  <span className="text-emerald-600 dark:text-emerald-400 tabular-nums">
+                                    −
+                                    {formatCoursePrice(
+                                      priceQuote.promoDiscountAmount,
+                                      priceQuote.currency,
+                                      locale
+                                    )}
+                                  </span>
+                                </li>
+                              ) : null}
+                              <li className="flex justify-between gap-2 pt-1 border-t border-border text-sm font-semibold text-foreground">
+                                <span>{t("amountDue")}</span>
+                                <span className="tabular-nums">
+                                  {formatCoursePrice(priceQuote.amountDue, priceQuote.currency, locale)}
+                                </span>
+                              </li>
+                            </ul>
+                          ) : null}
+                          {quoteErr ? (
+                            <p className="text-xs text-red-600 dark:text-red-400">{quoteErr}</p>
+                          ) : null}
+                          <div className="flex flex-col sm:flex-row gap-2 sm:items-end">
+                            <div className="flex-1">
+                              <label className={labelCls}>{t("promoLabel")}</label>
+                              <input
+                                type="text"
+                                value={promoInput}
+                                onChange={(e) => setPromoInput(e.target.value)}
+                                placeholder={t("promoPlaceholder")}
+                                className={inputCls}
+                                autoComplete="off"
+                              />
+                            </div>
+                            <button
+                              type="button"
+                              disabled={quoteLoading}
+                              onClick={() => void refreshQuote(promoInput.trim() || undefined)}
+                              className="px-4 py-3 rounded-xl bg-primary/10 text-primary text-sm font-semibold hover:bg-primary/15 disabled:opacity-50"
+                            >
+                              {quoteLoading ? t("promoChecking") : t("promoApply")}
+                            </button>
+                          </div>
+                          {priceQuote?.promoError ? (
+                            <p className="text-xs text-amber-600 dark:text-amber-400">
+                              {priceQuote.promoError}
+                            </p>
+                          ) : null}
                         </div>
                         <div>
                           <label className={labelCls}>{t("learningGoals")}</label>

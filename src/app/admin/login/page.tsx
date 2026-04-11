@@ -1,8 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { adminLogin, setAdminToken } from "@/lib/admin-api";
+import { Shield } from "lucide-react";
+import { PasswordInput } from "@/components/PasswordInput";
+
+const inputCls =
+  "w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -28,70 +34,93 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
-      <div className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900/80 p-8 shadow-xl">
-        <h1 className="text-xl font-semibold text-white">ProCoder Admin</h1>
-        <p className="mt-1 text-sm text-slate-400">
-          Sign in with your admin email, username, and password.
-        </p>
+    <div className="relative min-h-screen overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute top-20 left-[10%] h-72 w-72 rounded-full bg-primary/5 blur-3xl" />
+        <div className="absolute right-[10%] bottom-10 h-80 w-80 rounded-full bg-purple/5 blur-3xl" />
+      </div>
 
-        <form onSubmit={onSubmit} className="mt-8 space-y-4">
-          <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1">
-              Email
-            </label>
-            <input
-              type="email"
-              autoComplete="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder:text-slate-600 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-              placeholder="admin@example.com"
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1">
-              Username
-            </label>
-            <input
-              type="text"
-              autoComplete="username"
-              required
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder:text-slate-600 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-              placeholder="admin"
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1">
-              Password
-            </label>
-            <input
-              type="password"
-              autoComplete="current-password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder:text-slate-600 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-            />
-          </div>
-
-          {error ? (
-            <p className="text-sm text-red-400" role="alert">
-              {error}
+      <div className="flex min-h-screen flex-col items-center justify-center px-4 py-20 sm:py-32">
+        <div className="mx-auto w-full max-w-md">
+          <div className="mb-8 text-center">
+            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
+              <Shield className="h-10 w-10 text-primary" aria-hidden />
+            </div>
+            <h1 className="mb-3 text-2xl font-bold text-foreground">Admin sign-in</h1>
+            <p className="text-muted">
+              Sign in with your admin email, username, and password.
             </p>
-          ) : null}
+          </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded-lg bg-primary py-2.5 text-sm font-semibold text-white hover:opacity-95 disabled:opacity-50"
-          >
-            {loading ? "Signing in…" : "Sign in"}
-          </button>
-        </form>
+          <div className="rounded-2xl border border-border bg-surface p-8 shadow-xl">
+            <form onSubmit={onSubmit} className="space-y-5">
+              <div>
+                <label className="mb-2 block text-sm font-medium text-foreground">
+                  Email <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className={inputCls}
+                  placeholder="admin@example.com"
+                />
+              </div>
+              <div>
+                <label className="mb-2 block text-sm font-medium text-foreground">
+                  Username <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  autoComplete="username"
+                  required
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className={inputCls}
+                  placeholder="admin"
+                />
+              </div>
+              <div>
+                <label className="mb-2 block text-sm font-medium text-foreground">
+                  Password <span className="text-red-500">*</span>
+                </label>
+                <PasswordInput
+                  autoComplete="current-password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  inputClassName={inputCls}
+                />
+              </div>
+
+              {error ? (
+                <p className="rounded-xl bg-red-50 px-4 py-2 text-sm text-red-600 dark:bg-red-950/30 dark:text-red-400" role="alert">
+                  {error}
+                </p>
+              ) : null}
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full rounded-2xl bg-primary py-3.5 text-sm font-semibold text-white shadow-md shadow-primary/10 transition-all hover:scale-[1.01] hover:shadow-lg disabled:opacity-70"
+              >
+                {loading ? "Signing in…" : "Sign in"}
+              </button>
+            </form>
+          </div>
+
+          <p className="mt-8 text-center text-sm text-muted">
+            <Link href="/en" className="font-medium text-primary hover:underline">
+              Back to site
+            </Link>
+            {" · "}
+            <Link href="/ar" className="font-medium text-primary hover:underline">
+              العودة للموقع
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

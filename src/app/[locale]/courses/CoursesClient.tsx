@@ -51,6 +51,8 @@ function apiToLocal(c: APICourse, locale: string) {
     titleKey: "",
     descKey: "",
     skillKeys: [] as string[],
+    price: typeof c.price === "number" ? c.price : undefined,
+    currency: c.currency || "USD",
   };
 }
 
@@ -77,9 +79,6 @@ export function CoursesClient({ initialCourses }: Props) {
     ? apiData.map((c) => apiToLocal(c, locale))
     : staticCourses.map((c) => ({ ...c, _title: "", _desc: "" }));
 
-  const getTitle = (c: (typeof allCourses)[number]) =>
-    fromApi ? c._title : ct(c.titleKey);
-
   const filtered = useMemo(() => {
     return allCourses.filter((c) => {
       if (category !== "all" && c.category !== category) return false;
@@ -89,12 +88,12 @@ export function CoursesClient({ initialCourses }: Props) {
         if (c.ageMax < min || c.ageMin > max) return false;
       }
       if (search) {
-        const title = getTitle(c).toLowerCase();
+        const title = (fromApi ? c._title : ct(c.titleKey)).toLowerCase();
         if (!title.includes(search.toLowerCase())) return false;
       }
       return true;
     });
-  }, [allCourses, category, age, level, search, fromApi]);
+  }, [allCourses, category, age, level, search, fromApi, ct]);
 
   const hasFilters = category !== "all" || age !== "all" || level !== "all" || search !== "";
 

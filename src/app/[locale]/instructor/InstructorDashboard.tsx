@@ -1,8 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState, startTransition } from "react";
 import { useLocale } from "next-intl";
 import { useAuth } from "@/hooks/useAuth";
+import { isInstructorPortalRole } from "@/lib/auth-flow";
+import { useRouter } from "@/i18n/navigation";
+import { LocalizedLink } from "@/components/LocalizedLink";
 import {
   fetchInstructorDashboard,
   createInstructorNote,
@@ -10,7 +13,6 @@ import {
   type InstructorDashboardData,
   type InstructorStudent,
 } from "@/lib/api";
-import { AuthModal } from "@/components/AuthModal";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Users,
@@ -44,12 +46,19 @@ const noteTypes = [
 export default function InstructorDashboard() {
   const locale = useLocale();
   const lang = locale === "ar" ? "ar" : "en";
-  const { token, loading: authLoading, isAuthenticated, logout } = useAuth();
+  const { token, loading: authLoading, isAuthenticated, role, logout } = useAuth();
+  const router = useRouter();
 
   const [data, setData] = useState<InstructorDashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [authOpen, setAuthOpen] = useState(false);
+
+  useEffect(() => {
+    if (authLoading || !isAuthenticated || !token) return;
+    if (role && !isInstructorPortalRole(role)) {
+      router.replace("/dashboard");
+    }
+  }, [authLoading, isAuthenticated, token, role, router]);
 
   // Note form
   const [noteForm, setNoteForm] = useState({ enrollmentId: "", title: "", body: "", type: "general" });
@@ -57,18 +66,30 @@ export default function InstructorDashboard() {
   const [expandedStudent, setExpandedStudent] = useState<string | null>(null);
   const [selectedCourse, setSelectedCourse] = useState<string>("all");
 
-  const reload = () => {
+  const reload = useCallback(() => {
     if (!token) return;
+    setLoading(true);
+    setError("");
     fetchInstructorDashboard(token)
-      .then((d) => { setData(d); setLoading(false); })
-      .catch((err) => { setError(err.message); setLoading(false); });
-  };
+      .then((d) => {
+        setData(d);
+        startTransition(() => setLoading(false));
+      })
+      .catch((err) => {
+        setError(err.message);
+        startTransition(() => setLoading(false));
+      });
+  }, [token]);
 
   useEffect(() => {
     if (authLoading) return;
-    if (!token) { setLoading(false); return; }
+    if (!token) {
+      startTransition(() => setLoading(false));
+      return;
+    }
+    if (role && !isInstructorPortalRole(role)) return;
     reload();
-  }, [token, authLoading]);
+  }, [token, authLoading, role, reload]);
 
   const handleSendNote = async (student: InstructorStudent) => {
     if (!token || !noteForm.title.trim() || !noteForm.body.trim()) return;
@@ -99,7 +120,15 @@ export default function InstructorDashboard() {
     }
   };
 
-  // Auth gate
+  if (!authLoading && isAuthenticated && role && !isInstructorPortalRole(role)) {
+    return (
+      <div className="flex justify-center py-32">
+        <Loader2 className="w-8 h-8 text-primary animate-spin" aria-label="Redirecting" />
+      </div>
+    );
+  }
+
+  // Auth gate (visitor or no token)
   if (!authLoading && !isAuthenticated) {
     return (
       <div className="py-20 sm:py-32 text-center">
@@ -109,10 +138,18 @@ export default function InstructorDashboard() {
           </div>
           <h1 className="text-2xl font-bold mb-3">Instructor Dashboard</h1>
           <p className="text-muted mb-8">Sign in with your instructor account to access your dashboard.</p>
-          <button onClick={() => setAuthOpen(true)} className="px-8 py-3.5 rounded-2xl bg-primary text-white font-semibold shadow-md hover:shadow-lg hover:scale-[1.02] transition-all">
-            Sign In
-          </button>
-          <AuthModal open={authOpen} onClose={() => { setAuthOpen(false); window.location.reload(); }} defaultTab="login" />
+          <p className="text-sm text-muted mb-6">
+            Parent or student?{" "}
+            <LocalizedLink href="/parent/login" className="text-primary font-medium hover:underline">
+              Parent sign-in
+            </LocalizedLink>
+          </p>
+          <LocalizedLink
+            href="/instructor/login"
+            className="inline-flex px-8 py-3.5 rounded-2xl bg-primary text-white font-semibold shadow-md hover:shadow-lg hover:scale-[1.02] transition-all"
+          >
+            Sign in
+          </LocalizedLink>
         </div>
       </div>
     );

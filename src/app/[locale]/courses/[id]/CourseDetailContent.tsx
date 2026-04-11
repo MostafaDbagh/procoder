@@ -8,6 +8,7 @@ import { courses as staticCourses } from "@/data/courses";
 import { useCourse } from "@/hooks/useCourses";
 import { AnimatedSection } from "@/components/AnimatedSection";
 import { EnrollModal } from "@/components/EnrollModal";
+import { formatCoursePrice, priceAfterCourseDiscount } from "@/lib/formatCoursePrice";
 import { motion } from "framer-motion";
 import {
   ArrowLeft,
@@ -47,6 +48,14 @@ export default function CourseDetailContent() {
         title: apiCourse.title[lang],
         description: apiCourse.description[lang],
         skills: apiCourse.skills[lang] || [],
+        price: typeof apiCourse.price === "number" ? apiCourse.price : 0,
+        currency: apiCourse.currency || "USD",
+        discountPercent: apiCourse.discountPercent ?? 0,
+        salePrice: priceAfterCourseDiscount(
+          typeof apiCourse.price === "number" ? apiCourse.price : 0,
+          apiCourse.discountPercent ?? 0
+        ),
+        showPrice: true,
       }
     : staticCourse
     ? {
@@ -61,6 +70,14 @@ export default function CourseDetailContent() {
         title: ct(staticCourse.titleKey),
         description: ct(staticCourse.descKey),
         skills: staticCourse.skillKeys.map((k) => ct(k)),
+        price: staticCourse.price ?? 0,
+        currency: staticCourse.currency ?? "USD",
+        discountPercent: 0,
+        salePrice: priceAfterCourseDiscount(
+          staticCourse.price ?? 0,
+          0
+        ),
+        showPrice: (staticCourse.price ?? 0) > 0,
       }
     : null;
 
@@ -121,6 +138,30 @@ export default function CourseDetailContent() {
               </div>
               <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">{course.title}</h1>
               <p className="text-white/80 text-lg max-w-2xl">{course.description}</p>
+              {course.showPrice ? (
+                <p className="mt-5 text-2xl font-bold text-white tabular-nums flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                  <span className="text-sm font-semibold uppercase tracking-wide text-white/70 w-full sm:w-auto">
+                    {t("price")}
+                  </span>
+                  {course.price <= 0 ? (
+                    <span>{common("free")}</span>
+                  ) : course.discountPercent > 0 && course.salePrice < course.price ? (
+                    <>
+                      <span className="line-through text-white/60 text-lg font-semibold">
+                        {formatCoursePrice(course.price, course.currency, locale)}
+                      </span>
+                      <span>
+                        {formatCoursePrice(course.salePrice, course.currency, locale)}
+                      </span>
+                      <span className="text-sm font-medium text-white/85">
+                        {t("savePercent", { pct: course.discountPercent })}
+                      </span>
+                    </>
+                  ) : (
+                    <span>{formatCoursePrice(course.price, course.currency, locale)}</span>
+                  )}
+                </p>
+              ) : null}
             </div>
           </div>
         </AnimatedSection>
@@ -161,6 +202,8 @@ export default function CourseDetailContent() {
         <AnimatedSection delay={0.5}>
           <div className="text-center">
             <button
+              type="button"
+              data-testid="course-enroll-open"
               onClick={() => setEnrollOpen(true)}
               className="inline-flex items-center gap-2 px-10 py-4 rounded-2xl bg-primary text-white font-semibold text-lg shadow-lg shadow-primary/10 hover:shadow-xl hover:shadow-primary/15 hover:scale-[1.02] transition-all duration-300"
             >

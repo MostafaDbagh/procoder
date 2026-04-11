@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -8,45 +8,64 @@ import {
   UserPlus,
   LogIn,
   CheckCircle2,
-  Eye,
-  EyeOff,
   Loader2,
   Heart,
+  GraduationCap,
 } from "lucide-react";
 import { apiRoot } from "@/lib/api";
+import { PasswordInput } from "@/components/PasswordInput";
 
 interface AuthModalProps {
   open: boolean;
   onClose: () => void;
   defaultTab?: "signup" | "login";
+  /** Instructor flow: correct header + login only (no parent signup tab). */
+  variant?: "parent" | "instructor";
 }
 
 const inputCls =
   "w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all";
 
-export function AuthModal({ open, onClose, defaultTab = "signup" }: AuthModalProps) {
+export function AuthModal({
+  open,
+  onClose,
+  defaultTab = "signup",
+  variant = "parent",
+}: AuthModalProps) {
   const t = useTranslations("parents");
+  const ta = useTranslations("authModal");
   const locale = useLocale();
   const isRtl = locale === "ar";
   const labelAlign = isRtl ? "text-right" : "text-left";
+  const isInstructor = variant === "instructor";
 
   const [tab, setTab] = useState<"signup" | "login" | "forgot">(defaultTab);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showSignupPassword, setShowSignupPassword] = useState(false);
   const [forgotStep, setForgotStep] = useState<"phone" | "otp" | "newpass" | "done">("phone");
   const [forgotPhone, setForgotPhone] = useState("");
   const [otp, setOtp] = useState(["", "", "", ""]);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [showNewPassword, setShowNewPassword] = useState(false);
-
   const [signupForm, setSignupForm] = useState({ name: "", email: "", phone: "", password: "" });
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
 
   const API = apiRoot();
+
+  useEffect(() => {
+    if (!open) return;
+    setSuccess(false);
+    setError("");
+    setForgotStep("phone");
+    setForgotPhone("");
+    setOtp(["", "", "", ""]);
+    setNewPassword("");
+    setConfirmPassword("");
+    setSignupForm({ name: "", email: "", phone: "", password: "" });
+    setLoginForm({ email: "", password: "" });
+    setTab(isInstructor ? "login" : defaultTab);
+  }, [open, defaultTab, isInstructor]);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,9 +114,6 @@ export function AuthModal({ open, onClose, defaultTab = "signup" }: AuthModalPro
     setTimeout(() => {
       setSuccess(false);
       setError("");
-      setShowPassword(false);
-      setShowSignupPassword(false);
-      setShowNewPassword(false);
       setForgotStep("phone");
       setForgotPhone("");
       setOtp(["", "", "", ""]);
@@ -133,21 +149,35 @@ export function AuthModal({ open, onClose, defaultTab = "signup" }: AuthModalPro
             className="relative bg-surface rounded-2xl border border-border shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-5 border-b border-border">
-              <div className="flex items-center gap-2">
-                <Heart className="w-5 h-5 text-primary" />
-                <span className="font-bold">{t("badge")}</span>
+            <div className="flex items-start justify-between gap-4 border-b border-border p-5">
+              <div className="min-w-0">
+                <div className="flex items-center gap-2">
+                  {isInstructor ? (
+                    <GraduationCap className="h-5 w-5 shrink-0 text-purple" aria-hidden />
+                  ) : (
+                    <Heart className="h-5 w-5 shrink-0 text-primary" aria-hidden />
+                  )}
+                  <span className="font-bold">
+                    {isInstructor ? ta("instructorTitle") : t("badge")}
+                  </span>
+                </div>
+                {isInstructor && (
+                  <p className="mt-1.5 ps-7 text-xs leading-snug text-muted">
+                    {ta("instructorSubtitle")}
+                  </p>
+                )}
               </div>
               <button
+                type="button"
                 onClick={handleClose}
-                className="p-2 rounded-xl text-muted hover:text-foreground hover:bg-surface-hover transition-colors"
+                className="shrink-0 rounded-xl p-2 text-muted transition-colors hover:bg-surface-hover hover:text-foreground"
               >
-                <X className="w-5 h-5" />
+                <X className="h-5 w-5" />
               </button>
             </div>
 
-            {/* Tab switcher */}
-            {!success && tab !== "forgot" && (
+            {/* Tab switcher — parent only; instructors sign in with existing accounts */}
+            {!success && tab !== "forgot" && !isInstructor && (
               <div className="flex p-1.5 mx-5 mt-5 bg-background rounded-xl border border-border">
                 <button
                   onClick={() => { setTab("signup"); setError(""); }}
@@ -171,7 +201,7 @@ export function AuthModal({ open, onClose, defaultTab = "signup" }: AuthModalPro
             )}
 
             {/* Body */}
-            <div className="p-5">
+            <div className={`p-5 ${isInstructor && !success && tab === "login" ? "pt-6" : ""}`}>
               {success ? (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -183,6 +213,7 @@ export function AuthModal({ open, onClose, defaultTab = "signup" }: AuthModalPro
                     {tab === "signup" ? t("signupSuccess") : "Welcome back!"}
                   </h3>
                   <button
+                    type="button"
                     onClick={handleClose}
                     className="mt-4 px-6 py-2.5 rounded-xl bg-primary text-white font-semibold hover:scale-[1.02] transition-transform"
                   >
@@ -223,24 +254,16 @@ export function AuthModal({ open, onClose, defaultTab = "signup" }: AuthModalPro
                         <label className={`block text-sm font-medium mb-2 ${labelAlign}`}>
                           {t("passwordLabel")} <span className="text-red-500">*</span>
                         </label>
-                        <div className="relative">
-                          <input
-                            type={showSignupPassword ? "text" : "password"}
-                            required
-                            minLength={6}
-                            value={signupForm.password}
-                            onChange={(e) => setSignupForm({ ...signupForm, password: e.target.value })}
-                            placeholder={t("passwordPlaceholder")}
-                            className={`${inputCls} pe-12`}
-                          />
-                          <button
-                            type="button"
-                            onClick={() => setShowSignupPassword(!showSignupPassword)}
-                            className="absolute top-1/2 -translate-y-1/2 end-3 p-1.5 rounded-lg text-muted hover:text-foreground transition-colors"
-                          >
-                            {showSignupPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                          </button>
-                        </div>
+                        <PasswordInput
+                          required
+                          minLength={6}
+                          value={signupForm.password}
+                          onChange={(e) =>
+                            setSignupForm({ ...signupForm, password: e.target.value })
+                          }
+                          placeholder={t("passwordPlaceholder")}
+                          inputClassName={inputCls}
+                        />
                       </div>
 
                       {error && (
@@ -282,24 +305,16 @@ export function AuthModal({ open, onClose, defaultTab = "signup" }: AuthModalPro
                             {isRtl ? "نسيت كلمة المرور؟" : "Forgot password?"}
                           </button>
                         </div>
-                        <div className="relative">
-                          <input
-                            type={showPassword ? "text" : "password"}
-                            required
-                            minLength={6}
-                            value={loginForm.password}
-                            onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
-                            placeholder={t("passwordPlaceholder")}
-                            className={`${inputCls} pe-12`}
-                          />
-                          <button
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="absolute top-1/2 -translate-y-1/2 end-3 p-1.5 rounded-lg text-muted hover:text-foreground transition-colors"
-                          >
-                            {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                          </button>
-                        </div>
+                        <PasswordInput
+                          required
+                          minLength={6}
+                          value={loginForm.password}
+                          onChange={(e) =>
+                            setLoginForm({ ...loginForm, password: e.target.value })
+                          }
+                          placeholder={t("passwordPlaceholder")}
+                          inputClassName={inputCls}
+                        />
                       </div>
 
                       {error && (
@@ -491,34 +506,31 @@ export function AuthModal({ open, onClose, defaultTab = "signup" }: AuthModalPro
                               <label className={`block text-sm font-medium mb-2 ${labelAlign}`}>
                                 {isRtl ? "كلمة المرور الجديدة" : "New Password"} <span className="text-red-500">*</span>
                               </label>
-                              <div className="relative">
-                                <input
-                                  type={showNewPassword ? "text" : "password"}
-                                  required
-                                  minLength={6}
-                                  value={newPassword}
-                                  onChange={(e) => setNewPassword(e.target.value)}
-                                  placeholder={isRtl ? "٦ أحرف على الأقل" : "At least 6 characters"}
-                                  className={`${inputCls} pe-12`}
-                                />
-                                <button type="button" onClick={() => setShowNewPassword(!showNewPassword)} className="absolute top-1/2 -translate-y-1/2 end-3 p-1.5 rounded-lg text-muted hover:text-foreground transition-colors">
-                                  {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                                </button>
-                              </div>
+                              <PasswordInput
+                                required
+                                minLength={6}
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                placeholder={isRtl ? "٦ أحرف على الأقل" : "At least 6 characters"}
+                                inputClassName={inputCls}
+                              />
                             </div>
 
                             <div>
                               <label className={`block text-sm font-medium mb-2 ${labelAlign}`}>
                                 {isRtl ? "تأكيد كلمة المرور" : "Confirm Password"} <span className="text-red-500">*</span>
                               </label>
-                              <input
-                                type="password"
+                              <PasswordInput
                                 required
                                 minLength={6}
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
-                                placeholder={isRtl ? "أعد إدخال كلمة المرور" : "Re-enter your password"}
-                                className={inputCls}
+                                placeholder={
+                                  isRtl
+                                    ? "أعد إدخال كلمة المرور"
+                                    : "Re-enter your password"
+                                }
+                                inputClassName={inputCls}
                               />
                             </div>
 

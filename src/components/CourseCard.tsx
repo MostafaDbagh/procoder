@@ -1,6 +1,7 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import { formatCoursePrice } from "@/lib/formatCoursePrice";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { motion } from "framer-motion";
 import {
@@ -70,6 +71,7 @@ interface CourseCardProps {
 export function CourseCard({ course, index = 0, title, description }: CourseCardProps) {
   const t = useTranslations("courseData");
   const ct = useTranslations("courses");
+  const locale = useLocale();
   const Icon = iconMap[course.iconName] || BookOpen;
   const colors = categoryColors[course.category] || categoryColors.programming;
 
@@ -133,7 +135,18 @@ export function CourseCard({ course, index = 0, title, description }: CourseCard
             </div>
 
             {/* CTA */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-3 flex-wrap">
+              {typeof course.price === "number" && course.price > 0 ? (
+                <span className="text-sm font-bold text-foreground tabular-nums">
+                  {formatCoursePrice(
+                    course.price,
+                    course.currency || "USD",
+                    locale
+                  )}
+                </span>
+              ) : (
+                <span />
+              )}
               <span className={`text-sm font-semibold ${colors.accent} group-hover:underline flex items-center gap-1 transition-all group-hover:gap-2`}>
                 {ct("learnMore")}
                 <ArrowRight className="w-4 h-4" />

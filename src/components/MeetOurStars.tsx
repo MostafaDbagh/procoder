@@ -4,7 +4,7 @@ import { useRef, useEffect, useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { AnimatedSection } from "./AnimatedSection";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, Star, Briefcase, Code2, MapPin } from "lucide-react";
+import { ChevronLeft, ChevronRight, Star, Briefcase, Code2 } from "lucide-react";
 
 const team = [
   {
@@ -97,56 +97,6 @@ function StarDecoSVG({ className = "" }: { className?: string }) {
         strokeDasharray="4 3"
         fill="none"
         opacity="0.15"
-      />
-    </svg>
-  );
-}
-
-function StarfishSVG() {
-  return (
-    <svg viewBox="0 0 80 80" fill="none" className="w-20 h-20 mx-auto mb-4">
-      <motion.g
-        animate={{ rotate: [0, 5, -5, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        style={{ transformOrigin: "40px 40px" }}
-      >
-        <path d="M40 8 Q44 25 40 30 Q36 25 40 8Z" fill="#8B7BC8" />
-        <path d="M62 22 Q50 30 44 34 Q48 28 62 22Z" fill="#8B7BC8" />
-        <path d="M68 48 Q52 42 46 38 Q52 36 68 48Z" fill="#8B7BC8" />
-        <path d="M22 62 Q30 48 34 44 Q36 50 22 62Z" fill="#8B7BC8" />
-        <path d="M12 32 Q28 34 34 38 Q28 40 12 32Z" fill="#8B7BC8" />
-        <circle cx="40" cy="36" r="10" fill="#7A6AB5" />
-        <circle cx="40" cy="16" r="1.5" fill="white" opacity="0.7" />
-        <circle cx="55" cy="27" r="1.5" fill="white" opacity="0.7" />
-        <circle cx="58" cy="44" r="1.5" fill="white" opacity="0.7" />
-        <circle cx="27" cy="55" r="1.5" fill="white" opacity="0.7" />
-        <circle cx="18" cy="35" r="1.5" fill="white" opacity="0.7" />
-        <circle cx="37" cy="34" r="1.5" fill="white" opacity="0.6" />
-        <circle cx="43" cy="34" r="1.5" fill="white" opacity="0.6" />
-        <circle cx="40" cy="39" r="1.5" fill="white" opacity="0.6" />
-      </motion.g>
-      <motion.circle cx="52" cy="10" r="3" fill="#8B7BC8" opacity="0.3"
-        animate={{ y: [0, -4, 0], opacity: [0.2, 0.4, 0.2] }}
-        transition={{ duration: 2, repeat: Infinity }}
-      />
-      <motion.circle cx="48" cy="6" r="1.5" fill="#8B7BC8" opacity="0.25"
-        animate={{ y: [0, -3, 0] }}
-        transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }}
-      />
-    </svg>
-  );
-}
-
-// Spiral decoration like in the screenshot pagination
-function SpiralSVG() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className="w-6 h-6">
-      <path
-        d="M12 2 C16 2 20 6 20 10 C20 14 16 16 14 16 C12 16 10 14 10 12 C10 10 12 9 13 9"
-        stroke="#D4A46A"
-        strokeWidth="1.5"
-        fill="none"
-        strokeLinecap="round"
       />
     </svg>
   );

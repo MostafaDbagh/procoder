@@ -1,8 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { useLocale } from "next-intl";
 import { adminLogin, createCourse, type CreateCourseData } from "@/lib/api";
 import { AnimatedSection } from "@/components/AnimatedSection";
 import { motion } from "framer-motion";
@@ -17,6 +15,8 @@ import {
   X,
 } from "lucide-react";
 import { LocalizedLink } from "@/components/LocalizedLink";
+import { priceAfterCourseDiscount } from "@/lib/formatCoursePrice";
+import { PasswordInput } from "@/components/PasswordInput";
 
 const CATEGORIES = ["programming", "robotics", "algorithms", "arabic", "quran"] as const;
 const LEVELS = ["beginner", "intermediate", "advanced"] as const;
@@ -35,8 +35,6 @@ const GRADIENTS = [
   "from-lime-400 to-emerald-400",
   "from-fuchsia-400 to-purple-400",
 ] as const;
-const CURRENCIES = ["USD", "EUR", "SAR", "AED", "KWD", "QAR"] as const;
-
 const initialForm: CreateCourseData = {
   slug: "",
   category: "programming",
@@ -52,12 +50,10 @@ const initialForm: CreateCourseData = {
   skills: { en: [""], ar: [""] },
   price: 0,
   currency: "USD",
+  discountPercent: 0,
 };
 
 export default function CreateCourseContent() {
-  const router = useRouter();
-  const locale = useLocale();
-
   // Auth state
   const [token, setToken] = useState("");
   const [loginEmail, setLoginEmail] = useState("");
@@ -141,6 +137,11 @@ export default function CreateCourseContent() {
 
     const payload: CreateCourseData = {
       ...form,
+      currency: "USD",
+      discountPercent: Math.min(
+        100,
+        Math.max(0, Number(form.discountPercent) || 0)
+      ),
       skills: {
         en: form.skills.en.filter((s) => s.trim() !== ""),
         ar: form.skills.ar.filter((s) => s.trim() !== ""),
@@ -192,13 +193,12 @@ export default function CreateCourseContent() {
               </div>
               <div>
                 <label className={labelClass}>Password</label>
-                <input
-                  type="password"
+                <PasswordInput
                   required
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
                   placeholder="Enter password"
-                  className={inputClass}
+                  inputClassName={inputClass}
                 />
               </div>
 
@@ -450,25 +450,33 @@ export default function CreateCourseContent() {
                   />
                 </div>
                 <div>
-                  <label className={labelClass}>Price</label>
-                  <div className="flex gap-2">
-                    <input
-                      type="number"
-                      min={0}
-                      value={form.price}
-                      onChange={(e) => updateField("price", Number(e.target.value))}
-                      className={`${inputClass} flex-1`}
-                    />
-                    <select
-                      value={form.currency}
-                      onChange={(e) => updateField("currency", e.target.value)}
-                      className={`${selectClass} w-24`}
-                    >
-                      {CURRENCIES.map((c) => (
-                        <option key={c} value={c}>{c}</option>
-                      ))}
-                    </select>
-                  </div>
+                  <label className={labelClass}>Price (USD)</label>
+                  <input
+                    type="number"
+                    min={0}
+                    value={form.price}
+                    onChange={(e) => updateField("price", Number(e.target.value))}
+                    className={inputClass}
+                  />
+                </div>
+                <div>
+                  <label className={labelClass}>Catalog discount (%)</label>
+                  <input
+                    type="number"
+                    min={0}
+                    max={100}
+                    value={form.discountPercent ?? 0}
+                    onChange={(e) =>
+                      updateField(
+                        "discountPercent",
+                        Math.min(100, Math.max(0, Number(e.target.value) || 0))
+                      )
+                    }
+                    className={inputClass}
+                  />
+                  <p className="text-xs text-muted mt-1">
+                    Optional percent off the list price for this course (display, enrollments, and checkout).
+                  </p>
                 </div>
               </div>
             </div>
@@ -626,7 +634,13 @@ export default function CreateCourseContent() {
                   <div className="flex items-center gap-4 mt-4 text-white/70 text-xs">
                     <span>{form.lessons} lessons</span>
                     <span>{form.durationWeeks} weeks</span>
-                    {form.price > 0 && <span>{form.price} {form.currency}</span>}
+                    {form.price > 0 && (
+                      <span>
+                        {form.discountPercent
+                          ? `${priceAfterCourseDiscount(form.price, form.discountPercent).toFixed(2)} ${form.currency} (${form.discountPercent}% off)`
+                          : `${form.price} ${form.currency}`}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
