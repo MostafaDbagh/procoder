@@ -15,8 +15,18 @@ export interface APITeamMember {
   role: { en: string; ar: string };
   avatar: string;
   color: string;
+  headerColor?: string;
   linkedin?: string;
   order?: number;
+  rating?: number;
+  reviews?: number;
+  experienceYears?: number;
+  skillsEn?: string[];
+  skillsAr?: string[];
+  locationEn?: string;
+  locationAr?: string;
+  flag?: string;
+  bio?: { en?: string; ar?: string };
 }
 
 export interface PublicMonthlyChallenge {

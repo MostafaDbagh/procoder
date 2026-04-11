@@ -8,6 +8,16 @@ import {
   getAdminToken,
 } from "@/lib/admin-api";
 import { PasswordInput } from "@/components/PasswordInput";
+import {
+  TEAM_CARD_GRADIENTS,
+  TEAM_STAR_HEADER_COLORS,
+  resolveTeamCardGradient,
+} from "@/lib/teamStarPresets";
+
+function teamSkillsToCsv(v: unknown): string {
+  if (!Array.isArray(v)) return "";
+  return v.map((x) => String(x).trim()).filter(Boolean).join(", ");
+}
 
 type Tab =
   | "overview"
@@ -86,16 +96,16 @@ function normalizePagedResponse<T>(
   return { items: [], meta: { ...emptyMeta } };
 }
 
-function formatMoney(amount: number, currency: string) {
-  const code = (currency || "USD").toUpperCase();
+/** All catalog and payment UI is USD ($) only. */
+function formatMoney(amount: number, _currency?: string) {
   try {
     return new Intl.NumberFormat(undefined, {
       style: "currency",
-      currency: code,
+      currency: "USD",
       maximumFractionDigits: 2,
     }).format(amount);
   } catch {
-    return `${amount.toFixed(2)} ${code}`;
+    return `$${amount.toFixed(2)}`;
   }
 }
 
@@ -548,6 +558,10 @@ export default function AdminDashboard() {
 
   const submitInviteInstructor = async () => {
     try {
+      if (inviteForm.password.trim() && inviteForm.password.trim().length < 8) {
+        setErr("Password must be at least 8 characters when set");
+        return;
+      }
       const body: Record<string, string> = {
         name: inviteForm.name.trim(),
         email: inviteForm.email.trim(),
@@ -1677,7 +1691,9 @@ export default function AdminDashboard() {
                           <td className="p-2 font-mono text-xs">{code}</td>
                           <td className="p-2">{String(r.discountType)}</td>
                           <td className="p-2">
-                            {String(r.discountValue)} {String(r.currency ?? "")}
+                            {r.discountType === "fixed"
+                              ? formatMoney(Number(r.discountValue) || 0)
+                              : `${String(r.discountValue)}%`}
                           </td>
                           <td className="p-2 text-xs">
                             {used}
@@ -2307,6 +2323,20 @@ function promoDateToLocalInput(iso: string | Date | undefined | null): string {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
+/** Matches stem-Be category slug validation (`routes/categories.js`). */
+const KEBAB_SLUG_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+function normalizeKebabSlug(raw: string): string {
+  return raw
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9-]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+const CHALLENGE_MONTH_KEY_REGEX = /^\d{4}-(0[1-9]|1[0-2])$/;
+
 function hydratePromoForm(row: Record<string, unknown>) {
   const slugs = (row.courseSlugs as string[] | undefined) ?? [];
   return {
@@ -2393,13 +2423,23 @@ function PromoFormModal({
       .split(",")
       .map((s) => s.trim().toLowerCase())
       .filter(Boolean);
+    let discountValue = Number(form.discountValue);
+    if (form.discountType === "percent") {
+      discountValue = Math.min(100, Math.max(0.01, discountValue));
+    } else {
+      discountValue = Math.max(0.01, discountValue);
+    }
+    const maxUsesRaw = form.maxUses.trim();
+    const maxUses = maxUsesRaw
+      ? parseInt(maxUsesRaw, 10)
+      : null;
     const base: Record<string, unknown> = {
       discountType: form.discountType,
-      discountValue: Number(form.discountValue),
+      discountValue,
       currency: "USD",
       isActive: form.isActive,
       description: form.description.trim(),
-      maxUses: form.maxUses.trim() ? Number(form.maxUses) : null,
+      maxUses,
       validFrom: form.validFrom
         ? new Date(form.validFrom).toISOString()
         : null,
@@ -2409,7 +2449,7 @@ function PromoFormModal({
       courseSlugs,
     };
     if (forCreate) {
-      base.code = form.code.trim();
+      base.code = form.code.trim().toUpperCase();
     }
     return base;
   };
@@ -2419,6 +2459,22 @@ function PromoFormModal({
     if (mode === "create" && !form.code.trim()) {
       setSaveErr("Code is required");
       return;
+    }
+    const dv = Number(form.discountValue);
+    if (!Number.isFinite(dv) || dv <= 0) {
+      setSaveErr("Discount value must be greater than 0");
+      return;
+    }
+    if (form.discountType === "percent" && dv > 100) {
+      setSaveErr("Percent discount cannot exceed 100");
+      return;
+    }
+    if (form.maxUses.trim()) {
+      const n = parseInt(form.maxUses.trim(), 10);
+      if (!Number.isFinite(n) || n < 1) {
+        setSaveErr("Max uses must be a whole number ≥ 1, or leave empty");
+        return;
+      }
     }
     try {
       if (mode === "create") {
@@ -2690,12 +2746,18 @@ function CourseFormModal({
 
   const save = async () => {
     setSaveErr("");
-    const lessons = Math.max(1, Number(form.lessons) || 1);
-    const durationWeeks = Math.max(1, Number(form.durationWeeks) || 1);
+    const lessons = Math.floor(Math.max(1, Number(form.lessons) || 1));
+    const durationWeeks = Math.floor(
+      Math.max(1, Number(form.durationWeeks) || 1)
+    );
     const ageMin = Math.min(18, Math.max(6, Number(form.ageMin) || 6));
     const ageMax = Math.min(18, Math.max(6, Number(form.ageMax) || 18));
+    const slug =
+      mode === "create"
+        ? normalizeKebabSlug(form.slug)
+        : form.slug.trim();
     const body = {
-      slug: form.slug.trim(),
+      slug,
       category: String(form.category).trim().toLowerCase(),
       ageMin: Math.min(ageMin, ageMax),
       ageMax: Math.max(ageMin, ageMax),
@@ -2704,8 +2766,8 @@ function CourseFormModal({
       durationWeeks,
       iconName: form.iconName,
       color: form.color,
-      title: { en: form.titleEn, ar: form.titleAr },
-      description: { en: form.descEn, ar: form.descAr },
+      title: { en: form.titleEn.trim(), ar: form.titleAr.trim() },
+      description: { en: form.descEn.trim(), ar: form.descAr.trim() },
       skills: {
         en: form.skillsEn.split(",").map((s) => s.trim()).filter(Boolean),
         ar: form.skillsAr.split(",").map((s) => s.trim()).filter(Boolean),
@@ -2751,13 +2813,21 @@ function CourseFormModal({
           <p className="mt-4 text-slate-400">Loading…</p>
         ) : (
           <div className="mt-4 grid gap-3 text-sm">
-            <label className="block text-slate-400">
+                       <label className="block text-slate-400">
               <span className="mb-1 block text-xs">Slug (URL id)</span>
               <input
                 placeholder="e.g. my-new-course"
                 disabled={mode === "edit"}
                 value={form.slug}
-                onChange={(e) => setForm((f) => ({ ...f, slug: e.target.value }))}
+                onChange={(e) =>
+                  setForm((f) => ({
+                    ...f,
+                    slug:
+                      mode === "create"
+                        ? normalizeKebabSlug(e.target.value)
+                        : e.target.value,
+                  }))
+                }
                 className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1 disabled:opacity-60"
               />
             </label>
@@ -3023,12 +3093,22 @@ function CategoryFormModal({
 
   const save = async () => {
     setSaveErr("");
+    const slug =
+      mode === "create" ? normalizeKebabSlug(form.slug) : form.slug.trim();
+    if (mode === "create") {
+      if (!slug || !KEBAB_SLUG_REGEX.test(slug)) {
+        setSaveErr(
+          "Slug must be kebab-case (lowercase letters, numbers, single hyphens)"
+        );
+        return;
+      }
+    }
     try {
       if (mode === "create") {
         await adminFetch("/categories", {
           method: "POST",
           body: JSON.stringify({
-            slug: form.slug.trim().toLowerCase(),
+            slug,
             title: { en: form.titleEn.trim(), ar: form.titleAr.trim() },
             sortOrder: Number(form.sortOrder) || 0,
             isActive: form.isActive,
@@ -3072,7 +3152,13 @@ function CategoryFormModal({
                 disabled={mode === "edit"}
                 value={form.slug}
                 onChange={(e) =>
-                  setForm((f) => ({ ...f, slug: e.target.value }))
+                  setForm((f) => ({
+                    ...f,
+                    slug:
+                      mode === "create"
+                        ? normalizeKebabSlug(e.target.value)
+                        : f.slug,
+                  }))
                 }
                 className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1 disabled:opacity-60"
               />
@@ -3225,6 +3311,21 @@ function ChallengeFormModal({
 
   const save = async () => {
     setSaveErr("");
+    const slug = isNew ? normalizeKebabSlug(form.slug) : form.slug.trim();
+    const monthKey = form.monthKey.trim();
+    if (isNew && (!slug || !KEBAB_SLUG_REGEX.test(slug))) {
+      setSaveErr(
+        "Slug must be kebab-case (lowercase letters, numbers, single hyphens)"
+      );
+      return;
+    }
+    if (
+      isNew &&
+      (!monthKey || !CHALLENGE_MONTH_KEY_REGEX.test(monthKey))
+    ) {
+      setSaveErr("Month key must be YYYY-MM with month 01–12");
+      return;
+    }
     const stepsPayload = steps.map((s) => ({
       titleEn: s.titleEn.trim(),
       titleAr: s.titleAr.trim(),
@@ -3232,8 +3333,8 @@ function ChallengeFormModal({
       bodyAr: s.bodyAr.trim(),
     }));
     const body = {
-      slug: form.slug.trim(),
-      monthKey: form.monthKey.trim(),
+      slug,
+      monthKey,
       badgeEn: form.badgeEn.trim(),
       badgeAr: form.badgeAr.trim(),
       titleEn: form.titleEn.trim(),
@@ -3293,7 +3394,10 @@ function ChallengeFormModal({
                 value={form.slug}
                 disabled={!isNew}
                 onChange={(e) =>
-                  setForm((f) => ({ ...f, slug: e.target.value }))
+                  setForm((f) => ({
+                    ...f,
+                    slug: isNew ? normalizeKebabSlug(e.target.value) : f.slug,
+                  }))
                 }
                 className="rounded border border-slate-700 bg-slate-950 px-2 py-1 disabled:opacity-60 sm:col-span-2"
               />
@@ -3572,6 +3676,7 @@ function TeamFormModal({
   const isNew = !initial._id;
   const name = initial.name as { en?: string; ar?: string } | undefined;
   const role = initial.role as { en?: string; ar?: string } | undefined;
+  const bio = initial.bio as { en?: string; ar?: string } | undefined;
   const initialRoleEn = String(role?.en ?? "");
   const initialRoleAr = String(role?.ar ?? "");
   const defaultRole = TEAM_ROLE_PRESETS[0];
@@ -3581,9 +3686,20 @@ function TeamFormModal({
     roleEn: initialRoleEn || (isNew ? defaultRole.en : ""),
     roleAr: initialRoleAr || (isNew ? defaultRole.ar : ""),
     avatar: String(initial.avatar ?? "PC"),
-    color: String(initial.color ?? "from-blue-400 to-cyan-400"),
+    color: resolveTeamCardGradient(String(initial.color ?? "")),
+    headerColor: String(initial.headerColor ?? "bg-primary"),
     order: Number(initial.order ?? 0),
     linkedin: String(initial.linkedin ?? ""),
+    rating: Math.min(5, Math.max(0, Number(initial.rating ?? 5))),
+    reviews: Math.max(0, Math.floor(Number(initial.reviews ?? 0))),
+    experienceYears: Math.max(0, Math.floor(Number(initial.experienceYears ?? 0))),
+    skillsEnCsv: teamSkillsToCsv(initial.skillsEn),
+    skillsArCsv: teamSkillsToCsv(initial.skillsAr),
+    locationEn: String(initial.locationEn ?? ""),
+    locationAr: String(initial.locationAr ?? ""),
+    flag: String(initial.flag ?? ""),
+    bioEn: String(bio?.en ?? ""),
+    bioAr: String(bio?.ar ?? ""),
   });
   const [rolePresetId, setRolePresetId] = useState<string>(() => {
     if (isNew && !initialRoleEn && !initialRoleAr) return defaultRole.id;
@@ -3591,13 +3707,32 @@ function TeamFormModal({
   });
 
   const save = async () => {
+    const skillsEn = form.skillsEnCsv
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    const skillsAr = form.skillsArCsv
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    const avatar = (form.avatar.trim().slice(0, 2) || "PC").slice(0, 2);
     const body = {
-      name: { en: form.nameEn, ar: form.nameAr },
-      role: { en: form.roleEn, ar: form.roleAr },
-      avatar: form.avatar.slice(0, 2),
+      name: { en: form.nameEn.trim(), ar: form.nameAr.trim() },
+      role: { en: form.roleEn.trim(), ar: form.roleAr.trim() },
+      avatar,
       color: form.color,
+      headerColor: form.headerColor,
       order: form.order,
-      linkedin: form.linkedin,
+      linkedin: form.linkedin.trim(),
+      rating: Math.min(5, Math.max(0, Number(form.rating) || 0)),
+      reviews: Math.max(0, Math.floor(Number(form.reviews) || 0)),
+      experienceYears: Math.max(0, Math.floor(Number(form.experienceYears) || 0)),
+      skillsEn,
+      skillsAr,
+      locationEn: form.locationEn.trim(),
+      locationAr: form.locationAr.trim(),
+      flag: form.flag.trim().slice(0, 16),
+      bio: { en: form.bioEn.trim(), ar: form.bioAr.trim() },
     };
     if (isNew) {
       await adminFetch("/team", { method: "POST", body: JSON.stringify(body) });
@@ -3612,10 +3747,13 @@ function TeamFormModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-      <div className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl border border-slate-700 bg-slate-900 p-6">
+      <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-slate-700 bg-slate-900 p-6">
         <h2 className="text-lg font-semibold text-white">
           {isNew ? "New team member" : "Edit team member"}
         </h2>
+        <p className="mt-2 text-xs text-slate-500">
+          Fields below match the home page &quot;Meet Our Stars&quot; cards and the About team grid (name, role, avatar, colors, LinkedIn, stats, skills, location, flag, bios).
+        </p>
         <div className="mt-4 grid gap-2 text-sm">
           <input
             placeholder="Name EN"
@@ -3677,7 +3815,7 @@ function TeamFormModal({
             </>
           ) : null}
           <input
-            placeholder="Avatar1-2 chars"
+            placeholder="Avatar (1–2 chars, About page circle)"
             value={form.avatar}
             maxLength={2}
             onChange={(e) =>
@@ -3685,6 +3823,192 @@ function TeamFormModal({
             }
             className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
           />
+          <label className="block text-slate-400">
+            <span className="mb-1 block text-xs">Card gradient (About)</span>
+            <select
+              value={form.color}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, color: e.target.value }))
+              }
+              className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1 text-white"
+            >
+              {TEAM_CARD_GRADIENTS.map((g) => (
+                <option key={g.value} value={g.value}>
+                  {g.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="block text-slate-400">
+            <span className="mb-1 block text-xs">Stars header strip (home)</span>
+            <select
+              value={form.headerColor}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, headerColor: e.target.value }))
+              }
+              className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1 text-white"
+            >
+              {TEAM_STAR_HEADER_COLORS.map((h) => (
+                <option key={h.value} value={h.value}>
+                  {h.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <div className="grid grid-cols-2 gap-2">
+            <label className="block text-slate-400">
+              <span className="mb-1 block text-xs">Sort order</span>
+              <input
+                type="number"
+                value={form.order}
+                onChange={(e) =>
+                  setForm((f) => ({
+                    ...f,
+                    order: Math.floor(Number(e.target.value) || 0),
+                  }))
+                }
+                className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              />
+            </label>
+            <label className="block text-slate-400">
+              <span className="mb-1 block text-xs">Rating (0–5)</span>
+              <input
+                type="number"
+                min={0}
+                max={5}
+                step={0.1}
+                value={form.rating}
+                onChange={(e) =>
+                  setForm((f) => ({
+                    ...f,
+                    rating: Math.min(5, Math.max(0, Number(e.target.value) || 0)),
+                  }))
+                }
+                className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              />
+            </label>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <label className="block text-slate-400">
+              <span className="mb-1 block text-xs">Review count</span>
+              <input
+                type="number"
+                min={0}
+                value={form.reviews}
+                onChange={(e) =>
+                  setForm((f) => ({
+                    ...f,
+                    reviews: Math.max(0, Math.floor(Number(e.target.value) || 0)),
+                  }))
+                }
+                className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              />
+            </label>
+            <label className="block text-slate-400">
+              <span className="mb-1 block text-xs">Years experience</span>
+              <input
+                type="number"
+                min={0}
+                value={form.experienceYears}
+                onChange={(e) =>
+                  setForm((f) => ({
+                    ...f,
+                    experienceYears: Math.max(
+                      0,
+                      Math.floor(Number(e.target.value) || 0)
+                    ),
+                  }))
+                }
+                className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              />
+            </label>
+          </div>
+          <label className="block text-slate-400">
+            <span className="mb-1 block text-xs">Skills EN (comma-separated)</span>
+            <input
+              value={form.skillsEnCsv}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, skillsEnCsv: e.target.value }))
+              }
+              className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+            />
+          </label>
+          <label className="block text-slate-400">
+            <span className="mb-1 block text-xs">Skills AR (comma-separated)</span>
+            <input
+              value={form.skillsArCsv}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, skillsArCsv: e.target.value }))
+              }
+              className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+            />
+          </label>
+          <div className="grid grid-cols-2 gap-2">
+            <label className="block text-slate-400">
+              <span className="mb-1 block text-xs">Location EN</span>
+              <input
+                value={form.locationEn}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, locationEn: e.target.value }))
+                }
+                className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              />
+            </label>
+            <label className="block text-slate-400">
+              <span className="mb-1 block text-xs">Location AR</span>
+              <input
+                value={form.locationAr}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, locationAr: e.target.value }))
+                }
+                className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+              />
+            </label>
+          </div>
+          <label className="block text-slate-400">
+            <span className="mb-1 block text-xs">Flag (emoji)</span>
+            <input
+              value={form.flag}
+              maxLength={16}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, flag: e.target.value }))
+              }
+              className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+            />
+          </label>
+          <label className="block text-slate-400">
+            <span className="mb-1 block text-xs">Bio EN (home stars card)</span>
+            <textarea
+              rows={3}
+              value={form.bioEn}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, bioEn: e.target.value }))
+              }
+              className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+            />
+          </label>
+          <label className="block text-slate-400">
+            <span className="mb-1 block text-xs">Bio AR</span>
+            <textarea
+              rows={3}
+              value={form.bioAr}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, bioAr: e.target.value }))
+              }
+              className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+            />
+          </label>
+          <label className="block text-slate-400">
+            <span className="mb-1 block text-xs">LinkedIn URL</span>
+            <input
+              placeholder="https://…"
+              value={form.linkedin}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, linkedin: e.target.value }))
+              }
+              className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+            />
+          </label>
         </div>
         <div className="mt-6 flex justify-end gap-2">
           <button type="button" onClick={onClose} className="rounded-lg border border-slate-600 px-4 py-2 text-sm">

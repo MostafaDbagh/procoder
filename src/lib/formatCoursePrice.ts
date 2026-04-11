@@ -12,21 +12,21 @@ export function priceAfterCourseDiscount(
 
 /**
  * Format a catalog price for public course UI (list + detail).
+ * Product is USD-only; amounts always display as $ (never SAR/AED/etc.).
  */
 export function formatCoursePrice(
   amount: number,
-  currency: string,
+  _currency: string,
   locale: string
 ): string {
-  const code = (currency || "USD").toUpperCase();
   const lang = locale === "ar" ? "ar" : "en-US";
   try {
     return new Intl.NumberFormat(lang, {
       style: "currency",
-      currency: code,
+      currency: "USD",
       maximumFractionDigits: 2,
     }).format(amount);
   } catch {
-    return `${amount.toFixed(2)} ${code}`;
+    return `$${amount.toFixed(2)}`;
   }
 }

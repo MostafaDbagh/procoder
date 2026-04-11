@@ -4,6 +4,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { AnimatedSection, AnimatedCard } from "@/components/AnimatedSection";
 import { motion } from "framer-motion";
 import type { APITeamMember } from "@/lib/server-api";
+import { resolveTeamCardGradient } from "@/lib/teamStarPresets";
 import {
   Sparkles,
   Rocket,
@@ -62,7 +63,7 @@ export default function AboutContent({ cmsTeam }: AboutContentProps) {
             name: lang === "ar" ? m.name.ar : m.name.en,
             role: lang === "ar" ? m.role.ar : m.role.en,
             avatar: m.avatar,
-            color: m.color || "from-blue-400 to-cyan-400",
+            color: resolveTeamCardGradient(m.color),
             linkedin: m.linkedin?.trim() || undefined,
           }))
       : fallbackTeam;

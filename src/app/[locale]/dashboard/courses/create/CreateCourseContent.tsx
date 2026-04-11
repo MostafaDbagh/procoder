@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocale } from "next-intl";
 import { adminLogin, createCourse, type CreateCourseData } from "@/lib/api";
+import { adminFetch, setAdminToken } from "@/lib/admin-api";
 import { AnimatedSection } from "@/components/AnimatedSection";
 import { motion } from "framer-motion";
 import {
@@ -15,10 +17,23 @@ import {
   X,
 } from "lucide-react";
 import { LocalizedLink } from "@/components/LocalizedLink";
-import { priceAfterCourseDiscount } from "@/lib/formatCoursePrice";
+import { formatCoursePrice, priceAfterCourseDiscount } from "@/lib/formatCoursePrice";
 import { PasswordInput } from "@/components/PasswordInput";
 
-const CATEGORIES = ["programming", "robotics", "algorithms", "arabic", "quran"] as const;
+/** Used only when /categories/admin/list returns nothing (same slugs as typical seed). */
+const FALLBACK_CATEGORY_SLUGS = [
+  "programming",
+  "robotics",
+  "algorithms",
+  "arabic",
+  "quran",
+] as const;
+
+type AdminCategoryRow = {
+  slug: string;
+  title: { en: string; ar: string };
+  isActive?: boolean;
+};
 const LEVELS = ["beginner", "intermediate", "advanced"] as const;
 const ICONS = ["Blocks", "Code2", "Globe", "Bot", "Cpu", "Brain", "Trophy", "BookOpen", "PenTool", "BookMarked", "Star", "Gamepad2"] as const;
 const GRADIENTS = [
@@ -54,6 +69,7 @@ const initialForm: CreateCourseData = {
 };
 
 export default function CreateCourseContent() {
+  const locale = useLocale();
   // Auth state
   const [token, setToken] = useState("");
   const [loginEmail, setLoginEmail] = useState("");
@@ -68,6 +84,39 @@ export default function CreateCourseContent() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+  const [catRows, setCatRows] = useState<AdminCategoryRow[]>([]);
+  const [catsLoading, setCatsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!isAuthenticated || !token) return;
+    let cancelled = false;
+    setCatsLoading(true);
+    (async () => {
+      try {
+        const raw = await adminFetch<Record<string, unknown>>(
+          "/categories/admin/list?page=1&limit=500"
+        );
+        const items = Array.isArray(raw.items) ? raw.items : [];
+        if (!cancelled) {
+          setCatRows(items as AdminCategoryRow[]);
+        }
+      } catch {
+        if (!cancelled) setCatRows([]);
+      } finally {
+        if (!cancelled) setCatsLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [isAuthenticated, token]);
+
+  useEffect(() => {
+    const active = catRows.filter((r) => r.isActive !== false);
+    if (active.length === 0) return;
+    const slugs = active.map((r) => r.slug);
+    setForm((f) => (slugs.includes(f.category) ? f : { ...f, category: slugs[0] }));
+  }, [catRows]);
 
   // --- Auth ---
   const handleLogin = async (e: React.FormEvent) => {
@@ -81,7 +130,8 @@ export default function CreateCourseContent() {
         return;
       }
       setToken(res.token);
-      setAdminName(res.user.name);
+      setAdminToken(res.token);
+      setAdminName(res.user.name as string);
       setIsAuthenticated(true);
     } catch (err) {
       setLoginError(err instanceof Error ? err.message : "Login failed");
@@ -135,17 +185,59 @@ export default function CreateCourseContent() {
     setSubmitting(true);
     setError("");
 
+    const activeSlugs = catRows
+      .filter((r) => r.isActive !== false)
+      .map((r) => r.slug);
+    if (activeSlugs.length > 0 && !activeSlugs.includes(form.category)) {
+      setError(
+        "Choose an active category from the list (must match Categories in admin)."
+      );
+      setSubmitting(false);
+      return;
+    }
+
+    const lessons = Math.max(1, Math.floor(Number(form.lessons) || 1));
+    const durationWeeks = Math.max(1, Math.floor(Number(form.durationWeeks) || 1));
+    let ageMin = Math.min(18, Math.max(6, Math.floor(Number(form.ageMin) || 6)));
+    let ageMax = Math.min(18, Math.max(6, Math.floor(Number(form.ageMax) || 18)));
+    ageMin = Math.min(ageMin, ageMax);
+    ageMax = Math.max(ageMin, ageMax);
+
+    const slug = form.slug.trim().toLowerCase();
+    if (!slug) {
+      setError("Slug is required.");
+      setSubmitting(false);
+      return;
+    }
+
     const payload: CreateCourseData = {
-      ...form,
+      slug,
+      category: String(form.category).trim().toLowerCase(),
+      ageMin,
+      ageMax,
+      level: form.level,
+      lessons,
+      durationWeeks,
+      iconName: form.iconName,
+      color: form.color,
+      title: {
+        en: form.title.en.trim(),
+        ar: form.title.ar.trim(),
+      },
+      description: {
+        en: form.description.en.trim(),
+        ar: form.description.ar.trim(),
+      },
+      skills: {
+        en: form.skills.en.map((s) => s.trim()).filter(Boolean),
+        ar: form.skills.ar.map((s) => s.trim()).filter(Boolean),
+      },
+      price: Math.round(Math.max(0, Number(form.price) || 0) * 100) / 100,
       currency: "USD",
       discountPercent: Math.min(
         100,
         Math.max(0, Number(form.discountPercent) || 0)
       ),
-      skills: {
-        en: form.skills.en.filter((s) => s.trim() !== ""),
-        ar: form.skills.ar.filter((s) => s.trim() !== ""),
-      },
     };
 
     try {
@@ -305,10 +397,19 @@ export default function CreateCourseContent() {
                     required
                     value={form.title.en}
                     onChange={(e) => {
-                      updateField("title", { ...form.title, en: e.target.value });
-                      if (!form.slug || form.slug === autoSlug(form.title.en)) {
-                        updateField("slug", autoSlug(e.target.value));
-                      }
+                      const en = e.target.value;
+                      setForm((prev) => {
+                        const prevAuto = autoSlug(prev.title.en);
+                        const nextSlug =
+                          !prev.slug || prev.slug === prevAuto
+                            ? autoSlug(en)
+                            : prev.slug;
+                        return {
+                          ...prev,
+                          title: { ...prev.title, en },
+                          slug: nextSlug,
+                        };
+                      });
                     }}
                     placeholder="e.g. Python for Kids"
                     className={inputClass}
@@ -343,12 +444,26 @@ export default function CreateCourseContent() {
                   <select
                     value={form.category}
                     onChange={(e) => updateField("category", e.target.value)}
+                    disabled={catsLoading}
                     className={selectClass}
                   >
-                    {CATEGORIES.map((c) => (
-                      <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>
+                    {(catRows.filter((r) => r.isActive !== false).length
+                      ? catRows.filter((r) => r.isActive !== false)
+                                           : FALLBACK_CATEGORY_SLUGS.map((slug) => ({
+                          slug,
+                          title: { en: slug, ar: slug },
+                        }))
+                    ).map((c) => (
+                      <option key={c.slug} value={c.slug}>
+                        {c.title.en} ({c.slug})
+                      </option>
                     ))}
                   </select>
+                  <p className="text-xs text-muted mt-1">
+                    {catsLoading
+                      ? "Loading categories from admin…"
+                      : "Must be an active category (same rule as admin dashboard)."}
+                  </p>
                 </div>
               </div>
             </div>
@@ -411,7 +526,9 @@ export default function CreateCourseContent() {
                     min={6}
                     max={18}
                     value={form.ageMin}
-                    onChange={(e) => updateField("ageMin", Number(e.target.value))}
+                    onChange={(e) =>
+                      updateField("ageMin", Math.floor(Number(e.target.value) || 6))
+                    }
                     className={inputClass}
                   />
                 </div>
@@ -423,7 +540,9 @@ export default function CreateCourseContent() {
                     min={6}
                     max={18}
                     value={form.ageMax}
-                    onChange={(e) => updateField("ageMax", Number(e.target.value))}
+                    onChange={(e) =>
+                      updateField("ageMax", Math.floor(Number(e.target.value) || 18))
+                    }
                     className={inputClass}
                   />
                 </div>
@@ -434,7 +553,12 @@ export default function CreateCourseContent() {
                     required
                     min={1}
                     value={form.lessons}
-                    onChange={(e) => updateField("lessons", Number(e.target.value))}
+                    onChange={(e) =>
+                      updateField(
+                        "lessons",
+                        Math.max(1, Math.floor(Number(e.target.value) || 1))
+                      )
+                    }
                     className={inputClass}
                   />
                 </div>
@@ -445,7 +569,12 @@ export default function CreateCourseContent() {
                     required
                     min={1}
                     value={form.durationWeeks}
-                    onChange={(e) => updateField("durationWeeks", Number(e.target.value))}
+                    onChange={(e) =>
+                      updateField(
+                        "durationWeeks",
+                        Math.max(1, Math.floor(Number(e.target.value) || 1))
+                      )
+                    }
                     className={inputClass}
                   />
                 </div>
@@ -637,8 +766,15 @@ export default function CreateCourseContent() {
                     {form.price > 0 && (
                       <span>
                         {form.discountPercent
-                          ? `${priceAfterCourseDiscount(form.price, form.discountPercent).toFixed(2)} ${form.currency} (${form.discountPercent}% off)`
-                          : `${form.price} ${form.currency}`}
+                          ? `${formatCoursePrice(
+                              priceAfterCourseDiscount(
+                                form.price,
+                                form.discountPercent
+                              ),
+                              "USD",
+                              locale
+                            )} (${form.discountPercent}% off)`
+                          : formatCoursePrice(form.price, "USD", locale)}
                       </span>
                     )}
                   </div>
