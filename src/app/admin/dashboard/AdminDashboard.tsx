@@ -270,11 +270,19 @@ type Overview = {
   };
   payments?: {
     note: string;
+    explanation?: string;
     configured: boolean;
     succeeded: {
       byCurrency: Record<
         string,
-        { gross: number; net: number; count: number }
+        {
+          totalCharged: number;
+          afterRefunds: number;
+          refunds?: number;
+          count: number;
+          gross?: number;
+          net?: number;
+        }
       >;
       paymentCount: number;
     };
@@ -1035,34 +1043,43 @@ export default function AdminDashboard() {
               ) : null}
               {overview.payments ? (
                 <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-4 sm:col-span-2 lg:col-span-3">
-                  <h3 className="mb-1 text-sm font-medium text-slate-300">
-                    Payments (Stripe)
+                  <h3 className="mb-1 text-sm font-medium text-slate-200">
+                    Payments <span className="font-normal text-slate-500">(Stripe)</span>
                   </h3>
-                  <p className="mb-4 text-xs text-slate-500">
+                  <p className="text-xs text-slate-500">
                     {overview.payments.note}{" "}
                     {overview.payments.configured
                       ? "Keys detected on API."
                       : "Set STRIPE_SECRET_KEY and STRIPE_WEBHOOK_SECRET on stem-Be."}
                   </p>
-                  <div className="grid gap-4 lg:grid-cols-2">
+                  {overview.payments.explanation ? (
+                    <p className="mt-2 text-xs leading-relaxed text-slate-400">
+                      {overview.payments.explanation}
+                    </p>
+                  ) : null}
+                  <div className="mt-4 grid gap-4 lg:grid-cols-2">
                     <div>
-                      <h4 className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-400">
-                        Succeeded (net / gross by currency)
+                      <h4 className="mb-2 text-xs font-medium text-slate-400">
+                        Succeeded charges
                       </h4>
                       <p className="mb-2 text-xs text-slate-500">
                         {overview.payments.succeeded.paymentCount} payment
                         {overview.payments.succeeded.paymentCount !== 1
                           ? "s"
                           : ""}{" "}
-                        · Pending sessions:{" "}
+                        · Pending checkouts:{" "}
                         {overview.payments.pendingCheckoutSessions}
                       </p>
                       <table className="w-full text-left text-xs">
                         <thead>
                           <tr className="text-slate-500">
                             <th className="py-1 pr-4">Currency</th>
-                            <th className="py-1">Net</th>
-                            <th className="py-1">Gross</th>
+                            <th className="py-1 pr-2" title="What customers paid">
+                              Total charged
+                            </th>
+                            <th className="py-1 pr-2" title="Charged minus refunds">
+                              After refunds
+                            </th>
                             <th className="py-1">#</th>
                           </tr>
                         </thead>
@@ -1083,23 +1100,37 @@ export default function AdminDashboard() {
                               overview.payments.succeeded.byCurrency
                             )
                               .sort(([a], [b]) => a.localeCompare(b))
-                              .map(([cur, v]) => (
+                              .map(([cur, v]) => {
+                                const charged =
+                                  v.totalCharged ??
+                                  v.gross ??
+                                  0;
+                                const kept =
+                                  v.afterRefunds ??
+                                  v.net ??
+                                  0;
+                                return (
                                 <tr key={cur} className="text-slate-300">
                                   <td className="py-1 pr-4 font-mono">
                                     {cur}
                                   </td>
-                                  <td className="py-1">
-                                    {formatMoney(v.net)}
+                                  <td className="py-1 pr-2">
+                                    {formatMoney(charged)}
                                   </td>
-                                  <td className="py-1">
-                                    {formatMoney(v.gross)}
+                                  <td className="py-1 pr-2">
+                                    {formatMoney(kept)}
                                   </td>
                                   <td className="py-1">{v.count}</td>
                                 </tr>
-                              ))
+                                );
+                              })
                           )}
                         </tbody>
                       </table>
+                      <p className="mt-2 text-[11px] text-slate-600">
+                        Bank payout after Stripe fees is not shown here — use
+                        Stripe Dashboard → Balance.
+                      </p>
                     </div>
                     <div>
                       <h4 className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-400">
