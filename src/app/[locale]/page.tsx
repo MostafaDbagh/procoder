@@ -15,12 +15,12 @@ const meta = {
   en: {
     title: "ProCoder | Live coding, robotics & Quran for kids (6–18)",
     description:
-      "Small-group live classes: programming, robotics, algorithms, Arabic & Quran. Certified teachers. GCC & worldwide. Free trial.",
+      "AI suggests the best course for your child (OpenAI & DeepSeek). Small-group live classes: programming, robotics, algorithms, Arabic & Quran. GCC & worldwide. Free trial.",
   },
   ar: {
     title: "بروكودر | برمجة وروبوتات وقرآن مباشر للأطفال ٦–١٨",
     description:
-      "حصص صغيرة مباشرة: برمجة وروبوتات وخوارزميات وعربية وقرآن. مدرسون معتمدون. الخليج والعالم. تجربة مجانية.",
+      "ذكاء اصطناعي يقترح أفضل دورة لطفلك (OpenAI وDeepSeek). حصص صغيرة مباشرة: برمجة وروبوتات وعربية وقرآن. الخليج والعالم. تجربة مجانية.",
   },
 };
 

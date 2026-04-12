@@ -7,14 +7,14 @@ const SITE_URL = process.env.SITE_URL || "https://procoder.com";
 
 const meta = {
   en: {
-    title: "Course finder for kids | ProCoder",
+    title: "AI course finder for kids | OpenAI & DeepSeek | ProCoder",
     description:
-      "Answer a few questions to match your child to the right live class. Ages 6–18.",
+      "Find the best live course for your child: AI-powered matching (OpenAI & DeepSeek), or a quick form. Ages 6–18.",
   },
   ar: {
-    title: "أداة اختيار الدورة لطفلك | بروكودر",
+    title: "مُنتقي الدورات بالذكاء الاصطناعي لطفلك | بروكودر",
     description:
-      "بضع أسئلة لاقتراح الحصة المناسبة. للأعمار ٦–١٨.",
+      "اكتشف أفضل حصة مناسبة لطفلك: مطابقة بالذكاء الاصطناعي (OpenAI وDeepSeek) أو نموذج سريع. للأعمار ٦–١٨.",
   },
 };
 

@@ -27,6 +27,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const entries: MetadataRoute.Sitemap = [];
 
+  // Machine-readable context for AI / LLM crawlers (not locale-specific)
+  entries.push({
+    url: `${SITE_URL}/llms.txt`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.4,
+  });
+  entries.push({
+    url: `${SITE_URL}/llms-full.txt`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.35,
+  });
+
   // Static pages for each locale
   for (const locale of locales) {
     for (const page of staticPages) {

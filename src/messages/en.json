@@ -129,7 +129,7 @@
   },
   "recommend": {
     "title": "Find the Right Course",
-    "subtitle": "Use the quick form or AI chat — we match age, interests, and level.",
+    "subtitle": "Our AI matches your child to the best live classes (OpenAI & DeepSeek). Use the chat or the quick form — we align age, interests, and level.",
     "childAge": "Child's Age",
     "selectAge": "Select age",
     "interests": "Interests",
@@ -152,8 +152,9 @@
     "gaming": "Game Dev",
     "aiTab": "Sparkle",
     "formTab": "Form",
+    "aiBadge": "OpenAI & DeepSeek",
     "aiGreetingTitle": "AI course helper",
-    "aiGreeting": "Share your child’s age, interests, and level — we’ll suggest matching courses.",
+    "aiGreeting": "Tell us about your child — our AI (OpenAI & DeepSeek) suggests the best-matching live courses.",
     "aiExamples": "Try asking something like:",
     "aiExample1": "My 8 year old loves games and wants to learn coding",
     "aiExample2": "I want my 12 year old to start learning Quran recitation",
@@ -215,7 +216,7 @@
     "quran": "Quran"
   },
   "footer": {
-    "description": "Live online STEM & Quran classes for kids 6–18. Safe, small groups, bilingual support.",
+    "description": "AI course matching (OpenAI & DeepSeek) helps families pick the right class. Live STEM & Quran for kids 6–18. Small groups, bilingual support.",
     "quickLinks": "Quick Links",
     "categories": "Categories",
     "contact": "Contact Us",

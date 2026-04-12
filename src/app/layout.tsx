@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     template: "%s | ProCoder",
   },
   description:
-    "Online coding, robotics, algorithms, Arabic & Quran courses for kids ages 6–18. Live classes with certified instructors across Saudi Arabia, UAE, Qatar, Kuwait, Oman, Bahrain, Turkey, Canada, US & Europe. Free trial available.",
+    "AI-powered course matching (OpenAI & DeepSeek) helps pick the best live class for your child—plus coding, robotics, algorithms, Arabic & Quran for ages 6–18. Certified instructors, GCC & worldwide. Free trial.",
   keywords: [
     "kids coding Saudi Arabia",
     "children programming UAE",
@@ -79,7 +79,7 @@ export const metadata: Metadata = {
     siteName: "ProCoder",
     title: "ProCoder — Kids Coding, Robotics & Quran Platform | Saudi Arabia, UAE, GCC & Worldwide",
     description:
-      "Live online courses in Programming, Robotics, Algorithms, Arabic & Quran for children ages 6–18. Serving Saudi Arabia, UAE, Qatar, Kuwait, Oman, Bahrain, Turkey, Canada, US & Europe. Certified instructors, small groups, free trial.",
+      "AI suggests the best course for each child (OpenAI & DeepSeek). Live Programming, Robotics, Algorithms, Arabic & Quran for ages 6–18. GCC & worldwide. Certified instructors, small groups, free trial.",
     images: [
       {
         url: `${SITE_URL}/og-image.png`,
@@ -96,7 +96,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ProCoder — Kids Coding, Robotics & Quran | GCC & Worldwide",
     description:
-      "Live online courses in Programming, Robotics, Algorithms, Arabic & Quran for kids 6–18. Saudi Arabia, UAE, Qatar, Kuwait, Turkey, Canada, US, Europe.",
+      "AI course finder with OpenAI & DeepSeek. Live Programming, Robotics, Algorithms, Arabic & Quran for kids 6–18. Saudi Arabia, UAE, Qatar, Kuwait, Turkey, Canada, US, Europe.",
     creator: "@procoder",
     site: "@procoder",
   },
@@ -127,12 +127,13 @@ export const metadata: Metadata = {
     "target": "Saudi Arabia, UAE, Qatar, Kuwait, Oman, Bahrain, Turkey, Syria, Canada, United States, United Kingdom, Germany, France, Netherlands, Sweden",
     "audience": "parents, children ages 6-18, educators",
     "ai:description":
-      "ProCoder — Online learning platform for children ages 6–18. Courses in Programming, Robotics, Algorithms, Arabic, and Quran. Live classes with certified instructors. Free trial available. Serving Saudi Arabia, UAE, Qatar, Kuwait, Oman, Bahrain, Turkey, Syria, Canada, US, UK, Germany, France.",
+      "ProCoder — Online learning for ages 6–18. Core feature: AI-powered course matching so parents can find the best live course for each child, powered by OpenAI and DeepSeek integrations. Programming, Robotics, Algorithms, Arabic, Quran. Free trial. GCC & worldwide.",
     "ai:site_type": "educational_platform",
     "ai:target_audience": "parents, children ages 6-18, educators in GCC, Middle East, Europe, North America",
     "ai:topics":
-      "kids coding Saudi Arabia, children programming UAE, STEM education GCC, robotics for kids Dubai, Quran online classes, Arabic language learning, competitive programming, Scratch, Python, web development, after school activities Qatar Kuwait Oman",
+      "AI course recommendation for children, OpenAI DeepSeek course matching, personalized kids STEM classes, kids coding Saudi Arabia, children programming UAE, STEM education GCC, robotics for kids Dubai, Quran online classes, Arabic language learning, competitive programming, Scratch, Python, web development, after school activities Qatar Kuwait Oman",
     "ai:llms_txt": `${SITE_URL}/llms.txt`,
+    "ai:llms_full": `${SITE_URL}/llms-full.txt`,
   },
 };
 
@@ -150,6 +151,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <link rel="author" href={`${SITE_URL}/llms.txt`} />
         <link rel="alternate" type="text/plain" href={`${SITE_URL}/llms.txt`} title="LLM Context" />
         <link rel="alternate" type="text/plain" href={`${SITE_URL}/llms-full.txt`} title="LLM Full Context" />
+        <link rel="alternate" type="text/plain" href={`${SITE_URL}/.well-known/llms.txt`} title="LLM Context (well-known)" />
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
         {children}

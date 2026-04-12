@@ -22,7 +22,7 @@ export function OrganizationSchema() {
     "@type": "EducationalOrganization",
     name: "ProCoder",
     description:
-      "Live online STEM & Quran for ages 6–18: small groups, certified teachers, English & Arabic. GCC & worldwide.",
+      "Live online STEM & Quran for ages 6–18. AI-powered course matching (OpenAI & DeepSeek) helps families pick the best live class for each child—plus small groups, certified teachers, English & Arabic. GCC & worldwide.",
     url: SITE_URL,
     logo: `${SITE_URL}/logo.png`,
     image: `${SITE_URL}/og-image.png`,
@@ -85,8 +85,9 @@ export function OrganizationSchema() {
 export function FAQSchema() {
   const faqs = [
     { q: "What age group are ProCoder courses designed for?", a: "Ages 6–18 with paths by level. Most students take about two 1-hour live sessions per week." },
+    { q: "How does ProCoder suggest the best course for my child?", a: "Our Course finder uses AI-powered matching with OpenAI and DeepSeek integrations to propose live courses that fit your child’s age, interests, and level. Parents choose what to enroll in." },
     { q: "How is my child's data and privacy protected?", a: "Encryption, COPPA-aware practices, and no selling of child data. Parents control student accounts." },
-    { q: "Does my child need prior experience?", a: "No—beginners start with fundamentals; advanced tracks exist too. Our course finder helps pick a level." },
+    { q: "Does my child need prior experience?", a: "No—beginners start with fundamentals; advanced tracks exist too. Our AI course finder and form help pick a level." },
     { q: "Do you offer free trial classes?", a: "Yes: one free live session, no obligation." },
     { q: "How are ProCoder classes conducted?", a: "Live online in small groups or 1:1 with screen share, guided practice, and interactive tools." },
     { q: "What devices are needed for classes?", a: "Laptop or desktop plus stable internet. Coding runs in the browser; robotics kits ship where needed." },
@@ -114,7 +115,7 @@ export function WebsiteSchema() {
     name: "ProCoder",
     url: SITE_URL,
     description:
-      "Live kids’ classes in programming, robotics, algorithms, Arabic, and Quran (ages 6–18). English & Arabic.",
+      "Live kids’ classes in programming, robotics, algorithms, Arabic, and Quran (ages 6–18). AI course finder uses OpenAI & DeepSeek to suggest the best fit per child. English & Arabic.",
     inLanguage: ["en", "ar"],
     potentialAction: {
       "@type": "SearchAction",
