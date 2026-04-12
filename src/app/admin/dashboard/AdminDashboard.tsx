@@ -924,158 +924,113 @@ export default function AdminDashboard() {
               />
               {overview.revenue ? (
                 <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-4 sm:col-span-2 lg:col-span-3">
-                  <h3 className="mb-1 text-sm font-medium text-slate-300">
-                    Revenue (estimated from course list price)
+                  <h3 className="text-sm font-medium text-slate-200">
+                    Catalog revenue{" "}
+                    <span className="font-normal text-slate-500">
+                      (estimate · list price)
+                    </span>
                   </h3>
-                  <p className="mb-4 text-xs text-slate-500">
+                  <p className="mt-1 text-xs text-slate-500">
                     {overview.revenue.note}
                   </p>
-                  <div className="grid gap-6 lg:grid-cols-2">
-                    <div>
-                      <h4 className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-400">
-                        Committed (
-                        {overview.revenue.committed.statuses.join(", ")})
-                      </h4>
-                      <p className="mb-2 text-xs text-slate-500">
-                        {overview.revenue.committed.enrollmentCount} enrollment
-                        {overview.revenue.committed.enrollmentCount !== 1
-                          ? "s"
-                          : ""}
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                    <div className="rounded-lg border border-slate-800/90 bg-slate-950/50 px-4 py-3">
+                      <div className="text-xs text-slate-500">Pipeline</div>
+                      <p className="mt-1 text-sm text-slate-200">
+                        <span className="font-semibold tabular-nums">
+                          {overview.revenue.pipeline.enrollmentCount}
+                        </span>{" "}
+                        <span className="text-slate-500">
+                          enrollment
+                          {overview.revenue.pipeline.enrollmentCount !== 1
+                            ? "s"
+                            : ""}
+                        </span>
                       </p>
-                      <table className="w-full text-left text-xs">
-                        <thead>
-                          <tr className="text-slate-500">
-                            <th className="py-1 pr-4">Currency</th>
-                            <th className="py-1">Total</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {Object.keys(overview.revenue.committed.byCurrency)
-                            .length === 0 ? (
-                            <tr>
-                              <td
-                                colSpan={2}
-                                className="py-2 text-slate-500"
-                              >
-                                No amounts (check course prices or enrollments).
-                              </td>
-                            </tr>
-                          ) : (
-                            Object.entries(
-                              overview.revenue.committed.byCurrency
-                            )
+                      <p className="mt-2 text-sm text-slate-300">
+                        {Object.keys(overview.revenue.pipeline.byCurrency)
+                          .length === 0
+                          ? "—"
+                          : Object.entries(overview.revenue.pipeline.byCurrency)
                               .sort(([a], [b]) => a.localeCompare(b))
                               .map(([cur, amt]) => (
-                                <tr key={cur} className="text-slate-300">
-                                  <td className="py-1 pr-4 font-mono">
+                                <span key={cur} className="mr-3 inline-block">
+                                  <span className="font-mono text-xs text-slate-500">
                                     {cur}
-                                  </td>
-                                  <td className="py-1">
-                                    {formatMoney(amt)}
-                                  </td>
-                                </tr>
-                              ))
-                          )}
-                        </tbody>
-                      </table>
+                                  </span>{" "}
+                                  {formatMoney(amt)}
+                                </span>
+                              ))}
+                      </p>
                     </div>
-                    <div>
-                      <h4 className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-400">
-                        Pipeline ({overview.revenue.pipeline.statuses})
-                      </h4>
-                      <p className="mb-2 text-xs text-slate-500">
-                        {overview.revenue.pipeline.enrollmentCount} enrollment
-                        {overview.revenue.pipeline.enrollmentCount !== 1
-                          ? "s"
-                          : ""}
+                    <div className="rounded-lg border border-slate-800/90 bg-slate-950/50 px-4 py-3">
+                      <div className="text-xs text-slate-500">Committed</div>
+                      <p className="mt-1 text-sm text-slate-200">
+                        <span className="font-semibold tabular-nums">
+                          {overview.revenue.committed.enrollmentCount}
+                        </span>{" "}
+                        <span className="text-slate-500">
+                          enrollment
+                          {overview.revenue.committed.enrollmentCount !== 1
+                            ? "s"
+                            : ""}
+                        </span>
                       </p>
-                      <table className="w-full text-left text-xs">
-                        <thead>
-                          <tr className="text-slate-500">
-                            <th className="py-1 pr-4">Currency</th>
-                            <th className="py-1">Total</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {Object.keys(overview.revenue.pipeline.byCurrency)
-                            .length === 0 ? (
-                            <tr>
-                              <td
-                                colSpan={2}
-                                className="py-2 text-slate-500"
-                              >
-                                No amounts.
-                              </td>
-                            </tr>
-                          ) : (
-                            Object.entries(
-                              overview.revenue.pipeline.byCurrency
-                            )
+                      <p className="mt-2 text-sm text-slate-300">
+                        {Object.keys(overview.revenue.committed.byCurrency)
+                          .length === 0
+                          ? "—"
+                          : Object.entries(overview.revenue.committed.byCurrency)
                               .sort(([a], [b]) => a.localeCompare(b))
                               .map(([cur, amt]) => (
-                                <tr key={cur} className="text-slate-300">
-                                  <td className="py-1 pr-4 font-mono">
+                                <span key={cur} className="mr-3 inline-block">
+                                  <span className="font-mono text-xs text-slate-500">
                                     {cur}
-                                  </td>
-                                  <td className="py-1">
-                                    {formatMoney(amt)}
-                                  </td>
-                                </tr>
-                              ))
-                          )}
-                        </tbody>
-                      </table>
+                                  </span>{" "}
+                                  {formatMoney(amt)}
+                                </span>
+                              ))}
+                      </p>
                     </div>
                   </div>
-                  <h4 className="mb-2 mt-6 text-xs font-medium uppercase tracking-wide text-slate-400">
-                    By course (committed enrollments)
-                  </h4>
-                  <div className="overflow-x-auto">
-                    <table className="w-full min-w-[640px] text-left text-xs">
-                      <thead>
-                        <tr className="text-slate-500">
-                          <th className="py-1">Course</th>
-                          <th className="py-1">Title</th>
-                          <th className="py-1">Qty</th>
-                          <th className="py-1">Unit</th>
-                          <th className="py-1">Subtotal</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {overview.revenue.byCourse.length === 0 ? (
-                          <tr>
-                            <td
-                              colSpan={5}
-                              className="py-3 text-slate-500"
-                            >
-                              No committed enrollments yet.
-                            </td>
+                  <p className="mt-3 text-[11px] text-slate-600">
+                    Pipeline = non-cancelled. Committed = confirmed, active, or
+                    completed.
+                  </p>
+                  {overview.revenue.byCourse.length > 0 ? (
+                    <div className="mt-4 overflow-x-auto">
+                      <table className="w-full min-w-[360px] text-left text-xs">
+                        <caption className="mb-2 text-left text-xs font-medium text-slate-400">
+                          By course (committed)
+                        </caption>
+                        <thead>
+                          <tr className="text-slate-500">
+                            <th className="py-1.5 pr-3">Course</th>
+                            <th className="py-1.5 pr-3">Qty</th>
+                            <th className="py-1.5">Subtotal</th>
                           </tr>
-                        ) : (
-                          overview.revenue.byCourse.map((r) => (
+                        </thead>
+                        <tbody>
+                          {overview.revenue.byCourse.map((r) => (
                             <tr
                               key={r.courseSlug}
                               className="border-t border-slate-800/80 text-slate-300"
                             >
-                              <td className="py-1 font-mono">
+                              <td className="py-1.5 pr-3 font-mono text-[11px]">
                                 {r.courseSlug}
                               </td>
-                              <td className="py-1 max-w-[200px] truncate">
-                                {r.titleEn}
+                              <td className="py-1.5 pr-3 tabular-nums">
+                                {r.enrollmentCount}
                               </td>
-                              <td className="py-1">{r.enrollmentCount}</td>
-                              <td className="py-1">
-                                {formatMoney(r.unitPrice)}
-                              </td>
-                              <td className="py-1">
+                              <td className="py-1.5">
                                 {formatMoney(r.subtotal)}
                               </td>
                             </tr>
-                          ))
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : null}
                 </div>
               ) : null}
               {overview.payments ? (
