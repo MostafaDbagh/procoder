@@ -733,8 +733,44 @@ export default function AdminDashboard() {
     }
   };
 
+  const toggleCategoryActive = async (slug: string, currentlyActive: boolean) => {
+    const next = !currentlyActive;
+    if (!next) {
+      if (
+        !confirm(
+          `Deactivate "${slug}"?\n\nIt will be hidden from the public site and cannot be chosen for new courses (existing courses keep this slug).`
+        )
+      ) {
+        return;
+      }
+    }
+    try {
+      setErr("");
+      await adminFetch(`/categories/${encodeURIComponent(slug)}`, {
+        method: "PUT",
+        body: JSON.stringify({ isActive: next }),
+      });
+      setAdminNotice(
+        next
+          ? "Category activated (visible on the site)."
+          : "Category deactivated (hidden from the public catalog)."
+      );
+      await loadCategoriesPage();
+      await loadCategoryOptions();
+      await loadOverview();
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Failed");
+    }
+  };
+
   const removeCategory = async (slug: string) => {
-    if (!confirm(`Remove or deactivate category "${slug}"?`)) return;
+    if (
+      !confirm(
+        `Permanently delete category "${slug}"?\n\nCourses that still use this slug will keep it until you edit them — assign an active category before saving.`
+      )
+    ) {
+      return;
+    }
     try {
       setErr("");
       const data = await adminFetch<{ message?: string }>(
@@ -744,7 +780,7 @@ export default function AdminDashboard() {
       setAdminNotice(
         typeof data?.message === "string" && data.message
           ? data.message
-          : "Category updated."
+          : "Category deleted."
       );
       await loadCategoriesPage();
       await loadCategoryOptions();
@@ -1456,8 +1492,8 @@ export default function AdminDashboard() {
                       <th className="p-2">Title (en)</th>
                       <th className="p-2">Title (ar)</th>
                       <th className="p-2">Sort</th>
-                      <th className="p-2">Active</th>
-                      <th className="p-2" />
+                      <th className="p-2">Status</th>
+                      <th className="p-2">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1475,20 +1511,49 @@ export default function AdminDashboard() {
                         <td className="p-2">{c.title.ar}</td>
                         <td className="p-2">{c.sortOrder}</td>
                         <td className="p-2">
-                          {c.isActive === false ? (
-                            <span className="inline-flex rounded-md border border-amber-800/60 bg-amber-950/40 px-2 py-0.5 text-xs text-amber-200">
-                              Inactive
-                            </span>
-                          ) : (
-                            <span className="inline-flex rounded-md border border-emerald-900/50 bg-emerald-950/30 px-2 py-0.5 text-xs text-emerald-200">
-                              Active
-                            </span>
-                          )}
+                          {(() => {
+                            const isOn = c.isActive !== false;
+                            return (
+                              <div className="flex items-center gap-2">
+                                <button
+                                  type="button"
+                                  role="switch"
+                                  aria-checked={isOn}
+                                  aria-label={
+                                    isOn
+                                      ? "Deactivate category"
+                                      : "Activate category"
+                                  }
+                                  onClick={() =>
+                                    void toggleCategoryActive(c.slug, isOn)
+                                  }
+                                  className={`relative h-6 w-11 shrink-0 rounded-full border transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${
+                                    isOn
+                                      ? "border-emerald-600/70 bg-emerald-600/35"
+                                      : "border-slate-600 bg-slate-800"
+                                  }`}
+                                >
+                                  <span
+                                    className={`absolute top-0.5 left-0.5 block h-5 w-5 rounded-full bg-white shadow transition-transform duration-200 ease-out ${
+                                      isOn ? "translate-x-5" : "translate-x-0"
+                                    }`}
+                                  />
+                                </button>
+                                <span
+                                  className={`text-[11px] font-medium tabular-nums ${
+                                    isOn ? "text-emerald-400" : "text-amber-400"
+                                  }`}
+                                >
+                                  {isOn ? "Active" : "Inactive"}
+                                </span>
+                              </div>
+                            );
+                          })()}
                         </td>
-                        <td className="p-2 space-x-2">
+                        <td className="p-2 space-x-3 whitespace-nowrap">
                           <button
                             type="button"
-                            className="text-primary text-xs"
+                            className="text-primary text-xs font-medium hover:underline"
                             onClick={() =>
                               setCategoryModal({
                                 mode: "edit",
@@ -1500,10 +1565,10 @@ export default function AdminDashboard() {
                           </button>
                           <button
                             type="button"
-                            className="text-red-400 text-xs"
+                            className="rounded-md border border-red-500/50 bg-red-500/10 px-2 py-1 text-[11px] font-medium text-red-300 hover:bg-red-500/20"
                             onClick={() => removeCategory(c.slug)}
                           >
-                            Remove
+                            Delete
                           </button>
                         </td>
                       </tr>
@@ -1517,14 +1582,10 @@ export default function AdminDashboard() {
                 onPageChange={setCategoriesPage}
               />
               <p className="text-xs text-slate-500">
-                <strong>Remove</strong> hard-deletes only when no course uses
-                that category slug. If any course still references it, the API{" "}
-                <strong>deactivates</strong> it (<code className="text-slate-400">
-                  isActive: false
-                </code>
-                ) — the row stays here with <strong>Inactive</strong> and
-                disappears from the public site. After calling DELETE via API,
-                refresh this page to see the update.
+                Use the <strong>toggle</strong> to show or hide a category on
+                the public site (deactivating blocks it for new courses).
+                <strong> Delete</strong> removes the row permanently; if
+                courses still use that slug, update them before saving edits.
               </p>
             </div>
           )}
