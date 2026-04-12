@@ -313,9 +313,10 @@ export default function AdminDashboard() {
   /** Short-lived success/info line (e.g. category deactivated vs deleted). */
   const [adminNotice, setAdminNotice] = useState("");
 
-  useEffect(() => {
+  const switchTab = (next: Tab) => {
     setAdminNotice("");
-  }, [tab]);
+    setTab(next);
+  };
 
   useEffect(() => {
     if (!adminNotice) return;
@@ -693,7 +694,9 @@ export default function AdminDashboard() {
     if (!confirm(`Deactivate course "${slug}"?`)) return;
     try {
       setErr("");
-      await adminFetch(`/courses/${slug}`, { method: "DELETE" });
+      await adminFetch(`/courses/${encodeURIComponent(slug)}`, {
+        method: "DELETE",
+      });
       setAdminNotice("Course deactivated (hidden from catalog).");
       await loadCourses();
       await loadOverview();
@@ -735,7 +738,7 @@ export default function AdminDashboard() {
     try {
       setErr("");
       const data = await adminFetch<{ message?: string }>(
-        `/categories/${slug}`,
+        `/categories/${encodeURIComponent(slug)}`,
         { method: "DELETE" }
       );
       setAdminNotice(
@@ -904,7 +907,7 @@ export default function AdminDashboard() {
             <button
               key={t.id}
               type="button"
-              onClick={() => setTab(t.id)}
+              onClick={() => switchTab(t.id)}
               className={`block w-full rounded-lg px-3 py-2 text-left text-sm ${
                 tab === t.id
                   ? "bg-primary/20 text-white"
@@ -928,7 +931,7 @@ export default function AdminDashboard() {
         <header className="flex items-center justify-between border-b border-slate-800 px-4 py-3 md:hidden">
           <select
             value={tab}
-            onChange={(e) => setTab(e.target.value as Tab)}
+            onChange={(e) => switchTab(e.target.value as Tab)}
             className="rounded-lg border border-slate-700 bg-slate-900 px-2 py-1 text-sm"
           >
             {TABS.map((t) => (
@@ -1460,7 +1463,7 @@ export default function AdminDashboard() {
                   <tbody>
                     {categories.map((c) => (
                       <tr
-                        key={c.slug}
+                        key={String(c._id ?? c.slug)}
                         className={`border-t border-slate-800/80 ${
                           c.isActive === false
                             ? "bg-slate-900/40 opacity-80"
@@ -2972,7 +2975,7 @@ function PromoFormModal({
 
 function CourseFormModal({
   mode,
-  slug,
+  slug: editSlug,
   onClose,
   onSaved,
 }: {
@@ -2981,7 +2984,7 @@ function CourseFormModal({
   onClose: () => void;
   onSaved: () => Promise<void>;
 }) {
-  const [loading, setLoading] = useState(mode === "edit");
+  const [loading, setLoading] = useState(mode === "edit" && !!editSlug);
   const [saveErr, setSaveErr] = useState("");
   const [catRows, setCatRows] = useState<AdminCategoryRow[]>([]);
   const [form, setForm] = useState({
@@ -3029,11 +3032,11 @@ function CourseFormModal({
   }, []);
 
   useEffect(() => {
-    if (mode !== "edit" || !slug) return;
+    if (mode !== "edit" || !editSlug) return;
     (async () => {
       try {
         const c = await adminFetch<Record<string, unknown>>(
-          `/courses/admin/by-slug/${slug}`
+          `/courses/admin/by-slug/${encodeURIComponent(editSlug)}`
         );
         const title = c.title as { en: string; ar: string };
         const desc = c.description as { en: string; ar: string };
@@ -3063,7 +3066,7 @@ function CourseFormModal({
         setLoading(false);
       }
     })();
-  }, [mode, slug]);
+  }, [mode, editSlug]);
 
   const save = async () => {
     setSaveErr("");
@@ -3073,12 +3076,16 @@ function CourseFormModal({
     );
     const ageMin = Math.min(18, Math.max(6, Number(form.ageMin) || 6));
     const ageMax = Math.min(18, Math.max(6, Number(form.ageMax) || 18));
-    const slug =
+    const slugForBody =
       mode === "create"
         ? normalizeKebabSlug(form.slug)
-        : form.slug.trim();
+        : (editSlug ?? form.slug).trim();
+    if (mode === "edit" && !slugForBody) {
+      setSaveErr("Missing course slug — close and try Edit again.");
+      return;
+    }
     const body = {
-      slug,
+      slug: slugForBody,
       category: String(form.category).trim().toLowerCase(),
       ageMin: Math.min(ageMin, ageMax),
       ageMax: Math.max(ageMin, ageMax),
@@ -3110,7 +3117,8 @@ function CourseFormModal({
           body: JSON.stringify(body),
         });
       } else {
-        await adminFetch(`/courses/${slug}`, {
+        const key = (editSlug ?? "").trim();
+        await adminFetch(`/courses/${encodeURIComponent(key)}`, {
           method: "PUT",
           body: JSON.stringify(body),
         });
@@ -3431,7 +3439,7 @@ function CourseFormModal({
 
 function CategoryFormModal({
   mode,
-  slug,
+  slug: editSlug,
   onClose,
   onSaved,
 }: {
@@ -3453,11 +3461,11 @@ function CategoryFormModal({
   });
 
   useEffect(() => {
-    if (mode !== "edit" || !slug) return;
+    if (mode !== "edit" || !editSlug) return;
     (async () => {
       try {
         const c = await adminFetch<AdminCategoryRow>(
-          `/categories/admin/by-slug/${slug}`
+          `/categories/admin/by-slug/${encodeURIComponent(editSlug)}`
         );
         setForm({
           slug: c.slug,
@@ -3474,17 +3482,23 @@ function CategoryFormModal({
         setLoading(false);
       }
     })();
-  }, [mode, slug]);
+  }, [mode, editSlug]);
 
   const save = async () => {
     setSaveErr("");
-    const slug =
-      mode === "create" ? normalizeKebabSlug(form.slug) : form.slug.trim();
+    const newSlug = normalizeKebabSlug(form.slug);
     if (mode === "create") {
-      if (!slug || !KEBAB_SLUG_REGEX.test(slug)) {
+      if (!newSlug || !KEBAB_SLUG_REGEX.test(newSlug)) {
         setSaveErr(
           "Slug must be kebab-case (lowercase letters, numbers, single hyphens)"
         );
+        return;
+      }
+    }
+    if (mode === "edit") {
+      const key = (editSlug ?? "").trim();
+      if (!key) {
+        setSaveErr("Missing category slug — close and try Edit again.");
         return;
       }
     }
@@ -3493,7 +3507,7 @@ function CategoryFormModal({
         await adminFetch("/categories", {
           method: "POST",
           body: JSON.stringify({
-            slug,
+            slug: newSlug,
             title: { en: form.titleEn.trim(), ar: form.titleAr.trim() },
             description: {
               en: form.descriptionEn.trim(),
@@ -3503,8 +3517,9 @@ function CategoryFormModal({
             isActive: form.isActive,
           }),
         });
-      } else if (slug) {
-        await adminFetch(`/categories/${slug}`, {
+      } else {
+        const key = (editSlug ?? "").trim();
+        await adminFetch(`/categories/${encodeURIComponent(key)}`, {
           method: "PUT",
           body: JSON.stringify({
             title: { en: form.titleEn.trim(), ar: form.titleAr.trim() },

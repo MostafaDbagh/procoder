@@ -64,10 +64,25 @@ export async function adminFetch<T>(
   }
 
   if (!res.ok) {
-    const msg =
-      typeof data === "object" && data !== null && "message" in data
-        ? String((data as { message: string }).message)
-        : `Request failed (${res.status})`;
+    let msg = `Request failed (${res.status})`;
+    if (typeof data === "object" && data !== null) {
+      const o = data as {
+        message?: string;
+        errors?: Array<{ msg?: string; path?: string }>;
+      };
+      if (typeof o.message === "string" && o.message.trim()) {
+        msg = o.message;
+      } else if (Array.isArray(o.errors) && o.errors.length > 0) {
+        msg = o.errors
+          .map((e) => {
+            const p = e.path != null ? String(e.path) : "";
+            const m = e.msg != null ? String(e.msg) : "";
+            return p && m ? `${p}: ${m}` : m || p;
+          })
+          .filter(Boolean)
+          .join("; ");
+      }
+    }
     throw new Error(msg);
   }
 

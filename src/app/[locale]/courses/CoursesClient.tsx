@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useState, useMemo, useCallback } from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { courses as staticCourses, type Category, type Level } from "@/data/courses";
 import { useCourses } from "@/hooks/useCourses";
@@ -36,6 +36,17 @@ const categoryTabs: {
   { value: "quran", icon: BookMarked, activeColor: "bg-teal-500 text-white" },
 ];
 
+function categoryFromSearchParams(
+  searchParams: ReturnType<typeof useSearchParams>
+): Category | "all" {
+  const raw = searchParams.get("category")?.trim().toLowerCase();
+  if (!raw) return "all";
+  const match = categoryTabs.find(
+    (tab) => tab.value === raw && tab.value !== "all"
+  );
+  return match ? (match.value as Category) : "all";
+}
+
 function apiToLocal(c: APICourse, locale: string) {
   return {
     id: c.slug,
@@ -67,19 +78,29 @@ export function CoursesClient({ initialCourses }: Props) {
   const ct = useTranslations("courseData");
   const locale = useLocale();
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
 
   // React Query — uses ISR data as initialData, refetches in background
   const { data: apiData, isLoading, isError } = useCourses(initialCourses ?? undefined);
 
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState<Category | "all">("all");
+  const category = useMemo(
+    () => categoryFromSearchParams(searchParams),
+    [searchParams]
+  );
 
-  useEffect(() => {
-    const raw = searchParams.get("category")?.trim().toLowerCase();
-    if (!raw) return;
-    const match = categoryTabs.find((tab) => tab.value === raw && tab.value !== "all");
-    if (match) setCategory(match.value as Category);
-  }, [searchParams]);
+  const setCategoryFilter = useCallback(
+    (v: Category | "all") => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (v === "all") params.delete("category");
+      else params.set("category", v);
+      const q = params.toString();
+      router.replace(q ? `${pathname}?${q}` : pathname, { scroll: false });
+    },
+    [pathname, router, searchParams]
+  );
+
   const [age, setAge] = useState<AgeFilter>("all");
   const [level, setLevel] = useState<Level | "all">("all");
 
@@ -108,7 +129,7 @@ export function CoursesClient({ initialCourses }: Props) {
   const hasFilters = category !== "all" || age !== "all" || level !== "all" || search !== "";
 
   const clearFilters = () => {
-    setCategory("all");
+    setCategoryFilter("all");
     setAge("all");
     setLevel("all");
     setSearch("");
@@ -162,7 +183,7 @@ export function CoursesClient({ initialCourses }: Props) {
                 return (
                   <button
                     key={tab.value}
-                    onClick={() => setCategory(tab.value)}
+                    onClick={() => setCategoryFilter(tab.value)}
                     className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
                       active ? `${tab.activeColor} shadow-md` : "bg-surface border border-border text-muted hover:text-foreground hover:border-primary/30"
                     }`}
