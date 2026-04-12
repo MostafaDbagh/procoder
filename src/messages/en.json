@@ -51,6 +51,8 @@
     "arabicDesc": "Reading, writing, and grammar with native teachers — structured levels from letters to composition.",
     "quran": "Quran Studies",
     "quranDesc": "Tajweed and recitation, plus structured memorization (Hifz) in small live groups or one-to-one.",
+    "catalogFallbackDesc": "Explore live small-group classes with certified instructors.",
+    "emptyCatalog": "No categories are available right now. Check back soon.",
     "explore": "Explore"
   },
   "howItWorks": {

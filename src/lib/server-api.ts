@@ -100,6 +100,33 @@ export interface PublicMonthlyChallenge {
  * Server-side fetch for courses with ISR caching.
  * Returns null if the API is unreachable (graceful fallback).
  */
+/** Public category row from GET /api/categories (active only, sorted on BE). */
+export interface APICategory {
+  _id: string;
+  slug: string;
+  title: { en: string; ar: string };
+  /** Shown on the homepage; optional for legacy rows (fallback to i18n). */
+  description?: { en: string; ar: string };
+  sortOrder: number;
+  isActive: boolean;
+}
+
+/**
+ * Server-side fetch for homepage category grid — ISR (same revalidate window as courses).
+ * Returns null if the API is unreachable (caller may fall back to static labels).
+ */
+export async function getCategoriesPublicISR(): Promise<APICategory[] | null> {
+  try {
+    const res = await fetch(`${serverApiRoot()}/categories`, {
+      next: { revalidate: 300 },
+    });
+    if (!res.ok) return null;
+    return (await res.json()) as APICategory[];
+  } catch {
+    return null;
+  }
+}
+
 export async function getCoursesISR(): Promise<APICourse[] | null> {
   try {
     const res = await fetch(`${serverApiRoot()}/courses`, {

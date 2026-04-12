@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { courses as staticCourses, type Category, type Level } from "@/data/courses";
 import { useCourses } from "@/hooks/useCourses";
@@ -65,12 +66,20 @@ export function CoursesClient({ initialCourses }: Props) {
   const t = useTranslations("courses");
   const ct = useTranslations("courseData");
   const locale = useLocale();
+  const searchParams = useSearchParams();
 
   // React Query — uses ISR data as initialData, refetches in background
   const { data: apiData, isLoading, isError } = useCourses(initialCourses ?? undefined);
 
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<Category | "all">("all");
+
+  useEffect(() => {
+    const raw = searchParams.get("category")?.trim().toLowerCase();
+    if (!raw) return;
+    const match = categoryTabs.find((tab) => tab.value === raw && tab.value !== "all");
+    if (match) setCategory(match.value as Category);
+  }, [searchParams]);
   const [age, setAge] = useState<AgeFilter>("all");
   const [level, setLevel] = useState<Level | "all">("all");
 

@@ -7,7 +7,7 @@ import { HowItWorks } from "@/components/HowItWorks";
 import { CTABanner } from "@/components/CTABanner";
 import { MeetOurStars } from "@/components/MeetOurStars";
 import { FAQ } from "@/components/FAQ";
-import { getTeamPublicISR } from "@/lib/server-api";
+import { getTeamPublicISR, getCategoriesPublicISR } from "@/lib/server-api";
 
 const SITE_URL = process.env.SITE_URL || "https://procoder.com";
 
@@ -61,13 +61,16 @@ export default async function HomePage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const cmsTeam = await getTeamPublicISR();
+  const [cmsTeam, cmsCategories] = await Promise.all([
+    getTeamPublicISR(),
+    getCategoriesPublicISR(),
+  ]);
 
   return (
     <>
       <Hero />
       <LearnByFun />
-      <CategorySection />
+      <CategorySection categories={cmsCategories} />
       <HowItWorks />
       <MeetOurStars cmsTeam={cmsTeam} />
       <FAQ />

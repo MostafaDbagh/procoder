@@ -48,6 +48,7 @@ type AdminCategoryRow = {
   _id: string;
   slug: string;
   title: { en: string; ar: string };
+  description?: { en: string; ar: string };
   sortOrder: number;
   isActive: boolean;
 };
@@ -309,6 +310,18 @@ export default function AdminDashboard() {
   const [tab, setTab] = useState<Tab>("overview");
   const [overview, setOverview] = useState<Overview | null>(null);
   const [err, setErr] = useState("");
+  /** Short-lived success/info line (e.g. category deactivated vs deleted). */
+  const [adminNotice, setAdminNotice] = useState("");
+
+  useEffect(() => {
+    setAdminNotice("");
+  }, [tab]);
+
+  useEffect(() => {
+    if (!adminNotice) return;
+    const t = setTimeout(() => setAdminNotice(""), 10000);
+    return () => clearTimeout(t);
+  }, [adminNotice]);
 
   const [courses, setCourses] = useState<Record<string, unknown>[]>([]);
   const [coursesMeta, setCoursesMeta] = useState<ListMeta>(emptyMeta);
@@ -679,7 +692,9 @@ export default function AdminDashboard() {
   const deactivateCourse = async (slug: string) => {
     if (!confirm(`Deactivate course "${slug}"?`)) return;
     try {
+      setErr("");
       await adminFetch(`/courses/${slug}`, { method: "DELETE" });
+      setAdminNotice("Course deactivated (hidden from catalog).");
       await loadCourses();
       await loadOverview();
     } catch (e) {
@@ -687,12 +702,50 @@ export default function AdminDashboard() {
     }
   };
 
+  /** Hard-delete from DB. API returns 400 if any enrollment references the slug. */
+  const deleteCoursePermanent = async (slug: string) => {
+    if (
+      !confirm(
+        `Permanently delete course "${slug}"?\n\nThis removes the catalog row. It only works when no enrollments reference this course. This cannot be undone.`
+      )
+    ) {
+      return;
+    }
+    try {
+      setErr("");
+      const data = await adminFetch<{ message?: string }>(
+        `/courses/${encodeURIComponent(slug)}/permanent`,
+        { method: "DELETE" }
+      );
+      setAdminNotice(
+        typeof data?.message === "string" && data.message
+          ? data.message
+          : "Course deleted permanently."
+      );
+      await loadCourses();
+      await loadOverview();
+      await loadCategoryOptions();
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Delete failed");
+    }
+  };
+
   const removeCategory = async (slug: string) => {
     if (!confirm(`Remove or deactivate category "${slug}"?`)) return;
     try {
-      await adminFetch(`/categories/${slug}`, { method: "DELETE" });
+      setErr("");
+      const data = await adminFetch<{ message?: string }>(
+        `/categories/${slug}`,
+        { method: "DELETE" }
+      );
+      setAdminNotice(
+        typeof data?.message === "string" && data.message
+          ? data.message
+          : "Category updated."
+      );
       await loadCategoriesPage();
       await loadCategoryOptions();
+      await loadOverview();
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Failed");
     }
@@ -897,6 +950,14 @@ export default function AdminDashboard() {
           {err ? (
             <div className="mb-4 rounded-lg border border-red-900/50 bg-red-950/30 px-4 py-2 text-sm text-red-300">
               {err}
+            </div>
+          ) : null}
+          {adminNotice ? (
+            <div
+              role="status"
+              className="mb-4 rounded-lg border border-emerald-900/50 bg-emerald-950/30 px-4 py-2 text-sm text-emerald-200"
+            >
+              {adminNotice}
             </div>
           ) : null}
 
@@ -1285,7 +1346,9 @@ export default function AdminDashboard() {
                   <tbody>
                     {courses.map((c) => (
                       <tr
-                        key={String(c.slug)}
+                        key={String(
+                          (c as { _id?: string })._id ?? c.slug
+                        )}
                         className="border-t border-slate-800/80"
                       >
                         <td className="p-2 font-mono text-xs">{String(c.slug)}</td>
@@ -1336,7 +1399,16 @@ export default function AdminDashboard() {
                             >
                               Deactivate
                             </button>
-                          ) : null}
+                          ) : null}{" "}
+                          <button
+                            type="button"
+                            className="text-rose-300/90 text-xs hover:text-rose-200"
+                            onClick={() =>
+                              deleteCoursePermanent(String(c.slug))
+                            }
+                          >
+                            Delete
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -1354,7 +1426,10 @@ export default function AdminDashboard() {
                 confirmed, active, and completed enrollments; amounts prefer each
                 enrollment&apos;s <code className="text-slate-400">amountDue</code>{" "}
                 when set, otherwise the catalog price after <strong>Cat. discount</strong>.
-                Stripe Checkout uses the enrollment&apos;s amount due.
+                Stripe Checkout uses the enrollment&apos;s amount due.{" "}
+                <strong>Deactivate</strong> hides the course;{" "}
+                <strong>Delete</strong> removes it from the database only when
+                there are no enrollments for that slug.
               </p>
             </div>
           )}
@@ -1386,13 +1461,27 @@ export default function AdminDashboard() {
                     {categories.map((c) => (
                       <tr
                         key={c.slug}
-                        className="border-t border-slate-800/80"
+                        className={`border-t border-slate-800/80 ${
+                          c.isActive === false
+                            ? "bg-slate-900/40 opacity-80"
+                            : ""
+                        }`}
                       >
                         <td className="p-2 font-mono text-xs">{c.slug}</td>
                         <td className="p-2">{c.title.en}</td>
                         <td className="p-2">{c.title.ar}</td>
                         <td className="p-2">{c.sortOrder}</td>
-                        <td className="p-2">{String(c.isActive)}</td>
+                        <td className="p-2">
+                          {c.isActive === false ? (
+                            <span className="inline-flex rounded-md border border-amber-800/60 bg-amber-950/40 px-2 py-0.5 text-xs text-amber-200">
+                              Inactive
+                            </span>
+                          ) : (
+                            <span className="inline-flex rounded-md border border-emerald-900/50 bg-emerald-950/30 px-2 py-0.5 text-xs text-emerald-200">
+                              Active
+                            </span>
+                          )}
+                        </td>
                         <td className="p-2 space-x-2">
                           <button
                             type="button"
@@ -1425,9 +1514,14 @@ export default function AdminDashboard() {
                 onPageChange={setCategoriesPage}
               />
               <p className="text-xs text-slate-500">
-                Remove deletes the row only if no course uses the slug; otherwise
-                the category is deactivated. New courses require an active
-                category.
+                <strong>Remove</strong> hard-deletes only when no course uses
+                that category slug. If any course still references it, the API{" "}
+                <strong>deactivates</strong> it (<code className="text-slate-400">
+                  isActive: false
+                </code>
+                ) — the row stays here with <strong>Inactive</strong> and
+                disappears from the public site. After calling DELETE via API,
+                refresh this page to see the update.
               </p>
             </div>
           )}
@@ -3352,6 +3446,8 @@ function CategoryFormModal({
     slug: "",
     titleEn: "",
     titleAr: "",
+    descriptionEn: "",
+    descriptionAr: "",
     sortOrder: 100,
     isActive: true,
   });
@@ -3367,6 +3463,8 @@ function CategoryFormModal({
           slug: c.slug,
           titleEn: c.title.en,
           titleAr: c.title.ar,
+          descriptionEn: c.description?.en ?? "",
+          descriptionAr: c.description?.ar ?? "",
           sortOrder: c.sortOrder,
           isActive: c.isActive,
         });
@@ -3397,6 +3495,10 @@ function CategoryFormModal({
           body: JSON.stringify({
             slug,
             title: { en: form.titleEn.trim(), ar: form.titleAr.trim() },
+            description: {
+              en: form.descriptionEn.trim(),
+              ar: form.descriptionAr.trim(),
+            },
             sortOrder: Number(form.sortOrder) || 0,
             isActive: form.isActive,
           }),
@@ -3406,6 +3508,10 @@ function CategoryFormModal({
           method: "PUT",
           body: JSON.stringify({
             title: { en: form.titleEn.trim(), ar: form.titleAr.trim() },
+            description: {
+              en: form.descriptionEn.trim(),
+              ar: form.descriptionAr.trim(),
+            },
             sortOrder: Number(form.sortOrder) || 0,
             isActive: form.isActive,
           }),
@@ -3419,7 +3525,7 @@ function CategoryFormModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-      <div className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl border border-slate-700 bg-slate-900 p-6">
+      <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-slate-700 bg-slate-900 p-6">
         <h2 className="text-lg font-semibold text-white">
           {mode === "create" ? "New category" : "Edit category"}
         </h2>
@@ -3466,6 +3572,31 @@ function CategoryFormModal({
               }
               className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
             />
+            <label className="block text-slate-400">
+              <span className="mb-1 block text-xs">Description (EN)</span>
+              <textarea
+                rows={4}
+                placeholder="Short paragraph for the homepage card (English)"
+                value={form.descriptionEn}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, descriptionEn: e.target.value }))
+                }
+                className="w-full resize-y rounded border border-slate-700 bg-slate-950 px-2 py-2 text-slate-100 placeholder:text-slate-600"
+              />
+            </label>
+            <label className="block text-slate-400">
+              <span className="mb-1 block text-xs">Description (AR)</span>
+              <textarea
+                rows={4}
+                placeholder="نص قصير لبطاقة الفئة على الصفحة الرئيسية"
+                value={form.descriptionAr}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, descriptionAr: e.target.value }))
+                }
+                className="w-full resize-y rounded border border-slate-700 bg-slate-950 px-2 py-2 text-slate-100 placeholder:text-slate-600"
+                dir="rtl"
+              />
+            </label>
             <label className="block text-slate-400">
               <span className="mb-1 block text-xs">Sort order</span>
               <input
