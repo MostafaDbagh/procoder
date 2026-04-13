@@ -3,6 +3,9 @@ import { setRequestLocale } from "next-intl/server";
 import CoursesContent from "./CoursesContent";
 import { BreadcrumbSchema } from "@/components/StructuredData";
 
+// Force SSR — admin price/status changes reflect immediately
+export const dynamic = "force-dynamic";
+
 const SITE_URL = process.env.SITE_URL || "https://procoder.com";
 
 const meta = {

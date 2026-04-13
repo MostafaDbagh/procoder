@@ -1,9 +1,9 @@
 import { Suspense } from "react";
-import { getCoursesISR } from "@/lib/server-api";
+import { getCoursesSSR } from "@/lib/server-api";
 import { CoursesClient } from "./CoursesClient";
 
 export default async function CoursesContent() {
-  const courses = await getCoursesISR();
+  const courses = await getCoursesSSR();
   return (
     <Suspense
       fallback={

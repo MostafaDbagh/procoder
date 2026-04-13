@@ -272,7 +272,6 @@ type Overview = {
   payments?: {
     note: string;
     explanation?: string;
-    configured: boolean;
     succeeded: {
       byCurrency: Record<
         string,
@@ -288,7 +287,7 @@ type Overview = {
       paymentCount: number;
     };
     byStatus: Record<string, number>;
-    pendingCheckoutSessions: number;
+    pendingPayments: number;
   };
 };
 
@@ -705,6 +704,21 @@ export default function AdminDashboard() {
     }
   };
 
+  const reactivateCourse = async (slug: string) => {
+    if (!confirm(`Reactivate course "${slug}"? It will be visible in the catalog again.`)) return;
+    try {
+      setErr("");
+      await adminFetch(`/courses/${encodeURIComponent(slug)}/reactivate`, {
+        method: "PATCH",
+      });
+      setAdminNotice("Course reactivated (visible in catalog).");
+      await loadCourses();
+      await loadOverview();
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Failed");
+    }
+  };
+
   /** Hard-delete from DB. API returns 400 if any enrollment references the slug. */
   const deleteCoursePermanent = async (slug: string) => {
     if (
@@ -893,22 +907,49 @@ export default function AdminDashboard() {
     }
   };
 
-  const createStripeCheckout = async (enrollmentId: string) => {
+  const recordManualPaymentRequest = async (
+    enrollmentId: string,
+    paymentMethod: "bank_transfer" | "paypal"
+  ) => {
     try {
-      const data = await adminFetch<{ url?: string }>(
-        "/admin/payments/checkout-session",
-        {
-          method: "POST",
-          body: JSON.stringify({ enrollmentId }),
-        }
+      setErr("");
+      const data = await adminFetch<{
+        instructions?: string;
+        amountUsd?: number;
+      }>("/admin/payments/manual", {
+        method: "POST",
+        body: JSON.stringify({ enrollmentId, paymentMethod }),
+      });
+      const label =
+        paymentMethod === "bank_transfer" ? "Bank transfer" : "PayPal";
+      const amt =
+        data.amountUsd != null
+          ? `\nAmount: ${formatMoney(Number(data.amountUsd))} USD`
+          : "";
+      alert(
+        `${label} payment recorded (pending).${amt}\n\n${data.instructions ?? ""}`
       );
-      if (data.url) {
-        window.open(data.url, "_blank", "noopener,noreferrer");
-      } else {
-        setErr("Stripe did not return a checkout URL");
-      }
+      await loadPayments();
+      await loadOverview();
     } catch (e) {
-      setErr(e instanceof Error ? e.message : "Checkout failed");
+      setErr(e instanceof Error ? e.message : "Payment request failed");
+    }
+  };
+
+  const patchAdminPaymentRecordStatus = async (
+    paymentId: string,
+    status: string
+  ) => {
+    try {
+      setErr("");
+      await adminFetch(`/admin/payments/${paymentId}`, {
+        method: "PATCH",
+        body: JSON.stringify({ status }),
+      });
+      await loadPayments();
+      await loadOverview();
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Payment update failed");
     }
   };
 
@@ -1144,13 +1185,13 @@ export default function AdminDashboard() {
               {overview.payments ? (
                 <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-4 sm:col-span-2 lg:col-span-3">
                   <h3 className="mb-1 text-sm font-medium text-slate-200">
-                    Payments <span className="font-normal text-slate-500">(Stripe)</span>
+                    Payments{" "}
+                    <span className="font-normal text-slate-500">
+                      (bank / PayPal)
+                    </span>
                   </h3>
                   <p className="text-xs text-slate-500">
-                    {overview.payments.note}{" "}
-                    {overview.payments.configured
-                      ? "Keys detected on API."
-                      : "Set STRIPE_SECRET_KEY and STRIPE_WEBHOOK_SECRET on stem-Be."}
+                    {overview.payments.note}
                   </p>
                   {overview.payments.explanation ? (
                     <p className="mt-2 text-xs leading-relaxed text-slate-400">
@@ -1167,8 +1208,8 @@ export default function AdminDashboard() {
                         {overview.payments.succeeded.paymentCount !== 1
                           ? "s"
                           : ""}{" "}
-                        · Pending checkouts:{" "}
-                        {overview.payments.pendingCheckoutSessions}
+                        · Pending requests:{" "}
+                        {overview.payments.pendingPayments}
                       </p>
                       <table className="w-full text-left text-xs">
                         <thead>
@@ -1228,8 +1269,8 @@ export default function AdminDashboard() {
                         </tbody>
                       </table>
                       <p className="mt-2 text-[11px] text-slate-600">
-                        Bank payout after Stripe fees is not shown here — use
-                        Stripe Dashboard → Balance.
+                        Mark payments succeeded in the Payments tab when you
+                        confirm the transfer or PayPal receipt.
                       </p>
                     </div>
                     <div>
@@ -1374,6 +1415,7 @@ export default function AdminDashboard() {
                       <th className="p-2">Slug</th>
                       <th className="p-2">Title (en)</th>
                       <th className="p-2">Category</th>
+                      <th className="p-2">Instructors</th>
                       <th className="p-2">List price</th>
                       <th className="p-2">Cat. discount</th>
                       <th className="p-2">Committed revenue (overview)</th>
@@ -1395,6 +1437,14 @@ export default function AdminDashboard() {
                           {String((c.title as { en?: string })?.en ?? "")}
                         </td>
                         <td className="p-2">{String(c.category)}</td>
+                        <td className="p-2 text-xs text-slate-300">
+                          {(() => {
+                            const names = (c as { instructorNames?: string[] }).instructorNames;
+                            return Array.isArray(names) && names.length > 0
+                              ? names.join(", ")
+                              : "—";
+                          })()}
+                        </td>
                         <td className="p-2 text-slate-200">
                           {formatMoney(Number(c.price ?? 0))}
                         </td>
@@ -1438,7 +1488,17 @@ export default function AdminDashboard() {
                             >
                               Deactivate
                             </button>
-                          ) : null}{" "}
+                          ) : (
+                            <button
+                              type="button"
+                              className="text-emerald-400 text-xs"
+                              onClick={() =>
+                                reactivateCourse(String(c.slug))
+                              }
+                            >
+                              Activate
+                            </button>
+                          )}{" "}
                           <button
                             type="button"
                             className="text-rose-300/90 text-xs hover:text-rose-200"
@@ -1702,12 +1762,27 @@ export default function AdminDashboard() {
                           </button>
                           <button
                             type="button"
-                            className="text-slate-300 text-xs"
+                            className="text-amber-300/90 text-xs"
                             onClick={() =>
-                              createStripeCheckout(String(r._id))
+                              recordManualPaymentRequest(
+                                String(r._id),
+                                "bank_transfer"
+                              )
                             }
                           >
-                            Stripe pay
+                            Bank
+                          </button>
+                          <button
+                            type="button"
+                            className="text-sky-300/90 text-xs"
+                            onClick={() =>
+                              recordManualPaymentRequest(
+                                String(r._id),
+                                "paypal"
+                              )
+                            }
+                          >
+                            PayPal
                           </button>
                         </td>
                       </tr>
@@ -1887,14 +1962,14 @@ export default function AdminDashboard() {
                 />
               </div>
               <div className="overflow-x-auto rounded-xl border border-slate-800">
-                <table className="w-full min-w-[720px] text-left text-sm">
+                <table className="w-full min-w-[800px] text-left text-sm">
                   <thead className="border-b border-slate-800 text-slate-500">
                     <tr>
                       <th className="p-2">Date</th>
                       <th className="p-2">Enrollment</th>
+                      <th className="p-2">Method</th>
                       <th className="p-2">Amount</th>
                       <th className="p-2">Status</th>
-                      <th className="p-2">Stripe</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1909,18 +1984,40 @@ export default function AdminDashboard() {
                         <td className="p-2 font-mono text-xs">
                           {String(r.enrollment ?? "")}
                         </td>
+                        <td className="p-2 text-xs">
+                          {r.paymentMethod === "bank_transfer"
+                            ? "Bank transfer"
+                            : r.paymentMethod === "paypal"
+                              ? "PayPal"
+                              : "—"}
+                        </td>
                         <td className="p-2">
                           {formatMoney(Number(r.amountCents ?? 0) / 100)}
                         </td>
-                        <td className="p-2 capitalize">
-                          {String(r.status ?? "").replace(/_/g, " ")}
-                        </td>
-                        <td className="p-2 max-w-[140px] truncate text-xs font-mono">
-                          {String(
-                            r.stripePaymentIntentId ||
-                              r.stripeCheckoutSessionId ||
-                              "—"
-                          )}
+                        <td className="p-2">
+                          <select
+                            value={String(r.status ?? "pending")}
+                            onChange={(e) =>
+                              patchAdminPaymentRecordStatus(
+                                String(r._id),
+                                e.target.value
+                              )
+                            }
+                            className="max-w-[11rem] rounded border border-slate-700 bg-slate-950 px-1.5 py-1 text-xs capitalize"
+                          >
+                            {[
+                              "pending",
+                              "processing",
+                              "succeeded",
+                              "failed",
+                              "refunded",
+                              "partially_refunded",
+                            ].map((s) => (
+                              <option key={s} value={s}>
+                                {s.replace(/_/g, " ")}
+                              </option>
+                            ))}
+                          </select>
                         </td>
                       </tr>
                     ))}
@@ -1933,10 +2030,10 @@ export default function AdminDashboard() {
                 onPageChange={setPaymentsPage}
               />
               <p className="text-xs text-slate-500">
-                Create Checkout links from the Enrollments tab (“Stripe pay”).
-                Webhook{" "}
-                <code className="text-slate-400">/api/webhooks/stripe</code>{" "}
-                records success and refunds.
+                From <strong>Enrollments</strong>, use <strong>Bank</strong> or{" "}
+                <strong>PayPal</strong> to create a pending payment and see
+                payout instructions. Update <strong>Status</strong> here when
+                money is received.
               </p>
             </div>
           )}
@@ -2402,7 +2499,7 @@ export default function AdminDashboard() {
               </div>
               <p className="text-[11px] text-slate-600">
                 Payment options are for your records (cash, transfer, partial
-                payments). They are not synced from Stripe automatically.
+                payments). They are separate from the Payments tab records.
               </p>
             </section>
             <section className="mb-6 space-y-2">
@@ -3048,6 +3145,10 @@ function CourseFormModal({
   const [loading, setLoading] = useState(mode === "edit" && !!editSlug);
   const [saveErr, setSaveErr] = useState("");
   const [catRows, setCatRows] = useState<AdminCategoryRow[]>([]);
+  const [instructorOptions, setInstructorOptions] = useState<
+    { _id: string; name: string }[]
+  >([]);
+  const [selectedInstructors, setSelectedInstructors] = useState<string[]>([]);
   const [form, setForm] = useState({
     slug: "",
     category: "programming",
@@ -3075,16 +3176,27 @@ function CourseFormModal({
     let cancelled = false;
     (async () => {
       try {
-        const raw = await adminFetch<unknown>(
-          "/categories/admin/list?page=1&limit=200"
-        );
-        const { items } = normalizePagedResponse<AdminCategoryRow>(
-          raw,
+        const [catRaw, instrRaw] = await Promise.all([
+          adminFetch<unknown>("/categories/admin/list?page=1&limit=200"),
+          adminFetch<unknown>("/admin/users?role=instructor&limit=200"),
+        ]);
+        const { items: cats } = normalizePagedResponse<AdminCategoryRow>(
+          catRaw,
           PAGE_SIZE
         );
-        if (!cancelled) setCatRows(items);
+        const { items: instrs } = normalizePagedResponse<{
+          _id: string;
+          name: string;
+        }>(instrRaw, PAGE_SIZE);
+        if (!cancelled) {
+          setCatRows(cats);
+          setInstructorOptions(instrs);
+        }
       } catch {
-        if (!cancelled) setCatRows([]);
+        if (!cancelled) {
+          setCatRows([]);
+          setInstructorOptions([]);
+        }
       }
     })();
     return () => {
@@ -3102,6 +3214,10 @@ function CourseFormModal({
         const title = c.title as { en: string; ar: string };
         const desc = c.description as { en: string; ar: string };
         const skills = c.skills as { en: string[]; ar: string[] };
+        const instrIds = Array.isArray(c.instructors)
+          ? (c.instructors as string[]).map(String)
+          : [];
+        setSelectedInstructors(instrIds);
         setForm({
           slug: String(c.slug),
           category: String(c.category),
@@ -3170,6 +3286,7 @@ function CourseFormModal({
       ),
       imageUrl: form.imageUrl.trim(),
       imagePublicId: form.imagePublicId.trim(),
+      instructors: selectedInstructors,
     };
     try {
       if (mode === "create") {
@@ -3328,7 +3445,7 @@ function CourseFormModal({
             <p className="rounded-lg border border-amber-500/25 bg-amber-500/10 px-3 py-2 text-xs text-amber-100/90">
               <strong>List price</strong> drives catalog revenue estimates.{" "}
               <strong>Catalog discount</strong> is a percent off that list price
-              before promo codes. Stripe Checkout charges the enrollment&apos;s{" "}
+              before promo codes. Payment requests use the enrollment&apos;s{" "}
               <strong>amount due</strong> (after catalog + promo).
             </p>
             <label className="block text-slate-400">
@@ -3474,6 +3591,40 @@ function CourseFormModal({
             {uploadingCourseImage ? (
               <p className="text-xs text-slate-500">Uploading…</p>
             ) : null}
+            <div className="text-slate-400">
+              <span className="mb-1 block text-xs">Assign instructors</span>
+              {instructorOptions.length === 0 ? (
+                <p className="text-xs text-slate-500">
+                  No instructors found. Invite one in the Users tab first.
+                </p>
+              ) : (
+                <div className="max-h-36 space-y-1 overflow-y-auto rounded border border-slate-700 bg-slate-950 p-2">
+                  {instructorOptions.map((inst) => (
+                    <label
+                      key={inst._id}
+                      className="flex items-center gap-2 text-xs text-slate-300 hover:text-white cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedInstructors.includes(
+                          String(inst._id)
+                        )}
+                        onChange={(e) => {
+                          const id = String(inst._id);
+                          setSelectedInstructors((prev) =>
+                            e.target.checked
+                              ? [...prev, id]
+                              : prev.filter((x) => x !== id)
+                          );
+                        }}
+                        className="accent-primary"
+                      />
+                      {inst.name}
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         )}
         <div className="mt-6 flex justify-end gap-2">

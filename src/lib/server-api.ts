@@ -127,6 +127,25 @@ export async function getCategoriesPublicISR(): Promise<APICategory[] | null> {
   }
 }
 
+/**
+ * SSR fetch — no caching. Every request hits the API for fresh data.
+ * Use for pages where admin changes (price, active status) must reflect immediately.
+ */
+export async function getCoursesSSR(): Promise<APICourse[] | null> {
+  try {
+    const res = await fetch(`${serverApiRoot()}/courses`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) return null;
+    const list = (await res.json()) as APICourse[];
+    const origin = apiOriginFromServerApiRoot();
+    return list.map((c) => absolutizeCourseImage(c, origin));
+  } catch {
+    return null;
+  }
+}
+
 export async function getCoursesISR(): Promise<APICourse[] | null> {
   try {
     const res = await fetch(`${serverApiRoot()}/courses`, {

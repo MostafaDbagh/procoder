@@ -7,6 +7,9 @@ import CourseDetailContent from "./CourseDetailContent";
 import { BreadcrumbSchema } from "@/components/StructuredData";
 import { getCourseISR, getCourseSlugsISR } from "@/lib/server-api";
 
+// Force SSR — admin price/status changes reflect immediately
+export const dynamic = "force-dynamic";
+
 const SITE_URL = process.env.SITE_URL || "https://procoder.com";
 
 export async function generateStaticParams() {
