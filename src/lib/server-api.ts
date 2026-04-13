@@ -197,6 +197,61 @@ export async function getTeamPublicISR(): Promise<APITeamMember[] | null> {
   }
 }
 
+// --- Blog ---
+
+export interface APIBlogPost {
+  _id: string;
+  slug: string;
+  title: { en: string; ar: string };
+  excerpt: { en: string; ar: string };
+  body: { en: string; ar: string };
+  coverImage?: string;
+  category: string;
+  tags: string[];
+  targetRegions: string[];
+  metaTitle?: { en: string; ar: string };
+  metaDescription?: { en: string; ar: string };
+  author: { name: string; avatar?: string; role?: string };
+  isPublished: boolean;
+  publishedAt?: string;
+  viewCount: number;
+  readTimeMinutes: number;
+  relatedCourses: string[];
+}
+
+export interface BlogListResponse {
+  items: APIBlogPost[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+export async function getBlogPostsSSR(params?: { category?: string; region?: string; page?: number }): Promise<BlogListResponse | null> {
+  try {
+    const query = new URLSearchParams();
+    if (params?.category) query.set("category", params.category);
+    if (params?.region) query.set("region", params.region);
+    if (params?.page) query.set("page", String(params.page));
+    const qs = query.toString();
+    const res = await fetch(`${serverApiRoot()}/blog${qs ? `?${qs}` : ""}`, { cache: "no-store" });
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
+}
+
+export async function getBlogPostSSR(slug: string): Promise<APIBlogPost | null> {
+  try {
+    const res = await fetch(`${serverApiRoot()}/blog/${slug}`, { cache: "no-store" });
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
+}
+
 export async function getChallengePublicLatestISR(): Promise<PublicMonthlyChallenge | null> {
   try {
     const res = await fetch(`${serverApiRoot()}/challenges/public/latest`, {

@@ -54,6 +54,11 @@ export function Footer() {
                 </LocalizedLink>
               </li>
               <li>
+                <LocalizedLink href="/blog" className="text-sm text-muted hover:text-primary transition-colors">
+                  {nav("blog")}
+                </LocalizedLink>
+              </li>
+              <li>
                 <LocalizedLink href="/about" className="text-sm text-muted hover:text-primary transition-colors">
                   {t("about")}
                 </LocalizedLink>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -43,6 +44,7 @@ export function AuthModal({
   const t = useTranslations("parents");
   const ta = useTranslations("authModal");
   const locale = useLocale();
+  const router = useRouter();
   const isRtl = locale === "ar";
   const labelAlign = isRtl ? "text-right" : "text-left";
   const isInstructor = variant === "instructor";
@@ -297,10 +299,13 @@ export function AuthModal({
                   </h3>
                   <button
                     type="button"
-                    onClick={handleClose}
+                    onClick={() => {
+                      onClose();
+                      router.push(`/${locale}/dashboard`);
+                    }}
                     className="mt-4 px-6 py-2.5 rounded-xl bg-primary text-white font-semibold hover:scale-[1.02] transition-transform"
                   >
-                    Done
+                    {isRtl ? "الذهاب للوحة التحكم" : "Go to Dashboard"}
                   </button>
                 </motion.div>
               ) : (

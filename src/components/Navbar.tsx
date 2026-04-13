@@ -31,6 +31,7 @@ export function Navbar() {
     { href: "/recommend", label: t("recommend") },
     { href: "/challenge", label: t("challenge") },
     { href: "/parents", label: t("parents") },
+    { href: "/blog", label: t("blog") },
     { href: "/about", label: t("about") },
     { href: "/contact", label: t("contact") },
   ];

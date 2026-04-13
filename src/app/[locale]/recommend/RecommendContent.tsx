@@ -7,6 +7,7 @@ import { CourseCard } from "@/components/CourseCard";
 import { AnimatedSection } from "@/components/AnimatedSection";
 import { getAIRecommendation, type APICourse } from "@/lib/api";
 import { apiCoursesToCatalog } from "@/lib/catalog";
+import { filterChatInput, getFilterMessage } from "@/lib/contentFilter";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Sparkles,
@@ -71,28 +72,61 @@ export default function RecommendContent({ initialCourses }: Props) {
     const cats = interests.map(
       (i) => interestOptions.find((o) => o.key === i)?.category
     );
-    return catalog
-      .filter((c) => {
-        const ageMatch = age >= c.ageMin && age <= c.ageMax;
-        const catMatch = cats.includes(c.category);
-        const levelMatch =
-          c.level === level ||
-          (level === "beginner" && c.level === "intermediate") ||
-          (level === "advanced" && c.level === "intermediate");
-        return ageMatch && catMatch && levelMatch;
-      })
-      .sort((a, b) => {
-        const aExact = a.level === level ? 1 : 0;
-        const bExact = b.level === level ? 1 : 0;
-        return bExact - aExact;
-      })
-      .slice(0, 6);
+
+    // STRICT: only courses that match the selected categories
+    const categoryMatched = catalog.filter((c) => cats.includes(c.category));
+
+    // Score within matched category only
+    const scored = categoryMatched.map((c) => {
+      let score = 0;
+
+      // Age fit
+      const ageMatch = age >= c.ageMin && age <= c.ageMax;
+      if (ageMatch) score += 50;
+      else {
+        const ageDist = Math.min(Math.abs(age - c.ageMin), Math.abs(age - c.ageMax));
+        if (ageDist <= 2) score += 25;
+        else if (ageDist <= 4) score += 10;
+      }
+
+      // Level fit
+      if (c.level === level) score += 30;
+      else if (
+        (level === "beginner" && c.level === "intermediate") ||
+        (level === "advanced" && c.level === "intermediate") ||
+        (level === "intermediate")
+      ) score += 15;
+
+      return { course: c, score };
+    });
+
+    scored.sort((a, b) => b.score - a.score);
+
+    // Deduplicate and take max 4
+    const seen = new Set<string>();
+    const results = [];
+    for (const { course, score } of scored) {
+      if (score <= 0 || seen.has(course.id)) continue;
+      seen.add(course.id);
+      results.push(course);
+      if (results.length >= 4) break;
+    }
+
+    return results;
   }, [age, interests, level, catalog]);
 
-  const aiRecommendedCourses = useMemo(
-    () => catalog.filter((c) => aiCourseIds.includes(c.id)),
-    [aiCourseIds, catalog]
-  );
+  const aiRecommendedCourses = useMemo(() => {
+    const seen = new Set<string>();
+    const results = [];
+    for (const id of aiCourseIds) {
+      if (seen.has(id)) continue;
+      seen.add(id);
+      const course = catalog.find((c) => c.id === id);
+      if (course) results.push(course);
+      if (results.length >= 4) break;
+    }
+    return results;
+  }, [aiCourseIds, catalog]);
 
   const handleSubmit = () => {
     if (age != null && interests.length > 0 && level) {
@@ -112,8 +146,15 @@ export default function RecommendContent({ initialCourses }: Props) {
   const runAiRecommendation = async (rawMessage: string) => {
     const message = rawMessage.trim();
     if (!message || aiInFlightRef.current) return;
-    aiInFlightRef.current = true;
 
+    // Content filter — block bad/gibberish input before hitting the API
+    const filter = filterChatInput(message);
+    if (!filter.ok) {
+      setAiError(getFilterMessage(filter.reason, locale === "ar"));
+      return;
+    }
+
+    aiInFlightRef.current = true;
     setChatInput(message);
     setChatLoading(true);
     setAiError("");
@@ -127,8 +168,12 @@ export default function RecommendContent({ initialCourses }: Props) {
       const data = await getAIRecommendation(message, locale, {
         signal: ac.signal,
       });
+
+      // Deduplicate course IDs
+      const uniqueIds = [...new Set(data.ids || [])];
+
       setAiMessage(data.message || "");
-      setAiCourseIds(data.ids || []);
+      setAiCourseIds(uniqueIds);
       setShowAiResults(true);
     } catch (err) {
       const aborted =
@@ -185,6 +230,15 @@ export default function RecommendContent({ initialCourses }: Props) {
           <p className="text-muted text-lg max-w-xl mx-auto">
             {t("subtitle")}
           </p>
+          {/* AI disclaimer */}
+          <div className="mt-6 max-w-lg mx-auto p-3 rounded-xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/30">
+            <p className="text-xs text-amber-700 dark:text-amber-400 leading-relaxed">
+              <strong>⚠</strong>{" "}
+              {locale === "ar"
+                ? "محرك التوصية الذكي قيد التطوير المستمر لتقديم أفضل النتائج لأطفالك. النتائج استرشادية ونوصي بمراجعة تفاصيل الدورة قبل التسجيل."
+                : "Our AI recommendation engine is continuously being improved to serve the best results for your kids. Results are suggestions — we recommend reviewing course details before enrolling."}
+            </p>
+          </div>
         </AnimatedSection>
 
         {/* Tab switcher */}
@@ -344,8 +398,18 @@ export default function RecommendContent({ initialCourses }: Props) {
                   </div>
                 </>
               ) : (
-                <div className="text-center py-8">
-                  <p className="text-muted">{t("noResults")}</p>
+                <div className="text-center py-10 bg-surface rounded-2xl border border-border mb-8">
+                  <Bot className="w-10 h-10 text-muted mx-auto mb-3" />
+                  <p className="text-muted text-lg mb-2">
+                    {locale === "ar"
+                      ? "لم نجد دورات مناسبة لطفلك بناءً على وصفك."
+                      : "We couldn't find matching courses based on your description."}
+                  </p>
+                  <p className="text-sm text-muted max-w-md mx-auto">
+                    {locale === "ar"
+                      ? "جرب ذكر عمر طفلك واهتماماته بشكل أوضح، مثل: \"ابني عمره ١٠ سنوات يحب البرمجة والألعاب\""
+                      : "Try mentioning your child's age and interests more clearly, like: \"My 10 year old loves coding and games\""}
+                  </p>
                 </div>
               )}
 
@@ -474,6 +538,13 @@ export default function RecommendContent({ initialCourses }: Props) {
               <div className="text-center mb-8">
                 <h2 className="text-2xl font-bold mb-2">{t("results")}</h2>
                 <p className="text-muted">{t("resultsSubtitle")}</p>
+                {age && (
+                  <p className="text-xs text-muted mt-2">
+                    {locale === "ar"
+                      ? `العمر: ${age} | الاهتمامات: ${interests.join("، ")} | المستوى: ${level}`
+                      : `Age: ${age} | Interests: ${interests.join(", ")} | Level: ${level}`}
+                  </p>
+                )}
               </div>
 
               {recommended.length > 0 ? (
@@ -483,12 +554,18 @@ export default function RecommendContent({ initialCourses }: Props) {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-12">
-                  <p className="text-muted text-lg">{t("noResults")}</p>
+                <div className="text-center py-12 bg-surface rounded-2xl border border-border">
+                  <Sparkles className="w-10 h-10 text-muted mx-auto mb-3" />
+                  <p className="text-muted text-lg mb-2">{t("noResults")}</p>
+                  <p className="text-sm text-muted max-w-md mx-auto">
+                    {locale === "ar"
+                      ? "جرب تعديل العمر أو الاهتمامات أو المستوى للحصول على نتائج أفضل."
+                      : "Try adjusting the age, interests, or level for better results."}
+                  </p>
                 </div>
               )}
 
-              <div className="text-center">
+              <div className="text-center mt-6">
                 <button
                   type="button"
                   onClick={handleReset}

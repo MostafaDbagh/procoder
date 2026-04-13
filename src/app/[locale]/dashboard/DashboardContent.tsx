@@ -471,7 +471,83 @@ export default function DashboardContent({ initialCourses }: Props) {
             </div>
           </motion.div>
         )}
+
+        {/* ═══ Invite a Friend ═══ */}
+        <ReferralSection token={token} lang={lang} />
       </div>
     </div>
+  );
+}
+
+function ReferralSection({ token, lang }: { token: string | null; lang: string }) {
+  const [code, setCode] = useState<string | null>(null);
+  const [stats, setStats] = useState({ totalReferred: 0, discountPercent: 15 });
+  const [copied, setCopied] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!token) return;
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/referrals/my`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((r) => r.json())
+      .then((d) => {
+        setCode(d.code || null);
+        setStats({ totalReferred: d.totalReferred || 0, discountPercent: d.discountPercent || 15 });
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, [token]);
+
+  const handleCopy = () => {
+    if (!code) return;
+    const text = `Join ProCoder! Use my referral code ${code} for ${stats.discountPercent}% off your first course. https://procoder.com/en/courses`;
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  if (loading || !code) return null;
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-10">
+      <div className="bg-gradient-to-br from-primary/5 to-purple/5 rounded-2xl border border-primary/10 p-6 sm:p-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h3 className="text-lg font-bold mb-1 flex items-center gap-2">
+              🎁 {lang === "ar" ? "ادعُ صديقاً" : "Invite a Friend"}
+            </h3>
+            <p className="text-sm text-muted">
+              {lang === "ar"
+                ? `شارك رمزك وامنح صديقك ${stats.discountPercent}% خصم على أول دورة`
+                : `Share your code & give a friend ${stats.discountPercent}% off their first course`}
+            </p>
+            {stats.totalReferred > 0 && (
+              <p className="text-xs text-muted mt-1">
+                {lang === "ar" ? `${stats.totalReferred} عائلة دُعيت` : `${stats.totalReferred} families referred`}
+              </p>
+            )}
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="bg-surface border-2 border-dashed border-primary/30 rounded-xl px-5 py-3 text-center">
+              <p className="text-xs text-muted mb-0.5">{lang === "ar" ? "رمزك" : "Your code"}</p>
+              <p className="text-lg font-bold text-primary tracking-wider">{code}</p>
+            </div>
+            <button
+              onClick={handleCopy}
+              className={`px-5 py-3 rounded-xl font-semibold text-sm transition-all ${
+                copied
+                  ? "bg-emerald-500 text-white"
+                  : "bg-primary text-white hover:scale-[1.02]"
+              }`}
+            >
+              {copied
+                ? lang === "ar" ? "✓ تم النسخ" : "✓ Copied!"
+                : lang === "ar" ? "نسخ ومشاركة" : "Copy & Share"}
+            </button>
+          </div>
+        </div>
+      </div>
+    </motion.div>
   );
 }
