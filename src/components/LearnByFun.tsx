@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { Gamepad2, Trophy, ShieldCheck } from "lucide-react";
 
 export function LearnByFun() {
-  const t = useTranslations("learnByFun");
+  const t = useTranslations("learnWithFun");
   const locale = useLocale();
   const isRtl = locale === "ar";
 

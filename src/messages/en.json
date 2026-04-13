@@ -22,22 +22,35 @@
     "courses": "Browse courses"
   },
   "hero": {
-    "title": "Kids Learn Coding, Robotics & Quran Online",
-    "subtitle": "Live small-group classes for ages 6–18: programming, robotics, algorithms, Arabic & Quran — with bilingual instructors.",
-    "intro": "ProCoder is a safe, live online school for STEM and Quran. Small groups, certified teachers, and hands-on projects for families in the Gulf and worldwide.",
+    "title": "Shaping Future Programmers with STEM, AI, and Tech!",
+    "subtitle": "Unleash your child's creativity and problem-solving skills through coding and technology.",
+    "intro": "ProCoder is the leading bilingual platform for children ages 6–18 across Saudi Arabia, UAE, and worldwide. Our certified instructors guide students through hands-on projects in coding, robotics, algorithms, Arabic, and Quran — in live, small-group classes designed to inspire the next generation of innovators.",
     "cta": "Explore Courses",
     "secondaryCta": "Get Recommendation",
     "trustBadges": "Trusted by 500+ families across the GCC"
   },
-  "learnByFun": {
-    "title": "Learn by Fun",
-    "subtitle": "Lessons that feel like play — with real skills",
+  "learnWithFun": {
+    "title": "Learn with Fun",
+    "subtitle": "Where every lesson feels like an adventure — and real skills are built along the way",
     "card1Title": "Interactive Lessons",
-    "card1Desc": "Hands-on projects that make learning feel like play",
+    "card1Desc": "Hands-on projects that make learning feel like play — kids build real games, apps, and robots",
     "card2Title": "Gamified Progress",
-    "card2Desc": "Earn badges, level up, and celebrate every achievement",
+    "card2Desc": "Earn badges, level up, and celebrate every achievement — motivation that keeps them coming back",
     "card3Title": "Safe Environment",
-    "card3Desc": "A kid-friendly platform designed with safety in mind"
+    "card3Desc": "COPPA-compliant, background-checked instructors, and a kid-friendly platform parents can trust"
+  },
+  "whyProgramming": {
+    "title": "Why Teach Kids Programming & Coding?",
+    "subtitle": "Programming isn't just about computers — it's the ultimate skill builder for every child",
+    "intro": "No matter what your child dreams of becoming — an artist, a doctor, an engineer, or an entrepreneur — programming teaches them how to think. It builds problem-solving skills, sparks creativity, and gives them confidence to tackle any challenge.",
+    "point1Title": "Problem Solving",
+    "point1Desc": "Coding teaches kids to break complex problems into small, manageable steps. This skill transfers to every subject in school and every challenge in life.",
+    "point2Title": "Creativity & Innovation",
+    "point2Desc": "When kids code, they create — games, stories, apps, robots. Programming turns passive screen time into active creation and fuels imagination.",
+    "point3Title": "Logical Thinking",
+    "point3Desc": "Algorithms and code require structured thinking. Kids who code develop stronger math skills, better reasoning, and clearer communication.",
+    "point4Title": "Future-Ready Skills",
+    "point4Desc": "Technology is in every career. Whether your child loves art, science, sports, or business — coding gives them a competitive edge in any field they choose."
   },
   "categories": {
     "title": "STEM, Arabic & Quran for Kids",
