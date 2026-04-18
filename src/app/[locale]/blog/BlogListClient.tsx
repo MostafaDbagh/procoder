@@ -20,7 +20,6 @@ const categories = [
  { value: "coding", label: "Coding", labelAr: "البرمجة" },
  { value: "robotics", label: "Robotics", labelAr: "الروبوتات" },
  { value: "arabic", label: "Arabic", labelAr: "العربية" },
- { value: "quran", label: "Quran", labelAr: "القرآن" },
  { value: "stem", label: "STEM", labelAr: "العلوم" },
  { value: "parenting", label: "Parenting", labelAr: "الأبوة" },
 ];
@@ -108,7 +107,6 @@ function BlogCard({ post, lang, index }: { post: APIBlogPost; lang: "en" | "ar";
  coding: "bg-blue-100 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400",
  robotics: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400",
  arabic: "bg-teal-100 text-teal-700 dark:bg-teal-950/30 dark:text-teal-400",
- quran: "bg-rose-100 text-rose-700 dark:bg-rose-950/30 dark:text-rose-400",
  stem: "bg-violet-100 text-violet-700 dark:bg-violet-950/30 dark:text-violet-400",
  parenting: "bg-amber-100 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400",
  general: "bg-muted/20 text-muted",

@@ -9,7 +9,6 @@ import {
  Bot,
  Brain,
  BookOpen,
- BookMarked,
  ArrowRight,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -51,12 +50,6 @@ const SLUG_STYLE: Record<
  color: "#F43F5E",
  borderColor: "border-b-rose-400",
  emoji: "📖",
- },
- quran: {
- icon: BookMarked,
- color: "#059669",
- borderColor: "border-b-emerald-500",
- emoji: "🕌",
  },
 };
 

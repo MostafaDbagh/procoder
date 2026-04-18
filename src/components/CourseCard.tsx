@@ -51,11 +51,6 @@ const categoryColors: Record<string, { badge: string; bg: string; accent: string
  bg: "bg-rose-50 dark:bg-rose-950/20",
  accent: "text-rose-500",
  },
- quran: {
- badge: "bg-teal-100 text-teal-600 dark:bg-teal-950/40 dark:text-teal-400",
- bg: "bg-teal-50 dark:bg-teal-950/20",
- accent: "text-teal-500",
- },
 };
 
 const levelColors: Record<string, string> = {

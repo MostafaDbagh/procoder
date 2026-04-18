@@ -2548,7 +2548,6 @@ export default function AdminDashboard() {
  { value: "", label: "All" },
  { value: "coding", label: "Coding" },
  { value: "robotics", label: "Robotics" },
- { value: "quran", label: "Quran" },
  { value: "arabic", label: "Arabic" },
  { value: "parenting", label: "Parenting" },
  { value: "stem", label: "STEM" },
@@ -5071,7 +5070,7 @@ function BlogFormModal({ mode, blogSlug, onClose, onSaved }: { mode: "create" | 
  <label className="block"><span className={lbl}>Excerpt (AR) *</span><input dir="rtl" value={form.excerptAr} onChange={(e) => setForm((f) => ({ ...f, excerptAr: e.target.value }))} className={inp} /></label>
  <label className="sm:col-span-2"><span className={lbl}>Body (EN) * — supports markdown</span><textarea rows={6} value={form.bodyEn} onChange={(e) => setForm((f) => ({ ...f, bodyEn: e.target.value }))} className={`${inp} resize-y`} /></label>
  <label className="sm:col-span-2"><span className={lbl}>Body (AR) *</span><textarea dir="rtl" rows={6} value={form.bodyAr} onChange={(e) => setForm((f) => ({ ...f, bodyAr: e.target.value }))} className={`${inp} resize-y`} /></label>
- <label className="block"><span className={lbl}>Category</span><select value={form.category} onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))} className={inp}>{["general","coding","robotics","quran","arabic","parenting","stem"].map((v) => <option key={v} value={v}>{v}</option>)}</select></label>
+ <label className="block"><span className={lbl}>Category</span><select value={form.category} onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))} className={inp}>{["general","coding","robotics","arabic","parenting","stem"].map((v) => <option key={v} value={v}>{v}</option>)}</select></label>
  <label className="block"><span className={lbl}>Tags (comma-separated)</span><input value={form.tags} onChange={(e) => setForm((f) => ({ ...f, tags: e.target.value }))} className={inp} /></label>
  <label className="block"><span className={lbl}>Cover image URL</span><input value={form.coverImage} onChange={(e) => setForm((f) => ({ ...f, coverImage: e.target.value }))} className={inp} /></label>
  <label className="block"><span className={lbl}>Related courses (slugs)</span><input value={form.relatedCourses} onChange={(e) => setForm((f) => ({ ...f, relatedCourses: e.target.value }))} className={inp} /></label>
