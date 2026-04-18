@@ -52,9 +52,11 @@ export default function ContactContent() {
  }
  };
 
+ const whatsappNumber = t("whatsappInfo").replace(/[^0-9+]/g, "").replace("+", "");
  const contactInfo = [
- { icon: Mail, label: t("emailInfo"), color: "from-blue-400 to-cyan-400" },
- { icon: Phone, label: t("phoneInfo"), color: "from-emerald-400 to-teal-400" },
+ { icon: Mail, label: t("emailInfo"), color: "from-blue-400 to-cyan-400", href: `mailto:${t("emailInfo")}` },
+ { icon: Phone, label: t("phoneInfo"), color: "from-emerald-400 to-teal-400", href: `tel:${t("phoneInfo").replace(/\s/g, "")}` },
+ { icon: MessageCircle, label: t("whatsappLabel"), color: "from-green-400 to-emerald-400", href: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hi StemTechLab! I'd like to learn more about your kids' classes.")}`, external: true },
  { icon: MapPin, label: t("locationInfo"), color: "from-purple to-violet-400" },
  { icon: Clock, label: t("hoursInfo"), color: "from-orange to-amber-400" },
  ];
@@ -183,9 +185,9 @@ export default function ContactContent() {
  <AnimatedSection delay={0.2} className="lg:col-span-2">
  <div className="space-y-4">
  <h2 className="text-xl font-bold mb-5">{t("infoTitle")}</h2>
- {contactInfo.map((info, i) => (
- <AnimatedCard key={i} delay={0.3 + i * 0.08}>
- <div className="flex items-center gap-4 p-5 bg-surface rounded-2xl border border-border">
+ {contactInfo.map((info, i) => {
+ const inner = (
+ <div className={`flex items-center gap-4 p-5 bg-surface rounded-2xl border border-border${info.href ? " hover:border-primary/40 hover:shadow-md transition-all cursor-pointer" : ""}`}>
  <div
  className={`w-12 h-12 rounded-xl bg-gradient-to-br ${info.color} flex items-center justify-center shrink-0`}
  >
@@ -193,8 +195,17 @@ export default function ContactContent() {
  </div>
  <span className="text-sm font-medium">{info.label}</span>
  </div>
+ );
+ return (
+ <AnimatedCard key={i} delay={0.3 + i * 0.08}>
+ {info.href ? (
+ <a href={info.href} target={info.external ? "_blank" : undefined} rel={info.external ? "noopener noreferrer" : undefined}>
+ {inner}
+ </a>
+ ) : inner}
  </AnimatedCard>
- ))}
+ );
+ })}
  </div>
  </AnimatedSection>
  </div>
