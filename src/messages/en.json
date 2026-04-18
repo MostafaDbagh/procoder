@@ -641,5 +641,17 @@
     "gamedev_skill2": "2D art & graphics",
     "gamedev_skill3": "Game physics",
     "gamedev_skill4": "Sharing creations"
+  },
+  "careers": {
+    "title": "Join Our Team",
+    "subtitle": "Help us shape the future of children's education. We're looking for passionate people who love teaching and technology.",
+    "loading": "Loading positions...",
+    "noPositions": "No Open Positions",
+    "noPositionsDesc": "We don't have any open positions right now, but we're always looking for talented people. Check back soon!",
+    "description": "Description",
+    "requirements": "Requirements",
+    "skills": "Skills",
+    "apply": "Apply Now",
+    "footerLink": "Careers"
   }
 }

@@ -42,7 +42,9 @@ type Tab =
  | "team"
  | "users"
  | "payments"
- | "promos";
+ | "promos"
+ | "blog"
+ | "careers";
 
 type AdminCategoryRow = {
  _id: string;
@@ -302,6 +304,8 @@ const TABS: { id: Tab; label: string }[] = [
  { id: "contacts", label: "Contact" },
  { id: "challenges", label: "Challenges" },
  { id: "team", label: "Team" },
+ { id: "blog", label: "Blog" },
+ { id: "careers", label: "Careers" },
 ];
 
 export default function AdminDashboard() {
@@ -388,6 +392,24 @@ export default function AdminDashboard() {
  const [promosPage, setPromosPage] = useState(1);
  const [promoFilter, setPromoFilter] = useState({ q: "", active: "" });
  const [promoModal, setPromoModal] = useState<
+ null | { mode: "create" } | { mode: "edit"; id: string }
+ >(null);
+
+ // ── Blog ──
+ const [blogPosts, setBlogPosts] = useState<Record<string, unknown>[]>([]);
+ const [blogMeta, setBlogMeta] = useState<ListMeta>(emptyMeta);
+ const [blogPage, setBlogPage] = useState(1);
+ const [blogFilter, setBlogFilter] = useState({ published: "", category: "" });
+ const [blogModal, setBlogModal] = useState<
+ null | { mode: "create" } | { mode: "edit"; slug: string }
+ >(null);
+
+ // ── Careers ──
+ const [careers, setCareers] = useState<Record<string, unknown>[]>([]);
+ const [careersMeta, setCareersMeta] = useState<ListMeta>(emptyMeta);
+ const [careersPage, setCareersPage] = useState(1);
+ const [careerFilter, setCareerFilter] = useState({ active: "", department: "" });
+ const [careerModal, setCareerModal] = useState<
  null | { mode: "create" } | { mode: "edit"; id: string }
  >(null);
 
@@ -583,6 +605,30 @@ export default function AdminDashboard() {
  setPromosMeta(meta);
  }, [promoFilter, promosPage]);
 
+ const loadBlog = useCallback(async () => {
+ const q = new URLSearchParams();
+ if (blogFilter.published) q.set("published", blogFilter.published);
+ if (blogFilter.category) q.set("category", blogFilter.category);
+ q.set("page", String(blogPage));
+ q.set("limit", String(PAGE_SIZE));
+ const raw = await adminFetch<unknown>(`/blog/admin/list?${q}`);
+ const { items, meta } = normalizePagedResponse<Record<string, unknown>>(raw, PAGE_SIZE);
+ setBlogPosts(items);
+ setBlogMeta(meta);
+ }, [blogFilter, blogPage]);
+
+ const loadCareers = useCallback(async () => {
+ const q = new URLSearchParams();
+ if (careerFilter.active) q.set("active", careerFilter.active);
+ if (careerFilter.department) q.set("department", careerFilter.department);
+ q.set("page", String(careersPage));
+ q.set("limit", String(PAGE_SIZE));
+ const raw = await adminFetch<unknown>(`/careers/admin/list?${q}`);
+ const { items, meta } = normalizePagedResponse<Record<string, unknown>>(raw, PAGE_SIZE);
+ setCareers(items);
+ setCareersMeta(meta);
+ }, [careerFilter, careersPage]);
+
  useEffect(() => {
  if (!getAdminToken()) return;
  let cancelled = false;
@@ -602,6 +648,8 @@ export default function AdminDashboard() {
  if (tab === "contacts") await loadContacts();
  if (tab === "challenges") await loadChallenges();
  if (tab === "team") await loadTeam();
+ if (tab === "blog") await loadBlog();
+ if (tab === "careers") await loadCareers();
  if (!cancelled) setErr("");
  } catch (e) {
  if (!cancelled) {
@@ -625,6 +673,8 @@ export default function AdminDashboard() {
  loadUsers,
  loadPayments,
  loadPromos,
+ loadBlog,
+ loadCareers,
  ]);
 
  const logout = () => {
@@ -972,6 +1022,54 @@ export default function AdminDashboard() {
  await loadPromos();
  } catch (e) {
  setErr(e instanceof Error ? e.message : "Delete failed");
+ }
+ };
+
+ // ── Blog helpers ──
+ const deleteBlog = async (slug: string, title: string) => {
+ if (!confirm(`Delete blog post "${title}"?`)) return;
+ try {
+ await adminFetch(`/blog/${slug}`, { method: "DELETE" });
+ await loadBlog();
+ setAdminNotice("Blog post deleted");
+ } catch (e) {
+ setErr(e instanceof Error ? e.message : "Delete failed");
+ }
+ };
+
+ const toggleBlogPublish = async (slug: string, isPublished: boolean) => {
+ try {
+ await adminFetch(`/blog/${slug}`, {
+ method: "PUT",
+ body: JSON.stringify({ isPublished: !isPublished }),
+ });
+ await loadBlog();
+ } catch (e) {
+ setErr(e instanceof Error ? e.message : "Update failed");
+ }
+ };
+
+ // ── Career helpers ──
+ const deleteCareer = async (id: string, title: string) => {
+ if (!confirm(`Delete career "${title}"?`)) return;
+ try {
+ await adminFetch(`/careers/${id}`, { method: "DELETE" });
+ await loadCareers();
+ setAdminNotice("Career deleted");
+ } catch (e) {
+ setErr(e instanceof Error ? e.message : "Delete failed");
+ }
+ };
+
+ const toggleCareerActive = async (id: string, isActive: boolean) => {
+ try {
+ await adminFetch(`/careers/${id}`, {
+ method: "PATCH",
+ body: JSON.stringify({ isActive: !isActive }),
+ });
+ await loadCareers();
+ } catch (e) {
+ setErr(e instanceof Error ? e.message : "Update failed");
  }
  };
 
@@ -2427,6 +2525,164 @@ export default function AdminDashboard() {
  />
  </div>
  )}
+
+ {/* ═══════════ BLOG TAB ═══════════ */}
+ {tab === "blog" && (
+ <div className="space-y-4">
+ <div className="flex flex-wrap items-end gap-3">
+ <FilterSelect
+ label="Status"
+ value={blogFilter.published}
+ onChange={(v) => { setBlogPage(1); setBlogFilter((f) => ({ ...f, published: v })); }}
+ options={[
+ { value: "", label: "All" },
+ { value: "true", label: "Published" },
+ { value: "false", label: "Draft" },
+ ]}
+ />
+ <FilterSelect
+ label="Category"
+ value={blogFilter.category}
+ onChange={(v) => { setBlogPage(1); setBlogFilter((f) => ({ ...f, category: v })); }}
+ options={[
+ { value: "", label: "All" },
+ { value: "coding", label: "Coding" },
+ { value: "robotics", label: "Robotics" },
+ { value: "quran", label: "Quran" },
+ { value: "arabic", label: "Arabic" },
+ { value: "parenting", label: "Parenting" },
+ { value: "stem", label: "STEM" },
+ { value: "general", label: "General" },
+ ]}
+ />
+ <button
+ type="button"
+ onClick={() => setBlogModal({ mode: "create" })}
+ className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white"
+ >
+ New post
+ </button>
+ </div>
+ <div className="overflow-x-auto rounded-xl border border-slate-800">
+ <table className="w-full min-w-[800px] text-left text-sm">
+ <thead className="border-b border-slate-800 text-slate-500">
+ <tr>
+ <th className="p-2">Title (EN)</th>
+ <th className="p-2">Category</th>
+ <th className="p-2">Status</th>
+ <th className="p-2">Views</th>
+ <th className="p-2">Created</th>
+ <th className="p-2" />
+ </tr>
+ </thead>
+ <tbody>
+ {blogPosts.map((p) => {
+ const slug = String(p.slug ?? "");
+ const title = (p.title as { en?: string })?.en ?? slug;
+ return (
+ <tr key={slug} className="border-t border-slate-800/80">
+ <td className="p-2 max-w-[250px] truncate font-medium">{title}</td>
+ <td className="p-2 text-xs">{String(p.category ?? "general")}</td>
+ <td className="p-2">
+ <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${p.isPublished ? "bg-emerald-900/40 text-emerald-400" : "bg-amber-900/40 text-amber-400"}`}>
+ {p.isPublished ? "Published" : "Draft"}
+ </span>
+ </td>
+ <td className="p-2 text-xs">{String(p.viewCount ?? 0)}</td>
+ <td className="p-2 text-xs">{p.createdAt ? new Date(String(p.createdAt)).toLocaleDateString() : "—"}</td>
+ <td className="p-2 space-x-2 whitespace-nowrap">
+ <button type="button" className="text-primary text-xs" onClick={() => setBlogModal({ mode: "edit", slug })}>Edit</button>
+ <button type="button" className="text-slate-400 text-xs" onClick={() => void toggleBlogPublish(slug, Boolean(p.isPublished))}>{p.isPublished ? "Unpublish" : "Publish"}</button>
+ <button type="button" className="text-red-400 text-xs" onClick={() => void deleteBlog(slug, title)}>Delete</button>
+ </td>
+ </tr>
+ );
+ })}
+ </tbody>
+ </table>
+ </div>
+ <PaginationBar meta={blogMeta} noun="posts" onPageChange={setBlogPage} />
+ </div>
+ )}
+
+ {/* ═══════════ CAREERS TAB ═══════════ */}
+ {tab === "careers" && (
+ <div className="space-y-4">
+ <div className="flex flex-wrap items-end gap-3">
+ <FilterSelect
+ label="Active"
+ value={careerFilter.active}
+ onChange={(v) => { setCareersPage(1); setCareerFilter((f) => ({ ...f, active: v })); }}
+ options={[
+ { value: "", label: "All" },
+ { value: "true", label: "Active" },
+ { value: "false", label: "Inactive" },
+ ]}
+ />
+ <FilterSelect
+ label="Department"
+ value={careerFilter.department}
+ onChange={(v) => { setCareersPage(1); setCareerFilter((f) => ({ ...f, department: v })); }}
+ options={[
+ { value: "", label: "All" },
+ { value: "engineering", label: "Engineering" },
+ { value: "education", label: "Education" },
+ { value: "design", label: "Design" },
+ { value: "marketing", label: "Marketing" },
+ { value: "operations", label: "Operations" },
+ { value: "support", label: "Support" },
+ { value: "other", label: "Other" },
+ ]}
+ />
+ <button
+ type="button"
+ onClick={() => setCareerModal({ mode: "create" })}
+ className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white"
+ >
+ New position
+ </button>
+ </div>
+ <div className="overflow-x-auto rounded-xl border border-slate-800">
+ <table className="w-full min-w-[800px] text-left text-sm">
+ <thead className="border-b border-slate-800 text-slate-500">
+ <tr>
+ <th className="p-2">Title (EN)</th>
+ <th className="p-2">Department</th>
+ <th className="p-2">Type</th>
+ <th className="p-2">Level</th>
+ <th className="p-2">Active</th>
+ <th className="p-2" />
+ </tr>
+ </thead>
+ <tbody>
+ {careers.map((c) => {
+ const id = String(c._id ?? "");
+ const title = (c.title as { en?: string })?.en ?? "";
+ return (
+ <tr key={id} className="border-t border-slate-800/80">
+ <td className="p-2 max-w-[250px] truncate font-medium">{title}</td>
+ <td className="p-2 text-xs capitalize">{String(c.department ?? "other")}</td>
+ <td className="p-2 text-xs">{String(c.employmentType ?? "full-time")}</td>
+ <td className="p-2 text-xs capitalize">{String(c.experienceLevel ?? "mid")}</td>
+ <td className="p-2">
+ <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${c.isActive ? "bg-emerald-900/40 text-emerald-400" : "bg-red-900/40 text-red-400"}`}>
+ {c.isActive ? "Active" : "Inactive"}
+ </span>
+ </td>
+ <td className="p-2 space-x-2 whitespace-nowrap">
+ <button type="button" className="text-primary text-xs" onClick={() => setCareerModal({ mode: "edit", id })}>Edit</button>
+ <button type="button" className="text-slate-400 text-xs" onClick={() => void toggleCareerActive(id, Boolean(c.isActive))}>{c.isActive ? "Deactivate" : "Activate"}</button>
+ <button type="button" className="text-red-400 text-xs" onClick={() => void deleteCareer(id, title)}>Delete</button>
+ </td>
+ </tr>
+ );
+ })}
+ </tbody>
+ </table>
+ </div>
+ <PaginationBar meta={careersMeta} noun="positions" onPageChange={setCareersPage} />
+ </div>
+ )}
  </main>
  </div>
 
@@ -2700,6 +2956,32 @@ export default function AdminDashboard() {
  setTeamModal(null);
  await loadTeam();
  await loadOverview();
+ }}
+ />
+ )}
+
+ {blogModal && (
+ <BlogFormModal
+ key={blogModal.mode === "edit" ? blogModal.slug : "create"}
+ mode={blogModal.mode}
+ blogSlug={blogModal.mode === "edit" ? blogModal.slug : undefined}
+ onClose={() => setBlogModal(null)}
+ onSaved={async () => {
+ setBlogModal(null);
+ await loadBlog();
+ }}
+ />
+ )}
+
+ {careerModal && (
+ <CareerFormModal
+ key={careerModal.mode === "edit" ? careerModal.id : "create"}
+ mode={careerModal.mode}
+ careerId={careerModal.mode === "edit" ? careerModal.id : undefined}
+ onClose={() => setCareerModal(null)}
+ onSaved={async () => {
+ setCareerModal(null);
+ await loadCareers();
  }}
  />
  )}
@@ -4734,6 +5016,138 @@ function TeamFormModal({
  >
  Save
  </button>
+ </div>
+ </div>
+ </div>
+ );
+}
+
+/* ═══════════════════════════════════════════════════════════
+ * BLOG FORM MODAL
+ * ═══════════════════════════════════════════════════════════ */
+const defaultBlogForm = { slug: "", titleEn: "", titleAr: "", excerptEn: "", excerptAr: "", bodyEn: "", bodyAr: "", category: "general", tags: "", coverImage: "", authorName: "", isPublished: false, metaTitleEn: "", metaTitleAr: "", metaDescEn: "", metaDescAr: "", targetRegions: "", relatedCourses: "" };
+
+function BlogFormModal({ mode, blogSlug, onClose, onSaved }: { mode: "create" | "edit"; blogSlug?: string; onClose: () => void; onSaved: () => Promise<void> }) {
+ const [loading, setLoading] = useState(mode === "edit");
+ const [saveErr, setSaveErr] = useState("");
+ const [form, setForm] = useState(defaultBlogForm);
+ useEffect(() => {
+ if (mode !== "edit" || !blogSlug) { setLoading(false); return; }
+ let c = false;
+ (async () => {
+ try {
+ const d = await adminFetch<Record<string, unknown>>(`/blog/admin/${blogSlug}`);
+ if (c) return;
+ const t = (d.title as { en?: string; ar?: string }) ?? {};
+ const ex = (d.excerpt as { en?: string; ar?: string }) ?? {};
+ const b = (d.body as { en?: string; ar?: string }) ?? {};
+ const mt = (d.metaTitle as { en?: string; ar?: string }) ?? {};
+ const md = (d.metaDescription as { en?: string; ar?: string }) ?? {};
+ setForm({ slug: String(d.slug ?? ""), titleEn: t.en ?? "", titleAr: t.ar ?? "", excerptEn: ex.en ?? "", excerptAr: ex.ar ?? "", bodyEn: b.en ?? "", bodyAr: b.ar ?? "", category: String(d.category ?? "general"), tags: Array.isArray(d.tags) ? d.tags.join(", ") : "", coverImage: String(d.coverImage ?? ""), authorName: ((d.author as { name?: string })?.name) ?? "", isPublished: Boolean(d.isPublished), metaTitleEn: mt.en ?? "", metaTitleAr: mt.ar ?? "", metaDescEn: md.en ?? "", metaDescAr: md.ar ?? "", targetRegions: Array.isArray(d.targetRegions) ? d.targetRegions.join(", ") : "", relatedCourses: Array.isArray(d.relatedCourses) ? d.relatedCourses.join(", ") : "" });
+ } catch (e) { if (!c) setSaveErr(e instanceof Error ? e.message : "Load failed"); }
+ finally { if (!c) setLoading(false); }
+ })();
+ return () => { c = true; };
+ }, [mode, blogSlug]);
+ const save = async () => {
+ setSaveErr("");
+ const payload: Record<string, unknown> = { slug: form.slug.trim().toLowerCase().replace(/\s+/g, "-"), title: { en: form.titleEn, ar: form.titleAr }, excerpt: { en: form.excerptEn, ar: form.excerptAr }, body: { en: form.bodyEn, ar: form.bodyAr }, category: form.category, tags: form.tags.split(",").map((s) => s.trim()).filter(Boolean), coverImage: form.coverImage, author: { name: form.authorName }, isPublished: form.isPublished, metaTitle: { en: form.metaTitleEn, ar: form.metaTitleAr }, metaDescription: { en: form.metaDescEn, ar: form.metaDescAr }, targetRegions: form.targetRegions.split(",").map((s) => s.trim()).filter(Boolean), relatedCourses: form.relatedCourses.split(",").map((s) => s.trim()).filter(Boolean) };
+ try { if (mode === "create") await adminFetch("/blog", { method: "POST", body: JSON.stringify(payload) }); else await adminFetch(`/blog/${blogSlug}`, { method: "PUT", body: JSON.stringify(payload) }); await onSaved(); } catch (e) { setSaveErr(e instanceof Error ? e.message : "Save failed"); }
+ };
+ const inp = "w-full rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm";
+ const lbl = "block text-slate-400 text-xs mb-1";
+ if (loading) return <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"><p className="text-white">Loading…</p></div>;
+ return (
+ <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
+ <div className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-2xl border border-slate-700 bg-slate-950 p-6 shadow-xl">
+ <h2 className="mb-4 text-lg font-semibold text-white">{mode === "create" ? "Create Blog Post" : "Edit Blog Post"}</h2>
+ {saveErr && <p className="mb-3 rounded bg-red-900/30 p-2 text-xs text-red-400">{saveErr}</p>}
+ <div className="grid gap-3 sm:grid-cols-2">
+ <label className="block"><span className={lbl}>Slug *</span><input value={form.slug} onChange={(e) => setForm((f) => ({ ...f, slug: e.target.value }))} className={inp} /></label>
+ <label className="block"><span className={lbl}>Author name *</span><input value={form.authorName} onChange={(e) => setForm((f) => ({ ...f, authorName: e.target.value }))} className={inp} /></label>
+ <label className="block"><span className={lbl}>Title (EN) *</span><input value={form.titleEn} onChange={(e) => setForm((f) => ({ ...f, titleEn: e.target.value }))} className={inp} /></label>
+ <label className="block"><span className={lbl}>Title (AR) *</span><input dir="rtl" value={form.titleAr} onChange={(e) => setForm((f) => ({ ...f, titleAr: e.target.value }))} className={inp} /></label>
+ <label className="block"><span className={lbl}>Excerpt (EN) *</span><input value={form.excerptEn} onChange={(e) => setForm((f) => ({ ...f, excerptEn: e.target.value }))} className={inp} /></label>
+ <label className="block"><span className={lbl}>Excerpt (AR) *</span><input dir="rtl" value={form.excerptAr} onChange={(e) => setForm((f) => ({ ...f, excerptAr: e.target.value }))} className={inp} /></label>
+ <label className="sm:col-span-2"><span className={lbl}>Body (EN) * — supports markdown</span><textarea rows={6} value={form.bodyEn} onChange={(e) => setForm((f) => ({ ...f, bodyEn: e.target.value }))} className={`${inp} resize-y`} /></label>
+ <label className="sm:col-span-2"><span className={lbl}>Body (AR) *</span><textarea dir="rtl" rows={6} value={form.bodyAr} onChange={(e) => setForm((f) => ({ ...f, bodyAr: e.target.value }))} className={`${inp} resize-y`} /></label>
+ <label className="block"><span className={lbl}>Category</span><select value={form.category} onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))} className={inp}>{["general","coding","robotics","quran","arabic","parenting","stem"].map((v) => <option key={v} value={v}>{v}</option>)}</select></label>
+ <label className="block"><span className={lbl}>Tags (comma-separated)</span><input value={form.tags} onChange={(e) => setForm((f) => ({ ...f, tags: e.target.value }))} className={inp} /></label>
+ <label className="block"><span className={lbl}>Cover image URL</span><input value={form.coverImage} onChange={(e) => setForm((f) => ({ ...f, coverImage: e.target.value }))} className={inp} /></label>
+ <label className="block"><span className={lbl}>Related courses (slugs)</span><input value={form.relatedCourses} onChange={(e) => setForm((f) => ({ ...f, relatedCourses: e.target.value }))} className={inp} /></label>
+ <label className="block"><span className={lbl}>Meta Title (EN)</span><input value={form.metaTitleEn} onChange={(e) => setForm((f) => ({ ...f, metaTitleEn: e.target.value }))} className={inp} /></label>
+ <label className="block"><span className={lbl}>Meta Title (AR)</span><input dir="rtl" value={form.metaTitleAr} onChange={(e) => setForm((f) => ({ ...f, metaTitleAr: e.target.value }))} className={inp} /></label>
+ <label className="block"><span className={lbl}>Meta Desc (EN)</span><input value={form.metaDescEn} onChange={(e) => setForm((f) => ({ ...f, metaDescEn: e.target.value }))} className={inp} /></label>
+ <label className="block"><span className={lbl}>Meta Desc (AR)</span><input dir="rtl" value={form.metaDescAr} onChange={(e) => setForm((f) => ({ ...f, metaDescAr: e.target.value }))} className={inp} /></label>
+ <label className="block"><span className={lbl}>Target regions</span><input value={form.targetRegions} onChange={(e) => setForm((f) => ({ ...f, targetRegions: e.target.value }))} className={inp} /></label>
+ <label className="flex items-center gap-2 text-sm text-slate-300"><input type="checkbox" checked={form.isPublished} onChange={(e) => setForm((f) => ({ ...f, isPublished: e.target.checked }))} />Published</label>
+ </div>
+ <div className="mt-6 flex justify-end gap-2">
+ <button type="button" onClick={onClose} className="rounded-lg border border-slate-600 px-4 py-2 text-sm">Cancel</button>
+ <button type="button" onClick={() => save().catch(console.error)} className="rounded-lg bg-primary px-4 py-2 text-sm text-white">Save</button>
+ </div>
+ </div>
+ </div>
+ );
+}
+
+/* ═══════════════════════════════════════════════════════════
+ * CAREER FORM MODAL
+ * ═══════════════════════════════════════════════════════════ */
+const defaultCareerForm = { titleEn: "", titleAr: "", descEn: "", descAr: "", reqEn: "", reqAr: "", department: "other", location: "Remote", employmentType: "full-time", experienceLevel: "mid", skills: "", isActive: true, applicationEmail: "", applicationUrl: "" };
+
+function CareerFormModal({ mode, careerId, onClose, onSaved }: { mode: "create" | "edit"; careerId?: string; onClose: () => void; onSaved: () => Promise<void> }) {
+ const [loading, setLoading] = useState(mode === "edit");
+ const [saveErr, setSaveErr] = useState("");
+ const [form, setForm] = useState(defaultCareerForm);
+ useEffect(() => {
+ if (mode !== "edit" || !careerId) { setLoading(false); return; }
+ let c = false;
+ (async () => {
+ try {
+ const d = await adminFetch<Record<string, unknown>>(`/careers/admin/${careerId}`);
+ if (c) return;
+ const t = (d.title as { en?: string; ar?: string }) ?? {};
+ const desc = (d.description as { en?: string; ar?: string }) ?? {};
+ const req = (d.requirements as { en?: string; ar?: string }) ?? {};
+ setForm({ titleEn: t.en ?? "", titleAr: t.ar ?? "", descEn: desc.en ?? "", descAr: desc.ar ?? "", reqEn: req.en ?? "", reqAr: req.ar ?? "", department: String(d.department ?? "other"), location: String(d.location ?? "Remote"), employmentType: String(d.employmentType ?? "full-time"), experienceLevel: String(d.experienceLevel ?? "mid"), skills: Array.isArray(d.skills) ? d.skills.join(", ") : "", isActive: d.isActive !== false, applicationEmail: String(d.applicationEmail ?? ""), applicationUrl: String(d.applicationUrl ?? "") });
+ } catch (e) { if (!c) setSaveErr(e instanceof Error ? e.message : "Load failed"); }
+ finally { if (!c) setLoading(false); }
+ })();
+ return () => { c = true; };
+ }, [mode, careerId]);
+ const save = async () => {
+ setSaveErr("");
+ const payload: Record<string, unknown> = { title: { en: form.titleEn, ar: form.titleAr }, description: { en: form.descEn, ar: form.descAr }, requirements: { en: form.reqEn, ar: form.reqAr }, department: form.department, location: form.location, employmentType: form.employmentType, experienceLevel: form.experienceLevel, skills: form.skills.split(",").map((s) => s.trim()).filter(Boolean), isActive: form.isActive, applicationEmail: form.applicationEmail, applicationUrl: form.applicationUrl };
+ try { if (mode === "create") await adminFetch("/careers", { method: "POST", body: JSON.stringify(payload) }); else await adminFetch(`/careers/${careerId}`, { method: "PATCH", body: JSON.stringify(payload) }); await onSaved(); } catch (e) { setSaveErr(e instanceof Error ? e.message : "Save failed"); }
+ };
+ const inp = "w-full rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm";
+ const lbl = "block text-slate-400 text-xs mb-1";
+ if (loading) return <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"><p className="text-white">Loading…</p></div>;
+ return (
+ <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
+ <div className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-2xl border border-slate-700 bg-slate-950 p-6 shadow-xl">
+ <h2 className="mb-4 text-lg font-semibold text-white">{mode === "create" ? "Create Career Position" : "Edit Career Position"}</h2>
+ {saveErr && <p className="mb-3 rounded bg-red-900/30 p-2 text-xs text-red-400">{saveErr}</p>}
+ <div className="grid gap-3 sm:grid-cols-2">
+ <label className="block"><span className={lbl}>Title (EN) *</span><input value={form.titleEn} onChange={(e) => setForm((f) => ({ ...f, titleEn: e.target.value }))} className={inp} /></label>
+ <label className="block"><span className={lbl}>Title (AR) *</span><input dir="rtl" value={form.titleAr} onChange={(e) => setForm((f) => ({ ...f, titleAr: e.target.value }))} className={inp} /></label>
+ <label className="sm:col-span-2"><span className={lbl}>Description (EN) *</span><textarea rows={4} value={form.descEn} onChange={(e) => setForm((f) => ({ ...f, descEn: e.target.value }))} className={`${inp} resize-y`} /></label>
+ <label className="sm:col-span-2"><span className={lbl}>Description (AR) *</span><textarea dir="rtl" rows={4} value={form.descAr} onChange={(e) => setForm((f) => ({ ...f, descAr: e.target.value }))} className={`${inp} resize-y`} /></label>
+ <label className="sm:col-span-2"><span className={lbl}>Requirements (EN)</span><textarea rows={3} value={form.reqEn} onChange={(e) => setForm((f) => ({ ...f, reqEn: e.target.value }))} className={`${inp} resize-y`} /></label>
+ <label className="sm:col-span-2"><span className={lbl}>Requirements (AR)</span><textarea dir="rtl" rows={3} value={form.reqAr} onChange={(e) => setForm((f) => ({ ...f, reqAr: e.target.value }))} className={`${inp} resize-y`} /></label>
+ <label className="block"><span className={lbl}>Department</span><select value={form.department} onChange={(e) => setForm((f) => ({ ...f, department: e.target.value }))} className={inp}>{["engineering","education","design","marketing","operations","support","other"].map((d) => <option key={d} value={d}>{d.charAt(0).toUpperCase()+d.slice(1)}</option>)}</select></label>
+ <label className="block"><span className={lbl}>Location</span><input value={form.location} onChange={(e) => setForm((f) => ({ ...f, location: e.target.value }))} className={inp} /></label>
+ <label className="block"><span className={lbl}>Employment Type</span><select value={form.employmentType} onChange={(e) => setForm((f) => ({ ...f, employmentType: e.target.value }))} className={inp}>{["full-time","part-time","contract","internship","freelance"].map((t) => <option key={t} value={t}>{t}</option>)}</select></label>
+ <label className="block"><span className={lbl}>Experience Level</span><select value={form.experienceLevel} onChange={(e) => setForm((f) => ({ ...f, experienceLevel: e.target.value }))} className={inp}>{["entry","mid","senior","lead"].map((l) => <option key={l} value={l}>{l.charAt(0).toUpperCase()+l.slice(1)}</option>)}</select></label>
+ <label className="block"><span className={lbl}>Skills (comma-separated)</span><input value={form.skills} onChange={(e) => setForm((f) => ({ ...f, skills: e.target.value }))} className={inp} /></label>
+ <label className="block"><span className={lbl}>Application Email</span><input type="email" value={form.applicationEmail} onChange={(e) => setForm((f) => ({ ...f, applicationEmail: e.target.value }))} className={inp} /></label>
+ <label className="block"><span className={lbl}>Application URL</span><input value={form.applicationUrl} onChange={(e) => setForm((f) => ({ ...f, applicationUrl: e.target.value }))} className={inp} /></label>
+ <label className="flex items-center gap-2 text-sm text-slate-300"><input type="checkbox" checked={form.isActive} onChange={(e) => setForm((f) => ({ ...f, isActive: e.target.checked }))} />Active</label>
+ </div>
+ <div className="mt-6 flex justify-end gap-2">
+ <button type="button" onClick={onClose} className="rounded-lg border border-slate-600 px-4 py-2 text-sm">Cancel</button>
+ <button type="button" onClick={() => save().catch(console.error)} className="rounded-lg bg-primary px-4 py-2 text-sm text-white">Save</button>
  </div>
  </div>
  </div>

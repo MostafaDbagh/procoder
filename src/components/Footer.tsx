@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { LocalizedLink } from "@/components/LocalizedLink";
-import { Sparkles, Mail, LayoutDashboard, GraduationCap, Shield } from "lucide-react";
+import { Sparkles, Mail, LayoutDashboard, GraduationCap, Shield, Briefcase } from "lucide-react";
 
 export function Footer() {
  const t = useTranslations("footer");
  const nav = useTranslations("nav");
  const cats = useTranslations("categories");
+ const careersT = useTranslations("careers");
 
  return (
  <footer className="bg-surface border-t border-border">
@@ -119,6 +120,12 @@ export function Footer() {
  <li>
  <LocalizedLink href="/terms" className="text-sm text-muted hover:text-primary transition-colors">
  {t("terms")}
+ </LocalizedLink>
+ </li>
+ <li>
+ <LocalizedLink href="/careers" className="text-sm text-muted hover:text-primary transition-colors inline-flex items-center gap-1.5">
+ <Briefcase className="w-3.5 h-3.5" />
+ {careersT("footerLink")}
  </LocalizedLink>
  </li>
  </ul>
