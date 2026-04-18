@@ -66,7 +66,11 @@ export async function generateMetadata({
       title: `${title} | StemTechLab`,
       description: seoDescription,
       url: `${SITE_URL}/${lang}/courses/${id}`,
-      type: "article",
+      type: "website",
+      siteName: "StemTechLab",
+      locale: lang === "ar" ? "ar_SA" : "en_US",
+      alternateLocale: lang === "ar" ? "en_US" : "ar_SA",
+      images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: title }],
     },
     twitter: {
       title: `${title} | StemTechLab`,
@@ -111,7 +115,7 @@ export default async function CourseDetailPage({
           provider: {
             "@type": "Organization",
             name: "StemTechLab",
-            url: "https://stemtechlab.com",
+            url: SITE_URL,
           },
           educationalLevel: apiCourse?.level ?? staticCourse!.level,
           courseMode: "online",

@@ -48,6 +48,11 @@ export async function generateMetadata({
       title,
       description,
       url: `${SITE_URL}/${lang}/challenge`,
+      type: "website",
+      siteName: "StemTechLab",
+      locale: lang === "ar" ? "ar_SA" : "en_US",
+      alternateLocale: lang === "ar" ? "en_US" : "ar_SA",
+      images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: "StemTechLab" }],
     },
     twitter: {
       title,

@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: meta[lang].title,
     description: meta[lang].description,
     alternates: { canonical: `${SITE_URL}/${lang}/blog`, languages: { [alt]: `${SITE_URL}/${alt}/blog` } },
-    openGraph: { title: meta[lang].title, description: meta[lang].description, url: `${SITE_URL}/${lang}/blog` },
+    openGraph: { title: meta[lang].title, description: meta[lang].description, url: `${SITE_URL}/${lang}/blog`, type: "website", siteName: "StemTechLab", locale: lang === "ar" ? "ar_SA" : "en_US", alternateLocale: lang === "ar" ? "en_US" : "ar_SA", images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: "StemTechLab" }] },
     twitter: { title: meta[lang].title, description: meta[lang].description },
   };
 }
