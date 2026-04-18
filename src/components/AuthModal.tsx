@@ -149,7 +149,7 @@ export function AuthModal({
  signupForm.name.trim().length >= 2 &&
  emailLooksValid(signupForm.email) &&
  signupForm.phone.trim().length > 0 &&
- signupForm.password.length >= 6;
+ signupForm.password.length >= 8;
 
  const handleSignup = async (e: React.FormEvent) => {
  e.preventDefault();
@@ -344,7 +344,7 @@ export function AuthModal({
  </label>
  <PasswordInput
  required
- minLength={6}
+ minLength={8}
  value={signupForm.password}
  onChange={(e) =>
  setSignupForm({ ...signupForm, password: e.target.value })
@@ -445,7 +445,7 @@ export function AuthModal({
  </div>
  <PasswordInput
  required
- minLength={6}
+ minLength={8}
  value={loginForm.password}
  onChange={(e) =>
  setLoginForm({ ...loginForm, password: e.target.value })
@@ -545,12 +545,25 @@ export function AuthModal({
  onSubmit={async (e) => {
  e.preventDefault();
  setError("");
+ setSubmitting(true);
  const code = otp.join("");
- if (code !== "1234") {
- setError(isRtl ? "رمز التحقق غير صحيح" : "Invalid verification code");
+ try {
+ const res = await fetch(`${API}/auth/verify-otp`, {
+ method: "POST",
+ headers: { "Content-Type": "application/json" },
+ body: JSON.stringify({ phone: forgotPhone, code }),
+ });
+ const data = (await res.json().catch(() => ({}))) as { valid?: boolean; message?: string };
+ if (!res.ok || !data.valid) {
+ setError(data.message || (isRtl ? "رمز التحقق غير صحيح" : "Invalid verification code"));
  return;
  }
  setForgotStep("newpass");
+ } catch {
+ setError(isRtl ? "حدث خطأ، حاول مرة أخرى" : "An error occurred, please try again");
+ } finally {
+ setSubmitting(false);
+ }
  }}
  className="space-y-5"
  >
@@ -595,7 +608,7 @@ export function AuthModal({
  </div>
 
  <p className="text-center text-xs text-muted">
- {isRtl ? "الرمز التجريبي: 123456" : "Mock code: 123456"}
+ {isRtl ? "أدخل الرمز المرسل عبر واتساب" : "Enter the code sent via WhatsApp"}
  </p>
 
  {error && <p className="text-sm text-red-500 bg-red-50 dark:bg-red-950/30 px-4 py-2 rounded-xl text-center">{error}</p>}
@@ -646,7 +659,7 @@ export function AuthModal({
  </label>
  <PasswordInput
  required
- minLength={6}
+ minLength={8}
  value={newPassword}
  onChange={(e) => setNewPassword(e.target.value)}
  placeholder={isRtl ? "٦ أحرف على الأقل" : "At least 6 characters"}
@@ -660,7 +673,7 @@ export function AuthModal({
  </label>
  <PasswordInput
  required
- minLength={6}
+ minLength={8}
  value={confirmPassword}
  onChange={(e) => setConfirmPassword(e.target.value)}
  placeholder={

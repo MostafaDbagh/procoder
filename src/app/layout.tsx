@@ -11,6 +11,9 @@ const geistSans = Geist({
 
 const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
 
+/** stem-Be origin for preconnect only (no secrets). Set NEXT_PUBLIC_API_ORIGIN in production; omit in git. */
+const API_PRECONNECT = process.env.NEXT_PUBLIC_API_ORIGIN?.trim().replace(/\/$/, "") || "";
+
 export const metadata: Metadata = {
  metadataBase: new URL(SITE_URL),
  title: {
@@ -237,9 +240,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
  return (
  <html lang="en" className={`${geistSans.variable} h-full antialiased`} suppressHydrationWarning>
  <head>
- {/* Performance: preconnect to backend API + Google Fonts (like Tynker/CodaKid/Codingal) */}
- <link rel="preconnect" href="https://procoderbe.onrender.com" />
- <link rel="dns-prefetch" href="https://procoderbe.onrender.com" />
+ {/* Performance: preconnect to stem-Be when NEXT_PUBLIC_API_ORIGIN is set (never hardcode deploy URLs) */}
+ {API_PRECONNECT ? (
+ <>
+ <link rel="preconnect" href={API_PRECONNECT} />
+ <link rel="dns-prefetch" href={API_PRECONNECT} />
+ </>
+ ) : null}
  <link rel="preconnect" href="https://fonts.googleapis.com" />
  <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
  {/* Theme color (all 5 competitors use this) */}

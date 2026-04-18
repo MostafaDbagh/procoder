@@ -28,24 +28,34 @@ export default function ContactContent() {
  message: "",
  });
 
- // Pre-fill subject from URL query param
+ // Pre-fill subject from URL query param (sanitized)
  useEffect(() => {
- const subject = searchParams.get("subject");
- if (subject) {
- setForm((prev) => ({ ...prev, subject }));
+ const raw = searchParams.get("subject");
+ if (raw) {
+ // Strip HTML tags and limit length to prevent injection
+ const sanitized = raw.replace(/<[^>]*>/g, "").slice(0, 200).trim();
+ if (sanitized) setForm((prev) => ({ ...prev, subject: sanitized }));
  }
  }, [searchParams]);
  const [sending, setSending] = useState(false);
  const [sent, setSent] = useState(false);
+ const [cooldown, setCooldown] = useState(false);
+ // Anti-bot: track when the form was first rendered
+ const [formLoadedAt] = useState(() => Date.now());
+ // Honeypot — invisible field that bots fill
+ const [hp, setHp] = useState("");
 
  const handleSubmit = async (e: React.FormEvent) => {
  e.preventDefault();
+ if (cooldown) return;
  setSending(true);
  try {
- await sendContactMessage(form);
+ await sendContactMessage({ ...form, _hp: hp, _t: formLoadedAt } as never);
  setSent(true);
+ // Cooldown: prevent re-submit for 60 s even if user navigates back
+ setCooldown(true);
+ setTimeout(() => setCooldown(false), 60_000);
  } catch {
- // Fallback — still show success for UX, log error
  setSent(true);
  } finally {
  setSending(false);
@@ -98,6 +108,11 @@ export default function ContactContent() {
  </motion.div>
  ) : (
  <form onSubmit={handleSubmit} className="space-y-5">
+ {/* Honeypot — hidden from humans, bots auto-fill it */}
+ <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "-9999px", opacity: 0, height: 0, overflow: "hidden" }}>
+ <label htmlFor="contact-hp">Leave this empty</label>
+ <input id="contact-hp" type="text" name="_hp" tabIndex={-1} autoComplete="off" value={hp} onChange={(e) => setHp(e.target.value)} />
+ </div>
  <div className="grid sm:grid-cols-2 gap-5">
  <div>
  <label className="block text-sm font-medium mb-2">
@@ -175,7 +190,7 @@ export default function ContactContent() {
  </div>
  <button
  type="submit"
- disabled={sending}
+ disabled={sending || cooldown}
  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl bg-primary text-white font-semibold shadow-lg shadow-primary/10 hover:shadow-xl hover:scale-[1.02] transition-all disabled:opacity-70 disabled:cursor-not-allowed"
  >
  <Send className="w-4 h-4" />

@@ -60,6 +60,8 @@ export default function RecommendContent({ initialCourses }: Props) {
  const [showAiResults, setShowAiResults] = useState(false);
  const inputRef = useRef<HTMLTextAreaElement>(null);
  const aiInFlightRef = useRef(false);
+ const [aiCooldown, setAiCooldown] = useState(false);
+ const lastAiRequestRef = useRef(0);
 
  const toggleInterest = (key: string) => {
  setInterests((prev) =>
@@ -145,7 +147,15 @@ export default function RecommendContent({ initialCourses }: Props) {
 
  const runAiRecommendation = async (rawMessage: string) => {
  const message = rawMessage.trim();
- if (!message || aiInFlightRef.current) return;
+ if (!message || aiInFlightRef.current || aiCooldown) return;
+
+ // Enforce min 5 s between AI requests
+ const now = Date.now();
+ if (now - lastAiRequestRef.current < 5000) {
+ setAiError(locale === "ar" ? "يرجى الانتظار قليلاً قبل المحاولة مرة أخرى" : "Please wait a moment before trying again");
+ return;
+ }
+ lastAiRequestRef.current = now;
 
  // Content filter — block bad/gibberish input before hitting the API
  const filter = filterChatInput(message);
@@ -175,6 +185,9 @@ export default function RecommendContent({ initialCourses }: Props) {
  setAiMessage(data.message || "");
  setAiCourseIds(uniqueIds);
  setShowAiResults(true);
+ // Cooldown after successful request
+ setAiCooldown(true);
+ setTimeout(() => setAiCooldown(false), 10_000);
  } catch (err) {
  const aborted =
  err instanceof Error &&
@@ -331,9 +344,9 @@ export default function RecommendContent({ initialCourses }: Props) {
  type="button"
  aria-label={t("aiSend")}
  onClick={handleAiSubmit}
- disabled={!chatInput.trim() || chatLoading}
+ disabled={!chatInput.trim() || chatLoading || aiCooldown}
  className={`absolute bottom-3 end-3 z-20 p-2.5 rounded-xl transition-all ${
- chatInput.trim() && !chatLoading
+ chatInput.trim() && !chatLoading && !aiCooldown
  ? "bg-primary text-white shadow-md hover:shadow-lg"
  : "bg-border text-muted cursor-not-allowed"
  }`}

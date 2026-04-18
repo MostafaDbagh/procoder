@@ -110,9 +110,15 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  }));
 
  const [error, setError] = useState("");
+ // Anti-bot: track when the modal was first opened
+ const [formLoadedAt] = useState(() => Date.now());
+ // Honeypot — invisible field that bots fill
+ const [hp, setHp] = useState("");
+ const [cooldown, setCooldown] = useState(false);
 
  const handleSubmit = async (e: React.FormEvent) => {
  e.preventDefault();
+ if (cooldown) return;
  setSubmitting(true);
  setError("");
  try {
@@ -138,7 +144,9 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  agreeTerms: form.agreeTerms,
  agreePhotos: form.agreePhotos || undefined,
  promoCode: promoInput.trim() || undefined,
- });
+ _hp: hp,
+ _t: formLoadedAt,
+ } as never);
  if (
  res.pricing &&
  typeof res.pricing.amountDue === "number" &&
@@ -152,6 +160,9 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  setSuccessAmount(null);
  }
  setSuccess(true);
+ // Cooldown: prevent rapid re-enrollment
+ setCooldown(true);
+ setTimeout(() => setCooldown(false), 60_000);
  } catch (err) {
  setError(err instanceof Error ? err.message : "Enrollment failed. Please try again.");
  } finally {
@@ -327,6 +338,11 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  </motion.div>
  ) : (
  <form onSubmit={handleSubmit}>
+ {/* Honeypot — hidden from humans, bots auto-fill it */}
+ <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "-9999px", opacity: 0, height: 0, overflow: "hidden" }}>
+ <label htmlFor="enroll-hp">Leave this empty</label>
+ <input id="enroll-hp" type="text" name="_hp" tabIndex={-1} autoComplete="off" value={hp} onChange={(e) => setHp(e.target.value)} />
+ </div>
  {error ? (
  <div
  role="alert"
@@ -718,9 +734,9 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  ) : (
  <button
  type="submit"
- disabled={!canNext() || submitting}
+ disabled={!canNext() || submitting || cooldown}
  className={`flex items-center gap-2 px-8 py-3 rounded-2xl text-sm font-semibold transition-all ${
- canNext() && !submitting
+ canNext() && !submitting && !cooldown
  ? "bg-primary text-white shadow-lg shadow-primary/10 hover:shadow-xl hover:scale-[1.02]"
  : "bg-border text-muted cursor-not-allowed"
  }`}

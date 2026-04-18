@@ -1,5 +1,5 @@
 /**
- * StemTechLab authentication model (how the four “actors” relate to storage and routes)
+ * StemTechLab authentication model (how the four "actors" relate to storage and routes)
  *
  * 1. Visitor — Not signed in. No member JWT in `localStorage`. Uses public marketing pages
  * under `/[locale]/…` (home, courses, contact, etc.).
@@ -22,11 +22,21 @@
 
 export type MemberJwtRole = "parent" | "student" | "instructor" | "admin";
 
+/**
+ * SECURITY NOTE: This only reads the JWT payload for UI routing hints.
+ * It does NOT verify the signature — all authorization decisions
+ * MUST be enforced by the backend via jwt.verify().
+ * Never trust this value for access control.
+ */
 export function parseMemberJwtRole(token: string | null): MemberJwtRole | undefined {
  if (!token) return undefined;
  try {
- const part = token.split(".")[1];
- const json = JSON.parse(atob(part.replace(/-/g, "+").replace(/_/g, "/"))) as { role?: string };
+ const parts = token.split(".");
+ if (parts.length !== 3) return undefined;
+ const part = parts[1];
+ const json = JSON.parse(atob(part.replace(/-/g, "+").replace(/_/g, "/"))) as { role?: string; exp?: number };
+ // Check if token is expired client-side as an extra safeguard
+ if (json.exp && json.exp * 1000 < Date.now()) return undefined;
  const r = json.role;
  if (r === "parent" || r === "student" || r === "instructor" || r === "admin") return r;
  return undefined;

@@ -1,11 +1,13 @@
 "use client";
 
+import { useMemo } from "react";
 import { useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { APIBlogPost } from "@/lib/server-api";
 import type { APICourse } from "@/lib/api";
 import { CourseCard } from "@/components/CourseCard";
 import { motion } from "framer-motion";
+import DOMPurify from "dompurify";
 import {
  ArrowLeft,
  Clock,
@@ -33,6 +35,27 @@ export default function BlogDetailClient({ post, relatedCourses }: Props) {
  day: "numeric",
  })
  : "";
+
+ const sanitizedBody = useMemo(() => {
+ const raw = (post.body[lang] || "")
+   .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+   .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+   .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+   .replace(/\n- (.*)/g, '\n<li>$1</li>')
+   .replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
+   .replace(/\n{2,}/g, '</p><p>')
+   .replace(/^/, '<p>')
+   .replace(/$/, '</p>')
+   .replace(/<p><h/g, '<h')
+   .replace(/<\/h([23])><\/p>/g, '</h$1>')
+   .replace(/<p><ul>/g, '<ul>')
+   .replace(/<\/ul><\/p>/g, '</ul>')
+   .replace(/<p>\s*<\/p>/g, '');
+ return DOMPurify.sanitize(raw, {
+   ALLOWED_TAGS: ['h2', 'h3', 'p', 'strong', 'em', 'ul', 'ol', 'li', 'a', 'br', 'blockquote', 'code', 'pre'],
+   ALLOWED_ATTR: ['href', 'target', 'rel'],
+ });
+ }, [post.body, lang]);
 
  const handleShare = async () => {
  const url = window.location.href;
@@ -131,22 +154,7 @@ export default function BlogDetailClient({ post, relatedCourses }: Props) {
  prose-li:text-muted
  prose-strong:text-foreground
  prose-a:text-primary prose-a:no-underline hover:prose-a:underline"
- dangerouslySetInnerHTML={{
- __html: (post.body[lang] || "")
- .replace(/^## (.*$)/gm, '<h2>$1</h2>')
- .replace(/^### (.*$)/gm, '<h3>$1</h3>')
- .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
- .replace(/\n- (.*)/g, '\n<li>$1</li>')
- .replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
- .replace(/\n{2,}/g, '</p><p>')
- .replace(/^/, '<p>')
- .replace(/$/, '</p>')
- .replace(/<p><h/g, '<h')
- .replace(/<\/h([23])><\/p>/g, '</h$1>')
- .replace(/<p><ul>/g, '<ul>')
- .replace(/<\/ul><\/p>/g, '</ul>')
- .replace(/<p>\s*<\/p>/g, ''),
- }}
+ dangerouslySetInnerHTML={{ __html: sanitizedBody }}
  />
 
  {/* Region targeting (SEO text) */}
