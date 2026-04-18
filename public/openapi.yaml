@@ -1,17 +1,17 @@
 openapi: 3.0.3
 info:
-  title: StemTechLab — public site
-  description: |
-    This OpenAPI document exists so AI plugin manifests can resolve a valid URL.
-    StemTechLab is a marketing and enrollment website (not a public REST API for third-party agents).
+ title: StemTechLab — public site
+ description: |
+ This OpenAPI document exists so AI plugin manifests can resolve a valid URL.
+ StemTechLab is a marketing and enrollment website (not a public REST API for third-party agents).
 
-    Product focus: AI-powered course matching for children (OpenAI & DeepSeek integrations) so families
-    can find the best live class fit; see /en/recommend and /ar/recommend.
+ Product focus: AI-powered course matching for children (OpenAI & DeepSeek integrations) so families
+ can find the best live class fit; see /en/recommend and /ar/recommend.
 
-    For LLM / assistant context, use:
-    - /llms.txt — short machine-readable index
-    - /llms-full.txt — long-form facts, catalog, FAQ
-  version: "1.0.0"
+ For LLM / assistant context, use:
+ - /llms.txt — short machine-readable index
+ - /llms-full.txt — long-form facts, catalog, FAQ
+ version: "1.0.0"
 servers:
-  - url: https://stemtechlab.com
+ - url: https://stemtechlab.com
 paths: {}

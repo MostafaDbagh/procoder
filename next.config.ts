@@ -4,6 +4,14 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "res.cloudinary.com" },
+    ],
+  },
+  experimental: {
+    optimizePackageImports: ["framer-motion", "lucide-react"],
+  },
   /** LLM crawlers often look under RFC 8615-style paths; mirror without duplicating files. */
   async rewrites() {
     return [

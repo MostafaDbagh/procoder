@@ -8,12 +8,12 @@ import { useLayoutEffect } from "react";
  * next/script does not re-run on client locale changes, which left RTL stuck until a full refresh.
  */
 export function LocaleHtmlAttrs() {
-  const locale = useLocale();
+ const locale = useLocale();
 
-  useLayoutEffect(() => {
-    document.documentElement.lang = locale;
-    document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
-  }, [locale]);
+ useLayoutEffect(() => {
+ document.documentElement.lang = locale;
+ document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+ }, [locale]);
 
-  return null;
+ return null;
 }

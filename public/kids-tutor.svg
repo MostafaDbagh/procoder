@@ -1,129 +1,129 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none">
-  <!-- Background circle -->
-  <circle cx="400" cy="300" r="260" fill="url(#bgGrad)" opacity="0.08"/>
+ <!-- Background circle -->
+ <circle cx="400" cy="300" r="260" fill="url(#bgGrad)" opacity="0.08"/>
 
-  <!-- Desk -->
-  <rect x="180" y="380" rx="12" width="440" height="20" fill="#C4A882" opacity="0.35"/>
-  <rect x="200" y="400" rx="4" width="16" height="100" fill="#C4A882" opacity="0.25"/>
-  <rect x="584" y="400" rx="4" width="16" height="100" fill="#C4A882" opacity="0.25"/>
+ <!-- Desk -->
+ <rect x="180" y="380" rx="12" width="440" height="20" fill="#C4A882" opacity="0.35"/>
+ <rect x="200" y="400" rx="4" width="16" height="100" fill="#C4A882" opacity="0.25"/>
+ <rect x="584" y="400" rx="4" width="16" height="100" fill="#C4A882" opacity="0.25"/>
 
-  <!-- Laptop -->
-  <rect x="300" y="310" rx="8" width="200" height="130" fill="#4A5568" opacity="0.6"/>
-  <rect x="310" y="320" rx="4" width="180" height="100" fill="#E2E8F0" opacity="0.5"/>
-  <!-- Code lines on screen -->
-  <rect x="325" y="335" width="80" height="5" rx="2.5" fill="#D4A46A" opacity="0.35"/>
-  <rect x="325" y="347" width="120" height="5" rx="2.5" fill="#5CC4A0" opacity="0.3"/>
-  <rect x="340" y="359" width="90" height="5" rx="2.5" fill="#8B7BC8" opacity="0.3"/>
-  <rect x="340" y="371" width="60" height="5" rx="2.5" fill="#5B7FD6" opacity="0.3"/>
-  <rect x="325" y="383" width="100" height="5" rx="2.5" fill="#D4A46A" opacity="0.3"/>
-  <rect x="325" y="395" width="50" height="5" rx="2.5" fill="#C88DA8" opacity="0.3"/>
-  <!-- Laptop base -->
-  <path d="M270 440 L300 410 L500 410 L530 440 Z" fill="#718096" opacity="0.4"/>
-  <rect x="370" y="412" rx="2" width="60" height="4" fill="#A0AEC0" opacity="0.3"/>
+ <!-- Laptop -->
+ <rect x="300" y="310" rx="8" width="200" height="130" fill="#4A5568" opacity="0.6"/>
+ <rect x="310" y="320" rx="4" width="180" height="100" fill="#E2E8F0" opacity="0.5"/>
+ <!-- Code lines on screen -->
+ <rect x="325" y="335" width="80" height="5" rx="2.5" fill="#D4A46A" opacity="0.35"/>
+ <rect x="325" y="347" width="120" height="5" rx="2.5" fill="#5CC4A0" opacity="0.3"/>
+ <rect x="340" y="359" width="90" height="5" rx="2.5" fill="#8B7BC8" opacity="0.3"/>
+ <rect x="340" y="371" width="60" height="5" rx="2.5" fill="#5B7FD6" opacity="0.3"/>
+ <rect x="325" y="383" width="100" height="5" rx="2.5" fill="#D4A46A" opacity="0.3"/>
+ <rect x="325" y="395" width="50" height="5" rx="2.5" fill="#C88DA8" opacity="0.3"/>
+ <!-- Laptop base -->
+ <path d="M270 440 L300 410 L500 410 L530 440 Z" fill="#718096" opacity="0.4"/>
+ <rect x="370" y="412" rx="2" width="60" height="4" fill="#A0AEC0" opacity="0.3"/>
 
-  <!-- Tutor (right side, standing) -->
-  <circle cx="560" cy="200" r="40" fill="#EECAB8" opacity="0.7"/>
-  <!-- Hair -->
-  <path d="M520 195 Q520 155 560 150 Q600 155 600 195" fill="#5A4030" opacity="0.5"/>
-  <ellipse cx="560" cy="160" rx="42" ry="18" fill="#5A4030" opacity="0.5"/>
-  <!-- Eyes -->
-  <circle cx="547" cy="205" r="3.5" fill="#4A5568" opacity="0.6"/>
-  <circle cx="573" cy="205" r="3.5" fill="#4A5568" opacity="0.6"/>
-  <!-- Smile -->
-  <path d="M548 218 Q560 228 572 218" stroke="#A0734A" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.5"/>
-  <!-- Glasses -->
-  <circle cx="547" cy="205" r="10" stroke="#8B7BC8" stroke-width="1.8" fill="none" opacity="0.4"/>
-  <circle cx="573" cy="205" r="10" stroke="#8B7BC8" stroke-width="1.8" fill="none" opacity="0.4"/>
-  <line x1="557" y1="205" x2="563" y2="205" stroke="#8B7BC8" stroke-width="1.8" opacity="0.4"/>
-  <!-- Body -->
-  <rect x="535" y="240" rx="12" width="50" height="80" fill="#8B7BC8" opacity="0.4"/>
-  <!-- Arms -->
-  <path d="M535 260 Q490 280 480 330" stroke="#EECAB8" stroke-width="12" fill="none" stroke-linecap="round" opacity="0.6"/>
-  <path d="M585 260 Q610 290 600 330" stroke="#EECAB8" stroke-width="12" fill="none" stroke-linecap="round" opacity="0.6"/>
-  <circle cx="480" cy="335" r="9" fill="#EECAB8" opacity="0.6"/>
-  <!-- Legs -->
-  <rect x="540" y="318" rx="6" width="16" height="72" fill="#4A5568" opacity="0.35"/>
-  <rect x="566" y="318" rx="6" width="16" height="72" fill="#4A5568" opacity="0.35"/>
-  <!-- Shoes -->
-  <ellipse cx="548" cy="392" rx="13" ry="7" fill="#C88DA8" opacity="0.4"/>
-  <ellipse cx="574" cy="392" rx="13" ry="7" fill="#C88DA8" opacity="0.4"/>
+ <!-- Tutor (right side, standing) -->
+ <circle cx="560" cy="200" r="40" fill="#EECAB8" opacity="0.7"/>
+ <!-- Hair -->
+ <path d="M520 195 Q520 155 560 150 Q600 155 600 195" fill="#5A4030" opacity="0.5"/>
+ <ellipse cx="560" cy="160" rx="42" ry="18" fill="#5A4030" opacity="0.5"/>
+ <!-- Eyes -->
+ <circle cx="547" cy="205" r="3.5" fill="#4A5568" opacity="0.6"/>
+ <circle cx="573" cy="205" r="3.5" fill="#4A5568" opacity="0.6"/>
+ <!-- Smile -->
+ <path d="M548 218 Q560 228 572 218" stroke="#A0734A" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.5"/>
+ <!-- Glasses -->
+ <circle cx="547" cy="205" r="10" stroke="#8B7BC8" stroke-width="1.8" fill="none" opacity="0.4"/>
+ <circle cx="573" cy="205" r="10" stroke="#8B7BC8" stroke-width="1.8" fill="none" opacity="0.4"/>
+ <line x1="557" y1="205" x2="563" y2="205" stroke="#8B7BC8" stroke-width="1.8" opacity="0.4"/>
+ <!-- Body -->
+ <rect x="535" y="240" rx="12" width="50" height="80" fill="#8B7BC8" opacity="0.4"/>
+ <!-- Arms -->
+ <path d="M535 260 Q490 280 480 330" stroke="#EECAB8" stroke-width="12" fill="none" stroke-linecap="round" opacity="0.6"/>
+ <path d="M585 260 Q610 290 600 330" stroke="#EECAB8" stroke-width="12" fill="none" stroke-linecap="round" opacity="0.6"/>
+ <circle cx="480" cy="335" r="9" fill="#EECAB8" opacity="0.6"/>
+ <!-- Legs -->
+ <rect x="540" y="318" rx="6" width="16" height="72" fill="#4A5568" opacity="0.35"/>
+ <rect x="566" y="318" rx="6" width="16" height="72" fill="#4A5568" opacity="0.35"/>
+ <!-- Shoes -->
+ <ellipse cx="548" cy="392" rx="13" ry="7" fill="#C88DA8" opacity="0.4"/>
+ <ellipse cx="574" cy="392" rx="13" ry="7" fill="#C88DA8" opacity="0.4"/>
 
-  <!-- Kid 1 (left, sitting) -->
-  <circle cx="260" cy="240" r="35" fill="#E8C9A0" opacity="0.65"/>
-  <!-- Hair -->
-  <path d="M225 232 Q225 200 260 195 Q295 200 295 232" fill="#3A3040" opacity="0.4"/>
-  <ellipse cx="260" cy="205" rx="37" ry="16" fill="#3A3040" opacity="0.4"/>
-  <!-- Eyes -->
-  <circle cx="248" cy="245" r="3" fill="#4A5568" opacity="0.55"/>
-  <circle cx="272" cy="245" r="3" fill="#4A5568" opacity="0.55"/>
-  <!-- Smile -->
-  <path d="M250 256 Q260 264 270 256" stroke="#A0734A" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.45"/>
-  <!-- Body -->
-  <rect x="238" y="275" rx="10" width="44" height="65" fill="#5B7FD6" opacity="0.35"/>
-  <!-- Arms -->
-  <path d="M238 295 Q220 310 230 340" stroke="#E8C9A0" stroke-width="10" fill="none" stroke-linecap="round" opacity="0.55"/>
-  <path d="M282 295 Q310 320 330 330" stroke="#E8C9A0" stroke-width="10" fill="none" stroke-linecap="round" opacity="0.55"/>
-  <!-- Legs -->
-  <rect x="243" y="338" rx="5" width="14" height="48" fill="#4A5568" opacity="0.3"/>
-  <rect x="264" y="338" rx="5" width="14" height="48" fill="#4A5568" opacity="0.3"/>
+ <!-- Kid 1 (left, sitting) -->
+ <circle cx="260" cy="240" r="35" fill="#E8C9A0" opacity="0.65"/>
+ <!-- Hair -->
+ <path d="M225 232 Q225 200 260 195 Q295 200 295 232" fill="#3A3040" opacity="0.4"/>
+ <ellipse cx="260" cy="205" rx="37" ry="16" fill="#3A3040" opacity="0.4"/>
+ <!-- Eyes -->
+ <circle cx="248" cy="245" r="3" fill="#4A5568" opacity="0.55"/>
+ <circle cx="272" cy="245" r="3" fill="#4A5568" opacity="0.55"/>
+ <!-- Smile -->
+ <path d="M250 256 Q260 264 270 256" stroke="#A0734A" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.45"/>
+ <!-- Body -->
+ <rect x="238" y="275" rx="10" width="44" height="65" fill="#5B7FD6" opacity="0.35"/>
+ <!-- Arms -->
+ <path d="M238 295 Q220 310 230 340" stroke="#E8C9A0" stroke-width="10" fill="none" stroke-linecap="round" opacity="0.55"/>
+ <path d="M282 295 Q310 320 330 330" stroke="#E8C9A0" stroke-width="10" fill="none" stroke-linecap="round" opacity="0.55"/>
+ <!-- Legs -->
+ <rect x="243" y="338" rx="5" width="14" height="48" fill="#4A5568" opacity="0.3"/>
+ <rect x="264" y="338" rx="5" width="14" height="48" fill="#4A5568" opacity="0.3"/>
 
-  <!-- Kid 2 (center, sitting) -->
-  <circle cx="380" cy="230" r="33" fill="#D4B89C" opacity="0.6"/>
-  <!-- Curly hair -->
-  <circle cx="365" cy="210" r="11" fill="#3A2A18" opacity="0.4"/>
-  <circle cx="380" cy="203" r="12" fill="#3A2A18" opacity="0.4"/>
-  <circle cx="395" cy="210" r="11" fill="#3A2A18" opacity="0.4"/>
-  <circle cx="358" cy="220" r="9" fill="#3A2A18" opacity="0.4"/>
-  <circle cx="402" cy="220" r="9" fill="#3A2A18" opacity="0.4"/>
-  <!-- Eyes -->
-  <circle cx="370" cy="235" r="3" fill="#4A5568" opacity="0.55"/>
-  <circle cx="390" cy="235" r="3" fill="#4A5568" opacity="0.55"/>
-  <!-- Smile -->
-  <path d="M372 247 Q380 255 388 247" stroke="#8B6E50" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.45"/>
-  <!-- Body -->
-  <rect x="358" y="263" rx="10" width="44" height="65" fill="#5CC4A0" opacity="0.3"/>
-  <!-- Arms -->
-  <path d="M358 283 Q340 300 340 335" stroke="#D4B89C" stroke-width="10" fill="none" stroke-linecap="round" opacity="0.5"/>
-  <path d="M402 283 Q420 300 420 335" stroke="#D4B89C" stroke-width="10" fill="none" stroke-linecap="round" opacity="0.5"/>
-  <!-- Legs -->
-  <rect x="363" y="326" rx="5" width="14" height="56" fill="#8B7BC8" opacity="0.25"/>
-  <rect x="384" y="326" rx="5" width="14" height="56" fill="#8B7BC8" opacity="0.25"/>
+ <!-- Kid 2 (center, sitting) -->
+ <circle cx="380" cy="230" r="33" fill="#D4B89C" opacity="0.6"/>
+ <!-- Curly hair -->
+ <circle cx="365" cy="210" r="11" fill="#3A2A18" opacity="0.4"/>
+ <circle cx="380" cy="203" r="12" fill="#3A2A18" opacity="0.4"/>
+ <circle cx="395" cy="210" r="11" fill="#3A2A18" opacity="0.4"/>
+ <circle cx="358" cy="220" r="9" fill="#3A2A18" opacity="0.4"/>
+ <circle cx="402" cy="220" r="9" fill="#3A2A18" opacity="0.4"/>
+ <!-- Eyes -->
+ <circle cx="370" cy="235" r="3" fill="#4A5568" opacity="0.55"/>
+ <circle cx="390" cy="235" r="3" fill="#4A5568" opacity="0.55"/>
+ <!-- Smile -->
+ <path d="M372 247 Q380 255 388 247" stroke="#8B6E50" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.45"/>
+ <!-- Body -->
+ <rect x="358" y="263" rx="10" width="44" height="65" fill="#5CC4A0" opacity="0.3"/>
+ <!-- Arms -->
+ <path d="M358 283 Q340 300 340 335" stroke="#D4B89C" stroke-width="10" fill="none" stroke-linecap="round" opacity="0.5"/>
+ <path d="M402 283 Q420 300 420 335" stroke="#D4B89C" stroke-width="10" fill="none" stroke-linecap="round" opacity="0.5"/>
+ <!-- Legs -->
+ <rect x="363" y="326" rx="5" width="14" height="56" fill="#8B7BC8" opacity="0.25"/>
+ <rect x="384" y="326" rx="5" width="14" height="56" fill="#8B7BC8" opacity="0.25"/>
 
-  <!-- Book on desk -->
-  <rect x="210" y="358" rx="4" width="55" height="24" fill="#C88DA8" opacity="0.3" transform="rotate(-5, 237, 370)"/>
-  <rect x="212" y="360" rx="3" width="25" height="20" fill="#F7FAFC" opacity="0.5" transform="rotate(-5, 237, 370)"/>
-  <line x1="237" y1="360" x2="237" y2="380" stroke="#C88DA8" stroke-width="1.5" opacity="0.35" transform="rotate(-5, 237, 370)"/>
+ <!-- Book on desk -->
+ <rect x="210" y="358" rx="4" width="55" height="24" fill="#C88DA8" opacity="0.3" transform="rotate(-5, 237, 370)"/>
+ <rect x="212" y="360" rx="3" width="25" height="20" fill="#F7FAFC" opacity="0.5" transform="rotate(-5, 237, 370)"/>
+ <line x1="237" y1="360" x2="237" y2="380" stroke="#C88DA8" stroke-width="1.5" opacity="0.35" transform="rotate(-5, 237, 370)"/>
 
-  <!-- Pencil on desk -->
-  <rect x="520" y="368" rx="2" width="55" height="7" fill="#D4A46A" opacity="0.35" transform="rotate(-8, 548, 372)"/>
-  <polygon points="520,368 516,371 520,375" fill="#D4A46A" opacity="0.4" transform="rotate(-8, 548, 372)"/>
+ <!-- Pencil on desk -->
+ <rect x="520" y="368" rx="2" width="55" height="7" fill="#D4A46A" opacity="0.35" transform="rotate(-8, 548, 372)"/>
+ <polygon points="520,368 516,371 520,375" fill="#D4A46A" opacity="0.4" transform="rotate(-8, 548, 372)"/>
 
-  <!-- Floating elements -->
-  <!-- Stars -->
-  <path d="M150 150 L155 140 L160 150 L170 155 L160 160 L155 170 L150 160 L140 155Z" fill="#D4A46A" opacity="0.25"/>
-  <path d="M650 120 L654 112 L658 120 L666 124 L658 128 L654 136 L650 128 L642 124Z" fill="#D4A46A" opacity="0.2"/>
-  <path d="M700 280 L703 274 L706 280 L712 283 L706 286 L703 292 L700 286 L694 283Z" fill="#8B7BC8" opacity="0.2"/>
-  <path d="M130 320 L133 314 L136 320 L142 323 L136 326 L133 332 L130 326 L124 323Z" fill="#5B7FD6" opacity="0.2"/>
+ <!-- Floating elements -->
+ <!-- Stars -->
+ <path d="M150 150 L155 140 L160 150 L170 155 L160 160 L155 170 L150 160 L140 155Z" fill="#D4A46A" opacity="0.25"/>
+ <path d="M650 120 L654 112 L658 120 L666 124 L658 128 L654 136 L650 128 L642 124Z" fill="#D4A46A" opacity="0.2"/>
+ <path d="M700 280 L703 274 L706 280 L712 283 L706 286 L703 292 L700 286 L694 283Z" fill="#8B7BC8" opacity="0.2"/>
+ <path d="M130 320 L133 314 L136 320 L142 323 L136 326 L133 332 L130 326 L124 323Z" fill="#5B7FD6" opacity="0.2"/>
 
-  <!-- Floating code symbols -->
-  <text x="120" y="250" font-family="monospace" font-size="22" fill="#8B7BC8" opacity="0.2">+</text>
-  <text x="680" y="200" font-family="monospace" font-size="26" fill="#5CC4A0" opacity="0.2">=</text>
-  <text x="160" y="420" font-family="monospace" font-size="20" fill="#D4A46A" opacity="0.2">%</text>
-  <text x="670" y="380" font-family="monospace" font-size="18" fill="#5B7FD6" opacity="0.2">&lt;/&gt;</text>
+ <!-- Floating code symbols -->
+ <text x="120" y="250" font-family="monospace" font-size="22" fill="#8B7BC8" opacity="0.2">+</text>
+ <text x="680" y="200" font-family="monospace" font-size="26" fill="#5CC4A0" opacity="0.2">=</text>
+ <text x="160" y="420" font-family="monospace" font-size="20" fill="#D4A46A" opacity="0.2">%</text>
+ <text x="670" y="380" font-family="monospace" font-size="18" fill="#5B7FD6" opacity="0.2">&lt;/&gt;</text>
 
-  <!-- Lightbulb -->
-  <ellipse cx="440" cy="120" rx="18" ry="22" fill="#D4A46A" opacity="0.2"/>
-  <rect x="435" y="140" width="10" height="7" rx="2" fill="#D4A46A" opacity="0.2"/>
-  <line x1="440" y1="88" x2="440" y2="95" stroke="#D4A46A" stroke-width="2" stroke-linecap="round" opacity="0.2"/>
-  <line x1="460" y1="102" x2="465" y2="98" stroke="#D4A46A" stroke-width="2" stroke-linecap="round" opacity="0.2"/>
-  <line x1="420" y1="102" x2="415" y2="98" stroke="#D4A46A" stroke-width="2" stroke-linecap="round" opacity="0.2"/>
+ <!-- Lightbulb -->
+ <ellipse cx="440" cy="120" rx="18" ry="22" fill="#D4A46A" opacity="0.2"/>
+ <rect x="435" y="140" width="10" height="7" rx="2" fill="#D4A46A" opacity="0.2"/>
+ <line x1="440" y1="88" x2="440" y2="95" stroke="#D4A46A" stroke-width="2" stroke-linecap="round" opacity="0.2"/>
+ <line x1="460" y1="102" x2="465" y2="98" stroke="#D4A46A" stroke-width="2" stroke-linecap="round" opacity="0.2"/>
+ <line x1="420" y1="102" x2="415" y2="98" stroke="#D4A46A" stroke-width="2" stroke-linecap="round" opacity="0.2"/>
 
-  <!-- Gradient definition -->
-  <defs>
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#8B7BC8"/>
-      <stop offset="50%" stop-color="#5B7FD6"/>
-      <stop offset="100%" stop-color="#5CC4A0"/>
-    </linearGradient>
-  </defs>
+ <!-- Gradient definition -->
+ <defs>
+ <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+ <stop offset="0%" stop-color="#8B7BC8"/>
+ <stop offset="50%" stop-color="#5B7FD6"/>
+ <stop offset="100%" stop-color="#5CC4A0"/>
+ </linearGradient>
+ </defs>
 </svg>

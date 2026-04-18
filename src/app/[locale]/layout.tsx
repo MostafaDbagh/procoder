@@ -10,47 +10,47 @@ import { LocaleHtmlAttrs } from "@/components/LocaleHtmlAttrs";
 import { QueryProvider } from "@/components/QueryProvider";
 import { SessionIdleGuard } from "@/components/SessionIdleGuard";
 import {
-  OrganizationSchema,
-  WebsiteSchema,
-  FAQSchema,
-  LocalBusinessSchema,
+ OrganizationSchema,
+ WebsiteSchema,
+ FAQSchema,
+ LocalBusinessSchema,
 } from "@/components/StructuredData";
 
 export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
+ return routing.locales.map((locale) => ({ locale }));
 }
 
 export default async function LocaleLayout({
-  children,
-  params,
+ children,
+ params,
 }: {
-  children: ReactNode;
-  params: Promise<{ locale: string }>;
+ children: ReactNode;
+ params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
+ const { locale } = await params;
 
-  if (!hasLocale(routing.locales, locale)) {
-    notFound();
-  }
+ if (!hasLocale(routing.locales, locale)) {
+ notFound();
+ }
 
-  setRequestLocale(locale);
-  const messages = await getMessages();
+ setRequestLocale(locale);
+ const messages = await getMessages();
 
-  return (
-    <NextIntlClientProvider locale={locale} messages={messages}>
-      <QueryProvider>
-        <SessionIdleGuard />
-        <ThemeProvider>
-          <LocaleHtmlAttrs />
-          <OrganizationSchema />
-          <WebsiteSchema />
-          <FAQSchema />
-          <LocalBusinessSchema />
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </ThemeProvider>
-      </QueryProvider>
-    </NextIntlClientProvider>
-  );
+ return (
+ <NextIntlClientProvider locale={locale} messages={messages}>
+ <QueryProvider>
+ <SessionIdleGuard />
+ <ThemeProvider>
+ <LocaleHtmlAttrs />
+ <OrganizationSchema />
+ <WebsiteSchema />
+ <FAQSchema />
+ <LocalBusinessSchema />
+ <Navbar />
+ <main className="flex-1">{children}</main>
+ <Footer />
+ </ThemeProvider>
+ </QueryProvider>
+ </NextIntlClientProvider>
+ );
 }
