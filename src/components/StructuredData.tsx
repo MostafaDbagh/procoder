@@ -35,8 +35,8 @@ export function OrganizationSchema() {
  ].map((name) => ({ "@type": "Country", name })),
  address: {
  "@type": "PostalAddress",
- addressLocality: "Riyadh",
- addressCountry: "SA",
+ addressLocality: "Dubai",
+ addressCountry: "AE",
  },
  sameAs: [],
  aggregateRating: {
@@ -174,9 +174,9 @@ export function LocalBusinessSchema() {
  priceRange: "$$",
  openingHoursSpecification: {
  "@type": "OpeningHoursSpecification",
- dayOfWeek: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"],
+ dayOfWeek: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
  opens: "09:00",
- closes: "17:00",
+ closes: "19:00",
  },
  };
  if (PUBLIC_CONTACT_PHONE) locData.telephone = PUBLIC_CONTACT_PHONE;

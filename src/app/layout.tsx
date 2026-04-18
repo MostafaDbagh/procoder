@@ -197,8 +197,8 @@ export const metadata: Metadata = {
  google: process.env.GOOGLE_SITE_VERIFICATION,
  },
  other: {
- "geo.region": "SA",
- "geo.placename": "Riyadh, Saudi Arabia",
+ "geo.region": "AE",
+ "geo.placename": "Dubai, United Arab Emirates",
  "distribution": "global",
  "rating": "general",
  "target": "Saudi Arabia, UAE, Qatar, Kuwait, Oman, Bahrain, Turkey, Syria, Canada, United States, United Kingdom, Germany, France, Netherlands, Sweden",
