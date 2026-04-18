@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import ParentLoginContent from "./ParentLoginContent";
+import { PRIVATE_APP_ROBOTS } from "@/lib/seo";
 
 const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
 
@@ -17,9 +18,13 @@ export async function generateMetadata({
  lang === "ar"
  ? "تسجيل الدخول أو إنشاء حساب ولي أمر."
  : "Sign in or create a parent account for StemTechLab.",
- robots: { index: false, follow: false },
+ robots: PRIVATE_APP_ROBOTS,
  alternates: {
  canonical: `${SITE_URL}/${lang}/parent/login`,
+ languages: {
+ en: `${SITE_URL}/en/parent/login`,
+ ar: `${SITE_URL}/ar/parent/login`,
+ },
  },
  };
 }

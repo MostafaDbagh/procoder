@@ -2,19 +2,20 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import AboutContent from "./AboutContent";
 import { getTeamPublicISR } from "@/lib/server-api";
+import { BreadcrumbSchema } from "@/components/StructuredData";
 
 const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
 
 const meta = {
  en: {
- title: "About Us | Team & Mission",
+ title: "About StemTechLab | Kids’ STEM & coding education",
  description:
- "STEM and Arabic for kids with bilingual support and certified instructors. GCC & worldwide.",
+ "Our mission: quality STEM education and coding for kids—live classes, small groups, bilingual support, and certified instructors. Serving families in the GCC and worldwide.",
  },
  ar: {
- title: "عن ستم تك لاب | الفريق والرسالة",
+ title: "عن ستم تك لاب | تعليم STEM وبرمجة للأطفال",
  description:
- "تعليم علوم للأطفال بدعم ثنائي اللغة ومدرسين معتمدين. الخليج والعالم.",
+ "رسالتنا: تعليم STEM وجودة في برمجة الأطفال—حصص مباشرة ومجموعات صغيرة ودعم ثنائي اللغة ومدرّسون معتمدون. للعائلات في الخليج والعالم.",
  },
 };
 
@@ -60,5 +61,15 @@ export default async function AboutPage({
  const { locale } = await params;
  setRequestLocale(locale);
  const cmsTeam = await getTeamPublicISR();
- return <AboutContent cmsTeam={cmsTeam} />;
+ return (
+ <>
+ <BreadcrumbSchema
+ items={[
+ { name: "Home", url: `${SITE_URL}/${locale}` },
+ { name: "About", url: `${SITE_URL}/${locale}/about` },
+ ]}
+ />
+ <AboutContent cmsTeam={cmsTeam} />
+ </>
+ );
 }

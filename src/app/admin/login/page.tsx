@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import AdminLoginClient from "./AdminLoginClient";
+import { PRIVATE_APP_ROBOTS } from "@/lib/seo";
 
 export const metadata: Metadata = {
  title: "Admin Login | StemTechLab",
- robots: { index: false, follow: false },
+ robots: PRIVATE_APP_ROBOTS,
 };
 
 export default async function AdminLoginPage({

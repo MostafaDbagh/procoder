@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import InstructorLoginContent from "./InstructorLoginContent";
+import { PRIVATE_APP_ROBOTS } from "@/lib/seo";
 
 const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
 
@@ -17,9 +18,13 @@ export async function generateMetadata({
  lang === "ar"
  ? "تسجيل الدخول بحساب المدرّس."
  : "Sign in to the StemTechLab instructor portal.",
- robots: { index: false, follow: false },
+ robots: PRIVATE_APP_ROBOTS,
  alternates: {
  canonical: `${SITE_URL}/${lang}/instructor/login`,
+ languages: {
+ en: `${SITE_URL}/en/instructor/login`,
+ ar: `${SITE_URL}/ar/instructor/login`,
+ },
  },
  };
 }

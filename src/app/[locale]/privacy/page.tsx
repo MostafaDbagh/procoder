@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import PrivacyContent from "./PrivacyContent";
+import { BreadcrumbSchema } from "@/components/StructuredData";
 
 const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
 
@@ -58,5 +59,15 @@ export default async function PrivacyPage({
 }) {
  const { locale } = await params;
  setRequestLocale(locale);
- return <PrivacyContent />;
+ return (
+ <>
+ <BreadcrumbSchema
+ items={[
+ { name: "Home", url: `${SITE_URL}/${locale}` },
+ { name: "Privacy", url: `${SITE_URL}/${locale}/privacy` },
+ ]}
+ />
+ <PrivacyContent />
+ </>
+ );
 }

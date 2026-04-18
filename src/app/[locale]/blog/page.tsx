@@ -11,7 +11,8 @@ const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
 const meta = {
  en: {
  title: "Blog — Tips, Guides & News for Parents",
- description: "Expert articles on kids coding, robotics, Arabic education, and STEM in Saudi Arabia, UAE, GCC & worldwide.",
+ description:
+ "Expert articles and tutorials for parents: kids’ coding, STEM education, robotics, and Arabic learning—in Saudi Arabia, UAE, the GCC, and worldwide.",
  },
  ar: {
  title: "المدونة — نصائح وأدلة وأخبار للوالدين",

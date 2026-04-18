@@ -39,13 +39,6 @@ export function OrganizationSchema() {
  addressCountry: "AE",
  },
  sameAs: [],
- aggregateRating: {
- "@type": "AggregateRating",
- ratingValue: "4.9",
- reviewCount: "842",
- bestRating: "5",
- worstRating: "1",
- },
  };
  const cps = organizationContactPoints();
  if (cps) data.contactPoint = cps;
@@ -71,8 +64,6 @@ export function OrganizationSchema() {
  catalogSection("Arabic Language", [
  courseOffer("Arabic Reading & Writing", "6-9", "Beginner", 24, 12),
  courseOffer("Arabic Grammar & Composition", "10-14", "Intermediate", 28, 14),
- ]),
- catalogSection("Arabic", [
  courseOffer("Arabic Reading & Expression", "6-12", "Beginner", 30, 16),
  courseOffer("Arabic Writing & Composition", "10-18", "Intermediate", 40, 20),
  ]),

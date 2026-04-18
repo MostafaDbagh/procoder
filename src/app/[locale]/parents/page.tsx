@@ -7,14 +7,14 @@ const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
 
 const meta = {
  en: {
- title: "Parents | Progress & attendance",
+ title: "For parents | Kids’ STEM & coding progress",
  description:
- "One dashboard for progress, attendance, and teacher notes.",
+ "See how StemTechLab supports families: progress, attendance, and instructor notes for your child’s live coding and STEM classes—all in one parent-friendly hub.",
  },
  ar: {
- title: "لأولياء الأمور | التقدم والحضور",
+ title: "لأولياء الأمور | تقدم طفلك في البرمجة وSTEM",
  description:
- "لوحة واحدة للتقدم والحضور وملاحظات المعلم.",
+ "اطّلع على كيف تدعم ستم تك لاب العائلات: التقدم والحضور وملاحظات المدرّس لحصص البرمجة وSTEM المباشرة—في مكان واحد لولي الأمر.",
  },
 };
 

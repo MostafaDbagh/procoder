@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import TermsContent from "./TermsContent";
+import { BreadcrumbSchema } from "@/components/StructuredData";
 
 const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
 
@@ -43,6 +44,11 @@ export async function generateMetadata({
  alternateLocale: lang === "ar" ? "en_US" : "ar_SA",
  images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: "StemTechLab" }],
  },
+ twitter: {
+ card: "summary_large_image",
+ title: meta[lang].title,
+ description: meta[lang].description,
+ },
  };
 }
 
@@ -53,5 +59,15 @@ export default async function TermsPage({
 }) {
  const { locale } = await params;
  setRequestLocale(locale);
- return <TermsContent />;
+ return (
+ <>
+ <BreadcrumbSchema
+ items={[
+ { name: "Home", url: `${SITE_URL}/${locale}` },
+ { name: "Terms", url: `${SITE_URL}/${locale}/terms` },
+ ]}
+ />
+ <TermsContent />
+ </>
+ );
 }

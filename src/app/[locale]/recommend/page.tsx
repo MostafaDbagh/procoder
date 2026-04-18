@@ -2,19 +2,20 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import RecommendContent from "./RecommendContent";
 import { getCoursesISR } from "@/lib/server-api";
+import { BreadcrumbSchema } from "@/components/StructuredData";
 
 const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
 
 const meta = {
  en: {
- title: "AI course finder for kids | OpenAI & DeepSeek",
+ title: "AI course finder for kids | STEM & coding match",
  description:
- "Find the best live course for your child: AI-powered matching (OpenAI & DeepSeek), or a quick form. Ages 6–18.",
+ "Match your child to the right live STEM or coding class: AI-powered suggestions (OpenAI & DeepSeek) plus a short parent form. Ideal for ages 6–18.",
  },
  ar: {
- title: "مُنتقي الدورات بالذكاء الاصطناعي لطفلك",
+ title: "مُنتقي دورات الأطفال بالذكاء الاصطناعي | STEM وبرمجة",
  description:
- "اكتشف أفضل حصة مناسبة لطفلك: مطابقة بالذكاء الاصطناعي (OpenAI وDeepSeek) أو نموذج سريع. للأعمار ٦–١٨.",
+ "طابق طفلك مع حصة STEM أو برمجة مناسبة: اقتراحات بالذكاء الاصطناعي (OpenAI وDeepSeek) ونموذج قصير لولي الأمر. للأعمار ٦–١٨.",
  },
 };
 
@@ -60,5 +61,15 @@ export default async function RecommendPage({
  const { locale } = await params;
  setRequestLocale(locale);
  const initialCourses = await getCoursesISR();
- return <RecommendContent initialCourses={initialCourses} />;
+ return (
+ <>
+ <BreadcrumbSchema
+ items={[
+ { name: "Home", url: `${SITE_URL}/${locale}` },
+ { name: "Course finder", url: `${SITE_URL}/${locale}/recommend` },
+ ]}
+ />
+ <RecommendContent initialCourses={initialCourses} />
+ </>
+ );
 }

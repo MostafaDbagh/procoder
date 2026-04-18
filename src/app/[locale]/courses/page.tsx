@@ -10,14 +10,14 @@ const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
 
 const meta = {
  en: {
- title: "Kids’ courses | Coding, robotics, Arabic",
+ title: "Kids’ coding & STEM courses | Live online (6–18)",
  description:
- "Live online paths for ages 6–18: Scratch to Python, robotics, algorithms, Arabic. Free trial.",
+ "Browse live kids’ coding classes and STEM tutorials: Scratch, Python, robotics, algorithms, and Arabic. Structured paths for ages 6–18. Free trial. GCC & worldwide.",
  },
  ar: {
- title: "دورات الأطفال | برمجة وروبوتات وعربية ",
+ title: "دورات برمجة وSTEM للأطفال | مباشرة أونلاين ٦–١٨",
  description:
- "مسارات مباشرة ٦–١٨: من سكراتش إلى بايثون والروبوتات والخوارزميات والعربية . تجربة مجانية.",
+ "استعرض دورات برمجة أطفال ودروس STEM مباشرة: سكراتش وبايثون وروبوتات وخوارزميات وعربية. مسارات للأعمار ٦–١٨. تجربة مجانية. الخليج والعالم.",
  },
 };
 

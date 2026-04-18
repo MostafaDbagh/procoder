@@ -9,7 +9,22 @@ export default function robots(): MetadataRoute.Robots {
  {
  userAgent: "*",
  allow: "/",
- disallow: ["/api/", "/dashboard", "/admin", "/instructor"],
+ disallow: [
+ "/api/",
+ "/dashboard",
+ "/admin",
+ "/instructor",
+ "/en/dashboard",
+ "/ar/dashboard",
+ "/en/instructor",
+ "/ar/instructor",
+ "/en/instructor/login",
+ "/ar/instructor/login",
+ "/en/parent/login",
+ "/ar/parent/login",
+ "/en/dashboard/courses/",
+ "/ar/dashboard/courses/",
+ ],
  },
  // OpenAI / ChatGPT
  { userAgent: "GPTBot", allow: "/" },
