@@ -32,7 +32,6 @@ export function Navbar() {
  { href: "/challenge", label: t("challenge") },
  { href: "/parents", label: t("parents") },
  { href: "/blog", label: t("blog") },
- { href: "/about", label: t("about") },
  { href: "/contact", label: t("contact") },
  ], [t]);
 
