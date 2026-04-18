@@ -1,9 +1,9 @@
 openapi: 3.0.3
 info:
-  title: ProCoder — public site
+  title: StemTechLab — public site
   description: |
     This OpenAPI document exists so AI plugin manifests can resolve a valid URL.
-    ProCoder is a marketing and enrollment website (not a public REST API for third-party agents).
+    StemTechLab is a marketing and enrollment website (not a public REST API for third-party agents).
 
     Product focus: AI-powered course matching for children (OpenAI & DeepSeek integrations) so families
     can find the best live class fit; see /en/recommend and /ar/recommend.
@@ -13,5 +13,5 @@ info:
     - /llms-full.txt — long-form facts, catalog, FAQ
   version: "1.0.0"
 servers:
-  - url: https://procoder.com
+  - url: https://stemtechlab.com
 paths: {}

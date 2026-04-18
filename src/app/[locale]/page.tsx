@@ -10,16 +10,16 @@ import { MeetOurStars } from "@/components/MeetOurStars";
 import { FAQ } from "@/components/FAQ";
 import { getTeamPublicISR, getCategoriesPublicISR } from "@/lib/server-api";
 
-const SITE_URL = process.env.SITE_URL || "https://procoder.com";
+const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
 
 const meta = {
   en: {
-    title: "ProCoder | Live coding, robotics & Quran for kids (6–18)",
+    title: "StemTechLab | Live coding, robotics & Quran for kids (6–18)",
     description:
       "AI suggests the best course for your child (OpenAI & DeepSeek). Small-group live classes: programming, robotics, algorithms, Arabic & Quran. GCC & worldwide. Free trial.",
   },
   ar: {
-    title: "بروكودر | برمجة وروبوتات وقرآن مباشر للأطفال ٦–١٨",
+    title: "ستم تك لاب | برمجة وروبوتات وقرآن مباشر للأطفال ٦–١٨",
     description:
       "ذكاء اصطناعي يقترح أفضل دورة لطفلك (OpenAI وDeepSeek). حصص صغيرة مباشرة: برمجة وروبوتات وعربية وقرآن. الخليج والعالم. تجربة مجانية.",
   },

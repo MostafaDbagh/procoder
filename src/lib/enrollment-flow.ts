@@ -1,5 +1,5 @@
 /**
- * ProCoder enrollment & instruction flow (how the product fits together)
+ * StemTechLab enrollment & instruction flow (how the product fits together)
  *
  * 1. **Parent enrolls a child** — Public `POST /api/enrollments` (no auth). Each row is one
  *    `Enrollment`: parent contact + `childName`, `courseId` (course slug), etc. (`childStudentId` may be stored empty.)

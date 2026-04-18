@@ -24,7 +24,7 @@
   "hero": {
     "title": "Where Every Child Discovers the Joy of Learning",
     "subtitle": "Nurturing young minds through creativity, confidence, and the wonder of technology.",
-    "intro": "ProCoder is a warm, bilingual learning home for children ages 6–18 across Saudi Arabia, UAE, and around the world. Our caring, certified teachers guide your child through hands-on adventures in coding, robotics, algorithms, Arabic, and Quran — in small, live classes where every child is seen, heard, and celebrated.",
+    "intro": "StemTechLab is a warm, bilingual learning home for children ages 6–18 across Saudi Arabia, UAE, and around the world. Our caring, certified teachers guide your child through hands-on adventures in coding, robotics, algorithms, Arabic, and Quran — in small, live classes where every child is seen, heard, and celebrated.",
     "cta": "Explore Courses",
     "secondaryCta": "Find the Right Fit",
     "trustBadges": "Loved by 500+ families across the GCC"
@@ -98,11 +98,11 @@
     "step6Desc": "Take on new challenges with the confidence to try anything"
   },
   "testimonials": {
-    "title": "Stories from Our ProCoder Family",
+    "title": "Stories from Our StemTechLab Family",
     "subtitle": "Hear from the parents and children whose lives have been touched",
     "t1Name": "Sarah M.",
     "t1Role": "Proud Parent",
-    "t1Text": "My daughter's eyes light up every time she opens ProCoder. She built her first game in two weeks and told me, 'Mama, I made this!' — that moment meant everything.",
+    "t1Text": "My daughter's eyes light up every time she opens StemTechLab. She built her first game in two weeks and told me, 'Mama, I made this!' — that moment meant everything.",
     "t2Name": "Ahmed K.",
     "t2Role": "Grateful Father",
     "t2Text": "The Quran classes have been a blessing for our family. My son now recites with such beauty and confidence — his teacher truly cares about him.",
@@ -240,7 +240,7 @@
     "about": "About Us",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
-    "email": "hello@procoder.com",
+    "email": "hello@stemtechlab.com",
     "memberAccess": "Family access",
     "parentDashboardLink": "Parent dashboard",
     "instructorPortalLink": "Teacher portal",
@@ -248,7 +248,7 @@
   },
   "authModal": {
     "instructorTitle": "Instructor sign-in",
-    "instructorSubtitle": "Sign in with the instructor account from ProCoder."
+    "instructorSubtitle": "Sign in with the instructor account from StemTechLab."
   },
   "common": {
     "enrollNow": "Join This Adventure",
@@ -261,7 +261,7 @@
     "sessionIdleLogout": "You've been signed out after 30 minutes of quiet time. Welcome back anytime!"
   },
   "about": {
-    "badge": "About ProCoder",
+    "badge": "About StemTechLab",
     "title": "Built with Love, for Every Child",
     "subtitle": "A team of teachers, parents, and dreamers creating a place where every child feels they belong.",
     "visionTitle": "Our Vision",
@@ -279,7 +279,7 @@
     "value4Title": "Open to Everyone",
     "value4Desc": "Whether you're in Riyadh or London, in English or Arabic — every family is welcome here.",
     "storyTitle": "Our Story",
-    "storyP1": "We started ProCoder because we believe every child deserves a teacher who sees them, a classroom where they feel safe, and lessons that make their hearts sing.",
+    "storyP1": "We started StemTechLab because we believe every child deserves a teacher who sees them, a classroom where they feel safe, and lessons that make their hearts sing.",
     "storyP2": "Today, we teach coding, robotics, Arabic, and Quran to families around the world — always in small, live classes where every child's name is known and every question is welcomed.",
     "teamTitle": "The People Who Care",
     "teamSubtitle": "Teachers, builders, and dreamers — all here for your child",
@@ -322,22 +322,22 @@
     "s5Title": "5. Cookies & Tracking",
     "s5Content": "We use essential cookies to keep you logged in and remember your preferences (like language and theme). We do not use tracking cookies for advertising purposes on our platform.",
     "s6Title": "6. Contact Us",
-    "s6Content": "If you have questions about this Privacy Policy or wish to exercise your data rights, please contact us at privacy@procoder.com."
+    "s6Content": "If you have questions about this Privacy Policy or wish to exercise your data rights, please contact us at privacy@stemtechlab.com."
   },
   "terms": {
     "title": "Terms & Conditions",
     "lastUpdated": "Last updated: April 2026",
-    "intro": "Welcome to the ProCoder family! By using our platform, you agree to these terms. We've kept them clear and simple — please take a moment to read them.",
+    "intro": "Welcome to the StemTechLab family! By using our platform, you agree to these terms. We've kept them clear and simple — please take a moment to read them.",
     "s1Title": "1. Acceptance of Terms",
-    "s1Content": "By accessing or using ProCoder, you agree to be bound by these terms. If you are a parent or guardian registering on behalf of a child, you accept these terms on their behalf.",
+    "s1Content": "By accessing or using StemTechLab, you agree to be bound by these terms. If you are a parent or guardian registering on behalf of a child, you accept these terms on their behalf.",
     "s2Title": "2. Account Registration",
     "s2Content": "You must provide accurate information when creating an account. Parents or guardians must create and manage accounts for children under 18. You are responsible for maintaining the security of your account credentials.",
     "s3Title": "3. Acceptable Use",
-    "s3Content": "You agree to use ProCoder only for lawful educational purposes. You must not:\n• Share inappropriate content\n• Attempt to access other users' accounts\n• Use the platform to harm or bully others\n• Reverse-engineer or copy our content",
+    "s3Content": "You agree to use StemTechLab only for lawful educational purposes. You must not:\n• Share inappropriate content\n• Attempt to access other users' accounts\n• Use the platform to harm or bully others\n• Reverse-engineer or copy our content",
     "s4Title": "4. Intellectual Property",
-    "s4Content": "All course content, designs, and materials on ProCoder are protected by copyright. You may access them for personal educational use only. Redistribution, copying, or commercial use is strictly prohibited.",
+    "s4Content": "All course content, designs, and materials on StemTechLab are protected by copyright. You may access them for personal educational use only. Redistribution, copying, or commercial use is strictly prohibited.",
     "s5Title": "5. Limitation of Liability",
-    "s5Content": "ProCoder provides educational content as-is. While we strive for accuracy, we do not guarantee specific learning outcomes. We are not liable for any indirect damages arising from use of our platform.",
+    "s5Content": "StemTechLab provides educational content as-is. While we strive for accuracy, we do not guarantee specific learning outcomes. We are not liable for any indirect damages arising from use of our platform.",
     "s6Title": "6. Changes to Terms",
     "s6Content": "We may update these terms from time to time. We will notify registered users of significant changes via email. Continued use of the platform constitutes acceptance of updated terms."
   },
@@ -358,7 +358,7 @@
     "sending": "Sending...",
     "success": "Thank you for reaching out! We'll get back to you very soon.",
     "infoTitle": "Other Ways to Say Hello",
-    "emailInfo": "hello@procoder.com",
+    "emailInfo": "hello@stemtechlab.com",
     "phoneInfo": "+966 50 000 0000",
     "locationInfo": "Riyadh, Saudi Arabia",
     "hoursInfo": "Sun – Thu, 9AM – 5PM (AST)"
@@ -373,7 +373,7 @@
     "next": "Next",
     "submit": "Complete Enrollment",
     "submitting": "Getting everything ready...",
-    "successTitle": "Welcome to the ProCoder Family!",
+    "successTitle": "Welcome to the StemTechLab Family!",
     "successDesc": "We're so excited to have your child with us! Check your email for a warm welcome and next steps. Our team will reach out within 24 hours to say hello.",
     "close": "Done",
     "parentInfoTitle": "About You",
@@ -472,7 +472,7 @@
     "friend": "Friend or family recommendation",
     "school": "School or teacher",
     "searchEngine": "Google / search engine",
-    "agreeTerms": "I agree to ProCoder's Terms of Service and Privacy Policy. I confirm I am the parent/guardian of the enrolled child.",
+    "agreeTerms": "I agree to StemTechLab's Terms of Service and Privacy Policy. I confirm I am the parent/guardian of the enrolled child.",
     "agreePhotos": "I consent to my child's work (projects, screenshots) being used for educational showcases (name will be hidden)."
   },
   "faq": {
@@ -483,7 +483,7 @@
     "tab_customerSupport": "Help & Support",
     "tab_teacherQueries": "About Our Teachers",
 
-    "ce1_q": "What ages are ProCoder courses designed for?",
+    "ce1_q": "What ages are StemTechLab courses designed for?",
     "ce1_a": "Our courses are lovingly designed for children ages 6–18. Each learning path is tailored to your child's age and level, so they always feel comfortable and challenged in just the right way. We recommend two sessions a week (one hour each) for the best growth.",
     "ce2_q": "How do you keep my child's information safe?",
     "ce2_a": "Your child's safety is our top priority — both online and offline. All data is encrypted, we follow COPPA guidelines for children's privacy, and we never share personal information with anyone. You have full control over your child's account at all times.",
@@ -501,17 +501,17 @@
     "ce8_a": "Life happens, and we completely understand! You can reschedule a class up to 4 hours before it starts at no extra cost. You can also pause your plan anytime — your family's schedule always comes first.",
 
     "cs1_q": "How can I reach you?",
-    "cs1_a": "We're always happy to hear from you! You can write to us through our Contact page, email hello@procoder.com, or use the live chat on our website. Our friendly team responds within 2–4 hours on business days.",
+    "cs1_a": "We're always happy to hear from you! You can write to us through our Contact page, email hello@stemtechlab.com, or use the live chat on our website. Our friendly team responds within 2–4 hours on business days.",
     "cs2_q": "What if we're not happy with the course?",
     "cs2_a": "Your family's happiness means everything to us. We offer a full refund within 7 days of enrollment, no questions asked. After the first week, we provide fair, prorated refunds based on unused sessions.",
     "cs3_q": "Can we try a class before enrolling?",
-    "cs3_a": "Absolutely! We'd love for your child to experience a full class with one of our teachers — completely free, with no obligation. It's the best way to see if ProCoder feels like the right home for your child.",
+    "cs3_a": "Absolutely! We'd love for your child to experience a full class with one of our teachers — completely free, with no obligation. It's the best way to see if StemTechLab feels like the right home for your child.",
     "cs4_q": "Do you have discounts for siblings or longer plans?",
     "cs4_a": "Yes! Siblings get 15% off, and our quarterly and annual plans come with lovely savings. Reach out to our team and we'll find the best option for your family.",
     "cs5_q": "How can I see how my child is doing?",
     "cs5_a": "Your parent dashboard shows you everything — completed lessons, projects your child has built, teacher feedback, and more. You'll also receive a warm weekly summary by email so you never miss a milestone.",
 
-    "tq1_q": "Who are the teachers at ProCoder?",
+    "tq1_q": "Who are the teachers at StemTechLab?",
     "tq1_a": "Our teachers are certified educators and experienced professionals who genuinely love working with children. Every teacher goes through careful selection, background checks, and ongoing training — because your child deserves someone truly special.",
     "tq2_q": "How many children are in each class?",
     "tq2_a": "We keep our groups small — no more than 8 children per teacher — so every child gets the attention they deserve. We also offer private 1-on-1 sessions for children who thrive with individual support.",
@@ -528,7 +528,7 @@
     "heroLogin": "Already have an account? Log in",
     "openDashboard": "Open parent dashboard",
 
-    "trustTitle": "Why Families Choose ProCoder",
+    "trustTitle": "Why Families Choose StemTechLab",
     "trustSubtitle": "We don't just teach — we walk beside you in nurturing your child's growth",
     "trust1Title": "See Their Progress",
     "trust1Desc": "Every week, we send you a thoughtful report — what your child learned, what they created, and how their confidence is growing.",
@@ -566,7 +566,7 @@
     "ctaButton": "Join Us — It's Free",
     "ctaLogin": "Already part of the family? Log in here",
 
-    "signupTitle": "Join the ProCoder Family",
+    "signupTitle": "Join the StemTechLab Family",
     "nameLabel": "Full Name",
     "namePlaceholder": "Enter your full name",
     "emailLabel": "Email Address",

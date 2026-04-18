@@ -45,7 +45,7 @@ export default function ChallengeContent({ cmsChallenge }: Props) {
     }).format(new Date());
   }, [cmsChallenge?.monthKey, locale]);
 
-  const challengeSlug = cmsChallenge?.slug ?? "procoder-challenge";
+  const challengeSlug = cmsChallenge?.slug ?? "stemtechlab-challenge";
 
   const steps = useMemo(() => {
     if (cmsChallenge?.steps?.length) {
@@ -119,7 +119,7 @@ export default function ChallengeContent({ cmsChallenge }: Props) {
     e.preventDefault();
     setError("");
     setSending(true);
-    const subject = `[ProCoder Challenge] ${challengeSlug}`;
+    const subject = `[StemTechLab Challenge] ${challengeSlug}`;
     const message = [
       `Challenge: ${challengeSlug}`,
       `Month: ${monthYear}`,

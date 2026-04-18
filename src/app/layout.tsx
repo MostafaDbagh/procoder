@@ -9,13 +9,13 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const SITE_URL = process.env.SITE_URL || "https://procoder.com";
+const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "ProCoder — Kids Learning Platform",
-    template: "%s | ProCoder",
+    default: "StemTechLab — Kids Learning Platform",
+    template: "%s | StemTechLab",
   },
   description:
     "AI-powered course matching (OpenAI & DeepSeek) helps pick the best live class for your child—plus coding, robotics, algorithms, Arabic & Quran for ages 6–18. Certified instructors, GCC & worldwide. Free trial.",
@@ -66,9 +66,9 @@ export const metadata: Metadata = {
     "دورات أطفال أونلاين كندا أمريكا",
     "أنشطة أطفال بعد المدرسة",
   ],
-  authors: [{ name: "ProCoder", url: SITE_URL }],
-  creator: "ProCoder",
-  publisher: "ProCoder",
+  authors: [{ name: "StemTechLab", url: SITE_URL }],
+  creator: "StemTechLab",
+  publisher: "StemTechLab",
   formatDetection: {
     email: false,
     address: false,
@@ -76,8 +76,8 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    siteName: "ProCoder",
-    title: "ProCoder — Kids Coding, Robotics & Quran Platform | Saudi Arabia, UAE, GCC & Worldwide",
+    siteName: "StemTechLab",
+    title: "StemTechLab — Kids Coding, Robotics & Quran Platform | Saudi Arabia, UAE, GCC & Worldwide",
     description:
       "AI suggests the best course for each child (OpenAI & DeepSeek). Live Programming, Robotics, Algorithms, Arabic & Quran for ages 6–18. GCC & worldwide. Certified instructors, small groups, free trial.",
     images: [
@@ -85,7 +85,7 @@ export const metadata: Metadata = {
         url: `${SITE_URL}/og-image.png`,
         width: 1200,
         height: 630,
-        alt: "ProCoder — Kids Learning Platform for Programming, Robotics & Quran",
+        alt: "StemTechLab — Kids Learning Platform for Programming, Robotics & Quran",
       },
     ],
     url: SITE_URL,
@@ -94,11 +94,11 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ProCoder — Kids Coding, Robotics & Quran | GCC & Worldwide",
+    title: "StemTechLab — Kids Coding, Robotics & Quran | GCC & Worldwide",
     description:
       "AI course finder with OpenAI & DeepSeek. Live Programming, Robotics, Algorithms, Arabic & Quran for kids 6–18. Saudi Arabia, UAE, Qatar, Kuwait, Turkey, Canada, US, Europe.",
-    creator: "@procoder",
-    site: "@procoder",
+    creator: "@stemtechlab",
+    site: "@stemtechlab",
   },
   robots: {
     index: true,
@@ -130,7 +130,7 @@ export const metadata: Metadata = {
     "target": "Saudi Arabia, UAE, Qatar, Kuwait, Oman, Bahrain, Turkey, Syria, Canada, United States, United Kingdom, Germany, France, Netherlands, Sweden",
     "audience": "parents, children ages 6-18, educators",
     "ai:description":
-      "ProCoder — Online learning for ages 6–18. Core feature: AI-powered course matching so parents can find the best live course for each child, powered by OpenAI and DeepSeek integrations. Programming, Robotics, Algorithms, Arabic, Quran. Free trial. GCC & worldwide.",
+      "StemTechLab — Online learning for ages 6–18. Core feature: AI-powered course matching so parents can find the best live course for each child, powered by OpenAI and DeepSeek integrations. Programming, Robotics, Algorithms, Arabic, Quran. Free trial. GCC & worldwide.",
     "ai:site_type": "educational_platform",
     "ai:target_audience": "parents, children ages 6-18, educators in GCC, Middle East, Europe, North America",
     "ai:topics":

@@ -2,18 +2,18 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import TermsContent from "./TermsContent";
 
-const SITE_URL = process.env.SITE_URL || "https://procoder.com";
+const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
 
 const meta = {
   en: {
     title: "Terms of Service",
     description:
-      "Terms for using ProCoder’s kids’ learning platform and live classes.",
+      "Terms for using StemTechLab’s kids’ learning platform and live classes.",
   },
   ar: {
     title: "شروط الخدمة",
     description:
-      "شروط استخدام منصة بروكودر والحصص المباشرة للأطفال.",
+      "شروط استخدام منصة ستم تك لاب والحصص المباشرة للأطفال.",
   },
 };
 

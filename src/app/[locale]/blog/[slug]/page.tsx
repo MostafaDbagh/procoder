@@ -7,7 +7,7 @@ import BlogDetailClient from "./BlogDetailClient";
 
 export const dynamic = "force-dynamic";
 
-const SITE_URL = process.env.SITE_URL || "https://procoder.com";
+const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
   const { locale, slug } = await params;
@@ -70,7 +70,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ loc
             author: { "@type": "Person", name: post.author.name },
             datePublished: post.publishedAt,
             dateModified: post.publishedAt,
-            publisher: { "@type": "Organization", name: "ProCoder", url: SITE_URL },
+            publisher: { "@type": "Organization", name: "StemTechLab", url: SITE_URL },
             mainEntityOfPage: `${SITE_URL}/${locale}/blog/${slug}`,
             ...(post.coverImage ? { image: post.coverImage } : {}),
             inLanguage: locale,

@@ -1,4 +1,4 @@
-const TOKEN_KEY = "procoder_admin_token";
+const TOKEN_KEY = "stemtechlab_admin_token";
 
 export function getAdminToken(): string | null {
   if (typeof window === "undefined") return null;

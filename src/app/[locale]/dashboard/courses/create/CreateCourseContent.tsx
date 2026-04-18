@@ -279,7 +279,7 @@ export default function CreateCourseContent() {
                   required
                   value={loginEmail}
                   onChange={(e) => setLoginEmail(e.target.value)}
-                  placeholder="admin@procoder.com"
+                  placeholder="admin@stemtechlab.com"
                   className={inputClass}
                 />
               </div>

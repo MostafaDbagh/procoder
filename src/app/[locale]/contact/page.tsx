@@ -3,16 +3,16 @@ import { Suspense } from "react";
 import { setRequestLocale } from "next-intl/server";
 import ContactContent from "./ContactContent";
 
-const SITE_URL = process.env.SITE_URL || "https://procoder.com";
+const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
 
 const meta = {
   en: {
-    title: "Contact ProCoder | Free trial",
+    title: "Contact StemTechLab | Free trial",
     description:
       "Book a free trial or ask about kids’ programs. Fast replies. GCC & worldwide.",
   },
   ar: {
-    title: "تواصل مع بروكودر | تجربة مجانية",
+    title: "تواصل مع ستم تك لاب | تجربة مجانية",
     description:
       "احجز تجربة مجانية أو اسأل عن البرامج. رد سريع. الخليج والعالم.",
   },

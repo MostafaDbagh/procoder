@@ -3,18 +3,18 @@ import { setRequestLocale } from "next-intl/server";
 import ChallengeContent from "./ChallengeContent";
 import { getChallengePublicLatestISR } from "@/lib/server-api";
 
-const SITE_URL = process.env.SITE_URL || "https://procoder.com";
+const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
 
 const meta = {
   en: {
-    title: "Free Kids STEM Challenge — Project of the Month | ProCoder",
+    title: "Free Kids STEM Challenge — Project of the Month | StemTechLab",
     description:
-      "Try a free paper “pixel letter” mini-challenge for kids. No login. Sign up with email for next month’s project and STEM tips from ProCoder.",
+      "Try a free paper “pixel letter” mini-challenge for kids. No login. Sign up with email for next month’s project and STEM tips from StemTechLab.",
   },
   ar: {
-    title: "تحدي STEM مجاني للأطفال — مشروع الشهر | بروكودر",
+    title: "تحدي STEM مجاني للأطفال — مشروع الشهر | ستم تك لاب",
     description:
-      "جرّب تحديًا ورقيًا مجانيًا على شكل حرف بكسل للأطفال. بلا تسجيل. أرسل بريدك لاستلام مشروع الشهر القادم ونصائح STEM من بروكودر.",
+      "جرّب تحديًا ورقيًا مجانيًا على شكل حرف بكسل للأطفال. بلا تسجيل. أرسل بريدك لاستلام مشروع الشهر القادم ونصائح STEM من ستم تك لاب.",
   },
 };
 

@@ -6,15 +6,15 @@ import BlogListClient from "./BlogListClient";
 
 export const dynamic = "force-dynamic";
 
-const SITE_URL = process.env.SITE_URL || "https://procoder.com";
+const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
 
 const meta = {
   en: {
-    title: "Blog — Tips, Guides & News for Parents | ProCoder",
+    title: "Blog — Tips, Guides & News for Parents | StemTechLab",
     description: "Expert articles on kids coding, robotics, Quran learning, Arabic education, and STEM in Saudi Arabia, UAE, GCC & worldwide.",
   },
   ar: {
-    title: "المدونة — نصائح وأدلة وأخبار للوالدين | بروكودر",
+    title: "المدونة — نصائح وأدلة وأخبار للوالدين | ستم تك لاب",
     description: "مقالات متخصصة حول تعليم البرمجة والروبوتات والقرآن والعربية والعلوم للأطفال في السعودية والإمارات والخليج.",
   },
 };

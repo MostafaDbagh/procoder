@@ -3,7 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import DashboardContent from "./DashboardContent";
 import { getCoursesISR } from "@/lib/server-api";
 
-const SITE_URL = process.env.SITE_URL || "https://procoder.com";
+const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
 
 export async function generateMetadata({
   params,
@@ -17,8 +17,8 @@ export async function generateMetadata({
     title: lang === "ar" ? "لوحة التحكم" : "My Dashboard",
     description:
       lang === "ar"
-        ? "تابع تقدم طفلك، الدورات المسجلة، والإنجازات في بروكودر."
-        : "Track your child's progress, enrolled courses, and achievements on ProCoder.",
+        ? "تابع تقدم طفلك، الدورات المسجلة، والإنجازات في ستم تك لاب."
+        : "Track your child's progress, enrolled courses, and achievements on StemTechLab.",
     robots: { index: false, follow: false },
     alternates: {
       canonical: `${SITE_URL}/${lang}/dashboard`,

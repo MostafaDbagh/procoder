@@ -30,7 +30,7 @@ const STATIC_FALLBACK: StaticFallback[] = [
     skills: ["Python", "JavaScript", "React", "Node.js"],
     location: "Saudi Arabia",
     flag: "\u{1F1F8}\u{1F1E6}",
-    bio: "A passionate educator and tech entrepreneur who founded ProCoder to make STEM education accessible and fun for every child in the region.",
+    bio: "A passionate educator and tech entrepreneur who founded StemTechLab to make STEM education accessible and fun for every child in the region.",
   },
   {
     key: "2",
@@ -52,7 +52,7 @@ const STATIC_FALLBACK: StaticFallback[] = [
     skills: ["Full-Stack", "TypeScript", "Next.js", "MongoDB"],
     location: "Turkey",
     flag: "\u{1F1F9}\u{1F1F7}",
-    bio: "A full-stack developer who builds the ProCoder platform. Passionate about creating interactive coding environments that make learning intuitive.",
+    bio: "A full-stack developer who builds the StemTechLab platform. Passionate about creating interactive coding environments that make learning intuitive.",
   },
   {
     key: "4",

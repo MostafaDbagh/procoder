@@ -141,7 +141,7 @@ export default function DashboardContent({ initialCourses }: Props) {
           <h1 className="text-2xl font-bold mb-3">Welcome to Your Dashboard</h1>
           <p className="text-muted mb-8">Sign in to track your child&apos;s progress, view enrollments, and manage your account.</p>
           <p className="text-sm text-muted mb-6">
-            Teaching on ProCoder?{" "}
+            Teaching on StemTechLab?{" "}
             <LocalizedLink href="/instructor/login" className="text-primary font-medium hover:underline">
               Instructor sign-in
             </LocalizedLink>
@@ -501,7 +501,7 @@ function ReferralSection({ token, lang }: { token: string | null; lang: string }
 
   const handleCopy = () => {
     if (!code) return;
-    const text = `Join ProCoder! Use my referral code ${code} for ${stats.discountPercent}% off your first course. https://procoder.com/en/courses`;
+    const text = `Join StemTechLab! Use my referral code ${code} for ${stats.discountPercent}% off your first course. https://stemtechlab.com/en/courses`;
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);

@@ -1,4 +1,4 @@
-const SITE_URL = (process.env.SITE_URL || "https://procoder.com").replace(/\/$/, "");
+const SITE_URL = (process.env.SITE_URL || "https://stemtechlab.com").replace(/\/$/, "");
 /** Public contact only — set in Vercel env; never put API keys in NEXT_PUBLIC_* . */
 const PUBLIC_CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim();
 const PUBLIC_CONTACT_PHONE = process.env.NEXT_PUBLIC_CONTACT_PHONE?.trim();
@@ -20,7 +20,7 @@ export function OrganizationSchema() {
   const data: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
-    name: "ProCoder",
+    name: "StemTechLab",
     description:
       "Live online STEM & Quran for ages 6–18. AI-powered course matching (OpenAI & DeepSeek) helps families pick the best live class for each child—plus small groups, certified teachers, English & Arabic. GCC & worldwide.",
     url: SITE_URL,
@@ -52,7 +52,7 @@ export function OrganizationSchema() {
 
   data.hasOfferCatalog = {
       "@type": "OfferCatalog",
-      name: "ProCoder Courses",
+      name: "StemTechLab Courses",
       itemListElement: [
         catalogSection("Programming", [
           courseOffer("Scratch Programming", "6-9", "Beginner", 20, 8),
@@ -84,14 +84,14 @@ export function OrganizationSchema() {
 
 export function FAQSchema() {
   const faqs = [
-    { q: "What age group are ProCoder courses designed for?", a: "Ages 6–18 with paths by level. Most students take about two 1-hour live sessions per week." },
-    { q: "How does ProCoder suggest the best course for my child?", a: "Our Course finder uses AI-powered matching with OpenAI and DeepSeek integrations to propose live courses that fit your child’s age, interests, and level. Parents choose what to enroll in." },
+    { q: "What age group are StemTechLab courses designed for?", a: "Ages 6–18 with paths by level. Most students take about two 1-hour live sessions per week." },
+    { q: "How does StemTechLab suggest the best course for my child?", a: "Our Course finder uses AI-powered matching with OpenAI and DeepSeek integrations to propose live courses that fit your child’s age, interests, and level. Parents choose what to enroll in." },
     { q: "How is my child's data and privacy protected?", a: "Encryption, COPPA-aware practices, and no selling of child data. Parents control student accounts." },
     { q: "Does my child need prior experience?", a: "No—beginners start with fundamentals; advanced tracks exist too. Our AI course finder and form help pick a level." },
     { q: "Do you offer free trial classes?", a: "Yes: one free live session, no obligation." },
-    { q: "How are ProCoder classes conducted?", a: "Live online in small groups or 1:1 with screen share, guided practice, and interactive tools." },
+    { q: "How are StemTechLab classes conducted?", a: "Live online in small groups or 1:1 with screen share, guided practice, and interactive tools." },
     { q: "What devices are needed for classes?", a: "Laptop or desktop plus stable internet. Coding runs in the browser; robotics kits ship where needed." },
-    { q: "Which countries does ProCoder serve?", a: "GCC, Turkey, North America, Europe, and more—in English or Arabic." },
+    { q: "Which countries does StemTechLab serve?", a: "GCC, Turkey, North America, Europe, and more—in English or Arabic." },
     { q: "Can I reschedule or cancel classes?", a: "Reschedule up to 4 hours before class; plans can pause when your schedule changes." },
   ];
 
@@ -112,7 +112,7 @@ export function WebsiteSchema() {
   const data = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "ProCoder",
+    name: "StemTechLab",
     url: SITE_URL,
     description:
       "Live kids’ classes in programming, robotics, algorithms, Arabic, and Quran (ages 6–18). AI course finder uses OpenAI & DeepSeek to suggest the best fit per child. English & Arabic.",
@@ -157,7 +157,7 @@ export function LocalBusinessSchema() {
         const locData: Record<string, unknown> = {
             "@context": "https://schema.org",
             "@type": "EducationalOrganization",
-            name: `ProCoder ${loc.city}`,
+            name: `StemTechLab ${loc.city}`,
             description: `Live coding, robotics & Quran for kids in ${loc.city}. Ages 6–18. Free trial.`,
             url: SITE_URL,
             address: {
@@ -217,7 +217,7 @@ function courseOffer(
     "@type": "Course",
     name,
     description: `${name} for children ages ${ageRange}. ${level} level. ${lessons} lessons over ${weeks} weeks.`,
-    provider: { "@type": "Organization", name: "ProCoder", url: SITE_URL },
+    provider: { "@type": "Organization", name: "StemTechLab", url: SITE_URL },
     educationalLevel: level,
     numberOfCredits: lessons,
     timeRequired: `P${weeks}W`,

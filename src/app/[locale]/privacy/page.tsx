@@ -2,18 +2,18 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import PrivacyContent from "./PrivacyContent";
 
-const SITE_URL = process.env.SITE_URL || "https://procoder.com";
+const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
 
 const meta = {
   en: {
     title: "Privacy Policy",
     description:
-      "How ProCoder handles children’s data and online safety (COPPA-aware).",
+      "How StemTechLab handles children’s data and online safety (COPPA-aware).",
   },
   ar: {
     title: "سياسة الخصوصية",
     description:
-      "كيف تتعامل بروكودر مع بيانات الأطفال والسلامة عبر الإنترنت.",
+      "كيف تتعامل ستم تك لاب مع بيانات الأطفال والسلامة عبر الإنترنت.",
   },
 };
 

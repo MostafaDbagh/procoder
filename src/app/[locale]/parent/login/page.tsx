@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import ParentLoginContent from "./ParentLoginContent";
 
-const SITE_URL = process.env.SITE_URL || "https://procoder.com";
+const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
 
 export async function generateMetadata({
   params,
@@ -16,7 +16,7 @@ export async function generateMetadata({
     description:
       lang === "ar"
         ? "تسجيل الدخول أو إنشاء حساب ولي أمر."
-        : "Sign in or create a parent account for ProCoder.",
+        : "Sign in or create a parent account for StemTechLab.",
     robots: { index: false, follow: false },
     alternates: {
       canonical: `${SITE_URL}/${lang}/parent/login`,

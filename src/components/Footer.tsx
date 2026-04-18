@@ -21,7 +21,7 @@ export function Footer() {
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-primary to-purple bg-clip-text text-transparent">
-                ProCoder
+                StemTechLab
               </span>
             </div>
             <p className="text-muted text-sm leading-relaxed">
@@ -167,7 +167,7 @@ export function Footer() {
 
         <div className="mt-8 pt-6 border-t border-border text-center">
           <p className="text-sm text-muted">
-            &copy; {new Date().getFullYear()} ProCoder. {t("rights")}
+            &copy; {new Date().getFullYear()} StemTechLab. {t("rights")}
           </p>
         </div>
       </div>

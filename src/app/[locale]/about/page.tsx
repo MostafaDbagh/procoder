@@ -3,16 +3,16 @@ import { setRequestLocale } from "next-intl/server";
 import AboutContent from "./AboutContent";
 import { getTeamPublicISR } from "@/lib/server-api";
 
-const SITE_URL = process.env.SITE_URL || "https://procoder.com";
+const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
 
 const meta = {
   en: {
-    title: "About ProCoder | Team & mission",
+    title: "About StemTechLab | Team & mission",
     description:
       "STEM and Quran for kids with bilingual support and certified instructors. GCC & worldwide.",
   },
   ar: {
-    title: "عن بروكودر | الفريق والرسالة",
+    title: "عن ستم تك لاب | الفريق والرسالة",
     description:
       "تعليم علوم وقرآن للأطفال بدعم ثنائي اللغة ومدرسين معتمدين. الخليج والعالم.",
   },

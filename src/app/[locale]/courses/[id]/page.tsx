@@ -10,7 +10,7 @@ import { getCourseISR, getCourseSlugsISR } from "@/lib/server-api";
 // Force SSR — admin price/status changes reflect immediately
 export const dynamic = "force-dynamic";
 
-const SITE_URL = process.env.SITE_URL || "https://procoder.com";
+const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
 
 export async function generateStaticParams() {
   const slugs = await getCourseSlugsISR();
@@ -63,13 +63,13 @@ export async function generateMetadata({
       languages: { [alt]: `${SITE_URL}/${alt}/courses/${id}` },
     },
     openGraph: {
-      title: `${title} | ProCoder`,
+      title: `${title} | StemTechLab`,
       description: seoDescription,
       url: `${SITE_URL}/${lang}/courses/${id}`,
       type: "article",
     },
     twitter: {
-      title: `${title} | ProCoder`,
+      title: `${title} | StemTechLab`,
       description: seoDescription,
     },
   };
@@ -110,8 +110,8 @@ export default async function CourseDetailPage({
             : ct!(staticCourse!.descKey),
           provider: {
             "@type": "Organization",
-            name: "ProCoder",
-            url: "https://procoder.com",
+            name: "StemTechLab",
+            url: "https://stemtechlab.com",
           },
           educationalLevel: apiCourse?.level ?? staticCourse!.level,
           courseMode: "online",
@@ -140,7 +140,7 @@ export default async function CourseDetailPage({
             courseMode: "online",
             instructor: {
               "@type": "Person",
-              name: "ProCoder Instructor",
+              name: "StemTechLab Instructor",
             },
           },
         }
