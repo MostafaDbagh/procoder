@@ -119,6 +119,9 @@ export const metadata: Metadata = {
     },
   },
   category: "education",
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION,
+  },
   other: {
     "geo.region": "SA",
     "geo.placename": "Riyadh, Saudi Arabia",
