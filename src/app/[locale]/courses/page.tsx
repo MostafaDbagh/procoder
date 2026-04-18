@@ -35,7 +35,7 @@ export async function generateMetadata({
  description: meta[lang].description,
  alternates: {
  canonical: `${SITE_URL}/${lang}/courses`,
- languages: { en: `${SITE_URL}/en/courses`, ar: `${SITE_URL}/ar/courses` },
+ languages: { en: `${SITE_URL}/en/courses`, ar: `${SITE_URL}/ar/courses`, "x-default": `${SITE_URL}/en/courses` },
  },
  openGraph: {
  title: meta[lang].title,

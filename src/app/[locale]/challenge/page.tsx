@@ -42,7 +42,7 @@ export async function generateMetadata({
  description,
  alternates: {
  canonical: `${SITE_URL}/${lang}/challenge`,
- languages: { en: `${SITE_URL}/en/challenge`, ar: `${SITE_URL}/ar/challenge` },
+ languages: { en: `${SITE_URL}/en/challenge`, ar: `${SITE_URL}/ar/challenge`, "x-default": `${SITE_URL}/en/challenge` },
  },
  openGraph: {
  title,

@@ -31,7 +31,7 @@ export async function generateMetadata({
  description: meta[lang].description,
  alternates: {
  canonical: `${SITE_URL}/${lang}/privacy`,
- languages: { en: `${SITE_URL}/en/privacy`, ar: `${SITE_URL}/ar/privacy` },
+ languages: { en: `${SITE_URL}/en/privacy`, ar: `${SITE_URL}/ar/privacy`, "x-default": `${SITE_URL}/en/privacy` },
  },
  openGraph: {
  title: meta[lang].title,

@@ -189,6 +189,7 @@ export const metadata: Metadata = {
  languages: {
  en: `${SITE_URL}/en`,
  ar: `${SITE_URL}/ar`,
+ "x-default": `${SITE_URL}/en`,
  },
  },
  category: "education",
@@ -217,6 +218,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
  return (
  <html lang="en" className={`${geistSans.variable} h-full antialiased`} suppressHydrationWarning>
  <head>
+ {/* Performance: preconnect to backend API + Google Fonts (like Tynker/CodaKid/Codingal) */}
+ <link rel="preconnect" href="https://procoderbe.onrender.com" />
+ <link rel="dns-prefetch" href="https://procoderbe.onrender.com" />
+ <link rel="preconnect" href="https://fonts.googleapis.com" />
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+ {/* Theme color (all 5 competitors use this) */}
+ <meta name="theme-color" content="#6C5CE7" />
+ {/* Apple touch icon (competitors have multiple favicon sizes) */}
+ <link rel="apple-touch-icon" sizes="180x180" href="/logo.svg" />
+ <link rel="icon" type="image/svg+xml" href="/logo.svg" />
  <Script
  id="init-locale-html-dir"
  strategy="beforeInteractive"

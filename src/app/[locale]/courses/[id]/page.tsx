@@ -60,7 +60,7 @@ export async function generateMetadata({
  description: seoDescription,
  alternates: {
  canonical: `${SITE_URL}/${lang}/courses/${id}`,
- languages: { en: `${SITE_URL}/en/courses/${id}`, ar: `${SITE_URL}/ar/courses/${id}` },
+ languages: { en: `${SITE_URL}/en/courses/${id}`, ar: `${SITE_URL}/ar/courses/${id}`, "x-default": `${SITE_URL}/en/courses/${id}` },
  },
  openGraph: {
  title: `${title} | StemTechLab`,
