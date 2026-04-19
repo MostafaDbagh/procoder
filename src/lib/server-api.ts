@@ -118,7 +118,7 @@ export interface APICategory {
 export async function getCategoriesPublicISR(): Promise<APICategory[] | null> {
  try {
  const res = await fetch(`${serverApiRoot()}/categories`, {
- next: { revalidate: 900 },
+ next: { revalidate: 60 },
  });
  if (!res.ok) return null;
  return (await res.json()) as APICategory[];
@@ -149,7 +149,7 @@ export async function getCoursesSSR(): Promise<APICourse[] | null> {
 export async function getCoursesISR(): Promise<APICourse[] | null> {
  try {
  const res = await fetch(`${serverApiRoot()}/courses`, {
- next: { revalidate: 900 },
+ next: { revalidate: 60 },
  });
 
  if (!res.ok) return null;
@@ -172,7 +172,7 @@ export async function getCourseSlugsISR(): Promise<string[]> {
 export async function getCourseISR(slug: string): Promise<APICourse | null> {
  try {
  const res = await fetch(`${serverApiRoot()}/courses/${slug}`, {
- next: { revalidate: 900 },
+ next: { revalidate: 60 },
  });
 
  if (!res.ok) return null;
@@ -186,7 +186,7 @@ export async function getCourseISR(slug: string): Promise<APICourse | null> {
 export async function getTeamPublicISR(): Promise<APITeamMember[] | null> {
  try {
  const res = await fetch(`${serverApiRoot()}/team`, {
- next: { revalidate: 900 },
+ next: { revalidate: 60 },
  });
  if (!res.ok) return null;
  const data = (await res.json()) as APITeamMember[];
@@ -255,7 +255,7 @@ export async function getBlogPostSSR(slug: string): Promise<APIBlogPost | null> 
 export async function getChallengePublicLatestISR(): Promise<PublicMonthlyChallenge | null> {
  try {
  const res = await fetch(`${serverApiRoot()}/challenges/public/latest`, {
- next: { revalidate: 900 },
+ next: { revalidate: 60 },
  });
  if (res.status === 404) return null;
  if (!res.ok) return null;

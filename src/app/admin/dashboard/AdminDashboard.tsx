@@ -677,6 +677,17 @@ export default function AdminDashboard() {
  loadCareers,
  ]);
 
+ /** Purge ISR cache for public pages so admin changes appear immediately. */
+ const revalidatePublicPages = async (paths?: string[]) => {
+ try {
+ await fetch("/api/revalidate", {
+ method: "POST",
+ headers: { "Content-Type": "application/json" },
+ body: JSON.stringify({ paths: paths ?? ["/en", "/ar", "/en/courses", "/ar/courses"] }),
+ });
+ } catch { /* best-effort */ }
+ };
+
  const logout = () => {
  clearAdminToken();
  router.replace("/admin/login");
@@ -822,6 +833,7 @@ export default function AdminDashboard() {
  await loadCategoriesPage();
  await loadCategoryOptions();
  await loadOverview();
+ void revalidatePublicPages();
  } catch (e) {
  setErr(e instanceof Error ? e.message : "Failed");
  }
@@ -849,6 +861,7 @@ export default function AdminDashboard() {
  await loadCategoriesPage();
  await loadCategoryOptions();
  await loadOverview();
+ void revalidatePublicPages();
  } catch (e) {
  setErr(e instanceof Error ? e.message : "Failed");
  }
@@ -2905,6 +2918,7 @@ export default function AdminDashboard() {
  setCategoryModal(null);
  await loadCategoriesPage();
  await loadCategoryOptions();
+ void revalidatePublicPages();
  }}
  />
  )}
@@ -2918,6 +2932,7 @@ export default function AdminDashboard() {
  setCourseModal(null);
  await loadCourses();
  await loadOverview();
+ void revalidatePublicPages();
  }}
  />
  )}
@@ -2968,6 +2983,7 @@ export default function AdminDashboard() {
  onSaved={async () => {
  setBlogModal(null);
  await loadBlog();
+ void revalidatePublicPages(["/en/blog", "/ar/blog"]);
  }}
  />
  )}
