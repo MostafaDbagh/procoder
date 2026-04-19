@@ -3669,6 +3669,20 @@ function CourseFormModal({
  ))}
  </select>
  </label>
+ <label className="block text-slate-400">
+ <span className="mb-1 block text-xs">Card icon</span>
+ <select
+ value={form.iconName}
+ onChange={(e) =>
+ setForm((f) => ({ ...f, iconName: e.target.value }))
+ }
+ className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+ >
+ {["BookOpen","Blocks","Code2","Globe","Bot","Cpu","Brain","Trophy","PenTool","BookMarked","Star","Gamepad2","Smartphone","Layout","AppWindow","Palette","Terminal"].map((ic) => (
+ <option key={ic} value={ic}>{ic}</option>
+ ))}
+ </select>
+ </label>
  <p className="rounded-lg border border-amber-500/25 bg-amber-500/10 px-3 py-2 text-xs text-amber-100/90">
  <strong>List price</strong> drives catalog revenue estimates.{" "}
  <strong>Catalog discount</strong> is a percent off that list price
