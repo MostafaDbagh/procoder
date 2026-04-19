@@ -15,16 +15,18 @@ import {
  ArrowLeft,
  Clock,
  BookOpen,
+ BookMarked,
  Users,
  BarChart3,
  CheckCircle2,
  ArrowRight,
  Loader2,
- Sparkles,
- Star,
  Code2,
  Bot,
  Brain,
+ Gamepad2,
+ Smartphone,
+ Layout,
 } from "lucide-react";
 
 const categoryBadge: Record<string, string> = {
@@ -36,6 +38,12 @@ const categoryBadge: Record<string, string> = {
  "bg-violet-100 text-violet-800 dark:bg-violet-950/50 dark:text-violet-300 capitalize shadow-sm shadow-violet-600/10",
  arabic:
  "bg-rose-100 text-rose-800 dark:bg-rose-950/50 dark:text-rose-300 capitalize shadow-sm shadow-rose-600/10",
+ "game-development":
+ "bg-amber-100 text-amber-900 dark:bg-amber-950/50 dark:text-amber-200 capitalize shadow-sm shadow-amber-600/10",
+ "mobile-development":
+ "bg-pink-100 text-pink-900 dark:bg-pink-950/50 dark:text-pink-200 capitalize shadow-sm shadow-pink-600/10",
+ "web-development":
+ "bg-cyan-100 text-cyan-900 dark:bg-cyan-950/50 dark:text-cyan-200 capitalize shadow-sm shadow-cyan-600/10",
 };
 
 const levelBadge: Record<string, string> = {
@@ -47,19 +55,56 @@ const levelBadge: Record<string, string> = {
  "bg-red-100 text-red-800 dark:bg-red-950/50 dark:text-red-300 capitalize shadow-sm shadow-red-600/10",
 };
 
-const categoryHeroIcon: Record<string, ElementType> = {
- programming: Code2,
- robotics: Bot,
- algorithms: Brain,
- arabic: BookOpen,
+type HeroStyle = { icon: ElementType; gradient: string };
+
+const CATEGORY_HERO: Record<string, HeroStyle> = {
+ programming: { icon: Code2, gradient: "from-sky-500 to-indigo-600" },
+ robotics: { icon: Bot, gradient: "from-emerald-500 to-teal-600" },
+ algorithms: { icon: Brain, gradient: "from-violet-500 to-fuchsia-600" },
+ arabic: { icon: BookMarked, gradient: "from-rose-500 to-pink-600" },
+ "game-development": { icon: Gamepad2, gradient: "from-amber-500 to-orange-600" },
+ "mobile-development": { icon: Smartphone, gradient: "from-pink-500 to-rose-600" },
+ "web-development": { icon: Layout, gradient: "from-cyan-500 to-sky-600" },
 };
 
-const categoryHeroGradient: Record<string, string> = {
- programming: "from-sky-500 to-indigo-600",
- robotics: "from-emerald-500 to-teal-600",
- algorithms: "from-violet-500 to-fuchsia-600",
- arabic: "from-rose-500 to-pink-600",
+/** Maps API / CMS slug variants to canonical CATEGORY_HERO keys. */
+const CATEGORY_SLUG_ALIASES: Record<string, keyof typeof CATEGORY_HERO> = {
+ mobappdev: "mobile-development",
+ "mobile-app-development": "mobile-development",
+ "mobile-app": "mobile-development",
+ webdev: "web-development",
+ gamedev: "game-development",
 };
+
+function resolveCategoryHero(category: string): HeroStyle {
+ const raw = category.trim().toLowerCase();
+ const canonical = CATEGORY_SLUG_ALIASES[raw];
+ if (canonical && CATEGORY_HERO[canonical]) {
+ return CATEGORY_HERO[canonical];
+ }
+ if (CATEGORY_HERO[raw]) {
+ return CATEGORY_HERO[raw];
+ }
+ if (raw.includes("mobile") || raw.includes("mobapp")) {
+ return CATEGORY_HERO["mobile-development"];
+ }
+ if (raw.includes("web")) {
+ return CATEGORY_HERO["web-development"];
+ }
+ if (raw.includes("game")) {
+ return CATEGORY_HERO["game-development"];
+ }
+ if (raw.includes("robot")) {
+ return CATEGORY_HERO.robotics;
+ }
+ if (raw.includes("algo")) {
+ return CATEGORY_HERO.algorithms;
+ }
+ if (raw.includes("arabic")) {
+ return CATEGORY_HERO.arabic;
+ }
+ return CATEGORY_HERO.programming;
+}
 
 export default function CourseDetailContent() {
  const { id: slug } = useParams<{ id: string }>();
@@ -158,8 +203,7 @@ export default function CourseDetailContent() {
  { icon: BookOpen, label: t("lessons"), value: `${course.lessons} ${common("lessons")}` },
  ];
 
- const HeroIcon = categoryHeroIcon[course.category] || Sparkles;
- const iconGrad = categoryHeroGradient[course.category] || "from-primary to-violet-600";
+ const { icon: HeroIcon, gradient: iconGrad } = resolveCategoryHero(course.category);
 
  return (
  <div className="py-12 sm:py-20">
@@ -201,20 +245,20 @@ export default function CourseDetailContent() {
  aria-hidden
  />
  <motion.div
- className="pointer-events-none absolute -right-2 top-4 text-amber-400/90"
+ className="pointer-events-none absolute -right-2 top-4 text-primary/35 dark:text-primary/45"
  animate={{ rotate: [0, 12, -8, 0], scale: [1, 1.1, 1] }}
  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
  aria-hidden
  >
- <Sparkles className="h-8 w-8 sm:h-9 sm:w-9" strokeWidth={1.75} />
+ <HeroIcon className="h-8 w-8 sm:h-9 sm:w-9" strokeWidth={1.75} />
  </motion.div>
  <motion.div
- className="pointer-events-none absolute left-4 bottom-6 text-primary/40"
+ className="pointer-events-none absolute left-4 bottom-6 text-primary/30 dark:text-primary/35"
  animate={{ y: [0, -4, 0] }}
  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
  aria-hidden
  >
- <Star className="h-5 w-5 fill-primary/30" strokeWidth={0} />
+ <HeroIcon className="h-5 w-5" strokeWidth={2} />
  </motion.div>
 
  <div className="relative flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-8">
@@ -243,9 +287,7 @@ export default function CourseDetailContent() {
  <h1 className="mb-1 bg-gradient-to-r from-foreground via-primary to-violet-600 bg-clip-text text-2xl font-extrabold leading-tight tracking-tight text-transparent dark:from-foreground dark:via-sky-300 dark:to-violet-400 sm:text-3xl">
  {course.title}
  </h1>
- <p className="mb-6 text-sm font-medium text-muted sm:text-base">
- ✨ {t("heroTagline")}
- </p>
+ <p className="mb-6 text-sm font-medium text-muted sm:text-base">{t("heroTagline")}</p>
 
  {course.showPrice ? (
  <div className="inline-flex w-full max-w-md flex-col gap-1 rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/[0.08] via-violet-500/[0.06] to-amber-400/[0.08] px-5 py-4 shadow-inner dark:from-primary/15 dark:via-violet-500/10 dark:to-amber-400/10">
