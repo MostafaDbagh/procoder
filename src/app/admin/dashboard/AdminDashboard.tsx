@@ -1624,6 +1624,7 @@ export default function AdminDashboard() {
  <th className="p-2">Slug</th>
  <th className="p-2">Title (en)</th>
  <th className="p-2">Title (ar)</th>
+ <th className="p-2">Description (en)</th>
  <th className="p-2">Sort</th>
  <th className="p-2">Status</th>
  <th className="p-2">Actions</th>
@@ -1642,6 +1643,7 @@ export default function AdminDashboard() {
  <td className="p-2 font-mono text-xs">{c.slug}</td>
  <td className="p-2">{c.title.en}</td>
  <td className="p-2">{c.title.ar}</td>
+ <td className="p-2 max-w-[200px] truncate text-xs text-slate-400">{c.description?.en || <span className="text-amber-400">— empty</span>}</td>
  <td className="p-2">{c.sortOrder}</td>
  <td className="p-2">
  {(() => {
@@ -3758,14 +3760,24 @@ function CourseFormModal({
  }
  className="rounded border border-slate-700 bg-slate-950 px-2 py-1"
  />
- <label className="block text-slate-400">
- <span className="mb-1 block text-xs">Course cover image</span>
- <input
- type="file"
- accept="image/jpeg,image/png,image/webp,image/gif"
- disabled={uploadingCourseImage}
- className="w-full text-xs text-slate-300 file:mr-2 file:rounded file:border-0 file:bg-slate-700 file:px-2 file:py-1 file:text-white"
- onChange={(e) => {
+ <div className="space-y-2">
+ <span className="block text-xs text-slate-400">Course cover image</span>
+ {form.imageUrl ? (
+ <div className="rounded-lg border border-slate-700 bg-slate-900/40 p-3">
+ <div className="flex items-start gap-3">
+ {/* eslint-disable-next-line @next/next/no-img-element -- admin preview */}
+ <img
+ src={teamPhotoPreviewSrc(form.imageUrl)}
+ alt="Course cover"
+ className="h-24 w-40 shrink-0 rounded-lg border border-slate-600 object-cover"
+ onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+ />
+ <div className="space-y-2">
+ <p className="text-[10px] text-slate-500 break-all">{form.imageUrl}</p>
+ <div className="flex gap-2">
+ <label className="cursor-pointer rounded bg-slate-700 px-2 py-1 text-xs text-white hover:bg-slate-600">
+ Replace
+ <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" className="hidden" disabled={uploadingCourseImage} onChange={(e) => {
  const file = e.target.files?.[0];
  e.target.value = "";
  if (!file) return;
@@ -3774,48 +3786,50 @@ function CourseFormModal({
  try {
  const fd = new FormData();
  fd.append("photo", file);
- const data = await adminFetch<{
- photoUrl: string;
- photoPublicId?: string;
- }>("/courses/upload", { method: "POST", body: fd });
- setForm((f) => ({
- ...f,
- imageUrl: data.photoUrl,
- imagePublicId: String(data.photoPublicId ?? ""),
- }));
- } finally {
- setUploadingCourseImage(false);
- }
+ const data = await adminFetch<{ photoUrl: string; photoPublicId?: string }>("/courses/upload", { method: "POST", body: fd });
+ setForm((f) => ({ ...f, imageUrl: data.photoUrl, imagePublicId: String(data.photoPublicId ?? "") }));
+ } catch (err) { setSaveErr(err instanceof Error ? err.message : "Image upload failed"); }
+ finally { setUploadingCourseImage(false); }
  })();
- }}
- />
+ }} />
  </label>
- {form.imageUrl ? (
- <div className="flex flex-wrap items-center gap-3">
- {/* eslint-disable-next-line @next/next/no-img-element -- preview URL from API / Cloudinary */}
- <img
- src={teamPhotoPreviewSrc(form.imageUrl)}
- alt=""
- className="h-20 w-36 rounded-lg border border-slate-600 object-cover"
- />
- <button
- type="button"
- className="text-xs text-red-400 hover:underline"
- onClick={() =>
- setForm((f) => ({
- ...f,
- imageUrl: "",
- imagePublicId: "",
- }))
- }
- >
- Remove image
+ <button type="button" className="rounded bg-red-900/40 px-2 py-1 text-xs text-red-400 hover:bg-red-900/60" onClick={() => setForm((f) => ({ ...f, imageUrl: "", imagePublicId: "" }))}>
+ Remove
  </button>
  </div>
- ) : null}
- {uploadingCourseImage ? (
- <p className="text-xs text-slate-500">Uploading…</p>
- ) : null}
+ </div>
+ </div>
+ {uploadingCourseImage && <p className="mt-2 text-xs text-slate-500">Uploading…</p>}
+ </div>
+ ) : (
+ <div className="rounded-lg border border-dashed border-slate-700 bg-slate-900/20 p-4">
+ <label className="flex cursor-pointer flex-col items-center gap-2 text-center">
+ <span className="text-xs text-slate-400">Click to upload or drag an image</span>
+ <span className="text-[10px] text-slate-600">JPEG, PNG, WebP, GIF — max 2MB</span>
+ <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" className="hidden" disabled={uploadingCourseImage} onChange={(e) => {
+ const file = e.target.files?.[0];
+ e.target.value = "";
+ if (!file) return;
+ void (async () => {
+ setUploadingCourseImage(true);
+ try {
+ const fd = new FormData();
+ fd.append("photo", file);
+ const data = await adminFetch<{ photoUrl: string; photoPublicId?: string }>("/courses/upload", { method: "POST", body: fd });
+ setForm((f) => ({ ...f, imageUrl: data.photoUrl, imagePublicId: String(data.photoPublicId ?? "") }));
+ } catch (err) { setSaveErr(err instanceof Error ? err.message : "Image upload failed"); }
+ finally { setUploadingCourseImage(false); }
+ })();
+ }} />
+ </label>
+ {uploadingCourseImage && <p className="mt-2 text-center text-xs text-slate-500">Uploading…</p>}
+ <div className="mt-3 flex items-center gap-2">
+ <span className="text-[10px] text-slate-600">or paste URL:</span>
+ <input placeholder="https://..." value="" onChange={(e) => { const v = e.target.value.trim(); if (v) setForm((f) => ({ ...f, imageUrl: v, imagePublicId: "" })); }} className="flex-1 rounded border border-slate-700 bg-slate-950 px-2 py-1 text-xs text-slate-300" />
+ </div>
+ </div>
+ )}
+ </div>
  <div className="text-slate-400">
  <span className="mb-1 block text-xs">Assign instructors</span>
  {instructorOptions.length === 0 ? (

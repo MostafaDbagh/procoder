@@ -90,6 +90,14 @@ const STATIC_FALLBACK: StaticFallback[] = [
  },
 ];
 
+/** Only show team members with teaching roles on the homepage. */
+const TEACHING_ROLES = new Set([
+ "instructor", "lead instructor", "curriculum lead",
+ "stem specialist", "arabic specialist",
+ "مدرب", "مدرب رئيسي", "قائد المنهج",
+ "أخصائي stem", "أخصائي العربية",
+]);
+
 export type MeetOurStarsProps = {
  cmsTeam: APITeamMember[] | null;
 };
@@ -337,6 +345,11 @@ export function MeetOurStars({ cmsTeam }: MeetOurStarsProps) {
  const teamRows: StarRow[] = useMemo(() => {
  if (cmsTeam && cmsTeam.length > 0) {
  return [...cmsTeam]
+ .filter((m) => {
+ const roleEn = (m.role?.en ?? "").trim().toLowerCase();
+ const roleAr = (m.role?.ar ?? "").trim().toLowerCase();
+ return TEACHING_ROLES.has(roleEn) || TEACHING_ROLES.has(roleAr);
+ })
  .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
  .map((m) => {
  const bioEn = String(m.bio?.en ?? "").trim();
