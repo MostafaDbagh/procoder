@@ -231,8 +231,8 @@ export default function CourseDetailContent() {
  </div>
  </AnimatedSection>
  <AnimatedSection delay={0.12}>
- <div className="mb-8 rounded-[1.75rem] bg-gradient-to-br from-primary via-violet-500 to-amber-400 p-[3px] shadow-xl shadow-primary/20 dark:shadow-primary/30">
- <div className="relative overflow-hidden rounded-[1.6rem] bg-surface px-6 py-8 sm:px-10 sm:py-10 dark:bg-surface">
+ <div className="mb-6 rounded-[1.35rem] bg-gradient-to-br from-primary via-violet-500 to-amber-400 p-[3px] shadow-xl shadow-primary/20 dark:shadow-primary/30 sm:rounded-[1.5rem]">
+ <div className="relative overflow-hidden rounded-[1.25rem] bg-surface px-4 py-5 dark:bg-surface sm:rounded-[1.4rem] sm:px-6 sm:py-6">
  {/* soft confetti dots */}
  <div
  className="pointer-events-none absolute inset-0 opacity-[0.35] dark:opacity-20"
@@ -245,72 +245,72 @@ export default function CourseDetailContent() {
  aria-hidden
  />
  <motion.div
- className="pointer-events-none absolute right-5 top-5 text-primary/35 dark:text-primary/45 sm:right-7 sm:top-6"
+ className="pointer-events-none absolute right-3 top-3 text-primary/35 dark:text-primary/45 sm:right-4 sm:top-4"
  animate={{ rotate: [0, 12, -8, 0], scale: [1, 1.06, 1] }}
  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
  aria-hidden
  >
- <HeroIcon className="h-8 w-8 sm:h-9 sm:w-9" strokeWidth={1.75} />
+ <HeroIcon className="h-6 w-6 sm:h-7 sm:w-7" strokeWidth={1.75} />
  </motion.div>
  <motion.div
- className="pointer-events-none absolute bottom-5 left-5 text-primary/30 dark:text-primary/35 sm:bottom-6 sm:left-6"
+ className="pointer-events-none absolute bottom-3 left-3 text-primary/30 dark:text-primary/35 sm:bottom-4 sm:left-4"
  animate={{ y: [0, -4, 0] }}
  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
  aria-hidden
  >
- <HeroIcon className="h-5 w-5" strokeWidth={2} />
+ <HeroIcon className="h-4 w-4 sm:h-5 sm:w-5" strokeWidth={2} />
  </motion.div>
 
- <div className="relative flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-8">
+ <div className="relative flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-5">
  <div
- className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${iconGrad} text-white shadow-lg shadow-black/10 ring-4 ring-white dark:ring-surface`}
+ className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${iconGrad} text-white shadow-md shadow-black/10 ring-2 ring-white dark:ring-surface sm:h-[3.75rem] sm:w-[3.75rem] sm:rounded-2xl sm:ring-[3px]`}
  >
- <HeroIcon className="h-8 w-8" strokeWidth={2} aria-hidden />
+ <HeroIcon className="h-7 w-7 sm:h-8 sm:w-8" strokeWidth={2} aria-hidden />
  </div>
  <div className="min-w-0 flex-1">
- <div className="mb-4 flex flex-wrap items-center gap-2">
+ <div className="mb-2 flex flex-wrap items-center gap-1.5 sm:gap-2">
  <span
- className={`inline-flex items-center rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-wide sm:text-sm ${
+ className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wide sm:px-3.5 sm:py-1 sm:text-xs ${
  categoryBadge[course.category] || categoryBadge.programming
  }`}
  >
  {course.category}
  </span>
  <span
- className={`inline-flex items-center rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-wide sm:text-sm ${
+ className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wide sm:px-3.5 sm:py-1 sm:text-xs ${
  levelBadge[course.level] || levelBadge.beginner
  }`}
  >
  {common(course.level as "beginner" | "intermediate" | "advanced")}
  </span>
  </div>
- <h1 className="mb-1 bg-gradient-to-r from-foreground via-primary to-violet-600 bg-clip-text text-2xl font-extrabold leading-tight tracking-tight text-transparent dark:from-foreground dark:via-sky-300 dark:to-violet-400 sm:text-3xl">
+ <h1 className="mb-0.5 bg-gradient-to-r from-foreground via-primary to-violet-600 bg-clip-text text-xl font-extrabold leading-snug tracking-tight text-transparent dark:from-foreground dark:via-sky-300 dark:to-violet-400 sm:text-2xl">
  {course.title}
  </h1>
- <p className="mb-6 text-sm font-medium text-muted sm:text-base">{t("heroTagline")}</p>
+ <p className="mb-3 text-xs font-medium text-muted sm:mb-3.5 sm:text-sm">{t("heroTagline")}</p>
 
  {course.showPrice ? (
- <div className="inline-flex w-full max-w-md flex-col gap-1 rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/[0.08] via-violet-500/[0.06] to-amber-400/[0.08] px-5 py-4 shadow-inner dark:from-primary/15 dark:via-violet-500/10 dark:to-amber-400/10">
- <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary/80 dark:text-primary/90">
+ <div className="flex w-full max-w-md flex-wrap items-baseline gap-x-3 gap-y-1 rounded-xl border border-primary/15 bg-gradient-to-br from-primary/[0.08] via-violet-500/[0.06] to-amber-400/[0.08] px-3.5 py-2 shadow-inner dark:from-primary/15 dark:via-violet-500/10 dark:to-amber-400/10 sm:px-4 sm:py-2.5">
+ <span className="text-[9px] font-bold uppercase tracking-[0.18em] text-primary/80 dark:text-primary/90 sm:text-[10px] sm:tracking-[0.2em]">
  {t("price")}
  </span>
- <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 tabular-nums">
+ <div className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-2 gap-y-0.5 tabular-nums sm:gap-x-3">
  {course.price <= 0 ? (
- <span className="text-2xl font-black text-foreground">{common("free")}</span>
+ <span className="text-lg font-black text-foreground sm:text-xl">{common("free")}</span>
  ) : course.discountPercent > 0 && course.salePrice < course.price ? (
  <>
- <span className="text-lg font-bold text-muted line-through">
+ <span className="text-base font-bold text-muted line-through sm:text-lg">
  {formatCoursePrice(course.price, course.currency, locale)}
  </span>
- <span className="text-2xl font-black text-foreground">
+ <span className="text-lg font-black text-foreground sm:text-xl">
  {formatCoursePrice(course.salePrice, course.currency, locale)}
  </span>
- <span className="rounded-full bg-amber-400/90 px-2.5 py-0.5 text-xs font-bold text-amber-950 shadow-sm">
+ <span className="rounded-full bg-amber-400/90 px-2 py-0.5 text-[10px] font-bold text-amber-950 shadow-sm sm:px-2.5 sm:text-xs">
  {t("savePercent", { pct: course.discountPercent })}
  </span>
  </>
  ) : (
- <span className="text-2xl font-black text-foreground">
+ <span className="text-lg font-black text-foreground sm:text-xl">
  {formatCoursePrice(course.price, course.currency, locale)}
  </span>
  )}
