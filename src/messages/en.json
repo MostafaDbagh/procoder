@@ -129,6 +129,7 @@
     "free": "Free"
   },
   "courseDetail": {
+    "heroTagline": "Live classes with friendly coaches",
     "price": "Price",
     "savePercent": "Save {pct}%",
     "ageGroup": "Age Group",

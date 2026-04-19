@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ElementType } from "react";
 import { useParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { LocalizedLink } from "@/components/LocalizedLink";
@@ -20,22 +20,45 @@ import {
  CheckCircle2,
  ArrowRight,
  Loader2,
+ Sparkles,
+ Star,
+ Code2,
+ Bot,
+ Brain,
 } from "lucide-react";
 
 const categoryBadge: Record<string, string> = {
  programming:
- "bg-blue-100 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400 capitalize",
+ "bg-blue-100 text-blue-800 dark:bg-blue-950/50 dark:text-blue-300 capitalize shadow-sm shadow-blue-600/10",
  robotics:
- "bg-emerald-100 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400 capitalize",
+ "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300 capitalize shadow-sm shadow-emerald-600/10",
  algorithms:
- "bg-violet-100 text-violet-600 dark:bg-violet-950/40 dark:text-violet-400 capitalize",
- arabic: "bg-rose-100 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400 capitalize",
+ "bg-violet-100 text-violet-800 dark:bg-violet-950/50 dark:text-violet-300 capitalize shadow-sm shadow-violet-600/10",
+ arabic:
+ "bg-rose-100 text-rose-800 dark:bg-rose-950/50 dark:text-rose-300 capitalize shadow-sm shadow-rose-600/10",
 };
 
 const levelBadge: Record<string, string> = {
- beginner: "bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400 capitalize",
- intermediate: "bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 capitalize",
- advanced: "bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-400 capitalize",
+ beginner:
+ "bg-green-100 text-green-800 dark:bg-green-950/50 dark:text-green-300 capitalize shadow-sm shadow-green-600/10",
+ intermediate:
+ "bg-amber-100 text-amber-900 dark:bg-amber-950/50 dark:text-amber-200 capitalize shadow-sm shadow-amber-600/10",
+ advanced:
+ "bg-red-100 text-red-800 dark:bg-red-950/50 dark:text-red-300 capitalize shadow-sm shadow-red-600/10",
+};
+
+const categoryHeroIcon: Record<string, ElementType> = {
+ programming: Code2,
+ robotics: Bot,
+ algorithms: Brain,
+ arabic: BookOpen,
+};
+
+const categoryHeroGradient: Record<string, string> = {
+ programming: "from-sky-500 to-indigo-600",
+ robotics: "from-emerald-500 to-teal-600",
+ algorithms: "from-violet-500 to-fuchsia-600",
+ arabic: "from-rose-500 to-pink-600",
 };
 
 export default function CourseDetailContent() {
@@ -135,6 +158,9 @@ export default function CourseDetailContent() {
  { icon: BookOpen, label: t("lessons"), value: `${course.lessons} ${common("lessons")}` },
  ];
 
+ const HeroIcon = categoryHeroIcon[course.category] || Sparkles;
+ const iconGrad = categoryHeroGradient[course.category] || "from-primary to-violet-600";
+
  return (
  <div className="py-12 sm:py-20">
  <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -161,46 +187,97 @@ export default function CourseDetailContent() {
  </div>
  </AnimatedSection>
  <AnimatedSection delay={0.12}>
- <div className="bg-surface rounded-3xl border border-border p-8 sm:p-10 mb-8">
- <div className="flex flex-wrap gap-2 mb-4">
+ <div className="mb-8 rounded-[1.75rem] bg-gradient-to-br from-primary via-violet-500 to-amber-400 p-[3px] shadow-xl shadow-primary/20 dark:shadow-primary/30">
+ <div className="relative overflow-hidden rounded-[1.6rem] bg-surface px-6 py-8 sm:px-10 sm:py-10 dark:bg-surface">
+ {/* soft confetti dots */}
+ <div
+ className="pointer-events-none absolute inset-0 opacity-[0.35] dark:opacity-20"
+ style={{
+ backgroundImage: `radial-gradient(circle at 20% 30%, rgb(91 127 214 / 0.25) 0, transparent 45%),
+ radial-gradient(circle at 78% 20%, rgb(139 92 246 / 0.2) 0, transparent 40%),
+ radial-gradient(circle at 70% 85%, rgb(251 191 36 / 0.2) 0, transparent 42%),
+ radial-gradient(circle at 10% 80%, rgb(52 211 153 / 0.15) 0, transparent 38%)`,
+ }}
+ aria-hidden
+ />
+ <motion.div
+ className="pointer-events-none absolute -right-2 top-4 text-amber-400/90"
+ animate={{ rotate: [0, 12, -8, 0], scale: [1, 1.1, 1] }}
+ transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+ aria-hidden
+ >
+ <Sparkles className="h-8 w-8 sm:h-9 sm:w-9" strokeWidth={1.75} />
+ </motion.div>
+ <motion.div
+ className="pointer-events-none absolute left-4 bottom-6 text-primary/40"
+ animate={{ y: [0, -4, 0] }}
+ transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+ aria-hidden
+ >
+ <Star className="h-5 w-5 fill-primary/30" strokeWidth={0} />
+ </motion.div>
+
+ <div className="relative flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-8">
+ <div
+ className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${iconGrad} text-white shadow-lg shadow-black/10 ring-4 ring-white dark:ring-surface`}
+ >
+ <HeroIcon className="h-8 w-8" strokeWidth={2} aria-hidden />
+ </div>
+ <div className="min-w-0 flex-1">
+ <div className="mb-4 flex flex-wrap items-center gap-2">
  <span
- className={`text-sm font-semibold px-3 py-1 rounded-full ${
+ className={`inline-flex items-center rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-wide sm:text-sm ${
  categoryBadge[course.category] || categoryBadge.programming
  }`}
  >
  {course.category}
  </span>
  <span
- className={`text-sm font-semibold px-3 py-1 rounded-full ${
+ className={`inline-flex items-center rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-wide sm:text-sm ${
  levelBadge[course.level] || levelBadge.beginner
  }`}
  >
  {common(course.level as "beginner" | "intermediate" | "advanced")}
  </span>
  </div>
- <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">{course.title}</h1>
+ <h1 className="mb-1 bg-gradient-to-r from-foreground via-primary to-violet-600 bg-clip-text text-2xl font-extrabold leading-tight tracking-tight text-transparent dark:from-foreground dark:via-sky-300 dark:to-violet-400 sm:text-3xl">
+ {course.title}
+ </h1>
+ <p className="mb-6 text-sm font-medium text-muted sm:text-base">
+ ✨ {t("heroTagline")}
+ </p>
+
  {course.showPrice ? (
- <p className="text-2xl font-bold text-foreground tabular-nums flex flex-wrap items-baseline gap-x-3 gap-y-1">
- <span className="text-sm font-semibold uppercase tracking-wide text-muted w-full sm:w-auto">
+ <div className="inline-flex w-full max-w-md flex-col gap-1 rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/[0.08] via-violet-500/[0.06] to-amber-400/[0.08] px-5 py-4 shadow-inner dark:from-primary/15 dark:via-violet-500/10 dark:to-amber-400/10">
+ <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary/80 dark:text-primary/90">
  {t("price")}
  </span>
+ <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 tabular-nums">
  {course.price <= 0 ? (
- <span>{common("free")}</span>
+ <span className="text-2xl font-black text-foreground">{common("free")}</span>
  ) : course.discountPercent > 0 && course.salePrice < course.price ? (
  <>
- <span className="line-through text-muted text-lg font-semibold">
+ <span className="text-lg font-bold text-muted line-through">
  {formatCoursePrice(course.price, course.currency, locale)}
  </span>
- <span>{formatCoursePrice(course.salePrice, course.currency, locale)}</span>
- <span className="text-sm font-medium text-primary">
+ <span className="text-2xl font-black text-foreground">
+ {formatCoursePrice(course.salePrice, course.currency, locale)}
+ </span>
+ <span className="rounded-full bg-amber-400/90 px-2.5 py-0.5 text-xs font-bold text-amber-950 shadow-sm">
  {t("savePercent", { pct: course.discountPercent })}
  </span>
  </>
  ) : (
- <span>{formatCoursePrice(course.price, course.currency, locale)}</span>
+ <span className="text-2xl font-black text-foreground">
+ {formatCoursePrice(course.price, course.currency, locale)}
+ </span>
  )}
- </p>
+ </div>
+ </div>
  ) : null}
+ </div>
+ </div>
+ </div>
  </div>
  </AnimatedSection>
  </>
@@ -219,7 +296,9 @@ export default function CourseDetailContent() {
  {common(course.level as "beginner" | "intermediate" | "advanced")}
  </span>
  </div>
- <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">{course.title}</h1>
+ <h1 className="text-2xl sm:text-3xl font-bold text-white mb-3 leading-tight tracking-tight">
+ {course.title}
+ </h1>
  {course.showPrice ? (
  <p className="mt-5 text-2xl font-bold text-white tabular-nums flex flex-wrap items-baseline gap-x-3 gap-y-1">
  <span className="text-sm font-semibold uppercase tracking-wide text-white/70 w-full sm:w-auto">

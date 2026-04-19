@@ -129,6 +129,7 @@
     "free": "مجاني"
   },
   "courseDetail": {
+    "heroTagline": "تعلّم مباشرة مع مدربين ودودين",
     "price": "السعر",
     "savePercent": "وفر {pct}٪",
     "ageGroup": "الفئة العمرية",

@@ -9,6 +9,10 @@ import {
  Bot,
  Brain,
  BookOpen,
+ BookMarked,
+ Gamepad2,
+ Smartphone,
+ Layout,
  ArrowRight,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -46,10 +50,28 @@ const SLUG_STYLE: Record<
  emoji: "🧩",
  },
  arabic: {
- icon: BookOpen,
+ icon: BookMarked,
  color: "#F43F5E",
  borderColor: "border-b-rose-400",
  emoji: "📖",
+ },
+ "game-development": {
+ icon: Gamepad2,
+ color: "#F59E0B",
+ borderColor: "border-b-amber-400",
+ emoji: "🎮",
+ },
+ "mobile-development": {
+ icon: Smartphone,
+ color: "#EC4899",
+ borderColor: "border-b-pink-400",
+ emoji: "📱",
+ },
+ "web-development": {
+ icon: Layout,
+ color: "#06B6D4",
+ borderColor: "border-b-cyan-400",
+ emoji: "🌐",
  },
 };
 
