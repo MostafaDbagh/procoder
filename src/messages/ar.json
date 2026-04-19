@@ -128,7 +128,17 @@
     "enrollNow": "انضم لهذه المغامرة",
     "learnMore": "اعرف المزيد",
     "noCourses": "لم نجد مطابقة الآن — جرّب تعديل الفلاتر وسنساعدك في إيجاد المناسب!",
-    "free": "مجاني"
+    "free": "مجاني",
+    "categoryLabels": {
+      "programming": "البرمجة",
+      "robotics": "الروبوتات",
+      "algorithms": "الخوارزميات",
+      "arabic": "اللغة العربية",
+      "game-development": "تطوير الألعاب",
+      "mobile-app-development": "تطوير تطبيقات الموبايل",
+      "mobile-development": "تطوير تطبيقات الموبايل",
+      "web-development": "تطوير مواقع ويب"
+    }
   },
   "courseDetail": {
     "heroTagline": "تعلّم مباشرة مع مدربين ودودين",
@@ -596,12 +606,12 @@
     "python_skill2": "المتغيرات والحلقات",
     "python_skill3": "الدوال",
     "python_skill4": "ألعاب بسيطة",
-    "webdev_title": "تطوير الويب",
+    "webdev_title": "تطوير مواقع ويب",
     "webdev_desc": "المراهقون يتعلمون بناء مواقعهم الخاصة — صفحة شخصية أو مدونة أو شيء من خيالهم بالكامل.",
     "webdev_skill1": "HTML و CSS",
     "webdev_skill2": "جافاسكريبت",
     "webdev_skill3": "التصميم المتجاوب",
-    "webdev_skill4": "تطبيقات الويب",
+    "webdev_skill4": "مواقع ويب تفاعلية",
     "robot_basics_title": "بناة الروبوتات",
     "robot_basics_desc": "أيدٍ صغيرة تبني روبوتات حقيقية! طفلك يُجمّع ويوصل المستشعرات ويُحيي الروبوت — خطوة بخطوة بفرح.",
     "robot_basics_skill1": "تجميع الروبوتات",

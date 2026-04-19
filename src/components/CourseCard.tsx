@@ -30,6 +30,7 @@ import {
 } from "lucide-react";
 import type { Course } from "@/data/courses";
 import { publicOrAbsoluteAssetUrl } from "@/lib/mediaUrls";
+import { courseCategoryLabelKey, titleizeCategorySlug } from "@/lib/courseCategoryLabel";
 
 const iconMap: Record<string, React.ElementType> = {
  Blocks, Code2, Globe, Bot, Cpu, Brain, Trophy, BookOpen, PenTool, BookMarked, Star, Gamepad2,
@@ -92,7 +93,12 @@ export const CourseCard = React.memo(function CourseCard({ course, index = 0, ti
  const ct = useTranslations("courses");
  const locale = useLocale();
  const Icon = iconMap[course.iconName] || BookOpen;
- const colors = categoryColors[course.category] || categoryColors.programming;
+ const labelKey = courseCategoryLabelKey(course.category);
+ const colors =
+ categoryColors[course.category] || categoryColors[labelKey] || categoryColors.programming;
+ const categoryLabel = ct.has(`categoryLabels.${labelKey}` as never)
+ ? ct(`categoryLabels.${labelKey}` as never)
+ : titleizeCategorySlug(course.category);
 
  const courseTitle = title || (course.titleKey ? t(course.titleKey) : course._title || "");
  const courseDesc = description || (course.descKey ? t(course.descKey) : course._desc || "");
@@ -140,7 +146,7 @@ export const CourseCard = React.memo(function CourseCard({ course, index = 0, ti
  </div>
  <div className="flex gap-1.5 flex-wrap justify-end">
  <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${colors.badge}`}>
- {course.category}
+ {categoryLabel}
  </span>
  <span
  className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${levelColors[course.level]}`}
@@ -163,7 +169,7 @@ export const CourseCard = React.memo(function CourseCard({ course, index = 0, ti
  <>
  <div className="flex gap-1.5 flex-wrap mb-3">
  <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${colors.badge}`}>
- {course.category}
+ {categoryLabel}
  </span>
  <span
  className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${levelColors[course.level]}`}

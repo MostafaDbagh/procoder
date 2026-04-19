@@ -128,7 +128,17 @@
     "enrollNow": "Join This Adventure",
     "learnMore": "Learn More",
     "noCourses": "We couldn't find a match right now — try adjusting your filters and we'll help you find the right fit!",
-    "free": "Free"
+    "free": "Free",
+    "categoryLabels": {
+      "programming": "Programming",
+      "robotics": "Robotics",
+      "algorithms": "Algorithms",
+      "arabic": "Arabic",
+      "game-development": "Game development",
+      "mobile-app-development": "Mobile app development",
+      "mobile-development": "Mobile app development",
+      "web-development": "Web development"
+    }
   },
   "courseDetail": {
     "heroTagline": "Live classes with friendly coaches",

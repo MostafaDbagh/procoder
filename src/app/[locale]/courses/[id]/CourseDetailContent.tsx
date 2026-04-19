@@ -10,6 +10,7 @@ import { AnimatedSection } from "@/components/AnimatedSection";
 import { EnrollModal } from "@/components/EnrollModal";
 import { formatCoursePrice, priceAfterCourseDiscount } from "@/lib/formatCoursePrice";
 import { publicOrAbsoluteAssetUrl } from "@/lib/mediaUrls";
+import { courseCategoryLabelKey, titleizeCategorySlug } from "@/lib/courseCategoryLabel";
 import { motion } from "framer-motion";
 import {
  ArrowLeft,
@@ -31,19 +32,21 @@ import {
 
 const categoryBadge: Record<string, string> = {
  programming:
- "bg-blue-100 text-blue-800 dark:bg-blue-950/50 dark:text-blue-300 capitalize shadow-sm shadow-blue-600/10",
+ "bg-blue-100 text-blue-800 dark:bg-blue-950/50 dark:text-blue-300 shadow-sm shadow-blue-600/10",
  robotics:
- "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300 capitalize shadow-sm shadow-emerald-600/10",
+ "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300 shadow-sm shadow-emerald-600/10",
  algorithms:
- "bg-violet-100 text-violet-800 dark:bg-violet-950/50 dark:text-violet-300 capitalize shadow-sm shadow-violet-600/10",
+ "bg-violet-100 text-violet-800 dark:bg-violet-950/50 dark:text-violet-300 shadow-sm shadow-violet-600/10",
  arabic:
- "bg-rose-100 text-rose-800 dark:bg-rose-950/50 dark:text-rose-300 capitalize shadow-sm shadow-rose-600/10",
+ "bg-rose-100 text-rose-800 dark:bg-rose-950/50 dark:text-rose-300 shadow-sm shadow-rose-600/10",
  "game-development":
- "bg-amber-100 text-amber-900 dark:bg-amber-950/50 dark:text-amber-200 capitalize shadow-sm shadow-amber-600/10",
+ "bg-amber-100 text-amber-900 dark:bg-amber-950/50 dark:text-amber-200 shadow-sm shadow-amber-600/10",
  "mobile-development":
- "bg-pink-100 text-pink-900 dark:bg-pink-950/50 dark:text-pink-200 capitalize shadow-sm shadow-pink-600/10",
+ "bg-pink-100 text-pink-900 dark:bg-pink-950/50 dark:text-pink-200 shadow-sm shadow-pink-600/10",
+ "mobile-app-development":
+ "bg-pink-100 text-pink-900 dark:bg-pink-950/50 dark:text-pink-200 shadow-sm shadow-pink-600/10",
  "web-development":
- "bg-cyan-100 text-cyan-900 dark:bg-cyan-950/50 dark:text-cyan-200 capitalize shadow-sm shadow-cyan-600/10",
+ "bg-cyan-100 text-cyan-900 dark:bg-cyan-950/50 dark:text-cyan-200 shadow-sm shadow-cyan-600/10",
 };
 
 const levelBadge: Record<string, string> = {
@@ -196,6 +199,16 @@ export default function CourseDetailContent() {
  ? publicOrAbsoluteAssetUrl(course.imageUrl)
  : "";
 
+ const categoryLabelKeyResolved = courseCategoryLabelKey(course.category);
+ const categoryLabel =
+ common.has(`categoryLabels.${categoryLabelKeyResolved}` as never)
+ ? common(`categoryLabels.${categoryLabelKeyResolved}` as never)
+ : titleizeCategorySlug(course.category);
+ const categoryBadgeClass =
+ categoryBadge[course.category] ||
+ categoryBadge[categoryLabelKeyResolved] ||
+ categoryBadge.programming;
+
  const info = [
  { icon: Users, label: t("ageGroup"), value: `${course.ageMin}–${course.ageMax}` },
  { icon: BarChart3, label: t("level"), value: common(course.level as "beginner" | "intermediate" | "advanced") },
@@ -270,11 +283,11 @@ export default function CourseDetailContent() {
  <div className="min-w-0 flex-1">
  <div className="mb-2 flex flex-wrap items-center gap-1.5 sm:gap-2">
  <span
- className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wide sm:px-3.5 sm:py-1 sm:text-xs ${
- categoryBadge[course.category] || categoryBadge.programming
- }`}
+ className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-bold sm:px-3.5 sm:py-1 sm:text-xs ${
+ locale === "ar" ? "tracking-normal" : "uppercase tracking-wide"
+ } ${categoryBadgeClass}`}
  >
- {course.category}
+ {categoryLabel}
  </span>
  <span
  className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wide sm:px-3.5 sm:py-1 sm:text-xs ${
@@ -331,8 +344,8 @@ export default function CourseDetailContent() {
  <div className="absolute -bottom-10 -left-10 w-48 h-48 rounded-full bg-white/10" />
  <div className="relative">
  <div className="flex flex-wrap gap-3 mb-4">
- <span className="px-3 py-1 rounded-full bg-white/20 text-white text-sm font-medium capitalize">
- {course.category}
+ <span className="px-3 py-1 rounded-full bg-white/20 text-white text-sm font-medium">
+ {categoryLabel}
  </span>
  <span className="px-3 py-1 rounded-full bg-white/20 text-white text-sm font-medium capitalize">
  {common(course.level as "beginner" | "intermediate" | "advanced")}
