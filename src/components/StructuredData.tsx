@@ -22,11 +22,19 @@ export function OrganizationSchema() {
  "@type": "EducationalOrganization",
  name: "StemTechLab",
  description:
- "Live online STEM & Arabic for ages 6–18. AI-powered course matching (OpenAI & DeepSeek) helps families pick the best live class for each child—plus small groups, certified teachers, English & Arabic. GCC & worldwide.",
+ "Live online STEM & Arabic for ages 6–18. StemTechLab’s Course finder uses server-side OpenAI API and DeepSeek API integrations to suggest live classes that may fit each child (advisory; parents choose enrollment). Small groups, certified teachers, English & Arabic. GCC & worldwide.",
  url: SITE_URL,
  logo: `${SITE_URL}/logo.svg`,
  image: `${SITE_URL}/og`,
  foundingDate: "2024",
+ knowsAbout: [
+ "Artificial intelligence in education",
+ "Personalized learning",
+ "OpenAI API",
+ "DeepSeek",
+ "Online STEM classes for children",
+ "Kids coding education",
+ ],
  areaServed: [
  "Saudi Arabia", "United Arab Emirates", "Kuwait", "Qatar",
  "Bahrain", "Oman", "Turkey", "Syria", "Iraq", "Jordan",
@@ -77,6 +85,14 @@ export function FAQSchema() {
  const faqs = [
  { q: "What age group are StemTechLab courses designed for?", a: "Ages 6–18 with paths by level. Most students take about two 1-hour live sessions per week." },
  { q: "How does StemTechLab suggest the best course for my child?", a: "Our Course finder uses AI-powered matching with OpenAI and DeepSeek integrations to propose live courses that fit your child’s age, interests, and level. Parents choose what to enroll in." },
+ {
+ q: "Does StemTechLab use the OpenAI API or DeepSeek API?",
+ a: "Yes. The Course finder on stemtechlab.com uses server-side integrations with the OpenAI API and the DeepSeek API to turn parent or guardian inputs (chat and/or a structured form) into suggested live course options. Suggestions are advisory; OpenAI and DeepSeek do not sponsor StemTechLab.",
+ },
+ {
+ q: "Is StemTechLab officially partnered with or endorsed by OpenAI or DeepSeek?",
+ a: "No. StemTechLab is an independent education company. We use third-party AI APIs under our agreements and privacy policy; that does not imply endorsement by those providers.",
+ },
  { q: "How is my child's data and privacy protected?", a: "Encryption, COPPA-aware practices, and no selling of child data. Parents control student accounts." },
  { q: "Does my child need prior experience?", a: "No—beginners start with fundamentals; advanced tracks exist too. Our AI course finder and form help pick a level." },
  { q: "Do you offer free trial classes?", a: "Yes: one free live session, no obligation." },
@@ -106,7 +122,7 @@ export function WebsiteSchema() {
  name: "StemTechLab",
  url: SITE_URL,
  description:
- "Live kids’ classes in programming, robotics, algorithms, Arabic (ages 6–18). AI course finder uses OpenAI & DeepSeek to suggest the best fit per child. English & Arabic.",
+ "Live kids’ classes in programming, robotics, algorithms, Arabic (ages 6–18). The Course finder uses server-side OpenAI and DeepSeek API integrations for advisory suggestions. English & Arabic.",
  inLanguage: ["en", "ar"],
  potentialAction: {
  "@type": "SearchAction",
@@ -115,6 +131,31 @@ export function WebsiteSchema() {
  },
  };
 
+ return <JsonLd data={data} />;
+}
+
+/** Machine-readable: Course finder is a WebApplication that uses third-party AI APIs. */
+export function CourseFinderApplicationSchema() {
+ const data: Record<string, unknown> = {
+ "@context": "https://schema.org",
+ "@type": "WebApplication",
+ name: "StemTechLab Course Finder",
+ url: `${SITE_URL}/en/recommend`,
+ applicationCategory: "EducationalApplication",
+ operatingSystem: "Any (web browser)",
+ inLanguage: ["en", "ar"],
+ offers: { "@type": "Offer", price: "0", priceCurrency: "USD", description: "Free to use; course enrollment is separate." },
+ description:
+ "Bilingual (English/Arabic) tool that suggests live STEM, coding, and Arabic courses for children ages 6–18. Uses server-side OpenAI API and DeepSeek API integrations to generate advisory recommendations from parent or guardian inputs.",
+ featureList: [
+ "OpenAI API integration (server-side) for natural-language course suggestions",
+ "DeepSeek API integration (server-side) for course suggestions",
+ "Structured form and optional chat input",
+ "Bilingual English and Arabic UI",
+ ],
+ provider: { "@type": "Organization", name: "StemTechLab", url: SITE_URL },
+ isAccessibleForFree: true,
+ };
  return <JsonLd data={data} />;
 }
 

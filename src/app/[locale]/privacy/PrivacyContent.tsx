@@ -10,6 +10,7 @@ export default function PrivacyContent() {
  const sections = [
  { title: t("s1Title"), content: t("s1Content") },
  { title: t("s2Title"), content: t("s2Content") },
+ { title: t("s2aTitle"), content: t("s2aContent") },
  { title: t("s3Title"), content: t("s3Content") },
  { title: t("s4Title"), content: t("s4Content") },
  { title: t("s5Title"), content: t("s5Content") },

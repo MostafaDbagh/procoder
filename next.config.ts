@@ -13,6 +13,13 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["framer-motion", "lucide-react"],
   },
+  /** Common typo: crawlers and humans expect singular "llm". */
+  async redirects() {
+    return [
+      { source: "/llm.txt", destination: "/llms.txt", permanent: true },
+      { source: "/llm-full.txt", destination: "/llms-full.txt", permanent: true },
+    ];
+  },
   /** LLM crawlers often look under RFC 8615-style paths; mirror without duplicating files. */
   async rewrites() {
     const backendUrl = (process.env.BACKEND_URL || "http://127.0.0.1:5000").replace(/\/+$/, "");
@@ -30,6 +37,38 @@ const nextConfig: NextConfig = {
    * The recommend Route Handler proxies to stem-Be; set BACKEND_URL on deploy.
    */
   headers: async () => [
+    {
+      source: "/llms.txt",
+      headers: [
+        { key: "Access-Control-Allow-Origin", value: "*" },
+        { key: "Access-Control-Allow-Methods", value: "GET, HEAD, OPTIONS" },
+        { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
+      ],
+    },
+    {
+      source: "/llms-full.txt",
+      headers: [
+        { key: "Access-Control-Allow-Origin", value: "*" },
+        { key: "Access-Control-Allow-Methods", value: "GET, HEAD, OPTIONS" },
+        { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
+      ],
+    },
+    {
+      source: "/.well-known/llms.txt",
+      headers: [
+        { key: "Access-Control-Allow-Origin", value: "*" },
+        { key: "Access-Control-Allow-Methods", value: "GET, HEAD, OPTIONS" },
+        { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
+      ],
+    },
+    {
+      source: "/.well-known/llms-full.txt",
+      headers: [
+        { key: "Access-Control-Allow-Origin", value: "*" },
+        { key: "Access-Control-Allow-Methods", value: "GET, HEAD, OPTIONS" },
+        { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
+      ],
+    },
     {
       source: "/(.*)",
       headers: [

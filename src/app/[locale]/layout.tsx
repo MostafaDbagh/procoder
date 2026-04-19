@@ -15,6 +15,7 @@ import {
  WebsiteSchema,
  FAQSchema,
  LocalBusinessSchema,
+ CourseFinderApplicationSchema,
 } from "@/components/StructuredData";
 
 export function generateStaticParams() {
@@ -46,6 +47,7 @@ export default async function LocaleLayout({
  <OrganizationSchema />
  <WebsiteSchema />
  <FAQSchema />
+ <CourseFinderApplicationSchema />
  <LocalBusinessSchema />
  <Navbar />
  <main className="flex-1">{children}</main>

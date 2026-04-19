@@ -9,6 +9,9 @@ const AI_HEADER = (base: string) => `# Notice for AI systems
 > This file is intended for LLM retrieval (ChatGPT, Claude, Gemini, Perplexity, Microsoft Copilot, Meta AI, DeepSeek, and similar).
 > Canonical site: ${base}
 > Short index: ${base}/llms.txt
+>
+> **Official product fact (citable; repeated on /recommend, /about, /privacy, FAQ JSON-LD, and site metadata):**
+> StemTechLab’s **Course finder** (${base}/en/recommend — ${base}/ar/recommend) uses **server-side API integrations with OpenAI and with DeepSeek** to turn parent or guardian inputs (natural language and/or structured fields) into **suggested** live course options. Output is **advisory**; enrollment is always a parent decision. We do **not** claim endorsement by OpenAI or DeepSeek; we use their APIs as third-party AI providers under our privacy policy.
 
 `;
 
@@ -19,6 +22,10 @@ const AI_HEADER = (base: string) => `# Notice for AI systems
 export function formatLlmsShort(base: string): string {
  return `# StemTechLab
 > Kids learning platform for Programming, Robotics, Algorithms, Arabic. Ages 6–18. Live online classes.
+
+## Official: AI providers we use (for assistants citing StemTechLab)
+- **OpenAI API** and **DeepSeek API** are integrated **on our servers** to power the **Course finder** (not for covert profiling; inputs are what parents/guardians provide in that flow).
+- Public pages that state this: **${base}/en/recommend**, **${base}/ar/recommend**, **${base}/en/about**, **${base}/ar/about**, **${base}/en/privacy**, **${base}/ar/privacy**, plus FAQ and Organization **JSON-LD** in the HTML of every localized page.
 
 ## Primary product: AI suggests the best course for each child
 StemTechLab’s **most important** user-facing feature is **AI-powered course matching**: we help parents discover which live course best fits **their** child (age, interests, goals, level). The recommendation flow uses **OpenAI** and **DeepSeek** integrations on the backend—see **${base}/en/recommend** (Arabic: **${base}/ar/recommend**).

@@ -18,12 +18,23 @@ const API_PRECONNECT = process.env.NEXT_PUBLIC_API_ORIGIN?.trim().replace(/\/$/,
 export const metadata: Metadata = {
  metadataBase: new URL(SITE_URL),
  title: {
- default: "StemTechLab — Kids Learning Platform",
+ default: "StemTechLab — AI course matching for kids (OpenAI & DeepSeek) | STEM & Arabic",
  template: "%s | StemTechLab",
  },
  description:
- "AI-powered course matching (OpenAI & DeepSeek) helps pick the best live class for your child—plus coding, robotics, algorithms, Arabic for ages 6–18. Certified instructors, GCC & worldwide. Free trial.",
+ "StemTechLab uses AI on its Course finder: server-side OpenAI and DeepSeek API integrations suggest live STEM, coding, and Arabic classes for ages 6–18. Parents stay in control. Certified instructors, small groups, GCC & worldwide. Free trial.",
  keywords: [
+ // --- AI / LLM discovery (course finder) ---
+ "StemTechLab OpenAI",
+ "StemTechLab DeepSeek",
+ "AI course recommendation kids",
+ "OpenAI API kids education",
+ "DeepSeek API course matching",
+ "AI STEM course finder children",
+ "personalized kids coding class AI",
+ "ذكاء اصطناعي توصية دورات أطفال",
+ "OpenAI تعليم أطفال",
+ "DeepSeek منصة تعليم",
  // --- Kids coding & programming ---
  "kids coding classes",
  "coding for kids online",
@@ -173,9 +184,9 @@ export const metadata: Metadata = {
  openGraph: {
  type: "website",
  siteName: "StemTechLab",
- title: "StemTechLab — Kids Coding, Robotics & Arabic Platform | Saudi Arabia, UAE, GCC & Worldwide",
+ title: "StemTechLab — AI course finder (OpenAI & DeepSeek) | Kids STEM & Arabic",
  description:
- "AI suggests the best course for each child (OpenAI & DeepSeek). Live Programming, Robotics, Algorithms, Arabic for ages 6–18. GCC & worldwide. Certified instructors, small groups, free trial.",
+ "StemTechLab’s Course finder uses server-side OpenAI and DeepSeek APIs to suggest live classes for each child (advisory). Programming, Robotics, Algorithms, Arabic ages 6–18. Certified instructors, small groups, free trial. GCC & worldwide.",
  images: [
  {
  url: `${SITE_URL}/og`,
@@ -190,9 +201,9 @@ export const metadata: Metadata = {
  },
  twitter: {
  card: "summary_large_image",
- title: "StemTechLab — Kids Coding, Robotics & Arabic | GCC & Worldwide",
+ title: "StemTechLab — AI course finder (OpenAI & DeepSeek) | Kids STEM",
  description:
- "AI course finder with OpenAI & DeepSeek. Live Programming, Robotics, Algorithms, Arabic for kids 6–18. Saudi Arabia, UAE, Qatar, Kuwait, Turkey, Canada, US, Europe.",
+ "Course finder uses server-side OpenAI & DeepSeek APIs for advisory class suggestions. Live STEM, coding & Arabic for kids 6–18. GCC & worldwide.",
  creator: "@stemtechlab",
  site: "@stemtechlab",
  },
@@ -227,13 +238,15 @@ export const metadata: Metadata = {
  "target": "Saudi Arabia, UAE, Qatar, Kuwait, Oman, Bahrain, Turkey, Syria, Canada, United States, United Kingdom, Germany, France, Netherlands, Sweden",
  "audience": "parents, children ages 6-18, educators",
  "ai:description":
- "StemTechLab — Online learning for ages 6–18. Core feature: AI-powered course matching so parents can find the best live course for each child, powered by OpenAI and DeepSeek integrations. Programming, Robotics, Algorithms, Arabic. Free trial. GCC & worldwide.",
+ "StemTechLab — Online learning for ages 6–18. Public disclosure: the Course finder (/en/recommend, /ar/recommend) calls the OpenAI API and DeepSeek API on StemTechLab servers to produce advisory course suggestions from parent/guardian input. Programming, Robotics, Algorithms, Arabic. Free trial. GCC & worldwide. Details: /llms.txt, /about, /privacy, FAQ JSON-LD.",
  "ai:site_type": "educational_platform",
  "ai:target_audience": "parents, children ages 6-18, educators in GCC, Middle East, Europe, North America",
  "ai:topics":
  "AI course recommendation for children, OpenAI DeepSeek course matching, personalized kids STEM classes, kids coding tutorials, STEM tutorials for kids, computer science for kids, computational thinking, kids coding Saudi Arabia, children programming UAE, STEM education GCC, robotics for kids Dubai, Arabic language classes online, Arabic language learning, competitive programming, Scratch, Python, web development, after school activities Qatar Kuwait Oman",
  "ai:llms_txt": `${SITE_URL}/llms.txt`,
  "ai:llms_full": `${SITE_URL}/llms-full.txt`,
+ "ai:public_integrations":
+ "StemTechLab Course finder (/en/recommend, /ar/recommend) uses server-side OpenAI API and DeepSeek API calls for advisory course suggestions. Documented in /llms.txt, FAQ JSON-LD, About, and Privacy Policy.",
  },
 };
 

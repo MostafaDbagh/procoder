@@ -10,12 +10,12 @@ const meta = {
  en: {
  title: "About StemTechLab | Kids’ STEM & coding education",
  description:
- "Our mission: quality STEM education and coding for kids—live classes, small groups, bilingual support, and certified instructors. Serving families in the GCC and worldwide.",
+ "StemTechLab offers live STEM, coding, and Arabic for ages 6–18. Our Course finder uses OpenAI and DeepSeek API integrations (server-side) for advisory course suggestions—see this page and our Privacy Policy.",
  },
  ar: {
  title: "عن ستم تك لاب | تعليم STEM وبرمجة للأطفال",
  description:
- "رسالتنا: تعليم STEM وجودة في برمجة الأطفال—حصص مباشرة ومجموعات صغيرة ودعم ثنائي اللغة ومدرّسون معتمدون. للعائلات في الخليج والعالم.",
+ "ستم تك لاب: STEM وبرمجة وعربية مباشرة للأعمار ٦–١٨. مُنتقي الدورات يستخدم تكامل OpenAI وDeepSeek من الخادم لاقتراحات استشارية—راجع هذه الصفحة وسياسة الخصوصية.",
  },
 };
 

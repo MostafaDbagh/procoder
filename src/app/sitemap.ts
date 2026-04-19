@@ -41,6 +41,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
  changeFrequency: "monthly",
  priority: 0.35,
  });
+ entries.push({
+ url: `${SITE_URL}/.well-known/llms.txt`,
+ lastModified: now,
+ changeFrequency: "monthly",
+ priority: 0.35,
+ });
+ entries.push({
+ url: `${SITE_URL}/.well-known/llms-full.txt`,
+ lastModified: now,
+ changeFrequency: "monthly",
+ priority: 0.3,
+ });
 
  // Static pages for each locale
  for (const locale of locales) {

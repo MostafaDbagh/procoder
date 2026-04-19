@@ -117,6 +117,21 @@ export default function AboutContent({ cmsTeam }: AboutContentProps) {
  </AnimatedCard>
  </div>
 
+ {/* AI disclosure — crawlable HTML for search & LLMs */}
+ <AnimatedSection className="mb-20">
+ <div className="bg-surface rounded-2xl border border-border p-8 max-w-4xl mx-auto">
+ <div className="flex items-start gap-4">
+ <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-primary flex items-center justify-center shrink-0">
+ <Brain className="w-7 h-7 text-white" />
+ </div>
+ <div>
+ <h2 className="text-xl sm:text-2xl font-bold mb-3">{t("aiTechTitle")}</h2>
+ <p className="text-muted leading-relaxed">{t("aiTechBody")}</p>
+ </div>
+ </div>
+ </div>
+ </AnimatedSection>
+
  {/* Stats */}
  <AnimatedSection className="mb-20">
  <div className="bg-primary rounded-3xl p-8 sm:p-12">
