@@ -7,14 +7,34 @@ import { LocalizedLink } from "@/components/LocalizedLink";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Sun, Moon, Globe, Sparkles } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
+import { courses as staticCourses } from "@/data/courses";
+
+function titleizeSlug(slug: string) {
+ return slug
+ .split("-")
+ .filter(Boolean)
+ .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+ .join(" ");
+}
 
 export function Navbar() {
  const t = useTranslations("nav");
+ const ct = useTranslations("courseData");
  const locale = useLocale();
  const pathname = usePathname();
  const router = useRouter();
  const { theme, toggleTheme } = useTheme();
  const [mobileOpen, setMobileOpen] = useState(false);
+
+ const contactWithTrialSubject = useMemo(() => {
+ const m = pathname.match(/^\/courses\/([^/?#]+)\/?$/);
+ const slug = m?.[1];
+ if (!slug) return "/contact";
+ const staticCourse = staticCourses.find((c) => c.id === slug);
+ const courseLabel = staticCourse ? ct(staticCourse.titleKey) : titleizeSlug(slug);
+ const subject = t("bookDemoSubject", { course: courseLabel });
+ return `/contact?subject=${encodeURIComponent(subject)}`;
+ }, [pathname, t, ct]);
 
  // Close the drawer after navigation — not in the Link onClick. Closing on the same
  // click unmounts the menu before the transition runs, which can cancel navigation
@@ -77,7 +97,7 @@ export function Navbar() {
  {/* Actions */}
  <div className="flex items-center gap-2">
  <LocalizedLink
- href="/contact"
+ href={contactWithTrialSubject}
  className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold shadow-md shadow-primary/10 hover:shadow-lg hover:scale-[1.02] transition-all md:me-5"
  >
  {t("bookDemo")}
@@ -157,7 +177,7 @@ export function Navbar() {
  );
  })}
  <LocalizedLink
- href="/contact"
+ href={contactWithTrialSubject}
  className="block mx-4 mt-2 px-4 py-3 rounded-xl bg-primary text-white text-sm font-semibold text-center shadow-md"
  >
  {t("bookDemo")}

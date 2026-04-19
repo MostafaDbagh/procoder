@@ -67,6 +67,12 @@ const SLUG_STYLE: Record<
  borderColor: "border-b-pink-400",
  emoji: "📱",
  },
+ "mobile-app-development": {
+ icon: Smartphone,
+ color: "#EC4899",
+ borderColor: "border-b-pink-400",
+ emoji: "📱",
+ },
  "web-development": {
  icon: Layout,
  color: "#06B6D4",

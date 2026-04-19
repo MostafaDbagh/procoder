@@ -13,7 +13,8 @@
     "lightMode": "الوضع الفاتح",
     "language": "English",
     "menu": "القائمة",
-    "bookDemo": "احجز حصة تجريبية مجانية"
+    "bookDemo": "احجز حصة تجريبية مجانية",
+    "bookDemoSubject": "حصة تجريبية مجانية — {course}"
   },
   "notFound": {
     "title": "عذراً! هذه الصفحة تاهت",

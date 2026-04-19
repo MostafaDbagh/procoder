@@ -13,7 +13,8 @@
     "lightMode": "Light Mode",
     "language": "العربية",
     "menu": "Menu",
-    "bookDemo": "Book a Free Trial Class"
+    "bookDemo": "Book a Free Trial Class",
+    "bookDemoSubject": "Free trial class — {course}"
   },
   "notFound": {
     "title": "Oops! This page wandered off",

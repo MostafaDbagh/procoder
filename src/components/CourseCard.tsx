@@ -57,6 +57,21 @@ const categoryColors: Record<string, { badge: string; bg: string; accent: string
  bg: "bg-rose-50 dark:bg-rose-950/20",
  accent: "text-rose-500",
  },
+ "game-development": {
+ badge: "bg-amber-100 text-amber-600 dark:bg-amber-950/40 dark:text-amber-400",
+ bg: "bg-amber-50 dark:bg-amber-950/20",
+ accent: "text-amber-500",
+ },
+ "mobile-app-development": {
+ badge: "bg-pink-100 text-pink-600 dark:bg-pink-950/40 dark:text-pink-400",
+ bg: "bg-pink-50 dark:bg-pink-950/20",
+ accent: "text-pink-500",
+ },
+ "web-development": {
+ badge: "bg-cyan-100 text-cyan-600 dark:bg-cyan-950/40 dark:text-cyan-400",
+ bg: "bg-cyan-50 dark:bg-cyan-950/20",
+ accent: "text-cyan-500",
+ },
 };
 
 const levelColors: Record<string, string> = {
