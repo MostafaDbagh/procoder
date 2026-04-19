@@ -3400,18 +3400,19 @@ function CourseFormModal({
  let cancelled = false;
  (async () => {
  try {
- const [catRaw, instrRaw] = await Promise.all([
+ const [catRaw, teamRaw] = await Promise.all([
  adminFetch<unknown>("/categories/admin/list?page=1&limit=200"),
- adminFetch<unknown>("/admin/users?role=instructor&limit=200"),
+ adminFetch<unknown>("/team/admin/list?page=1&limit=200"),
  ]);
  const { items: cats } = normalizePagedResponse<AdminCategoryRow>(
  catRaw,
  PAGE_SIZE
  );
- const { items: instrs } = normalizePagedResponse<{
- _id: string;
- name: string;
- }>(instrRaw, PAGE_SIZE);
+ const { items: teamMembers } = normalizePagedResponse<Record<string, unknown>>(teamRaw, PAGE_SIZE);
+ const instrs = teamMembers.map((m) => ({
+ _id: String(m._id ?? ""),
+ name: ((m.name as { en?: string })?.en) || String(m.name ?? ""),
+ }));
  if (!cancelled) {
  setCatRows(cats);
  setInstructorOptions(instrs);
