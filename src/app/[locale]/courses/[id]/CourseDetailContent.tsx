@@ -245,15 +245,15 @@ export default function CourseDetailContent() {
  aria-hidden
  />
  <motion.div
- className="pointer-events-none absolute -right-2 top-4 text-primary/35 dark:text-primary/45"
- animate={{ rotate: [0, 12, -8, 0], scale: [1, 1.1, 1] }}
+ className="pointer-events-none absolute right-5 top-5 text-primary/35 dark:text-primary/45 sm:right-7 sm:top-6"
+ animate={{ rotate: [0, 12, -8, 0], scale: [1, 1.06, 1] }}
  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
  aria-hidden
  >
  <HeroIcon className="h-8 w-8 sm:h-9 sm:w-9" strokeWidth={1.75} />
  </motion.div>
  <motion.div
- className="pointer-events-none absolute left-4 bottom-6 text-primary/30 dark:text-primary/35"
+ className="pointer-events-none absolute bottom-5 left-5 text-primary/30 dark:text-primary/35 sm:bottom-6 sm:left-6"
  animate={{ y: [0, -4, 0] }}
  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
  aria-hidden
