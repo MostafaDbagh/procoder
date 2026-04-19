@@ -104,14 +104,14 @@ export default function RecommendContent({ initialCourses }: Props) {
 
  scored.sort((a, b) => b.score - a.score);
 
- // Deduplicate and take max 4
+ // Deduplicate and take max 2 (match API cap)
  const seen = new Set<string>();
  const results = [];
  for (const { course, score } of scored) {
  if (score <= 0 || seen.has(course.id)) continue;
  seen.add(course.id);
  results.push(course);
- if (results.length >= 4) break;
+ if (results.length >= 2) break;
  }
 
  return results;
@@ -125,7 +125,7 @@ export default function RecommendContent({ initialCourses }: Props) {
  seen.add(id);
  const course = catalog.find((c) => c.id === id);
  if (course) results.push(course);
- if (results.length >= 4) break;
+ if (results.length >= 2) break;
  }
  return results;
  }, [aiCourseIds, catalog]);

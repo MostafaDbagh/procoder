@@ -93,14 +93,13 @@ export const CourseCard = React.memo(function CourseCard({ course, index = 0, ti
  >
  <LocalizedLink href={`/courses/${course.id}`} className="block group h-full">
  <div className="h-full bg-surface rounded-2xl border border-border overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 hover:-translate-y-1">
- {/* Top area: solid category tint, or photo cover when image exists */}
+ {/* Top area: solid category tint, or photo cover only (title + tags sit below in content) */}
  <div
- className={`px-6 pt-6 pb-5 relative overflow-hidden min-h-[148px] ${
- hasCover ? "" : colors.bg
+ className={`relative overflow-hidden min-h-[148px] ${
+ hasCover ? "min-h-[160px] sm:min-h-[180px]" : `px-6 pt-6 pb-5 ${colors.bg}`
  }`}
  >
  {hasCover ? (
- <>
  <Image
  src={coverSrc}
  alt=""
@@ -110,11 +109,6 @@ export const CourseCard = React.memo(function CourseCard({ course, index = 0, ti
  unoptimized
  aria-hidden
  />
- <div
- className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/30"
- aria-hidden
- />
- </>
  ) : (
  <>
  <div className="absolute top-[-20px] right-[-20px] w-24 h-24 rounded-full bg-white/30 dark:bg-white/5" />
@@ -122,53 +116,52 @@ export const CourseCard = React.memo(function CourseCard({ course, index = 0, ti
  </>
  )}
 
- <div
- className={`relative z-10 flex items-start gap-3 ${
- hasCover ? "justify-end" : "justify-between"
- }`}
- >
  {!hasCover ? (
+ <>
+ <div className="relative z-10 flex items-start gap-3 justify-between">
  <div
  className={`w-14 h-14 rounded-2xl overflow-hidden shrink-0 flex items-center justify-center shadow-sm bg-white dark:bg-surface ${colors.accent}`}
  >
  <Icon className="w-7 h-7" />
  </div>
- ) : null}
  <div className="flex gap-1.5 flex-wrap justify-end">
- <span
- className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${
- hasCover
- ? "bg-white/20 text-white ring-1 ring-white/25 backdrop-blur-sm"
- : colors.badge
- }`}
- >
+ <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${colors.badge}`}>
  {course.category}
  </span>
  <span
- className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${
- hasCover
- ? "bg-white/15 text-white ring-1 ring-white/20 backdrop-blur-sm"
- : levelColors[course.level]
- }`}
+ className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${levelColors[course.level]}`}
  >
  {ct(course.level as "beginner" | "intermediate" | "advanced")}
  </span>
  </div>
  </div>
 
- <h3
- className={`text-lg font-bold mt-4 transition-colors leading-snug ${
- hasCover
- ? "text-white drop-shadow-md group-hover:text-white/95"
- : "group-hover:text-primary"
- }`}
- >
+ <h3 className="text-lg font-bold mt-4 transition-colors leading-snug group-hover:text-primary relative z-10">
  {courseTitle}
  </h3>
+ </>
+ ) : null}
  </div>
 
  {/* Content */}
  <div className="px-6 py-5">
+ {hasCover ? (
+ <>
+ <div className="flex gap-1.5 flex-wrap mb-3">
+ <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${colors.badge}`}>
+ {course.category}
+ </span>
+ <span
+ className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${levelColors[course.level]}`}
+ >
+ {ct(course.level as "beginner" | "intermediate" | "advanced")}
+ </span>
+ </div>
+ <h3 className="text-lg font-bold text-foreground leading-snug mb-3 transition-colors group-hover:text-primary">
+ {courseTitle}
+ </h3>
+ </>
+ ) : null}
  <p className="text-sm text-muted leading-relaxed mb-5 line-clamp-2">
  {courseDesc}
  </p>

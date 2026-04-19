@@ -22,6 +22,22 @@ import {
  Loader2,
 } from "lucide-react";
 
+const categoryBadge: Record<string, string> = {
+ programming:
+ "bg-blue-100 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400 capitalize",
+ robotics:
+ "bg-emerald-100 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400 capitalize",
+ algorithms:
+ "bg-violet-100 text-violet-600 dark:bg-violet-950/40 dark:text-violet-400 capitalize",
+ arabic: "bg-rose-100 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400 capitalize",
+};
+
+const levelBadge: Record<string, string> = {
+ beginner: "bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400 capitalize",
+ intermediate: "bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 capitalize",
+ advanced: "bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-400 capitalize",
+};
+
 export default function CourseDetailContent() {
  const { id: slug } = useParams<{ id: string }>();
  const locale = useLocale();
@@ -132,33 +148,73 @@ export default function CourseDetailContent() {
  </LocalizedLink>
  </AnimatedSection>
 
- <AnimatedSection delay={0.1}>
- <div
- className={`rounded-3xl p-8 sm:p-12 mb-8 relative overflow-hidden min-h-[220px] ${
- coverSrc ? "bg-slate-900" : `bg-gradient-to-br ${course.color}`
- }`}
- >
- {coverSrc && (
+ {coverSrc ? (
  <>
+ <AnimatedSection delay={0.1}>
+ <div className="rounded-3xl overflow-hidden border border-border bg-muted/30 mb-6 relative w-full aspect-[16/10] sm:aspect-[2/1] max-h-[min(420px,55vh)] sm:max-h-[480px]">
  {/* eslint-disable-next-line @next/next/no-img-element */}
  <img
  src={coverSrc}
  alt=""
  className="absolute inset-0 w-full h-full object-cover"
  />
- <div className="absolute inset-0 bg-gradient-to-br from-black/60 to-black/40" />
- </>
- )}
- {!coverSrc && (
+ </div>
+ </AnimatedSection>
+ <AnimatedSection delay={0.12}>
+ <div className="bg-surface rounded-3xl border border-border p-8 sm:p-10 mb-8">
+ <div className="flex flex-wrap gap-2 mb-4">
+ <span
+ className={`text-sm font-semibold px-3 py-1 rounded-full ${
+ categoryBadge[course.category] || categoryBadge.programming
+ }`}
+ >
+ {course.category}
+ </span>
+ <span
+ className={`text-sm font-semibold px-3 py-1 rounded-full ${
+ levelBadge[course.level] || levelBadge.beginner
+ }`}
+ >
+ {common(course.level as "beginner" | "intermediate" | "advanced")}
+ </span>
+ </div>
+ <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">{course.title}</h1>
+ {course.showPrice ? (
+ <p className="text-2xl font-bold text-foreground tabular-nums flex flex-wrap items-baseline gap-x-3 gap-y-1">
+ <span className="text-sm font-semibold uppercase tracking-wide text-muted w-full sm:w-auto">
+ {t("price")}
+ </span>
+ {course.price <= 0 ? (
+ <span>{common("free")}</span>
+ ) : course.discountPercent > 0 && course.salePrice < course.price ? (
  <>
+ <span className="line-through text-muted text-lg font-semibold">
+ {formatCoursePrice(course.price, course.currency, locale)}
+ </span>
+ <span>{formatCoursePrice(course.salePrice, course.currency, locale)}</span>
+ <span className="text-sm font-medium text-primary">
+ {t("savePercent", { pct: course.discountPercent })}
+ </span>
+ </>
+ ) : (
+ <span>{formatCoursePrice(course.price, course.currency, locale)}</span>
+ )}
+ </p>
+ ) : null}
+ </div>
+ </AnimatedSection>
+ </>
+ ) : (
+ <AnimatedSection delay={0.1}>
+ <div className={`rounded-3xl p-8 sm:p-12 mb-8 relative overflow-hidden min-h-[220px] bg-gradient-to-br ${course.color}`}>
  <div className="absolute inset-0 bg-white/10" />
  <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/10" />
  <div className="absolute -bottom-10 -left-10 w-48 h-48 rounded-full bg-white/10" />
- </>
- )}
  <div className="relative">
  <div className="flex flex-wrap gap-3 mb-4">
- <span className="px-3 py-1 rounded-full bg-white/20 text-white text-sm font-medium capitalize">{course.category}</span>
+ <span className="px-3 py-1 rounded-full bg-white/20 text-white text-sm font-medium capitalize">
+ {course.category}
+ </span>
  <span className="px-3 py-1 rounded-full bg-white/20 text-white text-sm font-medium capitalize">
  {common(course.level as "beginner" | "intermediate" | "advanced")}
  </span>
@@ -176,9 +232,7 @@ export default function CourseDetailContent() {
  <span className="line-through text-white/60 text-lg font-semibold">
  {formatCoursePrice(course.price, course.currency, locale)}
  </span>
- <span>
- {formatCoursePrice(course.salePrice, course.currency, locale)}
- </span>
+ <span>{formatCoursePrice(course.salePrice, course.currency, locale)}</span>
  <span className="text-sm font-medium text-white/85">
  {t("savePercent", { pct: course.discountPercent })}
  </span>
@@ -191,6 +245,7 @@ export default function CourseDetailContent() {
  </div>
  </div>
  </AnimatedSection>
+ )}
 
  <AnimatedSection delay={0.2}>
  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
