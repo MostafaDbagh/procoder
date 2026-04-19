@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "res.cloudinary.com" },
+      { protocol: "https", hostname: "images.unsplash.com" },
     ],
   },
   experimental: {
@@ -63,7 +64,7 @@ const nextConfig: NextConfig = {
             "script-src 'self' 'unsafe-inline'",
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
             "font-src 'self' https://fonts.gstatic.com",
-            "img-src 'self' data: blob: https://res.cloudinary.com",
+            "img-src 'self' data: blob: https://res.cloudinary.com https://images.unsplash.com",
             "connect-src 'self' https://res.cloudinary.com",
             "frame-ancestors 'none'",
             "base-uri 'self'",
