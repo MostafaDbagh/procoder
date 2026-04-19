@@ -14,7 +14,8 @@
     "language": "English",
     "menu": "القائمة",
     "bookDemo": "احجز حصة تجريبية مجانية",
-    "bookDemoSubject": "حصة تجريبية مجانية — {course}"
+    "bookDemoSubject": "حصة تجريبية مجانية — {course}",
+    "bookDemoSubjectGeneric": "حصة تجريبية مجانية"
   },
   "notFound": {
     "title": "عذراً! هذه الصفحة تاهت",

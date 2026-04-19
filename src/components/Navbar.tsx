@@ -27,12 +27,15 @@ export function Navbar() {
  const [mobileOpen, setMobileOpen] = useState(false);
 
  const contactWithTrialSubject = useMemo(() => {
- const m = pathname.match(/^\/courses\/([^/?#]+)\/?$/);
+ const m = pathname.match(/\/courses\/([^/?#]+)/);
  const slug = m?.[1];
- if (!slug) return "/contact";
+ const subject = slug
+ ? (() => {
  const staticCourse = staticCourses.find((c) => c.id === slug);
  const courseLabel = staticCourse ? ct(staticCourse.titleKey) : titleizeSlug(slug);
- const subject = t("bookDemoSubject", { course: courseLabel });
+ return t("bookDemoSubject", { course: courseLabel });
+ })()
+ : t("bookDemoSubjectGeneric");
  return `/contact?subject=${encodeURIComponent(subject)}`;
  }, [pathname, t, ct]);
 

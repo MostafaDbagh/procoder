@@ -14,7 +14,8 @@
     "language": "العربية",
     "menu": "Menu",
     "bookDemo": "Book a Free Trial Class",
-    "bookDemoSubject": "Free trial class — {course}"
+    "bookDemoSubject": "Free trial class — {course}",
+    "bookDemoSubjectGeneric": "Free trial class"
   },
   "notFound": {
     "title": "Oops! This page wandered off",

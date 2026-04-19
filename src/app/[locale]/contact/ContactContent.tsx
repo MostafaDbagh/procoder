@@ -28,15 +28,18 @@ export default function ContactContent() {
  message: "",
  });
 
- // Pre-fill subject from URL query param (sanitized)
+ const subjectParam = searchParams.get("subject");
+
+ // Pre-fill subject from URL (sanitized). `window.location` covers cases where the hook is briefly empty after client navigation.
  useEffect(() => {
- const raw = searchParams.get("subject");
- if (raw) {
- // Strip HTML tags and limit length to prevent injection
+ const raw =
+ subjectParam ??
+ (typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("subject") : null);
+ if (!raw) return;
  const sanitized = raw.replace(/<[^>]*>/g, "").slice(0, 200).trim();
- if (sanitized) setForm((prev) => ({ ...prev, subject: sanitized }));
- }
- }, [searchParams]);
+ if (!sanitized) return;
+ setForm((prev) => (prev.subject === sanitized ? prev : { ...prev, subject: sanitized }));
+ }, [subjectParam, searchParams.toString()]);
  const [sending, setSending] = useState(false);
  const [sent, setSent] = useState(false);
  const [cooldown, setCooldown] = useState(false);
