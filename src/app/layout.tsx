@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Script from "next/script";
 import { Geist } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -177,7 +178,7 @@ export const metadata: Metadata = {
  "AI suggests the best course for each child (OpenAI & DeepSeek). Live Programming, Robotics, Algorithms, Arabic for ages 6–18. GCC & worldwide. Certified instructors, small groups, free trial.",
  images: [
  {
- url: `${SITE_URL}/og-image.png`,
+ url: `${SITE_URL}/og`,
  width: 1200,
  height: 630,
  alt: "StemTechLab — Kids Learning Platform for Programming, Robotics & Arabic",
@@ -268,6 +269,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
  </head>
  <body className="min-h-full flex flex-col bg-background text-foreground">
  {children}
+ <Analytics />
  </body>
  </html>
  );

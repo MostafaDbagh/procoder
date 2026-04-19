@@ -117,12 +117,11 @@ export const CourseCard = React.memo(function CourseCard({ course, index = 0, ti
  {hasCover ? (
  <Image
  src={coverSrc}
- alt=""
+ alt={courseTitle}
  fill
  className="object-cover"
  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 320px"
  unoptimized
- aria-hidden
  />
  ) : (
  <>

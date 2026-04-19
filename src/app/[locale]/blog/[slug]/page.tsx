@@ -35,13 +35,13 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
  publishedTime: post.publishedAt,
  authors: [post.author.name],
  tags: post.tags,
- images: post.coverImage ? [{ url: post.coverImage }] : [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: "StemTechLab" }],
+ images: post.coverImage ? [{ url: post.coverImage }] : [{ url: `${SITE_URL}/og`, width: 1200, height: 630, alt: "StemTechLab" }],
  },
  twitter: {
  card: "summary_large_image",
  title,
  description,
- images: post.coverImage ? [post.coverImage] : [`${SITE_URL}/og-image.png`],
+ images: post.coverImage ? [post.coverImage] : [`${SITE_URL}/og`],
  },
  };
 }

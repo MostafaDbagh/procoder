@@ -25,7 +25,7 @@ export function OrganizationSchema() {
  "Live online STEM & Arabic for ages 6–18. AI-powered course matching (OpenAI & DeepSeek) helps families pick the best live class for each child—plus small groups, certified teachers, English & Arabic. GCC & worldwide.",
  url: SITE_URL,
  logo: `${SITE_URL}/logo.svg`,
- image: `${SITE_URL}/og-image.png`,
+ image: `${SITE_URL}/og`,
  foundingDate: "2024",
  areaServed: [
  "Saudi Arabia", "United Arab Emirates", "Kuwait", "Qatar",
