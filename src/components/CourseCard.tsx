@@ -22,12 +22,18 @@ import {
  BookMarked,
  Star,
  Gamepad2,
+ Smartphone,
+ Layout,
+ AppWindow,
+ Palette,
+ Terminal,
 } from "lucide-react";
 import type { Course } from "@/data/courses";
 import { publicOrAbsoluteAssetUrl } from "@/lib/mediaUrls";
 
 const iconMap: Record<string, React.ElementType> = {
  Blocks, Code2, Globe, Bot, Cpu, Brain, Trophy, BookOpen, PenTool, BookMarked, Star, Gamepad2,
+ Smartphone, Layout, AppWindow, Palette, Terminal,
 };
 
 const categoryColors: Record<string, { badge: string; bg: string; accent: string }> = {
@@ -116,16 +122,18 @@ export const CourseCard = React.memo(function CourseCard({ course, index = 0, ti
  </>
  )}
 
- <div className="relative z-10 flex items-start justify-between">
  <div
- className={`w-14 h-14 rounded-2xl overflow-hidden shrink-0 flex items-center justify-center shadow-sm ${
- hasCover
- ? "bg-white/20 backdrop-blur-md ring-1 ring-white/35 text-white"
- : `bg-white dark:bg-surface ${colors.accent}`
+ className={`relative z-10 flex items-start gap-3 ${
+ hasCover ? "justify-end" : "justify-between"
  }`}
+ >
+ {!hasCover ? (
+ <div
+ className={`w-14 h-14 rounded-2xl overflow-hidden shrink-0 flex items-center justify-center shadow-sm bg-white dark:bg-surface ${colors.accent}`}
  >
  <Icon className="w-7 h-7" />
  </div>
+ ) : null}
  <div className="flex gap-1.5 flex-wrap justify-end">
  <span
  className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${
