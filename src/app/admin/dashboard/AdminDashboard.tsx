@@ -7,7 +7,6 @@ import {
  clearAdminToken,
  getAdminToken,
 } from "@/lib/admin-api";
-import { PasswordInput } from "@/components/PasswordInput";
 import {
  TEAM_CARD_GRADIENTS,
  TEAM_STAR_HEADER_COLORS,
@@ -375,12 +374,6 @@ export default function AdminDashboard() {
  const [userEdit, setUserEdit] = useState<Record<string, unknown> | null>(
  null
  );
- const [inviteForm, setInviteForm] = useState({
- name: "",
- email: "",
- phone: "",
- password: "",
- });
 
  const [payments, setPayments] = useState<Record<string, unknown>[]>([]);
  const [paymentsMeta, setPaymentsMeta] = useState<ListMeta>(emptyMeta);
@@ -886,37 +879,6 @@ export default function AdminDashboard() {
  await loadOverview();
  } catch (e) {
  setErr(e instanceof Error ? e.message : "Failed");
- }
- };
-
- const submitInviteInstructor = async () => {
- try {
- if (inviteForm.password.trim() && inviteForm.password.trim().length < 8) {
- setErr("Password must be at least 8 characters when set");
- return;
- }
- const body: Record<string, string> = {
- name: inviteForm.name.trim(),
- email: inviteForm.email.trim(),
- };
- if (inviteForm.phone.trim()) body.phone = inviteForm.phone.trim();
- if (inviteForm.password.trim()) body.password = inviteForm.password.trim();
- const res = await adminFetch<{
- temporaryPassword?: string;
- user?: Record<string, unknown>;
- }>("/admin/users/invite-instructor", {
- method: "POST",
- body: JSON.stringify(body),
- });
- const msg = res.temporaryPassword
- ? `Instructor created. Temporary password: ${res.temporaryPassword}`
- : "Instructor created.";
- alert(msg);
- setInviteForm({ name: "", email: "", phone: "", password: "" });
- await loadUsers();
- await loadOverview();
- } catch (e) {
- setErr(e instanceof Error ? e.message : "Invite failed");
  }
  };
 
@@ -1911,53 +1873,6 @@ export default function AdminDashboard() {
 
  {tab === "users" && (
  <div className="space-y-4">
- <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-4">
- <h3 className="mb-3 text-sm font-medium text-slate-300">
- Invite instructor
- </h3>
- <div className="flex flex-wrap gap-3">
- <input
- placeholder="Name"
- value={inviteForm.name}
- onChange={(e) =>
- setInviteForm((f) => ({ ...f, name: e.target.value }))
- }
- className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm"
- />
- <input
- placeholder="Email"
- type="email"
- value={inviteForm.email}
- onChange={(e) =>
- setInviteForm((f) => ({ ...f, email: e.target.value }))
- }
- className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm"
- />
- <input
- placeholder="Phone (optional)"
- value={inviteForm.phone}
- onChange={(e) =>
- setInviteForm((f) => ({ ...f, phone: e.target.value }))
- }
- className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm"
- />
- <PasswordInput
- placeholder="Password (optional — auto if empty)"
- value={inviteForm.password}
- onChange={(e) =>
- setInviteForm((f) => ({ ...f, password: e.target.value }))
- }
- inputClassName="min-w-[12rem] rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm"
- />
- <button
- type="button"
- onClick={() => void submitInviteInstructor()}
- className="rounded-lg bg-primary px-4 py-2 text-sm text-white"
- >
- Create instructor
- </button>
- </div>
- </div>
  <div className="flex flex-wrap gap-3">
  <input
  placeholder="Search name / email"
@@ -1978,8 +1893,6 @@ export default function AdminDashboard() {
  options={[
  { value: "", label: "All roles" },
  { value: "parent", label: "Parent" },
- { value: "student", label: "Student" },
- { value: "instructor", label: "Instructor" },
  { value: "admin", label: "Admin" },
  ]}
  />
@@ -2009,7 +1922,7 @@ export default function AdminDashboard() {
  </tr>
  </thead>
  <tbody>
- {users.map((r) => (
+ {users.filter((r) => r.role !== "instructor").map((r) => (
  <tr
  key={String(r._id)}
  className="border-t border-slate-800/80"
@@ -2789,14 +2702,28 @@ export default function AdminDashboard() {
  {String(enrollmentDetail.linkedUser.role)} · active:{" "}
  {String(enrollmentDetail.linkedUser.isActive)}
  </p>
- <p className="text-xs text-slate-500">Profile children:</p>
- <pre className="max-h-40 overflow-auto rounded-lg bg-slate-900/80 p-3 text-xs text-slate-300">
- {JSON.stringify(
- enrollmentDetail.linkedUser.children ?? [],
- null,
- 2
+ {Array.isArray(enrollmentDetail.linkedUser.children) && (enrollmentDetail.linkedUser.children as Record<string, unknown>[]).length > 0 && (
+ <>
+ <p className="mt-2 text-xs text-slate-500">Children:</p>
+ <div className="mt-1 space-y-2">
+ {(enrollmentDetail.linkedUser.children as Record<string, unknown>[]).map((child, ci) => (
+ <div key={ci} className="rounded-lg border border-slate-800 bg-slate-900/40 px-3 py-2 text-xs">
+ <span className="font-medium text-slate-200">{String(child.name ?? "")}</span>
+ {child.age != null && <span className="text-slate-400"> · Age {String(child.age)}</span>}
+ {child.gender ? <span className="text-slate-400"> · {String(child.gender)}</span> : null}
+ {child.gradeLevel ? <span className="text-slate-400"> · Grade {String(child.gradeLevel)}</span> : null}
+ {Array.isArray(child.interests) && (child.interests as string[]).length > 0 && (
+ <div className="mt-1 flex flex-wrap gap-1">
+ {(child.interests as string[]).map((interest) => (
+ <span key={interest} className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] text-primary">{interest}</span>
+ ))}
+ </div>
  )}
- </pre>
+ </div>
+ ))}
+ </div>
+ </>
+ )}
  </>
  ) : (
  <p className="text-slate-500">
@@ -2870,7 +2797,7 @@ export default function AdminDashboard() {
  }
  className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2"
  >
- {["parent", "student", "instructor", "admin"].map((role) => (
+ {["parent", "student", "admin"].map((role) => (
  <option key={role} value={role}>
  {role}
  </option>
