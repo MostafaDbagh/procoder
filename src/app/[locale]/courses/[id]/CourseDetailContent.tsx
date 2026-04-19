@@ -158,7 +158,6 @@ export default function CourseDetailContent() {
  </span>
  </div>
  <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">{course.title}</h1>
- <p className="text-white/80 text-lg max-w-2xl">{course.description}</p>
  {course.showPrice ? (
  <p className="mt-5 text-2xl font-bold text-white tabular-nums flex flex-wrap items-baseline gap-x-3 gap-y-1">
  <span className="text-sm font-semibold uppercase tracking-wide text-white/70 w-full sm:w-auto">

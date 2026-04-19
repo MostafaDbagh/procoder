@@ -3834,7 +3834,7 @@ function CourseFormModal({
  <span className="mb-1 block text-xs">Assign instructors</span>
  {instructorOptions.length === 0 ? (
  <p className="text-xs text-slate-500">
- No instructors found. Invite one in the Users tab first.
+ No team members found. Add one in the Team tab first.
  </p>
  ) : (
  <div className="max-h-36 space-y-1 overflow-y-auto rounded border border-slate-700 bg-slate-950 p-2">

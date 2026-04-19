@@ -14,9 +14,12 @@ const nextConfig: NextConfig = {
   },
   /** LLM crawlers often look under RFC 8615-style paths; mirror without duplicating files. */
   async rewrites() {
+    const backendUrl = (process.env.BACKEND_URL || "http://127.0.0.1:5000").replace(/\/+$/, "");
     return [
       { source: "/.well-known/llms.txt", destination: "/llms.txt" },
       { source: "/.well-known/llms-full.txt", destination: "/llms-full.txt" },
+      // Proxy uploaded assets (course/team images) to the Express backend
+      { source: "/uploads/:path*", destination: `${backendUrl}/uploads/:path*` },
     ];
   },
   /**
