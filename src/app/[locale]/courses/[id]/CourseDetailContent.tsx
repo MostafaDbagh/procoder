@@ -134,22 +134,28 @@ export default function CourseDetailContent() {
 
  <AnimatedSection delay={0.1}>
  <div
- className={`rounded-3xl p-8 sm:p-12 mb-8 relative overflow-hidden ${
- coverSrc ? "" : `bg-gradient-to-br ${course.color}`
+ className={`rounded-3xl p-8 sm:p-12 mb-8 relative overflow-hidden min-h-[220px] ${
+ coverSrc ? "bg-slate-900" : `bg-gradient-to-br ${course.color}`
  }`}
- style={
- coverSrc
- ? {
- backgroundImage: `linear-gradient(to bottom right, rgba(0,0,0,0.58), rgba(0,0,0,0.42)), url(${coverSrc})`,
- backgroundSize: "cover",
- backgroundPosition: "center",
- }
- : undefined
- }
  >
+ {coverSrc && (
+ <>
+ {/* eslint-disable-next-line @next/next/no-img-element */}
+ <img
+ src={coverSrc}
+ alt=""
+ className="absolute inset-0 w-full h-full object-cover"
+ />
+ <div className="absolute inset-0 bg-gradient-to-br from-black/60 to-black/40" />
+ </>
+ )}
+ {!coverSrc && (
+ <>
  <div className="absolute inset-0 bg-white/10" />
  <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/10" />
  <div className="absolute -bottom-10 -left-10 w-48 h-48 rounded-full bg-white/10" />
+ </>
+ )}
  <div className="relative">
  <div className="flex flex-wrap gap-3 mb-4">
  <span className="px-3 py-1 rounded-full bg-white/20 text-white text-sm font-medium capitalize">{course.category}</span>
