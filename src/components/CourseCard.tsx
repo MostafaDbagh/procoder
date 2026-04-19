@@ -76,6 +76,7 @@ export const CourseCard = React.memo(function CourseCard({ course, index = 0, ti
  const courseTitle = title || (course.titleKey ? t(course.titleKey) : course._title || "");
  const courseDesc = description || (course.descKey ? t(course.descKey) : course._desc || "");
  const coverSrc = course.imageUrl ? publicOrAbsoluteAssetUrl(course.imageUrl) : "";
+ const hasCover = Boolean(coverSrc);
 
  return (
  <motion.div
@@ -86,44 +87,74 @@ export const CourseCard = React.memo(function CourseCard({ course, index = 0, ti
  >
  <LocalizedLink href={`/courses/${course.id}`} className="block group h-full">
  <div className="h-full bg-surface rounded-2xl border border-border overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 hover:-translate-y-1">
- {/* Top icon area */}
- <div className={`${colors.bg} px-6 pt-6 pb-5 relative overflow-hidden`}>
- {/* Decorative shapes */}
- <div className="absolute top-[-20px] right-[-20px] w-24 h-24 rounded-full bg-white/30 dark:bg-white/5" />
- <div className="absolute bottom-[-15px] left-[-15px] w-20 h-20 rounded-full bg-white/20 dark:bg-white/5" />
-
- <div className="relative flex items-start justify-between">
+ {/* Top area: solid category tint, or photo cover when image exists */}
  <div
- className={`w-14 h-14 rounded-2xl overflow-hidden shrink-0 flex items-center justify-center shadow-sm ${
- course.imageUrl
- ? "bg-white/90 dark:bg-white/10 ring-1 ring-white/30"
- : `bg-white dark:bg-surface ${colors.accent}`
+ className={`px-6 pt-6 pb-5 relative overflow-hidden min-h-[148px] ${
+ hasCover ? "" : colors.bg
  }`}
  >
- {coverSrc ? (
+ {hasCover ? (
+ <>
  <Image
  src={coverSrc}
  alt=""
- width={56}
- height={56}
- className="h-full w-full object-cover"
+ fill
+ className="object-cover"
+ sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 320px"
  unoptimized
+ aria-hidden
  />
+ <div
+ className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/30"
+ aria-hidden
+ />
+ </>
  ) : (
- <Icon className="w-7 h-7" />
+ <>
+ <div className="absolute top-[-20px] right-[-20px] w-24 h-24 rounded-full bg-white/30 dark:bg-white/5" />
+ <div className="absolute bottom-[-15px] left-[-15px] w-20 h-20 rounded-full bg-white/20 dark:bg-white/5" />
+ </>
  )}
+
+ <div className="relative z-10 flex items-start justify-between">
+ <div
+ className={`w-14 h-14 rounded-2xl overflow-hidden shrink-0 flex items-center justify-center shadow-sm ${
+ hasCover
+ ? "bg-white/20 backdrop-blur-md ring-1 ring-white/35 text-white"
+ : `bg-white dark:bg-surface ${colors.accent}`
+ }`}
+ >
+ <Icon className="w-7 h-7" />
  </div>
- <div className="flex gap-1.5">
- <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${colors.badge}`}>
+ <div className="flex gap-1.5 flex-wrap justify-end">
+ <span
+ className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${
+ hasCover
+ ? "bg-white/20 text-white ring-1 ring-white/25 backdrop-blur-sm"
+ : colors.badge
+ }`}
+ >
  {course.category}
  </span>
- <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${levelColors[course.level]}`}>
+ <span
+ className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${
+ hasCover
+ ? "bg-white/15 text-white ring-1 ring-white/20 backdrop-blur-sm"
+ : levelColors[course.level]
+ }`}
+ >
  {ct(course.level as "beginner" | "intermediate" | "advanced")}
  </span>
  </div>
  </div>
 
- <h3 className="text-lg font-bold mt-4 group-hover:text-primary transition-colors leading-snug">
+ <h3
+ className={`text-lg font-bold mt-4 transition-colors leading-snug ${
+ hasCover
+ ? "text-white drop-shadow-md group-hover:text-white/95"
+ : "group-hover:text-primary"
+ }`}
+ >
  {courseTitle}
  </h3>
  </div>
