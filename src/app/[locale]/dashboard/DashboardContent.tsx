@@ -474,7 +474,7 @@ export default function DashboardContent({ initialCourses }: Props) {
  )}
 
  {/* ═══ Invite a Friend ═══ */}
- <ReferralSection token={token} lang={lang} />
+ <ReferralSection key={token ?? "no-token"} token={token} lang={lang} />
  </div>
  </div>
  );
@@ -489,7 +489,6 @@ function ReferralSection({ token, lang }: { token: string | null; lang: string }
  useEffect(() => {
  if (!token) return;
  let cancelled = false;
- setLoading(true);
  fetchParentReferral(token)
  .then((d) => {
  if (cancelled) return;

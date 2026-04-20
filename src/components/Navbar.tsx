@@ -5,7 +5,8 @@ import { useTranslations, useLocale } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sun, Moon, Globe, Sparkles } from "lucide-react";
+import { Menu, X, Sun, Moon, Globe } from "lucide-react";
+import Image from "next/image";
 import { useTheme } from "./ThemeProvider";
 import { courses as staticCourses } from "@/data/courses";
 
@@ -69,9 +70,7 @@ export function Navbar() {
  <div className="flex items-center justify-between h-16">
  {/* Logo */}
  <LocalizedLink href="/" className="flex items-center gap-2 group">
- <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
- <Sparkles className="w-5 h-5 text-white" />
- </div>
+ <Image src="/logo.svg" alt="StemTechLab" width={40} height={40} priority />
  <span className="text-xl font-bold bg-gradient-to-r from-primary to-purple bg-clip-text text-transparent">
  StemTechLab
  </span>

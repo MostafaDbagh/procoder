@@ -263,11 +263,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
  ) : null}
  <link rel="preconnect" href="https://fonts.googleapis.com" />
  <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
- {/* Theme color (all 5 competitors use this) */}
+ {/* Theme color */}
  <meta name="theme-color" content="#6C5CE7" />
- {/* Apple touch icon (competitors have multiple favicon sizes) */}
- <link rel="apple-touch-icon" sizes="180x180" href="/logo.svg" />
- <link rel="icon" type="image/svg+xml" href="/logo.svg" />
  <Script
  id="init-locale-html-dir"
  strategy="beforeInteractive"

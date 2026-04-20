@@ -27,17 +27,19 @@ export async function GET() {
         >
           <div
             style={{
-              width: "72px",
-              height: "72px",
-              borderRadius: "18px",
-              background: "#6366f1",
+              width: "88px",
+              height: "88px",
+              borderRadius: "20px",
+              background: "linear-gradient(135deg, #7c6ff7, #5b52e8)",
               display: "flex",
+              flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: "36px",
+              gap: "0px",
             }}
           >
-            &#10024;
+            <span style={{ fontSize: "32px", fontWeight: 800, color: "white", lineHeight: 1.1, letterSpacing: "-1px" }}>STL</span>
+            <div style={{ width: "56px", height: "4px", background: "white", borderRadius: "2px", marginTop: "4px" }} />
           </div>
           <span
             style={{
