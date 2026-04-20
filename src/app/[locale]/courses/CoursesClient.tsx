@@ -203,9 +203,9 @@ export function CoursesClient({ initialCourses }: Props) {
  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
  {/* Filter row */}
  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="flex flex-col gap-4 mb-8 bg-surface rounded-2xl border border-border p-5">
- <div className="flex items-center gap-3">
- <span className="min-w-[90px] text-xs font-semibold text-muted uppercase tracking-wider shrink-0">{t("filterAge")}:</span>
- <div className="flex items-center gap-2 flex-wrap">
+ <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+ <span className="text-xs font-semibold text-muted uppercase tracking-wider sm:min-w-[90px] sm:shrink-0">{t("filterAge")}:</span>
+ <div className="flex flex-wrap gap-2">
  {([
  { value: "all" as AgeFilter, label: t("all") },
  { value: "6-9" as AgeFilter, label: t("ages6_9") },
@@ -225,9 +225,9 @@ export function CoursesClient({ initialCourses }: Props) {
  </div>
  </div>
  <div className="h-px bg-border" />
- <div className="flex items-center gap-3">
- <span className="min-w-[90px] text-xs font-semibold text-muted uppercase tracking-wider shrink-0">{t("filterLevel")}:</span>
- <div className="flex items-center gap-2 flex-wrap">
+ <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+ <span className="text-xs font-semibold text-muted uppercase tracking-wider sm:min-w-[90px] sm:shrink-0">{t("filterLevel")}:</span>
+ <div className="flex flex-wrap gap-2">
  {([
  { value: "all" as const, label: t("all"), dot: "" },
  { value: "beginner" as const, label: t("beginner"), dot: "bg-green-400" },
@@ -247,7 +247,7 @@ export function CoursesClient({ initialCourses }: Props) {
  ))}
  </div>
  {hasFilters && (
- <button onClick={clearFilters} className="ml-auto flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium text-red-500 bg-red-50 dark:bg-red-950/30 hover:bg-red-100 dark:hover:bg-red-950/50 transition-colors">
+ <button onClick={clearFilters} className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium text-red-500 bg-red-50 dark:bg-red-950/30 hover:bg-red-100 dark:hover:bg-red-950/50 transition-colors sm:ml-auto">
  <X className="w-3 h-3" /> Clear all
  </button>
  )}
