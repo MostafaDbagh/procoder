@@ -295,7 +295,7 @@ export default function CourseDetailContent() {
  <p className="mb-3 text-xs font-medium text-muted sm:mb-3.5 sm:text-sm">{t("heroTagline")}</p>
 
  {course.showPrice ? (
- <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 rounded-xl border border-primary/15 bg-primary/[0.06] px-3.5 py-2 dark:bg-primary/10 sm:px-4 sm:py-2.5" style={{ width: "250px", maxWidth: "100%" }}>
+ <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 rounded-xl border border-primary/15 bg-primary/[0.06] px-3.5 py-2 dark:bg-primary/10 sm:px-4 sm:py-2.5 w-[200px] md:w-[230px] max-w-full">
  <span className="text-[9px] font-bold uppercase tracking-[0.18em] text-primary/80 dark:text-primary/90 sm:text-[10px] sm:tracking-[0.2em]">
  {t("price")}
  </span>
