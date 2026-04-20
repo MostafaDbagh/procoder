@@ -9,86 +9,6 @@ import { ChevronLeft, ChevronRight, Star, Briefcase, Code2 } from "lucide-react"
 import type { APITeamMember } from "@/lib/server-api";
 import { resolveTeamStarHeaderColor } from "@/lib/teamStarPresets";
 
-type StaticFallback = {
- key: string;
- headerColor: string;
- rating: number;
- reviews: number;
- experience: number;
- skills: string[];
- location: string;
- flag: string;
- bio: string;
-};
-
-const STATIC_FALLBACK: StaticFallback[] = [
- {
- key: "1",
- headerColor: "bg-amber-400",
- rating: 5.0,
- reviews: 842,
- experience: 5,
- skills: ["Python", "JavaScript", "React", "Node.js"],
- location: "Saudi Arabia",
- flag: "\u{1F1F8}\u{1F1E6}",
- bio: "A passionate educator and tech entrepreneur who founded StemTechLab to make STEM education accessible and fun for every child in the region.",
- },
- {
- key: "2",
- headerColor: "bg-purple",
- rating: 4.9,
- reviews: 1567,
- experience: 7,
- skills: ["Curriculum Design", "Pedagogy", "Scratch", "Python"],
- location: "UAE",
- flag: "\u{1F1E6}\u{1F1EA}",
- bio: "A curriculum specialist with 7 years of experience designing engaging learning paths for children. Expert in making complex concepts simple and fun.",
- },
- {
- key: "3",
- headerColor: "bg-blue-500",
- rating: 4.9,
- reviews: 1203,
- experience: 6,
- skills: ["Full-Stack", "TypeScript", "Next.js", "MongoDB"],
- location: "Turkey",
- flag: "\u{1F1F9}\u{1F1F7}",
- bio: "A full-stack developer who builds the StemTechLab platform. Passionate about creating interactive coding environments that make learning intuitive.",
- },
- {
- key: "4",
- headerColor: "bg-rose-400",
- rating: 4.8,
- reviews: 956,
- experience: 4,
- skills: ["UI/UX", "Figma", "Design Systems", "Accessibility"],
- location: "Canada",
- flag: "\u{1F1E8}\u{1F1E6}",
- bio: "A UX designer specializing in child-friendly interfaces. Creates beautiful, accessible designs that kids love to interact with.",
- },
- {
- key: "5",
- headerColor: "bg-emerald-500",
- rating: 5.0,
- reviews: 731,
- experience: 8,
- skills: ["Arduino", "Raspberry Pi", "3D Printing", "IoT"],
- location: "Kuwait",
- flag: "\u{1F1F0}\u{1F1FC}",
- bio: "A robotics engineer with 8 years of experience teaching kids to build and program real robots. Competition coach and STEM advocate.",
- },
- {
- key: "6",
- headerColor: "bg-teal-500",
- rating: 5.0,
- reviews: 1890,
- experience: 10,
- skills: ["Arabic Reading", "Arabic Writing", "Arabic Grammar", "Language Arts"],
- location: "Syria",
- flag: "\u{1F1F8}\u{1F1FE}",
- bio: "A certified Arabic and Arabic teacher with 10 years of experience. Combines traditional teaching methods with modern interactive techniques.",
- },
-];
 
 /** Only show team members with teaching roles on the homepage. */
 const TEACHING_ROLES = new Set([
@@ -275,7 +195,7 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  })}
  </div>
 
- <div className="flex items-center justify-center gap-6 mt-12">
+ <div className="flex items-center justify-center gap-6 mt-12" dir="ltr">
  <button
  type="button"
  onClick={() => scroll("left")}
@@ -342,8 +262,17 @@ export function MeetOurStars({ cmsTeam }: MeetOurStarsProps) {
  const t = useTranslations("about");
  const lang = useLocale() === "ar" ? "ar" : "en";
 
+ if (!cmsTeam || cmsTeam.length === 0) {
+ return (
+ <section className="py-20 sm:py-28 text-center">
+ <h2 className="text-3xl sm:text-4xl font-extrabold mb-3">{t("starsTitle")}</h2>
+ <p className="text-muted text-lg">{t("starsComingSoon")}</p>
+ </section>
+ );
+ }
+
  const teamRows: StarRow[] = useMemo(() => {
- if (cmsTeam && cmsTeam.length > 0) {
+ if (!cmsTeam || cmsTeam.length === 0) return [];
  return [...cmsTeam]
  .filter((m) => {
  const roleEn = (m.role?.en ?? "").trim().toLowerCase();
@@ -387,36 +316,7 @@ export function MeetOurStars({ cmsTeam }: MeetOurStarsProps) {
  photoUrl,
  };
  });
- }
- return STATIC_FALLBACK.map((row) => ({
- key: row.key,
- name: t(`member${row.key}Name` as Parameters<typeof t>[0]),
- headerColor: resolveTeamStarHeaderColor(row.headerColor),
- rating: row.rating,
- reviews: row.reviews,
- experience: row.experience,
- skills: row.skills,
- photoUrl: undefined,
- location:
- lang === "ar"
- ? row.location === "Saudi Arabia"
- ? "السعودية"
- : row.location === "UAE"
- ? "الإمارات"
- : row.location === "Turkey"
- ? "تركيا"
- : row.location === "Canada"
- ? "كندا"
- : row.location === "Kuwait"
- ? "الكويت"
- : row.location === "Syria"
- ? "سوريا"
- : row.location
- : row.location,
- flag: row.flag,
- bio: row.bio,
- }));
- }, [cmsTeam, lang, t]);
+ }, [cmsTeam, lang]);
 
  const carouselResetKey = `${teamRows.length}-${cmsTeam == null ? "null" : String(cmsTeam.length)}`;
 
