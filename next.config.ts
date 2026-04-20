@@ -26,6 +26,10 @@ const nextConfig: NextConfig = {
     return [
       { source: "/.well-known/llms.txt", destination: "/llms.txt" },
       { source: "/.well-known/llms-full.txt", destination: "/llms-full.txt" },
+      { source: "/.well-known/ai-plugin.json", destination: "/ai-plugin.json" },
+      { source: "/.well-known/security.txt", destination: "/security.txt" },
+      { source: "/.well-known/ai.txt", destination: "/ai.txt" },
+      { source: "/.well-known/humans.txt", destination: "/humans.txt" },
       // Proxy uploaded assets (course/team images) to the Express backend
       { source: "/uploads/:path*", destination: `${backendUrl}/uploads/:path*` },
     ];
@@ -63,6 +67,30 @@ const nextConfig: NextConfig = {
     },
     {
       source: "/.well-known/llms-full.txt",
+      headers: [
+        { key: "Access-Control-Allow-Origin", value: "*" },
+        { key: "Access-Control-Allow-Methods", value: "GET, HEAD, OPTIONS" },
+        { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
+      ],
+    },
+    {
+      source: "/.well-known/ai-plugin.json",
+      headers: [
+        { key: "Access-Control-Allow-Origin", value: "*" },
+        { key: "Access-Control-Allow-Methods", value: "GET, HEAD, OPTIONS" },
+        { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
+      ],
+    },
+    {
+      source: "/ai-plugin.json",
+      headers: [
+        { key: "Access-Control-Allow-Origin", value: "*" },
+        { key: "Access-Control-Allow-Methods", value: "GET, HEAD, OPTIONS" },
+        { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
+      ],
+    },
+    {
+      source: "/ai.txt",
       headers: [
         { key: "Access-Control-Allow-Origin", value: "*" },
         { key: "Access-Control-Allow-Methods", value: "GET, HEAD, OPTIONS" },

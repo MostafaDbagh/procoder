@@ -7,14 +7,14 @@ const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 const meta = {
   en: {
-    title: "Careers at StemTechLab | Join Our Team",
+    title: "Careers at StemTechLab | Teach Kids Coding & STEM Online",
     description:
-      "Explore career opportunities at StemTechLab. Join our mission to provide quality STEM and coding education for children worldwide.",
+      "Join StemTechLab as an online STEM teacher, kids coding instructor, or Arabic tutor. Remote positions for certified educators. Teach kids ages 6–18 worldwide. Apply now.",
   },
   ar: {
-    title: "الوظائف في ستم تك لاب | انضم لفريقنا",
+    title: "وظائف ستم تك لاب | علّم البرمجة وSTEM للأطفال أونلاين",
     description:
-      "اكتشف فرص العمل في ستم تك لاب. انضم إلى مهمتنا لتقديم تعليم STEM وبرمجة عالي الجودة للأطفال في جميع أنحاء العالم.",
+      "انضم إلى ستم تك لاب معلماً للبرمجة أو STEM أو اللغة العربية للأطفال أونلاين. وظائف عن بُعد للمعلمين المعتمدين. علّم أطفالاً بأعمار ٦–١٨ حول العالم.",
   },
 };
 

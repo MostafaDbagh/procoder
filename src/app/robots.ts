@@ -58,6 +58,20 @@ export default function robots(): MetadataRoute.Robots {
  { userAgent: "YouBot", allow: "/" },
  // Common Crawl (used by many LLMs for training)
  { userAgent: "CCBot", allow: "/" },
+ // xAI / Grok
+ { userAgent: "Grok", allow: "/" },
+ // Google Gemini
+ { userAgent: "Google-CloudVertexBot", allow: "/" },
+ // Mistral
+ { userAgent: "MistralBot", allow: "/" },
+ // Diffbot
+ { userAgent: "Diffbot", allow: "/" },
+ // DuckDuckBot
+ { userAgent: "DuckDuckBot", allow: "/" },
+ // Brave Search
+ { userAgent: "BraveBot", allow: "/" },
+ // Screaming Frog / SEO crawlers
+ { userAgent: "Screaming Frog SEO Spider", allow: "/" },
  ],
  sitemap: `${SITE_URL}/sitemap.xml`,
  host: SITE_URL,
