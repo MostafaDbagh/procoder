@@ -216,7 +216,7 @@ export default function ContactContent() {
  >
  <info.icon className="w-6 h-6 text-white" />
  </div>
- <span className="text-sm font-medium">{info.label}</span>
+ <span className="text-sm font-medium" dir="ltr">{info.label}</span>
  </div>
  );
  return (

@@ -283,14 +283,12 @@ export default function CourseDetailContent() {
  <div className="min-w-0 flex-1">
  <div className="mb-2 flex flex-wrap items-center gap-1.5 sm:gap-2">
  <span
- className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-bold sm:px-3.5 sm:py-1 sm:text-xs ${
- locale === "ar" ? "tracking-normal" : "uppercase tracking-wide"
- } ${categoryBadgeClass}`}
+ className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-bold sm:px-3.5 sm:py-1 sm:text-xs ${categoryBadgeClass}`}
  >
  {categoryLabel}
  </span>
  <span
- className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wide sm:px-3.5 sm:py-1 sm:text-xs ${
+ className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-bold sm:px-3.5 sm:py-1 sm:text-xs ${
  levelBadge[course.level] || levelBadge.beginner
  }`}
  >

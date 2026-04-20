@@ -19,9 +19,9 @@ export function formatCoursePrice(
  _currency: string,
  locale: string
 ): string {
- const lang = locale === "ar" ? "ar" : "en-US";
  try {
- return new Intl.NumberFormat(lang, {
+ // Always use en-US for currency — Arabic locale renders "$US 200" instead of "$200"
+ return new Intl.NumberFormat("en-US", {
  style: "currency",
  currency: "USD",
  maximumFractionDigits: 2,
