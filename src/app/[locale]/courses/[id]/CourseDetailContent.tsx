@@ -244,7 +244,7 @@ export default function CourseDetailContent() {
  </div>
  </AnimatedSection>
  <AnimatedSection delay={0.12}>
- <div className="mb-6 rounded-[1.35rem] bg-gradient-to-br from-primary to-violet-500 p-[3px] shadow-xl shadow-primary/20 dark:shadow-primary/30 sm:rounded-[1.5rem]">
+ <div className="mb-6 rounded-[1.35rem] bg-primary p-[3px] shadow-xl shadow-primary/20 dark:shadow-primary/30 sm:rounded-[1.5rem]">
  <div className="relative overflow-hidden rounded-[1.25rem] bg-surface px-4 py-5 dark:bg-surface sm:rounded-[1.4rem] sm:px-6 sm:py-6">
  {/* soft confetti dots */}
  <div
@@ -297,7 +297,7 @@ export default function CourseDetailContent() {
  <p className="mb-3 text-xs font-medium text-muted sm:mb-3.5 sm:text-sm">{t("heroTagline")}</p>
 
  {course.showPrice ? (
- <div className="flex w-full max-w-md flex-wrap items-baseline gap-x-3 gap-y-1 rounded-xl border border-primary/15 bg-gradient-to-br from-primary/[0.08] to-violet-500/[0.06] px-3.5 py-2 shadow-inner dark:from-primary/15 dark:to-violet-500/10 sm:px-4 sm:py-2.5">
+ <div className="flex w-full max-w-md flex-wrap items-baseline gap-x-3 gap-y-1 rounded-xl border border-primary/15 bg-primary/[0.08] px-3.5 py-2 shadow-inner dark:bg-primary/15 sm:px-4 sm:py-2.5">
  <span className="text-[9px] font-bold uppercase tracking-[0.18em] text-primary/80 dark:text-primary/90 sm:text-[10px] sm:tracking-[0.2em]">
  {t("price")}
  </span>
