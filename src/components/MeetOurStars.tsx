@@ -262,15 +262,6 @@ export function MeetOurStars({ cmsTeam }: MeetOurStarsProps) {
  const t = useTranslations("about");
  const lang = useLocale() === "ar" ? "ar" : "en";
 
- if (!cmsTeam || cmsTeam.length === 0) {
- return (
- <section className="py-20 sm:py-28 text-center">
- <h2 className="text-3xl sm:text-4xl font-extrabold mb-3">{t("starsTitle")}</h2>
- <p className="text-muted text-lg">{t("starsComingSoon")}</p>
- </section>
- );
- }
-
  const teamRows: StarRow[] = useMemo(() => {
  if (!cmsTeam || cmsTeam.length === 0) return [];
  return [...cmsTeam]
@@ -319,6 +310,7 @@ export function MeetOurStars({ cmsTeam }: MeetOurStarsProps) {
  }, [cmsTeam, lang]);
 
  const carouselResetKey = `${teamRows.length}-${cmsTeam == null ? "null" : String(cmsTeam.length)}`;
+ const isEmpty = teamRows.length === 0;
 
  return (
  <section className="py-20 sm:py-28 relative overflow-hidden">
@@ -395,7 +387,11 @@ export function MeetOurStars({ cmsTeam }: MeetOurStarsProps) {
  <p className="text-muted text-lg max-w-xl mx-auto">{t("starsSubtitle")}</p>
  </AnimatedSection>
 
+ {isEmpty ? (
+ <p className="text-center text-muted text-lg mt-4">{t("starsComingSoon")}</p>
+ ) : (
  <MeetOurStarsCarousel key={carouselResetKey} teamRows={teamRows} />
+ )}
  </div>
 
  <style jsx global>{`
