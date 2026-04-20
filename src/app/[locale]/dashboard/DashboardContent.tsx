@@ -7,6 +7,7 @@ import { isParentPortalRole } from "@/lib/auth-flow";
 import { useRouter } from "@/i18n/navigation";
 import {
  fetchParentDashboard,
+ fetchParentReferral,
  type ParentDashboardData,
  type APICourse,
  type EnrollmentWithCourse,
@@ -487,16 +488,26 @@ function ReferralSection({ token, lang }: { token: string | null; lang: string }
 
  useEffect(() => {
  if (!token) return;
- fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/referrals/my`, {
- headers: { Authorization: `Bearer ${token}` },
- })
- .then((r) => r.json())
+ let cancelled = false;
+ setLoading(true);
+ fetchParentReferral(token)
  .then((d) => {
+ if (cancelled) return;
  setCode(d.code || null);
- setStats({ totalReferred: d.totalReferred || 0, discountPercent: d.discountPercent || 15 });
- setLoading(false);
+ setStats({
+ totalReferred: d.totalReferred || 0,
+ discountPercent: d.discountPercent ?? 15,
+ });
  })
- .catch(() => setLoading(false));
+ .catch(() => {
+ if (!cancelled) setCode(null);
+ })
+ .finally(() => {
+ if (!cancelled) setLoading(false);
+ });
+ return () => {
+ cancelled = true;
+ };
  }, [token]);
 
  const handleCopy = () => {

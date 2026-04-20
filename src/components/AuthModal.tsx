@@ -12,6 +12,7 @@ import {
  Loader2,
  Heart,
  GraduationCap,
+ ShieldCheck,
 } from "lucide-react";
 import { apiRoot } from "@/lib/api";
 import { PasswordInput } from "@/components/PasswordInput";
@@ -53,9 +54,14 @@ export function AuthModal({
  const [submitting, setSubmitting] = useState(false);
  const [success, setSuccess] = useState(false);
  const [error, setError] = useState("");
- const [forgotStep, setForgotStep] = useState<"phone" | "otp" | "newpass" | "done">("phone");
- const [forgotPhone, setForgotPhone] = useState("");
+ const [forgotStep, setForgotStep] = useState<"email" | "otp" | "newpass" | "done">("email");
+ const [forgotEmail, setForgotEmail] = useState("");
+ const [forgotInfo, setForgotInfo] = useState("");
  const [otp, setOtp] = useState(["", "", "", ""]);
+ const [otpPhase, setOtpPhase] = useState<"idle" | "verifying" | "success" | "error">(
+ "idle"
+ );
+ const otpAdvanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
  const [newPassword, setNewPassword] = useState("");
  const [confirmPassword, setConfirmPassword] = useState("");
  const [signupForm, setSignupForm] = useState({ name: "", email: "", phone: "", password: "" });
@@ -75,9 +81,15 @@ export function AuthModal({
  if (!open) return;
  setSuccess(false);
  setError("");
- setForgotStep("phone");
- setForgotPhone("");
+ setForgotStep("email");
+ setForgotEmail("");
+ setForgotInfo("");
  setOtp(["", "", "", ""]);
+ setOtpPhase("idle");
+ if (otpAdvanceTimer.current) {
+ clearTimeout(otpAdvanceTimer.current);
+ otpAdvanceTimer.current = null;
+ }
  setNewPassword("");
  setConfirmPassword("");
  setSignupForm({ name: "", email: "", phone: "", password: "" });
@@ -86,6 +98,12 @@ export function AuthModal({
  setSignupMatchedChildren([]);
  setTab(isInstructor ? "login" : defaultTab);
  }, [open, defaultTab, isInstructor]);
+
+ useEffect(() => {
+ return () => {
+ if (otpAdvanceTimer.current) clearTimeout(otpAdvanceTimer.current);
+ };
+ }, []);
 
  useEffect(() => {
  if (!open || tab !== "signup" || isInstructor) {
@@ -199,9 +217,15 @@ export function AuthModal({
  setTimeout(() => {
  setSuccess(false);
  setError("");
- setForgotStep("phone");
- setForgotPhone("");
+ setForgotStep("email");
+ setForgotEmail("");
+ setForgotInfo("");
  setOtp(["", "", "", ""]);
+ setOtpPhase("idle");
+ if (otpAdvanceTimer.current) {
+ clearTimeout(otpAdvanceTimer.current);
+ otpAdvanceTimer.current = null;
+ }
  setNewPassword("");
  setConfirmPassword("");
  setSignupForm({ name: "", email: "", phone: "", password: "" });
@@ -435,13 +459,20 @@ export function AuthModal({
  <label className="text-sm font-medium">
  {t("passwordLabel")} <span className="text-red-500">*</span>
  </label>
+ {!isInstructor && (
  <button
  type="button"
  className="text-xs text-primary hover:underline"
- onClick={() => { setTab("forgot"); setError(""); }}
+ onClick={() => {
+ setTab("forgot");
+ setError("");
+ setForgotInfo("");
+ setForgotEmail(loginForm.email.trim());
+ }}
  >
  {isRtl ? "نسيت كلمة المرور؟" : "Forgot password?"}
  </button>
+ )}
  </div>
  <PasswordInput
  required
@@ -465,7 +496,7 @@ export function AuthModal({
  </motion.form>
  )}
 
- {/* ── Forgot Password — 3 steps: phone → OTP → new password ── */}
+ {/* ── Forgot password: email → Resend OTP → new password (parent only) ── */}
  {tab === "forgot" && (
  <motion.div
  key="forgot"
@@ -475,10 +506,9 @@ export function AuthModal({
  className="mt-4"
  >
  <AnimatePresence mode="wait">
- {/* Step 1 — Enter phone number */}
- {forgotStep === "phone" && (
+ {forgotStep === "email" && (
  <motion.form
- key="fp-phone"
+ key="fp-email"
  initial={{ opacity: 0 }}
  animate={{ opacity: 1 }}
  exit={{ opacity: 0 }}
@@ -486,81 +516,26 @@ export function AuthModal({
  e.preventDefault();
  setSubmitting(true);
  setError("");
- await new Promise((r) => setTimeout(r, 1000));
- setSubmitting(false);
- setForgotStep("otp");
- }}
- className="space-y-5"
- >
- <div className="text-center mb-2">
- <div className="w-14 h-14 rounded-full bg-emerald-100 dark:bg-emerald-950/30 flex items-center justify-center mx-auto mb-3">
- <svg viewBox="0 0 24 24" fill="none" className="w-7 h-7 text-emerald-600 dark:text-emerald-400">
- <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" fill="currentColor"/>
- <path d="M20.52 3.449C12.831-3.984.106 1.407.101 11.893c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c10.491 0 16.162-10.863 11.462-17.345A11.88 11.88 0 0020.52 3.449zM12.05 21.785a9.9 9.9 0 01-5.04-1.382l-.362-.214-3.748.983.999-3.648-.235-.374A9.862 9.862 0 012.1 11.893C2.1 6.414 6.544 1.97 12.05 1.97a9.862 9.862 0 019.95 9.923c0 5.48-4.444 9.892-9.95 9.892z" fill="currentColor" opacity="0.3"/>
- </svg>
- </div>
- <h3 className="text-lg font-bold mb-1">
- {isRtl ? "استعادة كلمة المرور" : "Reset Password"}
- </h3>
- <p className="text-sm text-muted">
- {isRtl
- ? "أدخل رقم هاتفك وسنرسل رمز التحقق عبر واتساب"
- : "Enter your phone number and we'll send a verification code via WhatsApp"}
- </p>
- </div>
-
- <div>
- <label className={`block text-sm font-medium mb-2 ${labelAlign}`}>
- {t("phoneLabel")} <span className="text-red-500">*</span>
- </label>
- <input
- type="tel"
- required
- value={forgotPhone}
- onChange={(e) => setForgotPhone(e.target.value)}
- placeholder={t("phonePlaceholder")}
- className={inputCls}
- />
- </div>
-
- {error && <p className="text-sm text-red-500 bg-red-50 dark:bg-red-950/30 px-4 py-2 rounded-xl">{error}</p>}
-
- <button type="submit" disabled={submitting} className="w-full py-3.5 rounded-2xl bg-emerald-500 text-white font-semibold shadow-md hover:shadow-lg hover:scale-[1.01] transition-all disabled:opacity-70">
- {submitting ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : isRtl ? "إرسال الرمز عبر واتساب" : "Send Code via WhatsApp"}
- </button>
-
- <button type="button" onClick={() => { setTab("login"); setError(""); }} className="w-full text-center text-sm text-muted hover:text-primary transition-colors">
- {isRtl ? "← العودة لتسجيل الدخول" : "← Back to Login"}
- </button>
- </motion.form>
- )}
-
- {/* Step 2 — Enter OTP */}
- {forgotStep === "otp" && (
- <motion.form
- key="fp-otp"
- initial={{ opacity: 0 }}
- animate={{ opacity: 1 }}
- exit={{ opacity: 0 }}
- onSubmit={async (e) => {
- e.preventDefault();
- setError("");
- setSubmitting(true);
- const code = otp.join("");
+ setForgotInfo("");
  try {
- const res = await fetch(`${API}/auth/verify-otp`, {
+ const res = await fetch(`${API}/auth/parent/request-password-reset`, {
  method: "POST",
  headers: { "Content-Type": "application/json" },
- body: JSON.stringify({ phone: forgotPhone, code }),
+ body: JSON.stringify({
+ email: forgotEmail.trim(),
+ locale: locale === "ar" ? "ar" : "en",
+ }),
  });
- const data = (await res.json().catch(() => ({}))) as { valid?: boolean; message?: string };
- if (!res.ok || !data.valid) {
- setError(data.message || (isRtl ? "رمز التحقق غير صحيح" : "Invalid verification code"));
- return;
+ const data = (await res.json().catch(() => ({}))) as { message?: string };
+ if (!res.ok) {
+ throw new Error(data.message || "Request failed");
  }
- setForgotStep("newpass");
- } catch {
- setError(isRtl ? "حدث خطأ، حاول مرة أخرى" : "An error occurred, please try again");
+ if (typeof data.message === "string" && data.message.trim()) {
+ setForgotInfo(data.message);
+ }
+ setForgotStep("otp");
+ } catch (err) {
+ setError(err instanceof Error ? err.message : "Something went wrong");
  } finally {
  setSubmitting(false);
  }
@@ -568,28 +543,178 @@ export function AuthModal({
  className="space-y-5"
  >
  <div className="text-center mb-2">
- <h3 className="text-lg font-bold mb-1">
- {isRtl ? "أدخل رمز التحقق" : "Enter Verification Code"}
- </h3>
- <p className="text-sm text-muted">
- {isRtl
- ? `أرسلنا رمز مكون من 4 أرقام إلى ${forgotPhone} عبر واتساب`
- : `We sent a 4-digit code to ${forgotPhone} via WhatsApp`}
- </p>
+ <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-950/30">
+ <svg viewBox="0 0 24 24" fill="none" className="h-7 w-7 text-emerald-600 dark:text-emerald-400" aria-hidden>
+ <path
+ d="M4 4h16v16H4V4zm2 2v12h12V6H6zm2 2h8v2H8V8zm0 4h8v2H8v-2zm0 4h5v2H8v-2z"
+ fill="currentColor"
+ />
+ </svg>
+ </div>
+ <h3 className="mb-1 text-lg font-bold">{ta("forgotTitle")}</h3>
+ <p className="text-sm text-muted">{ta("forgotEmailHint")}</p>
  </div>
 
- {/* 4-digit OTP boxes */}
- <div className="flex justify-center gap-2" dir="ltr">
+ <div>
+ <label className={`mb-2 block text-sm font-medium ${labelAlign}`}>
+ {t("emailLabel")} <span className="text-red-500">*</span>
+ </label>
+ <input
+ type="email"
+ required
+ value={forgotEmail}
+ onChange={(e) => setForgotEmail(e.target.value)}
+ placeholder={t("emailPlaceholder")}
+ className={inputCls}
+ autoComplete="email"
+ />
+ </div>
+
+ {error && (
+ <p className="rounded-xl bg-red-50 px-4 py-2 text-sm text-red-500 dark:bg-red-950/30">{error}</p>
+ )}
+
+ <button
+ type="submit"
+ disabled={submitting || !emailLooksValid(forgotEmail)}
+ className="w-full rounded-2xl bg-emerald-500 py-3.5 font-semibold text-white shadow-md transition-all hover:scale-[1.01] hover:shadow-lg disabled:opacity-70"
+ >
+ {submitting ? <Loader2 className="mx-auto h-5 w-5 animate-spin" /> : ta("forgotSendCode")}
+ </button>
+
+ <button
+ type="button"
+ onClick={() => {
+ setTab("login");
+ setError("");
+ setForgotInfo("");
+ }}
+ className="w-full text-center text-sm text-muted transition-colors hover:text-primary"
+ >
+ {ta("forgotBackLogin")}
+ </button>
+ </motion.form>
+ )}
+
+ {forgotStep === "otp" && (
+ <motion.div
+ key="fp-otp"
+ initial={{ opacity: 0, y: 8 }}
+ animate={{ opacity: 1, y: 0 }}
+ exit={{ opacity: 0, y: -8 }}
+ className="space-y-5"
+ >
+ <div className="text-center">
+ <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 ring-1 ring-primary/20">
+ <ShieldCheck className="h-7 w-7 text-primary" aria-hidden />
+ </div>
+ <h3 className="mb-1 text-lg font-bold">{ta("forgotOtpTitle")}</h3>
+ <p className="text-sm text-muted">{ta("forgotOtpHint", { email: forgotEmail.trim() })}</p>
+ <p className="mt-1 text-xs text-muted">{ta("forgotOtpScreenSubtitle")}</p>
+ {forgotInfo ? (
+ <p
+ role="status"
+ className="mt-3 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-900 dark:border-emerald-900/40 dark:bg-emerald-950/30 dark:text-emerald-200"
+ >
+ {forgotInfo}
+ </p>
+ ) : null}
+ </div>
+
+ <AnimatePresence mode="wait">
+ {otpPhase === "success" && (
+ <motion.div
+ key="otp-ok"
+ role="status"
+ initial={{ opacity: 0, scale: 0.96 }}
+ animate={{ opacity: 1, scale: 1 }}
+ exit={{ opacity: 0, scale: 0.96 }}
+ className="flex gap-3 rounded-2xl border border-emerald-200 bg-emerald-50/90 px-4 py-3 text-start dark:border-emerald-900/50 dark:bg-emerald-950/35"
+ >
+ <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-emerald-600 dark:text-emerald-400" aria-hidden />
+ <div>
+ <p className="font-semibold text-emerald-950 dark:text-emerald-100">
+ {ta("forgotOtpSuccessTitle")}
+ </p>
+ <p className="text-sm text-emerald-900/90 dark:text-emerald-200/90">
+ {ta("forgotOtpSuccessBody")}
+ </p>
+ </div>
+ </motion.div>
+ )}
+ </AnimatePresence>
+
+ {otpPhase === "error" && error ? (
+ <div
+ role="alert"
+ className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-start dark:border-red-900/50 dark:bg-red-950/35"
+ >
+ <p className="font-semibold text-red-800 dark:text-red-200">{ta("forgotOtpErrorTitle")}</p>
+ <p className="mt-1 text-sm text-red-700 dark:text-red-300/90">{error}</p>
+ </div>
+ ) : null}
+
+ <form
+ className="space-y-5"
+ onSubmit={async (e) => {
+ e.preventDefault();
+ const code = otp.join("");
+ if (code.length !== 4 || otpPhase === "verifying" || otpPhase === "success") return;
+ setError("");
+ setOtpPhase("verifying");
+ try {
+ const res = await fetch(`${API}/auth/parent/verify-reset-otp`, {
+ method: "POST",
+ headers: { "Content-Type": "application/json" },
+ body: JSON.stringify({ email: forgotEmail.trim(), code }),
+ });
+ const data = (await res.json().catch(() => ({}))) as { message?: string; ok?: boolean };
+ if (!res.ok || !data.ok) {
+ setOtpPhase("error");
+ setError(
+ data.message ||
+ (isRtl ? "تحقق من الرمز وحاول مرة أخرى" : "Check the code and try again")
+ );
+ return;
+ }
+ setOtpPhase("success");
+ if (otpAdvanceTimer.current) clearTimeout(otpAdvanceTimer.current);
+ otpAdvanceTimer.current = setTimeout(() => {
+ otpAdvanceTimer.current = null;
+ setForgotStep("newpass");
+ setOtpPhase("idle");
+ }, 1400);
+ } catch {
+ setOtpPhase("error");
+ setError(isRtl ? "حدث خطأ. حاول مرة أخرى." : "Something went wrong. Try again.");
+ }
+ }}
+ >
+ <div
+ className={`rounded-2xl border bg-background/60 p-4 transition-colors ${
+ otpPhase === "error"
+ ? "border-red-300 ring-2 ring-red-200/80 dark:border-red-800 dark:ring-red-900/40"
+ : "border-border"
+ }`}
+ >
+ <p className={`mb-3 text-center text-xs font-medium ${labelAlign}`}>
+ {ta("forgotOtpBoxesLabel")}
+ </p>
+ <div className="flex justify-center gap-1.5 sm:gap-2" dir="ltr">
  {otp.map((digit, idx) => (
  <input
  key={idx}
  id={`otp-${idx}`}
  type="text"
  inputMode="numeric"
+ autoComplete="one-time-code"
  maxLength={1}
  value={digit}
+ disabled={otpPhase === "verifying" || otpPhase === "success"}
  onChange={(e) => {
- const val = e.target.value.replace(/\D/g, "");
+ setOtpPhase("idle");
+ setError("");
+ const val = e.target.value.replace(/\D/g, "").slice(-1);
  const next = [...otp];
  next[idx] = val;
  setOtp(next);
@@ -602,28 +727,53 @@ export function AuthModal({
  document.getElementById(`otp-${idx - 1}`)?.focus();
  }
  }}
- className="w-12 h-14 text-center text-xl font-bold rounded-xl bg-background border-2 border-border text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+ className="h-12 w-9 rounded-xl border-2 border-border bg-surface text-center text-lg font-bold text-foreground outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-50 sm:h-14 sm:w-11 sm:text-xl"
  />
  ))}
  </div>
+ </div>
 
- <p className="text-center text-xs text-muted">
- {isRtl ? "أدخل الرمز المرسل عبر واتساب" : "Enter the code sent via WhatsApp"}
- </p>
-
- {error && <p className="text-sm text-red-500 bg-red-50 dark:bg-red-950/30 px-4 py-2 rounded-xl text-center">{error}</p>}
-
- <button type="submit" disabled={otp.join("").length < 6} className="w-full py-3.5 rounded-2xl bg-primary text-white font-semibold shadow-md shadow-primary/10 hover:shadow-lg hover:scale-[1.01] transition-all disabled:opacity-70 disabled:cursor-not-allowed">
- {isRtl ? "تحقق" : "Verify Code"}
+ <button
+ type="submit"
+ disabled={
+ otp.join("").length !== 4 ||
+ otpPhase === "verifying" ||
+ otpPhase === "success"
+ }
+ className="w-full rounded-2xl bg-primary py-3.5 font-semibold text-white shadow-md shadow-primary/10 transition-all hover:scale-[1.01] hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-70"
+ >
+ {otpPhase === "verifying" ? (
+ <span className="flex items-center justify-center gap-2">
+ <Loader2 className="h-5 w-5 animate-spin" aria-hidden />
+ {ta("forgotOtpVerifying")}
+ </span>
+ ) : (
+ ta("forgotOtpVerify")
+ )}
  </button>
+ </form>
 
- <button type="button" onClick={() => { setForgotStep("phone"); setOtp(["", "", "", ""]); setError(""); }} className="w-full text-center text-sm text-muted hover:text-primary transition-colors">
- {isRtl ? "← تغيير رقم الهاتف" : "← Change phone number"}
+ <button
+ type="button"
+ onClick={() => {
+ if (otpAdvanceTimer.current) {
+ clearTimeout(otpAdvanceTimer.current);
+ otpAdvanceTimer.current = null;
+ }
+ setForgotStep("email");
+ setOtp(["", "", "", ""]);
+ setOtpPhase("idle");
+ setError("");
+ setForgotInfo("");
+ }}
+ disabled={otpPhase === "verifying"}
+ className="w-full text-center text-sm text-muted transition-colors hover:text-primary disabled:opacity-50"
+ >
+ {ta("forgotChangeEmail")}
  </button>
- </motion.form>
+ </motion.div>
  )}
 
- {/* Step 3 — Set new password */}
  {forgotStep === "newpass" && (
  <motion.form
  key="fp-newpass"
@@ -638,83 +788,108 @@ export function AuthModal({
  return;
  }
  setSubmitting(true);
- await new Promise((r) => setTimeout(r, 1000));
- setSubmitting(false);
+ try {
+ const res = await fetch(`${API}/auth/parent/reset-password`, {
+ method: "POST",
+ headers: { "Content-Type": "application/json" },
+ body: JSON.stringify({
+ email: forgotEmail.trim(),
+ code: otp.join(""),
+ password: newPassword,
+ }),
+ });
+ const data = (await res.json().catch(() => ({}))) as {
+ message?: string;
+ errors?: Array<{ msg?: string }>;
+ };
+ if (!res.ok) {
+ const fromValidator = Array.isArray(data.errors)
+ ? data.errors.map((x) => x.msg).filter(Boolean).join("; ")
+ : "";
+ throw new Error(
+ fromValidator || data.message || "Could not update password"
+ );
+ }
  setForgotStep("done");
+ } catch (err) {
+ setError(err instanceof Error ? err.message : "Something went wrong");
+ } finally {
+ setSubmitting(false);
+ }
  }}
  className="space-y-5"
  >
- <div className="text-center mb-2">
- <h3 className="text-lg font-bold mb-1">
- {isRtl ? "تعيين كلمة مرور جديدة" : "Set New Password"}
- </h3>
- <p className="text-sm text-muted">
- {isRtl ? "اختر كلمة مرور قوية لحسابك" : "Choose a strong password for your account"}
- </p>
+ <div className="mb-2 text-center">
+ <h3 className="mb-1 text-lg font-bold">{ta("forgotNewPassTitle")}</h3>
+ <p className="text-sm text-muted">{ta("forgotNewPassHint")}</p>
  </div>
 
  <div>
- <label className={`block text-sm font-medium mb-2 ${labelAlign}`}>
- {isRtl ? "كلمة المرور الجديدة" : "New Password"} <span className="text-red-500">*</span>
+ <label className={`mb-2 block text-sm font-medium ${labelAlign}`}>
+ {isRtl ? "كلمة المرور الجديدة" : "New password"} <span className="text-red-500">*</span>
  </label>
  <PasswordInput
  required
  minLength={8}
  value={newPassword}
  onChange={(e) => setNewPassword(e.target.value)}
- placeholder={isRtl ? "٦ أحرف على الأقل" : "At least 6 characters"}
+ placeholder={isRtl ? "٨ أحرف على الأقل، أحرف كبيرة وصغيرة ورقم" : "8+ chars with upper, lower & number"}
  inputClassName={inputCls}
  />
  </div>
 
  <div>
- <label className={`block text-sm font-medium mb-2 ${labelAlign}`}>
- {isRtl ? "تأكيد كلمة المرور" : "Confirm Password"} <span className="text-red-500">*</span>
+ <label className={`mb-2 block text-sm font-medium ${labelAlign}`}>
+ {isRtl ? "تأكيد كلمة المرور" : "Confirm password"} <span className="text-red-500">*</span>
  </label>
  <PasswordInput
  required
  minLength={8}
  value={confirmPassword}
  onChange={(e) => setConfirmPassword(e.target.value)}
- placeholder={
- isRtl
- ? "أعد إدخال كلمة المرور"
- : "Re-enter your password"
- }
+ placeholder={isRtl ? "أعد إدخال كلمة المرور" : "Re-enter your password"}
  inputClassName={inputCls}
  />
  </div>
 
- {error && <p className="text-sm text-red-500 bg-red-50 dark:bg-red-950/30 px-4 py-2 rounded-xl">{error}</p>}
+ {error && (
+ <p className="rounded-xl bg-red-50 px-4 py-2 text-sm text-red-500 dark:bg-red-950/30">{error}</p>
+ )}
 
- <button type="submit" disabled={submitting} className="w-full py-3.5 rounded-2xl bg-primary text-white font-semibold shadow-md shadow-primary/10 hover:shadow-lg hover:scale-[1.01] transition-all disabled:opacity-70">
- {submitting ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : isRtl ? "حفظ كلمة المرور" : "Save Password"}
+ <button
+ type="submit"
+ disabled={submitting}
+ className="w-full rounded-2xl bg-primary py-3.5 font-semibold text-white shadow-md shadow-primary/10 transition-all hover:scale-[1.01] hover:shadow-lg disabled:opacity-70"
+ >
+ {submitting ? <Loader2 className="mx-auto h-5 w-5 animate-spin" /> : ta("forgotSavePassword")}
  </button>
  </motion.form>
  )}
 
- {/* Step 4 — Done */}
  {forgotStep === "done" && (
  <motion.div
  key="fp-done"
  initial={{ opacity: 0, scale: 0.9 }}
  animate={{ opacity: 1, scale: 1 }}
- className="text-center py-6"
+ className="py-6 text-center"
  >
- <CheckCircle2 className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
- <h3 className="text-lg font-bold mb-2">
- {isRtl ? "تم تغيير كلمة المرور!" : "Password Changed!"}
- </h3>
- <p className="text-sm text-muted mb-6 max-w-xs mx-auto">
- {isRtl
- ? "يمكنك الآن تسجيل الدخول بكلمة المرور الجديدة."
- : "You can now log in with your new password."}
- </p>
+ <CheckCircle2 className="mx-auto mb-4 h-16 w-16 text-emerald-500" />
+ <h3 className="mb-2 text-lg font-bold">{ta("forgotDoneTitle")}</h3>
+ <p className="mx-auto mb-6 max-w-xs text-sm text-muted">{ta("forgotDoneBody")}</p>
  <button
- onClick={() => { setTab("login"); setForgotStep("phone"); setError(""); }}
- className="px-6 py-2.5 rounded-xl bg-primary text-white font-semibold hover:scale-[1.02] transition-transform"
+ type="button"
+ onClick={() => {
+ setTab("login");
+ setForgotStep("email");
+ setError("");
+ setForgotInfo("");
+ setOtp(["", "", "", ""]);
+ setNewPassword("");
+ setConfirmPassword("");
+ }}
+ className="rounded-xl bg-primary px-6 py-2.5 font-semibold text-white transition-transform hover:scale-[1.02]"
  >
- {isRtl ? "تسجيل الدخول" : "Log In Now"}
+ {ta("forgotLoginNow")}
  </button>
  </motion.div>
  )}

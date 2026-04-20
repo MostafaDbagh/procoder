@@ -414,6 +414,20 @@ export function fetchParentDashboard(token: string): Promise<ParentDashboardData
  return authRequest<ParentDashboardData>("/parent/dashboard", token);
 }
 
+export interface ParentReferralInfo {
+ code: string;
+ discountPercent: number;
+ totalReferred: number;
+ totalRevenueSaved?: number;
+ referrals?: unknown[];
+ isActive?: boolean;
+}
+
+/** Same-origin `/api` as other parent calls — avoids broken NEXT_PUBLIC_API_URL defaults. */
+export function fetchParentReferral(token: string): Promise<ParentReferralInfo> {
+ return authRequest<ParentReferralInfo>("/referrals/my", token);
+}
+
 export function updateParentChildren(
  token: string,
  children: ParentChild[]
