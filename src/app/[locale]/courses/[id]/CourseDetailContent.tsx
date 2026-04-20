@@ -244,7 +244,32 @@ export default function CourseDetailContent() {
  </div>
  </AnimatedSection>
  <AnimatedSection delay={0.12}>
- <div className="relative mb-6 overflow-hidden rounded-2xl border border-border bg-surface px-4 py-5 shadow-lg sm:px-6 sm:py-6">
+ <div
+ className="relative mb-6 overflow-hidden rounded-2xl bg-surface px-4 py-5 sm:px-6 sm:py-6"
+ style={{
+ borderTop: "2px solid var(--color-primary)",
+ borderLeft: "2px solid var(--color-primary)",
+ boxShadow: "0 8px 32px -4px color-mix(in srgb, var(--color-primary) 25%, transparent), 0 2px 8px -2px color-mix(in srgb, var(--color-primary) 15%, transparent)",
+ }}
+ >
+ {/* Decorative animated icons */}
+ <motion.div
+ className="pointer-events-none absolute right-3 top-3 text-primary/35 dark:text-primary/45 sm:right-4 sm:top-4"
+ animate={{ rotate: [0, 12, -8, 0], scale: [1, 1.06, 1] }}
+ transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+ aria-hidden
+ >
+ <HeroIcon className="h-6 w-6 sm:h-7 sm:w-7" strokeWidth={1.75} />
+ </motion.div>
+ <motion.div
+ className="pointer-events-none absolute bottom-3 left-3 text-primary/30 dark:text-primary/35 sm:bottom-4 sm:left-4"
+ animate={{ y: [0, -4, 0] }}
+ transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+ aria-hidden
+ >
+ <HeroIcon className="h-4 w-4 sm:h-5 sm:w-5" strokeWidth={2} />
+ </motion.div>
+
  <div className="relative pb-2">
  {/* Content */}
  <div className="min-w-0 pe-4">
