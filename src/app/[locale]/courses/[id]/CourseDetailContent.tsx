@@ -244,7 +244,7 @@ export default function CourseDetailContent() {
  </div>
  </AnimatedSection>
  <AnimatedSection delay={0.12}>
- <div className="mb-6 rounded-[1.35rem] bg-gradient-to-br from-primary via-violet-500 to-amber-400 p-[3px] shadow-xl shadow-primary/20 dark:shadow-primary/30 sm:rounded-[1.5rem]">
+ <div className="mb-6 rounded-[1.35rem] bg-gradient-to-br from-primary to-violet-500 p-[3px] shadow-xl shadow-primary/20 dark:shadow-primary/30 sm:rounded-[1.5rem]">
  <div className="relative overflow-hidden rounded-[1.25rem] bg-surface px-4 py-5 dark:bg-surface sm:rounded-[1.4rem] sm:px-6 sm:py-6">
  {/* soft confetti dots */}
  <div
@@ -274,9 +274,9 @@ export default function CourseDetailContent() {
  <HeroIcon className="h-4 w-4 sm:h-5 sm:w-5" strokeWidth={2} />
  </motion.div>
 
- <div className="relative flex items-start gap-4 sm:gap-5">
- {/* Content — left side */}
- <div className="min-w-0 flex-1">
+ <div className="relative">
+ {/* Content */}
+ <div className="min-w-0 pe-2">
  <div className="mb-3 flex flex-wrap items-center gap-1.5 sm:gap-2">
  <span
  className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-bold sm:px-3.5 sm:py-1 sm:text-xs ${categoryBadgeClass}`}
@@ -297,7 +297,7 @@ export default function CourseDetailContent() {
  <p className="mb-3 text-xs font-medium text-muted sm:mb-3.5 sm:text-sm">{t("heroTagline")}</p>
 
  {course.showPrice ? (
- <div className="flex w-full max-w-md flex-wrap items-baseline gap-x-3 gap-y-1 rounded-xl border border-primary/15 bg-gradient-to-br from-primary/[0.08] via-violet-500/[0.06] to-amber-400/[0.08] px-3.5 py-2 shadow-inner dark:from-primary/15 dark:via-violet-500/10 dark:to-amber-400/10 sm:px-4 sm:py-2.5">
+ <div className="flex w-full max-w-md flex-wrap items-baseline gap-x-3 gap-y-1 rounded-xl border border-primary/15 bg-gradient-to-br from-primary/[0.08] to-violet-500/[0.06] px-3.5 py-2 shadow-inner dark:from-primary/15 dark:to-violet-500/10 sm:px-4 sm:py-2.5">
  <span className="text-[9px] font-bold uppercase tracking-[0.18em] text-primary/80 dark:text-primary/90 sm:text-[10px] sm:tracking-[0.2em]">
  {t("price")}
  </span>
@@ -325,9 +325,9 @@ export default function CourseDetailContent() {
  </div>
  ) : null}
  </div>
- {/* Icon — right side */}
+ {/* Icon — bottom-right corner */}
  <div
- className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${iconGrad} text-white shadow-md shadow-black/10 sm:h-16 sm:w-16 sm:rounded-2xl`}
+ className={`absolute bottom-0 end-0 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${iconGrad} text-white shadow-md shadow-black/10 sm:h-16 sm:w-16`}
  >
  <HeroIcon className="h-7 w-7 sm:h-8 sm:w-8" strokeWidth={2} aria-hidden />
  </div>
