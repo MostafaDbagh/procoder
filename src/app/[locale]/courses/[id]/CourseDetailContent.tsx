@@ -281,7 +281,7 @@ export default function CourseDetailContent() {
  <HeroIcon className="h-7 w-7 sm:h-8 sm:w-8" strokeWidth={2} aria-hidden />
  </div>
  <div className="min-w-0 flex-1">
- <div className="mb-2 flex flex-wrap items-center gap-1.5 sm:gap-2">
+ <div className="mb-3 flex flex-wrap items-center gap-1.5 sm:gap-2">
  <span
  className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-bold sm:px-3.5 sm:py-1 sm:text-xs ${categoryBadgeClass}`}
  >
