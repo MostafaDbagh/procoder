@@ -882,6 +882,17 @@ export default function AdminDashboard() {
  }
  };
 
+ const deleteTeamPermanent = async (id: string, name: string) => {
+ if (!confirm(`Permanently delete "${name}"? This cannot be undone.`)) return;
+ try {
+ await adminFetch(`/team/${id}/permanent`, { method: "DELETE" });
+ await loadTeam();
+ await loadOverview();
+ } catch (e) {
+ setErr(e instanceof Error ? e.message : "Failed");
+ }
+ };
+
  const saveUserEdit = async () => {
  if (!userEdit?._id) return;
  try {
@@ -2433,13 +2444,23 @@ export default function AdminDashboard() {
  <button
  type="button"
  className="text-red-400 text-xs"
- onClick={() =>
- deactivateTeam(String(r._id))
- }
+ onClick={() => deactivateTeam(String(r._id))}
  >
  Deactivate
  </button>
  ) : null}
+ <button
+ type="button"
+ className="text-red-600 text-xs font-semibold"
+ onClick={() =>
+ deleteTeamPermanent(
+ String(r._id),
+ String((r.name as { en?: string })?.en)
+ )
+ }
+ >
+ Delete
+ </button>
  </td>
  </tr>
  ))}
