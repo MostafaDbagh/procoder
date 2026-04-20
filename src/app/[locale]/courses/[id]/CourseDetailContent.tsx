@@ -244,39 +244,10 @@ export default function CourseDetailContent() {
  </div>
  </AnimatedSection>
  <AnimatedSection delay={0.12}>
- <div className="mb-6 rounded-[1.35rem] bg-primary p-[3px] shadow-xl shadow-primary/20 dark:shadow-primary/30 sm:rounded-[1.5rem]">
- <div className="relative overflow-hidden rounded-[1.25rem] bg-surface px-4 py-5 dark:bg-surface sm:rounded-[1.4rem] sm:px-6 sm:py-6">
- {/* soft confetti dots */}
- <div
- className="pointer-events-none absolute inset-0 opacity-[0.35] dark:opacity-20"
- style={{
- backgroundImage: `radial-gradient(circle at 20% 30%, rgb(91 127 214 / 0.25) 0, transparent 45%),
- radial-gradient(circle at 78% 20%, rgb(139 92 246 / 0.2) 0, transparent 40%),
- radial-gradient(circle at 70% 85%, rgb(251 191 36 / 0.2) 0, transparent 42%),
- radial-gradient(circle at 10% 80%, rgb(52 211 153 / 0.15) 0, transparent 38%)`,
- }}
- aria-hidden
- />
- <motion.div
- className="pointer-events-none absolute right-3 top-3 text-primary/35 dark:text-primary/45 sm:right-4 sm:top-4"
- animate={{ rotate: [0, 12, -8, 0], scale: [1, 1.06, 1] }}
- transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
- aria-hidden
- >
- <HeroIcon className="h-6 w-6 sm:h-7 sm:w-7" strokeWidth={1.75} />
- </motion.div>
- <motion.div
- className="pointer-events-none absolute bottom-3 left-3 text-primary/30 dark:text-primary/35 sm:bottom-4 sm:left-4"
- animate={{ y: [0, -4, 0] }}
- transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
- aria-hidden
- >
- <HeroIcon className="h-4 w-4 sm:h-5 sm:w-5" strokeWidth={2} />
- </motion.div>
-
- <div className="relative">
+ <div className="relative mb-6 overflow-hidden rounded-2xl border border-border bg-surface px-4 py-5 shadow-lg sm:px-6 sm:py-6">
+ <div className="relative pb-2">
  {/* Content */}
- <div className="min-w-0 pe-2">
+ <div className="min-w-0 pe-4">
  <div className="mb-3 flex flex-wrap items-center gap-1.5 sm:gap-2">
  <span
  className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-bold sm:px-3.5 sm:py-1 sm:text-xs ${categoryBadgeClass}`}
@@ -297,7 +268,7 @@ export default function CourseDetailContent() {
  <p className="mb-3 text-xs font-medium text-muted sm:mb-3.5 sm:text-sm">{t("heroTagline")}</p>
 
  {course.showPrice ? (
- <div className="flex w-full max-w-md flex-wrap items-baseline gap-x-3 gap-y-1 rounded-xl border border-primary/15 bg-primary/[0.08] px-3.5 py-2 shadow-inner dark:bg-primary/15 sm:px-4 sm:py-2.5">
+ <div className="flex w-full max-w-md flex-wrap items-baseline gap-x-3 gap-y-1 rounded-xl border border-primary/15 bg-primary/[0.06] px-3.5 py-2 dark:bg-primary/10 sm:px-4 sm:py-2.5">
  <span className="text-[9px] font-bold uppercase tracking-[0.18em] text-primary/80 dark:text-primary/90 sm:text-[10px] sm:tracking-[0.2em]">
  {t("price")}
  </span>
@@ -325,12 +296,12 @@ export default function CourseDetailContent() {
  </div>
  ) : null}
  </div>
- {/* Icon — bottom-right corner */}
+
+ {/* Icon — flush bottom-right corner, no top-left radius to blend with card */}
  <div
- className={`absolute bottom-0 end-0 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${iconGrad} text-white shadow-md shadow-black/10 sm:h-16 sm:w-16`}
+ className={`absolute -bottom-5 -end-4 flex h-16 w-16 items-center justify-center rounded-tl-2xl bg-gradient-to-br ${iconGrad} text-white sm:-bottom-6 sm:-end-6 sm:h-20 sm:w-20`}
  >
- <HeroIcon className="h-7 w-7 sm:h-8 sm:w-8" strokeWidth={2} aria-hidden />
- </div>
+ <HeroIcon className="h-7 w-7 sm:h-9 sm:w-9" strokeWidth={2} aria-hidden />
  </div>
  </div>
  </div>
