@@ -274,12 +274,8 @@ export default function CourseDetailContent() {
  <HeroIcon className="h-4 w-4 sm:h-5 sm:w-5" strokeWidth={2} />
  </motion.div>
 
- <div className="relative flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-5">
- <div
- className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${iconGrad} text-white shadow-md shadow-black/10 ring-2 ring-white dark:ring-surface sm:h-[3.75rem] sm:w-[3.75rem] sm:rounded-2xl sm:ring-[3px]`}
- >
- <HeroIcon className="h-7 w-7 sm:h-8 sm:w-8" strokeWidth={2} aria-hidden />
- </div>
+ <div className="relative flex items-start gap-4 sm:gap-5">
+ {/* Content — left side */}
  <div className="min-w-0 flex-1">
  <div className="mb-3 flex flex-wrap items-center gap-1.5 sm:gap-2">
  <span
@@ -328,6 +324,12 @@ export default function CourseDetailContent() {
  </div>
  </div>
  ) : null}
+ </div>
+ {/* Icon — right side */}
+ <div
+ className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${iconGrad} text-white shadow-md shadow-black/10 sm:h-16 sm:w-16 sm:rounded-2xl`}
+ >
+ <HeroIcon className="h-7 w-7 sm:h-8 sm:w-8" strokeWidth={2} aria-hidden />
  </div>
  </div>
  </div>
