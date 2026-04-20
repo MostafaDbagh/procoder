@@ -247,8 +247,10 @@ export default function CourseDetailContent() {
  <div
  className="relative mb-6 overflow-hidden rounded-2xl bg-surface px-4 py-5 sm:px-6 sm:py-6"
  style={{
- borderTop: "2px solid var(--color-primary)",
- borderLeft: "2px solid var(--color-primary)",
+ borderTop: "4px solid var(--color-primary)",
+ borderLeft: "4px solid var(--color-primary)",
+ borderBottom: "1px solid color-mix(in srgb, var(--color-primary) 18%, transparent)",
+ borderRight: "1px solid color-mix(in srgb, var(--color-primary) 18%, transparent)",
  boxShadow: "0 8px 32px -4px color-mix(in srgb, var(--color-primary) 25%, transparent), 0 2px 8px -2px color-mix(in srgb, var(--color-primary) 15%, transparent)",
  }}
  >
