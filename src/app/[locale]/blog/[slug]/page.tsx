@@ -7,7 +7,7 @@ import BlogDetailClient from "./BlogDetailClient";
 
 export const dynamic = "force-dynamic";
 
-const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
+const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
  const { locale, slug } = await params;

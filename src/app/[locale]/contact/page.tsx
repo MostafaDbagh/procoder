@@ -4,7 +4,7 @@ import { setRequestLocale } from "next-intl/server";
 import ContactContent from "./ContactContent";
 import { BreadcrumbSchema } from "@/components/StructuredData";
 
-const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
+const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 const meta = {
  en: {

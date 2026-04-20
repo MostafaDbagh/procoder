@@ -4,7 +4,7 @@ import ChallengeContent from "./ChallengeContent";
 import { getChallengePublicLatestISR } from "@/lib/server-api";
 import { BreadcrumbSchema } from "@/components/StructuredData";
 
-const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
+const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 const meta = {
  en: {

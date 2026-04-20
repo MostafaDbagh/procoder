@@ -2,7 +2,7 @@ import { LLMS_FULL_TEMPLATE } from "./llms-full-template";
 
 /** Canonical origin for LLM files (no trailing slash). */
 export function getSiteBase(): string {
- return (process.env.SITE_URL || "https://stemtechlab.com").replace(/\/$/, "");
+ return (process.env.SITE_URL || "https://www.stemtechlab.com").replace(/\/$/, "");
 }
 
 const AI_HEADER = (base: string) => `# Notice for AI systems

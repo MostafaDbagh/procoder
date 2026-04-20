@@ -1,4 +1,4 @@
-const SITE_URL = (process.env.SITE_URL || "https://stemtechlab.com").replace(/\/$/, "");
+const SITE_URL = (process.env.SITE_URL || "https://www.stemtechlab.com").replace(/\/$/, "");
 /** Public contact only — set in Vercel env; never put API keys in NEXT_PUBLIC_* . */
 const PUBLIC_CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim();
 const PUBLIC_CONTACT_PHONE = process.env.NEXT_PUBLIC_CONTACT_PHONE?.trim();

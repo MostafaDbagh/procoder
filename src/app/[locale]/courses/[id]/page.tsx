@@ -10,7 +10,7 @@ import { getCourseISR, getCourseSlugsISR } from "@/lib/server-api";
 // Force SSR — admin price/status changes reflect immediately
 export const dynamic = "force-dynamic";
 
-const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
+const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 export async function generateStaticParams() {
  const slugs = await getCourseSlugsISR();

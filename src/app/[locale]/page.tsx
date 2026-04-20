@@ -10,7 +10,7 @@ import { MeetOurStars } from "@/components/MeetOurStars";
 import { FAQ } from "@/components/FAQ";
 import { getTeamPublicISR, getCategoriesPublicISR } from "@/lib/server-api";
 
-const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
+const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 const meta = {
  en: {

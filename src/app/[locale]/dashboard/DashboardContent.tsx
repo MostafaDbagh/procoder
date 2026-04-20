@@ -501,7 +501,7 @@ function ReferralSection({ token, lang }: { token: string | null; lang: string }
 
  const handleCopy = () => {
  if (!code) return;
- const text = `Join StemTechLab! Use my referral code ${code} for ${stats.discountPercent}% off your first course. https://stemtechlab.com/en/courses`;
+ const text = `Join StemTechLab! Use my referral code ${code} for ${stats.discountPercent}% off your first course. https://www.stemtechlab.com/en/courses`;
  navigator.clipboard.writeText(text);
  setCopied(true);
  setTimeout(() => setCopied(false), 2000);

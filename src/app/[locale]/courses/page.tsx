@@ -6,7 +6,7 @@ import { BreadcrumbSchema } from "@/components/StructuredData";
 // Force SSR — admin price/status changes reflect immediately
 export const dynamic = "force-dynamic";
 
-const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
+const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 const meta = {
  en: {
@@ -62,7 +62,7 @@ export default async function CoursesPage({
 }) {
  const { locale } = await params;
  setRequestLocale(locale);
- const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
+ const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
  return (
  <>
  <BreadcrumbSchema items={[

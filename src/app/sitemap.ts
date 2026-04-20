@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { courses as staticCourses } from "@/data/courses";
 import { getCoursesISR, getBlogPostsSSR } from "@/lib/server-api";
 
-const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
+const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
  const apiCourses = await getCoursesISR();

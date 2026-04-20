@@ -3,7 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import ParentLoginContent from "./ParentLoginContent";
 import { PRIVATE_APP_ROBOTS } from "@/lib/seo";
 
-const SITE_URL = process.env.SITE_URL || "https://stemtechlab.com";
+const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 export async function generateMetadata({
  params,
