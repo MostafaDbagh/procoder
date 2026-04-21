@@ -379,6 +379,7 @@ export default function AdminDashboard() {
  const [paymentsMeta, setPaymentsMeta] = useState<ListMeta>(emptyMeta);
  const [paymentsPage, setPaymentsPage] = useState(1);
  const [payFilter, setPayFilter] = useState({ status: "" });
+ const [pendingPaymentsList, setPendingPaymentsList] = useState<Record<string, unknown>[]>([]);
 
  const [promos, setPromos] = useState<Record<string, unknown>[]>([]);
  const [promosMeta, setPromosMeta] = useState<ListMeta>(emptyMeta);
@@ -440,8 +441,13 @@ export default function AdminDashboard() {
  }, [guard]);
 
  const loadOverview = useCallback(async () => {
- const data = await adminFetch<Overview>("/admin/overview");
+ const [data, pendingRaw] = await Promise.all([
+ adminFetch<Overview>("/admin/overview"),
+ adminFetch<unknown>("/admin/payments?status=pending&limit=100").catch(() => null),
+ ]);
  setOverview(data);
+ const { items: pendingItems } = normalizePagedResponse<Record<string, unknown>>(pendingRaw ?? [], PAGE_SIZE);
+ setPendingPaymentsList(pendingItems);
  }, []);
 
  const loadCategoryOptions = useCallback(async () => {
@@ -1155,230 +1161,131 @@ export default function AdminDashboard() {
  value={overview.challenges.emailSignups}
  hint="Contact subject filter"
  />
- {overview.revenue ? (
- <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-4 sm:col-span-2 lg:col-span-3">
- <h3 className="text-sm font-medium text-slate-200">
- Catalog revenue{" "}
- <span className="font-normal text-slate-500">
- (estimate · list price)
- </span>
- </h3>
- <p className="mt-1 text-xs text-slate-500">
- {overview.revenue.note}
+ {(overview.revenue || overview.payments) ? (() => {
+ const committedTotal = overview.revenue
+ ? Object.values(overview.revenue.committed.byCurrency).reduce((s, v) => s + v, 0)
+ : 0;
+ const collectedTotal = overview.payments
+ ? Object.values(overview.payments.succeeded.byCurrency).reduce((s, v) => s + (v.totalCharged ?? v.gross ?? 0), 0)
+ : 0;
+ const pendingAmt = pendingPaymentsList.reduce((s, p) => s + ((p.amountCents as number ?? 0) / 100), 0);
+ return (
+ <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-5 sm:col-span-2 lg:col-span-3">
+ <h3 className="mb-4 text-sm font-semibold text-slate-200">Revenue &amp; Payments</h3>
+
+ {/* KPI row */}
+ <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 mb-6">
+ {/* Expected */}
+ <div className="rounded-lg border border-slate-700/60 bg-slate-950/50 px-4 py-3">
+ <p className="text-[11px] font-medium uppercase tracking-wider text-slate-500 mb-1">Expected (committed)</p>
+ <p className="text-xl font-bold tabular-nums text-slate-100">
+ {committedTotal > 0 ? `$${committedTotal.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}` : "—"}
  </p>
- <div className="mt-4 grid gap-3 sm:grid-cols-2">
- <div className="rounded-lg border border-slate-800/90 bg-slate-950/50 px-4 py-3">
- <div className="text-xs text-slate-500">Pipeline</div>
- <p className="mt-1 text-sm text-slate-200">
- <span className="font-semibold tabular-nums">
- {overview.revenue.pipeline.enrollmentCount}
- </span>{" "}
- <span className="text-slate-500">
- enrollment
- {overview.revenue.pipeline.enrollmentCount !== 1
- ? "s"
- : ""}
- </span>
- </p>
- <p className="mt-2 text-sm text-slate-300">
- {Object.keys(overview.revenue.pipeline.byCurrency)
- .length === 0
- ? "—"
- : Object.entries(overview.revenue.pipeline.byCurrency)
- .sort(([a], [b]) => a.localeCompare(b))
- .map(([cur, amt]) => (
- <span key={cur} className="mr-3 inline-block">
- <span className="font-mono text-xs text-slate-500">
- {cur}
- </span>{" "}
- {formatMoney(amt)}
- </span>
- ))}
+ <p className="mt-1 text-[11px] text-slate-500">
+ {overview.revenue?.committed.enrollmentCount ?? 0} confirmed enrollment{(overview.revenue?.committed.enrollmentCount ?? 0) !== 1 ? "s" : ""}
  </p>
  </div>
- <div className="rounded-lg border border-slate-800/90 bg-slate-950/50 px-4 py-3">
- <div className="text-xs text-slate-500">Committed</div>
- <p className="mt-1 text-sm text-slate-200">
- <span className="font-semibold tabular-nums">
- {overview.revenue.committed.enrollmentCount}
- </span>{" "}
- <span className="text-slate-500">
- enrollment
- {overview.revenue.committed.enrollmentCount !== 1
- ? "s"
- : ""}
- </span>
+ {/* Collected */}
+ <div className="rounded-lg border border-emerald-800/40 bg-emerald-950/20 px-4 py-3">
+ <p className="text-[11px] font-medium uppercase tracking-wider text-emerald-600 mb-1">Collected</p>
+ <p className="text-xl font-bold tabular-nums text-emerald-400">
+ {collectedTotal > 0 ? `$${collectedTotal.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}` : "—"}
  </p>
- <p className="mt-2 text-sm text-slate-300">
- {Object.keys(overview.revenue.committed.byCurrency)
- .length === 0
- ? "—"
- : Object.entries(overview.revenue.committed.byCurrency)
- .sort(([a], [b]) => a.localeCompare(b))
- .map(([cur, amt]) => (
- <span key={cur} className="mr-3 inline-block">
- <span className="font-mono text-xs text-slate-500">
- {cur}
- </span>{" "}
- {formatMoney(amt)}
- </span>
- ))}
+ <p className="mt-1 text-[11px] text-slate-500">
+ {overview.payments?.succeeded.paymentCount ?? 0} payment{(overview.payments?.succeeded.paymentCount ?? 0) !== 1 ? "s" : ""} succeeded
+ </p>
+ </div>
+ {/* Awaiting */}
+ <div className="rounded-lg border border-amber-800/40 bg-amber-950/20 px-4 py-3">
+ <p className="text-[11px] font-medium uppercase tracking-wider text-amber-600 mb-1">Awaiting payment</p>
+ <p className="text-xl font-bold tabular-nums text-amber-400">
+ {pendingAmt > 0 ? `$${pendingAmt.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}` : "—"}
+ </p>
+ <p className="mt-1 text-[11px] text-slate-500">
+ {pendingPaymentsList.length} pending request{pendingPaymentsList.length !== 1 ? "s" : ""}
  </p>
  </div>
  </div>
- <p className="mt-3 text-[11px] text-slate-600">
- Pipeline = non-cancelled. Committed = confirmed, active, or
- completed.
- </p>
- {overview.revenue.byCourse.length > 0 ? (
- <div className="mt-4 overflow-x-auto">
+
+ {/* Pending payments detail table */}
+ {pendingPaymentsList.length > 0 && (
+ <div className="mb-6">
+ <h4 className="mb-2 text-xs font-semibold text-amber-500 uppercase tracking-wide">
+ Awaiting payment — {pendingPaymentsList.length} request{pendingPaymentsList.length !== 1 ? "s" : ""}
+ </h4>
+ <div className="overflow-x-auto rounded-lg border border-amber-900/30">
+ <table className="w-full min-w-[560px] text-left text-xs">
+ <thead className="bg-amber-950/20">
+ <tr className="text-slate-400">
+ <th className="px-3 py-2 font-medium">Parent</th>
+ <th className="px-3 py-2 font-medium">Child</th>
+ <th className="px-3 py-2 font-medium">Course</th>
+ <th className="px-3 py-2 font-medium">Amount</th>
+ <th className="px-3 py-2 font-medium">Method</th>
+ </tr>
+ </thead>
+ <tbody>
+ {pendingPaymentsList.map((p, i) => {
+ const enr = p.enrollment as Record<string, unknown> | null;
+ const amt = (p.amountCents as number ?? 0) / 100;
+ const method = String(p.paymentMethod ?? "").replace("_", " ");
+ return (
+ <tr key={String(p._id ?? i)} className="border-t border-slate-800/60 text-slate-300 hover:bg-slate-800/30">
+ <td className="px-3 py-2">
+ <div className="font-medium text-slate-200">{String(enr?.parentName ?? "—")}</div>
+ <div className="text-[11px] text-slate-500">{String(enr?.email ?? "")}</div>
+ </td>
+ <td className="px-3 py-2">
+ <div>{String(enr?.childName ?? "—")}</div>
+ <div className="text-[11px] text-slate-500">age {String(enr?.childAge ?? "?")}</div>
+ </td>
+ <td className="px-3 py-2 font-mono text-[11px] text-slate-400">
+ {String(enr?.courseTitle ?? enr?.courseId ?? "—")}
+ </td>
+ <td className="px-3 py-2 font-semibold text-amber-400">
+ ${amt.toFixed(2)}
+ </td>
+ <td className="px-3 py-2 capitalize text-slate-400">{method || "—"}</td>
+ </tr>
+ );
+ })}
+ </tbody>
+ </table>
+ </div>
+ </div>
+ )}
+
+ {/* By course breakdown */}
+ {overview.revenue && overview.revenue.byCourse.length > 0 && (
+ <div>
+ <h4 className="mb-2 text-xs font-semibold text-slate-400 uppercase tracking-wide">By course (committed)</h4>
+ <div className="overflow-x-auto rounded-lg border border-slate-800/60">
  <table className="w-full min-w-[360px] text-left text-xs">
- <caption className="mb-2 text-left text-xs font-medium text-slate-400">
- By course (committed)
- </caption>
- <thead>
+ <thead className="bg-slate-950/40">
  <tr className="text-slate-500">
- <th className="py-1.5 pr-3">Course</th>
- <th className="py-1.5 pr-3">Qty</th>
- <th className="py-1.5">Subtotal</th>
+ <th className="px-3 py-2 font-medium">Course</th>
+ <th className="px-3 py-2 font-medium">Enrollments</th>
+ <th className="px-3 py-2 font-medium">Expected</th>
  </tr>
  </thead>
  <tbody>
  {overview.revenue.byCourse.map((r) => (
- <tr
- key={r.courseSlug}
- className="border-t border-slate-800/80 text-slate-300"
- >
- <td className="py-1.5 pr-3 font-mono text-[11px]">
- {r.courseSlug}
+ <tr key={r.courseSlug} className="border-t border-slate-800/60 text-slate-300">
+ <td className="px-3 py-2 font-mono text-[11px] text-slate-400">
+ {r.titleEn || r.courseSlug}
  </td>
- <td className="py-1.5 pr-3 tabular-nums">
- {r.enrollmentCount}
- </td>
- <td className="py-1.5">
- {formatMoney(r.subtotal)}
- </td>
+ <td className="px-3 py-2 tabular-nums">{r.enrollmentCount}</td>
+ <td className="px-3 py-2 font-semibold">{formatMoney(r.subtotal)}</td>
  </tr>
  ))}
  </tbody>
  </table>
  </div>
- ) : null}
  </div>
- ) : null}
- {overview.payments ? (
- <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-4 sm:col-span-2 lg:col-span-3">
- <h3 className="mb-1 text-sm font-medium text-slate-200">
- Payments{" "}
- <span className="font-normal text-slate-500">
- (bank / PayPal)
- </span>
- </h3>
- <p className="text-xs text-slate-500">
- {overview.payments.note}
- </p>
- {overview.payments.explanation ? (
- <p className="mt-2 text-xs leading-relaxed text-slate-400">
- {overview.payments.explanation}
- </p>
- ) : null}
- <div className="mt-4 grid gap-4 lg:grid-cols-2">
- <div>
- <h4 className="mb-2 text-xs font-medium text-slate-400">
- Succeeded charges
- </h4>
- <p className="mb-2 text-xs text-slate-500">
- {overview.payments.succeeded.paymentCount} payment
- {overview.payments.succeeded.paymentCount !== 1
- ? "s"
- : ""}{" "}
- · Pending requests:{" "}
- {overview.payments.pendingPayments}
- </p>
- <table className="w-full text-left text-xs">
- <thead>
- <tr className="text-slate-500">
- <th className="py-1 pr-4">Currency</th>
- <th className="py-1 pr-2" title="What customers paid">
- Total charged
- </th>
- <th className="py-1 pr-2" title="Charged minus refunds">
- After refunds
- </th>
- <th className="py-1">#</th>
- </tr>
- </thead>
- <tbody>
- {Object.keys(
- overview.payments.succeeded.byCurrency
- ).length === 0 ? (
- <tr>
- <td
- colSpan={4}
- className="py-2 text-slate-500"
- >
- No succeeded payments recorded yet.
- </td>
- </tr>
- ) : (
- Object.entries(
- overview.payments.succeeded.byCurrency
- )
- .sort(([a], [b]) => a.localeCompare(b))
- .map(([cur, v]) => {
- const charged =
- v.totalCharged ??
- v.gross ??
- 0;
- const kept =
- v.afterRefunds ??
- v.net ??
- 0;
- return (
- <tr key={cur} className="text-slate-300">
- <td className="py-1 pr-4 font-mono">
- {cur}
- </td>
- <td className="py-1 pr-2">
- {formatMoney(charged)}
- </td>
- <td className="py-1 pr-2">
- {formatMoney(kept)}
- </td>
- <td className="py-1">{v.count}</td>
- </tr>
- );
- })
  )}
- </tbody>
- </table>
- <p className="mt-2 text-[11px] text-slate-600">
- Mark payments succeeded in the Payments tab when you
- confirm the transfer or PayPal receipt.
- </p>
  </div>
- <div>
- <h4 className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-400">
- By status
- </h4>
- <table className="w-full max-w-md text-left text-xs">
- <tbody>
- {Object.entries(overview.payments.byStatus)
- .sort(([a], [b]) => a.localeCompare(b))
- .map(([st, n]) => (
- <tr key={st} className="text-slate-300">
- <td className="py-1 pr-4 capitalize">
- {st.replace(/_/g, " ")}
- </td>
- <td className="py-1">{n}</td>
- </tr>
- ))}
- </tbody>
- </table>
- </div>
- </div>
- </div>
- ) : null}
+ );
+ })() : null}
  <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-4 sm:col-span-2 lg:col-span-3">
  <h3 className="mb-2 text-sm font-medium text-slate-300">
  Users by role
