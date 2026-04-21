@@ -91,7 +91,7 @@ const SLUG_STYLE: Record<
  icon: ScratchCatIcon as unknown as LucideIcon,
  color: "#F97316",
  borderColor: "border-b-orange-400",
- emoji: "🐱",
+ emoji: "🪄",
  },
 };
 

@@ -74,7 +74,7 @@ const CATEGORY_HERO: Record<string, HeroStyle> = {
  "mobile-development": { icon: Smartphone, gradient: "from-pink-500 to-rose-600" },
  "web-development": { icon: Layout, gradient: "from-cyan-500 to-sky-600" },
  "artificial-intelligence": { icon: Brain, gradient: "from-indigo-500 to-violet-600" },
- scratch: { icon: ScratchCatIcon, gradient: "from-orange-500 to-amber-600" },
+ scratch: { icon: ScratchCatIcon as unknown as ElementType, gradient: "from-orange-500 to-amber-600" },
 };
 
 /** Maps API / CMS slug variants to canonical CATEGORY_HERO keys. */
