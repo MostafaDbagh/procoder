@@ -14,6 +14,8 @@ import {
  Smartphone,
  Layout,
  ArrowRight,
+ Cpu,
+ Blocks,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { APICategory } from "@/lib/server-api";
@@ -79,6 +81,18 @@ const SLUG_STYLE: Record<
  borderColor: "border-b-cyan-400",
  emoji: "🌐",
  },
+ "artificial-intelligence": {
+ icon: Cpu,
+ color: "#6366F1",
+ borderColor: "border-b-indigo-400",
+ emoji: "🤖",
+ },
+ scratch: {
+ icon: Blocks,
+ color: "#F97316",
+ borderColor: "border-b-orange-400",
+ emoji: "🎨",
+ },
 };
 
 const DEFAULT_STYLE = {
@@ -114,6 +128,16 @@ const STATIC_FALLBACK: StaticCat[] = [
  descKey: "webDevelopmentDesc",
  ...SLUG_STYLE["web-development"],
  },
+ {
+ key: "artificial-intelligence",
+ descKey: "artificialIntelligenceDesc",
+ ...SLUG_STYLE["artificial-intelligence"],
+ },
+ {
+ key: "scratch",
+ descKey: "scratchDesc",
+ ...SLUG_STYLE.scratch,
+ },
 ];
 
 const LEGACY_DESC_SLUGS = new Set([
@@ -122,6 +146,8 @@ const LEGACY_DESC_SLUGS = new Set([
  "algorithms",
  "arabic",
  "web-development",
+ "artificial-intelligence",
+ "scratch",
 ]);
 
 type Props = {
@@ -277,7 +303,9 @@ function categoryDescription(
  | "roboticsDesc"
  | "algorithmsDesc"
  | "arabicDesc"
- | "webDevelopmentDesc";
+ | "webDevelopmentDesc"
+ | "artificialIntelligenceDesc"
+ | "scratchDesc";
  return t(key);
  }
  return t("catalogFallbackDesc");

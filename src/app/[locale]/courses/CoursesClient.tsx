@@ -20,6 +20,8 @@ import {
  X,
  Loader2,
  Layout,
+ Cpu,
+ Blocks,
 } from "lucide-react";
 
 type AgeFilter = "all" | "6-9" | "10-13" | "14-18";
@@ -35,6 +37,8 @@ const categoryTabs: {
  { value: "algorithms", icon: Brain, activeColor: "bg-violet-500 text-white" },
  { value: "arabic", icon: BookMarked, activeColor: "bg-rose-500 text-white" },
  { value: "web-development", icon: Layout, activeColor: "bg-cyan-500 text-white" },
+ { value: "artificial-intelligence", icon: Cpu, activeColor: "bg-indigo-500 text-white" },
+ { value: "scratch", icon: Blocks, activeColor: "bg-orange-500 text-white" },
 ];
 
 function categoryFromSearchParams(

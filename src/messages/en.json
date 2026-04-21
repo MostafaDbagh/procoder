@@ -67,6 +67,10 @@
     "arabicDesc": "Beautiful letters, meaningful words, and the joy of expression — taught with warmth by native Arabic teachers.",
     "web-development": "Web Development",
     "webDevelopmentDesc": "HTML, CSS, and JavaScript brought to life — kids build real websites they can proudly share with family and friends.",
+    "artificial-intelligence": "Artificial Intelligence",
+    "artificialIntelligenceDesc": "Chatbots, image recognition, and AI art — kids learn how machines think and build their own intelligent projects step by step.",
+    "scratch": "Scratch & Creative Coding",
+    "scratchDesc": "Drag, drop, and create — the perfect first step for ages 6–10 to build games, stories, and animations with colourful blocks.",
     "catalogFallbackDesc": "Explore our warm, small-group classes with caring, certified teachers.",
     "emptyCatalog": "New learning paths are on the way. Please check back soon!",
     "explore": "Explore"
@@ -139,7 +143,9 @@
       "game-development": "Game development",
       "mobile-app-development": "Mobile app development",
       "mobile-development": "Mobile app development",
-      "web-development": "Web development"
+      "web-development": "Web development",
+      "artificial-intelligence": "AI",
+      "scratch": "Scratch"
     }
   },
   "courseDetail": {

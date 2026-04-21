@@ -3,7 +3,9 @@ export type Category =
  | "robotics"
  | "algorithms"
  | "arabic"
- | "web-development";
+ | "web-development"
+ | "artificial-intelligence"
+ | "scratch";
 
 export type Level = "beginner" | "intermediate" | "advanced";
 
