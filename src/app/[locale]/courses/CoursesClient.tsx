@@ -13,16 +13,15 @@ import {
  Code2,
  Bot,
  Brain,
- BookOpen,
  BookMarked,
  Sparkles,
  GraduationCap,
  X,
  Loader2,
  Layout,
- Cpu,
- Blocks,
+ Workflow,
 } from "lucide-react";
+import { ScratchCatIcon } from "@/components/icons/ScratchCatIcon";
 
 type AgeFilter = "all" | "6-9" | "10-13" | "14-18";
 
@@ -34,11 +33,11 @@ const categoryTabs: {
  { value: "all", icon: Sparkles, activeColor: "bg-primary text-white" },
  { value: "programming", icon: Code2, activeColor: "bg-blue-500 text-white" },
  { value: "robotics", icon: Bot, activeColor: "bg-emerald-500 text-white" },
- { value: "algorithms", icon: Brain, activeColor: "bg-violet-500 text-white" },
+ { value: "algorithms", icon: Workflow, activeColor: "bg-violet-500 text-white" },
  { value: "arabic", icon: BookMarked, activeColor: "bg-rose-500 text-white" },
  { value: "web-development", icon: Layout, activeColor: "bg-cyan-500 text-white" },
- { value: "artificial-intelligence", icon: Cpu, activeColor: "bg-indigo-500 text-white" },
- { value: "scratch", icon: Blocks, activeColor: "bg-orange-500 text-white" },
+ { value: "artificial-intelligence", icon: Brain, activeColor: "bg-indigo-500 text-white" },
+ { value: "scratch", icon: ScratchCatIcon as React.ElementType, activeColor: "bg-orange-500 text-white" },
 ];
 
 function categoryFromSearchParams(

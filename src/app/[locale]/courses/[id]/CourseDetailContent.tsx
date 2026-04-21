@@ -28,10 +28,12 @@ import {
  Gamepad2,
  Smartphone,
  Layout,
+ Workflow,
  CalendarClock,
  ChevronDown,
  HelpCircle,
 } from "lucide-react";
+import { ScratchCatIcon } from "@/components/icons/ScratchCatIcon";
 
 const categoryBadge: Record<string, string> = {
  programming:
@@ -66,11 +68,13 @@ type HeroStyle = { icon: ElementType; gradient: string };
 const CATEGORY_HERO: Record<string, HeroStyle> = {
  programming: { icon: Code2, gradient: "from-sky-500 to-indigo-600" },
  robotics: { icon: Bot, gradient: "from-emerald-500 to-teal-600" },
- algorithms: { icon: Brain, gradient: "from-violet-500 to-fuchsia-600" },
+ algorithms: { icon: Workflow, gradient: "from-violet-500 to-fuchsia-600" },
  arabic: { icon: BookMarked, gradient: "from-rose-500 to-pink-600" },
  "game-development": { icon: Gamepad2, gradient: "from-amber-500 to-orange-600" },
  "mobile-development": { icon: Smartphone, gradient: "from-pink-500 to-rose-600" },
  "web-development": { icon: Layout, gradient: "from-cyan-500 to-sky-600" },
+ "artificial-intelligence": { icon: Brain, gradient: "from-indigo-500 to-violet-600" },
+ scratch: { icon: ScratchCatIcon, gradient: "from-orange-500 to-amber-600" },
 };
 
 /** Maps API / CMS slug variants to canonical CATEGORY_HERO keys. */

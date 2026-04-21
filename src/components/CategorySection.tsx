@@ -14,9 +14,9 @@ import {
  Smartphone,
  Layout,
  ArrowRight,
- Cpu,
- Blocks,
+ Workflow,
 } from "lucide-react";
+import { ScratchCatIcon } from "@/components/icons/ScratchCatIcon";
 import type { LucideIcon } from "lucide-react";
 import type { APICategory } from "@/lib/server-api";
 
@@ -46,7 +46,7 @@ const SLUG_STYLE: Record<
  emoji: "🤖",
  },
  algorithms: {
- icon: Brain,
+ icon: Workflow,
  color: "#8B5CF6",
  borderColor: "border-b-violet-400",
  emoji: "🧩",
@@ -82,16 +82,16 @@ const SLUG_STYLE: Record<
  emoji: "🌐",
  },
  "artificial-intelligence": {
- icon: Cpu,
+ icon: Brain,
  color: "#6366F1",
  borderColor: "border-b-indigo-400",
- emoji: "🤖",
+ emoji: "🧠",
  },
  scratch: {
- icon: Blocks,
+ icon: ScratchCatIcon as unknown as LucideIcon,
  color: "#F97316",
  borderColor: "border-b-orange-400",
- emoji: "🎨",
+ emoji: "🐱",
  },
 };
 
