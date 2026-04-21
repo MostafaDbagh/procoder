@@ -11,6 +11,8 @@ import {
  BookOpen,
  Users,
  ArrowRight,
+ CalendarClock,
+ TrendingUp,
  Blocks,
  Code2,
  Globe,
@@ -92,6 +94,11 @@ export const CourseCard = React.memo(function CourseCard({ course, index = 0, ti
  const t = useTranslations("courseData");
  const ct = useTranslations("courses");
  const locale = useLocale();
+
+ const nextSession = course.nextSessionDate ? new Date(course.nextSessionDate) : null;
+ const nextSessionLabel = nextSession && nextSession > new Date()
+ ? nextSession.toLocaleDateString(locale === "ar" ? "ar-SA" : "en-US", { month: "short", day: "numeric" })
+ : null;
  const Icon = iconMap[course.iconName] || BookOpen;
  const labelKey = courseCategoryLabelKey(course.category);
  const colors =
@@ -153,6 +160,12 @@ export const CourseCard = React.memo(function CourseCard({ course, index = 0, ti
  >
  {ct(course.level as "beginner" | "intermediate" | "advanced")}
  </span>
+ {nextSessionLabel && (
+ <span className="flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400">
+ <CalendarClock className="w-3 h-3" />
+ {nextSessionLabel}
+ </span>
+ )}
  </div>
  </div>
 
@@ -176,6 +189,12 @@ export const CourseCard = React.memo(function CourseCard({ course, index = 0, ti
  >
  {ct(course.level as "beginner" | "intermediate" | "advanced")}
  </span>
+ {nextSessionLabel && (
+ <span className="flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400">
+ <CalendarClock className="w-3 h-3" />
+ {nextSessionLabel}
+ </span>
+ )}
  </div>
  <h3 className="text-lg font-bold text-foreground leading-snug mb-3 transition-colors group-hover:text-primary">
  {courseTitle}
@@ -200,6 +219,12 @@ export const CourseCard = React.memo(function CourseCard({ course, index = 0, ti
  <Users className="w-3.5 h-3.5" />
  {course.ageMin}–{course.ageMax}
  </span>
+ {(course.enrollmentCount ?? 0) > 0 && (
+ <span className="flex items-center gap-1.5 text-primary font-semibold">
+ <TrendingUp className="w-3.5 h-3.5" />
+ {course.enrollmentCount} enrolled
+ </span>
+ )}
  </div>
 
  {/* CTA */}

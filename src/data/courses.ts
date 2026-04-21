@@ -3,7 +3,7 @@ export type Category =
  | "robotics"
  | "algorithms"
  | "arabic"
- | "arabic";
+ | "web-development";
 
 export type Level = "beginner" | "intermediate" | "advanced";
 
@@ -25,6 +25,10 @@ export interface Course {
  currency?: string;
  /** Set from API when a cover image was uploaded. */
  imageUrl?: string;
+ /** Live social proof from API. */
+ enrollmentCount?: number;
+ /** ISO date string — next cohort start. */
+ nextSessionDate?: string | null;
 }
 
 export const courses: Course[] = [

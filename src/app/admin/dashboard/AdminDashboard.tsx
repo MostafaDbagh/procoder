@@ -3323,6 +3323,7 @@ function CourseFormModal({
  discountPercent: 0,
  imageUrl: "",
  imagePublicId: "",
+ nextSessionDate: "",
  });
  const [uploadingCourseImage, setUploadingCourseImage] = useState(false);
 
@@ -3393,6 +3394,9 @@ function CourseFormModal({
  discountPercent: Number(c.discountPercent ?? 0),
  imageUrl: String((c as { imageUrl?: string }).imageUrl ?? ""),
  imagePublicId: String((c as { imagePublicId?: string }).imagePublicId ?? ""),
+ nextSessionDate: (c as { nextSessionDate?: string }).nextSessionDate
+ ? new Date((c as { nextSessionDate: string }).nextSessionDate).toISOString().slice(0, 10)
+ : "",
  });
  } finally {
  setLoading(false);
@@ -3442,6 +3446,7 @@ function CourseFormModal({
  imageUrl: form.imageUrl.trim(),
  imagePublicId: form.imagePublicId.trim(),
  instructors: selectedInstructors,
+ nextSessionDate: form.nextSessionDate || null,
  };
  try {
  if (mode === "create") {
@@ -3648,6 +3653,17 @@ function CourseFormModal({
  Math.max(0, Number(e.target.value) || 0)
  ),
  }))
+ }
+ className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+ />
+ </label>
+ <label className="block text-slate-400">
+ <span className="mb-1 block text-xs">Next session date (optional)</span>
+ <input
+ type="date"
+ value={form.nextSessionDate}
+ onChange={(e) =>
+ setForm((f) => ({ ...f, nextSessionDate: e.target.value }))
  }
  className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
  />

@@ -11,7 +11,7 @@ import { EnrollModal } from "@/components/EnrollModal";
 import { formatCoursePrice, priceAfterCourseDiscount } from "@/lib/formatCoursePrice";
 import { publicOrAbsoluteAssetUrl } from "@/lib/mediaUrls";
 import { courseCategoryLabelKey, titleizeCategorySlug } from "@/lib/courseCategoryLabel";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
  ArrowLeft,
  Clock,
@@ -28,6 +28,9 @@ import {
  Gamepad2,
  Smartphone,
  Layout,
+ CalendarClock,
+ ChevronDown,
+ HelpCircle,
 } from "lucide-react";
 
 const categoryBadge: Record<string, string> = {
@@ -116,6 +119,7 @@ export default function CourseDetailContent() {
  const ct = useTranslations("courseData");
  const common = useTranslations("courses");
  const [enrollOpen, setEnrollOpen] = useState(false);
+ const [openFaq, setOpenFaq] = useState<number | null>(null);
 
  const { data: apiCourse, isLoading, isError } = useCourse(slug);
 
@@ -145,6 +149,7 @@ export default function CourseDetailContent() {
  ),
  showPrice: true,
  imageUrl: apiCourse.imageUrl?.trim() || undefined,
+ nextSessionDate: apiCourse.nextSessionDate ?? null,
  }
  : staticCourse
  ? {
@@ -168,6 +173,7 @@ export default function CourseDetailContent() {
  ),
  showPrice: (staticCourse.price ?? 0) > 0,
  imageUrl: undefined as string | undefined,
+ nextSessionDate: null as string | null,
  }
  : null;
 
@@ -217,6 +223,13 @@ export default function CourseDetailContent() {
  ];
 
  const { icon: HeroIcon, gradient: iconGrad } = resolveCategoryHero(course.category);
+
+ const nextSession = course.nextSessionDate ? new Date(course.nextSessionDate) : null;
+ const nextSessionLabel = nextSession && nextSession > new Date()
+ ? nextSession.toLocaleDateString(locale === "ar" ? "ar-SA" : "en-US", { month: "long", day: "numeric", year: "numeric" })
+ : null;
+
+ const faqItems = t.raw("faq") as { q: string; a: string }[];
 
  return (
  <div className="py-12 sm:py-20">
@@ -322,6 +335,13 @@ export default function CourseDetailContent() {
  </div>
  </div>
  ) : null}
+
+ {nextSessionLabel && (
+ <div className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-green-100 dark:bg-green-950/40 px-3 py-1.5 text-xs font-semibold text-green-700 dark:text-green-400">
+ <CalendarClock className="w-3.5 h-3.5" />
+ {t("nextSession")}: {nextSessionLabel}
+ </div>
+ )}
  </div>
 
  {/* Icon — flush bottom-right corner, no top-left radius to blend with card */}
@@ -411,6 +431,45 @@ export default function CourseDetailContent() {
  </div>
  </div>
  </AnimatedSection>
+
+ {Array.isArray(faqItems) && faqItems.length > 0 && (
+ <AnimatedSection delay={0.45}>
+ <div className="bg-surface rounded-2xl border border-border p-7 sm:p-9 mb-8">
+ <h2 className="text-xl font-bold mb-5 flex items-center gap-2">
+ <HelpCircle className="w-5 h-5 text-primary" />
+ {t("faqTitle")}
+ </h2>
+ <div className="divide-y divide-border">
+ {faqItems.map((item, i) => (
+ <div key={i}>
+ <button
+ type="button"
+ onClick={() => setOpenFaq(openFaq === i ? null : i)}
+ className="w-full flex items-center justify-between gap-3 py-4 text-start font-semibold text-sm hover:text-primary transition-colors"
+ >
+ {item.q}
+ <ChevronDown className={`w-4 h-4 shrink-0 text-muted transition-transform duration-200 ${openFaq === i ? "rotate-180" : ""}`} />
+ </button>
+ <AnimatePresence initial={false}>
+ {openFaq === i && (
+ <motion.div
+ key="body"
+ initial={{ height: 0, opacity: 0 }}
+ animate={{ height: "auto", opacity: 1 }}
+ exit={{ height: 0, opacity: 0 }}
+ transition={{ duration: 0.2 }}
+ className="overflow-hidden"
+ >
+ <p className="pb-4 text-sm text-muted leading-relaxed">{item.a}</p>
+ </motion.div>
+ )}
+ </AnimatePresence>
+ </div>
+ ))}
+ </div>
+ </div>
+ </AnimatedSection>
+ )}
 
  <AnimatedSection delay={0.5}>
  <div className="text-center">

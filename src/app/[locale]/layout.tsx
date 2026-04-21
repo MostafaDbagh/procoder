@@ -9,7 +9,6 @@ import { Footer } from "@/components/Footer";
 import { LocaleHtmlAttrs } from "@/components/LocaleHtmlAttrs";
 import { QueryProvider } from "@/components/QueryProvider";
 import { SessionIdleGuard } from "@/components/SessionIdleGuard";
-import { WhatsAppButton } from "@/components/WhatsAppButton";
 import {
  OrganizationSchema,
  WebsiteSchema,
@@ -52,7 +51,6 @@ export default async function LocaleLayout({
  <Navbar />
  <main className="flex-1">{children}</main>
  <Footer />
- <WhatsAppButton />
  </ThemeProvider>
  </QueryProvider>
  </NextIntlClientProvider>

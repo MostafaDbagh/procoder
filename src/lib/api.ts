@@ -103,6 +103,8 @@ export interface APICourse {
  discountPercent?: number;
  isActive: boolean;
  enrollmentCount: number;
+ /** ISO date string for the next cohort start. */
+ nextSessionDate?: string | null;
  /** Cover image (Cloudinary or `/uploads/courses/...`). */
  imageUrl?: string;
  imagePublicId?: string;

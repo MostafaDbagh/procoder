@@ -65,6 +65,8 @@
     "algorithmsDesc": "Puzzles, patterns, and playful challenges that teach children to think like brilliant problem-solvers.",
     "arabic": "Arabic Language",
     "arabicDesc": "Beautiful letters, meaningful words, and the joy of expression — taught with warmth by native Arabic teachers.",
+    "web-development": "Web Development",
+    "webDevelopmentDesc": "HTML, CSS, and JavaScript brought to life — kids build real websites they can proudly share with family and friends.",
     "catalogFallbackDesc": "Explore our warm, small-group classes with caring, certified teachers.",
     "emptyCatalog": "New learning paths are on the way. Please check back soon!",
     "explore": "Explore"
@@ -152,7 +154,16 @@
     "description": "Course Description",
     "enrollNow": "Enroll Now",
     "backToCourses": "Back to Courses",
-    "notFound": "Course not found"
+    "notFound": "Course not found",
+    "nextSession": "Next session starts",
+    "faqTitle": "Frequently Asked Questions",
+    "faq": [
+      { "q": "How are classes delivered?", "a": "All sessions are live, online, and interactive — your child joins via Zoom with a small group or 1-on-1 with a coach. No recordings replace live classes; every session is real-time." },
+      { "q": "What if my child misses a session?", "a": "Life happens! Missed sessions can be rescheduled at no extra cost. Just let us know 24 hours in advance and we'll find the next available slot." },
+      { "q": "What equipment is needed?", "a": "Just a computer or laptop with a stable internet connection. No special software purchases required — everything your child needs will be set up before the first class." },
+      { "q": "How many students are in each class?", "a": "We keep groups small — typically 3 to 5 students — so every child gets personal attention and can ask questions freely." },
+      { "q": "What is your refund policy?", "a": "We offer a full refund if you cancel before the second session. After that, we'll work with you on a pro-rated credit toward another course." }
+    ]
   },
   "recommend": {
     "title": "Let Us Help You Find the Perfect Fit",

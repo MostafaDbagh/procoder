@@ -110,9 +110,9 @@ const STATIC_FALLBACK: StaticCat[] = [
  ...SLUG_STYLE.arabic,
  },
  {
- key: "arabic",
- descKey: "arabicDesc",
- ...SLUG_STYLE.arabic,
+ key: "web-development",
+ descKey: "webDevelopmentDesc",
+ ...SLUG_STYLE["web-development"],
  },
 ];
 
@@ -121,7 +121,7 @@ const LEGACY_DESC_SLUGS = new Set([
  "robotics",
  "algorithms",
  "arabic",
- "arabic",
+ "web-development",
 ]);
 
 type Props = {
@@ -277,7 +277,7 @@ function categoryDescription(
  | "roboticsDesc"
  | "algorithmsDesc"
  | "arabicDesc"
- | "arabicDesc";
+ | "webDevelopmentDesc";
  return t(key);
  }
  return t("catalogFallbackDesc");

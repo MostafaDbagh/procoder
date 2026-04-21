@@ -19,6 +19,7 @@ import {
  GraduationCap,
  X,
  Loader2,
+ Layout,
 } from "lucide-react";
 
 type AgeFilter = "all" | "6-9" | "10-13" | "14-18";
@@ -32,8 +33,8 @@ const categoryTabs: {
  { value: "programming", icon: Code2, activeColor: "bg-blue-500 text-white" },
  { value: "robotics", icon: Bot, activeColor: "bg-emerald-500 text-white" },
  { value: "algorithms", icon: Brain, activeColor: "bg-violet-500 text-white" },
- { value: "arabic", icon: BookOpen, activeColor: "bg-rose-500 text-white" },
- { value: "arabic", icon: BookMarked, activeColor: "bg-teal-500 text-white" },
+ { value: "arabic", icon: BookMarked, activeColor: "bg-rose-500 text-white" },
+ { value: "web-development", icon: Layout, activeColor: "bg-cyan-500 text-white" },
 ];
 
 function categoryFromSearchParams(
@@ -66,6 +67,8 @@ function apiToLocal(c: APICourse, locale: string) {
  price: typeof c.price === "number" ? c.price : undefined,
  currency: c.currency || "USD",
  imageUrl: c.imageUrl?.trim() || undefined,
+ enrollmentCount: c.enrollmentCount ?? 0,
+ nextSessionDate: c.nextSessionDate ?? null,
  };
 }
 
