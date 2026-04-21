@@ -103,6 +103,14 @@ export const metadata: Metadata = {
  "x-default": `${SITE_URL}/en`,
  },
  },
+ icons: {
+  icon: [
+   { url: "/icon.svg", type: "image/svg+xml" },
+   { url: "/logo.svg", type: "image/svg+xml", sizes: "any" },
+  ],
+  shortcut: "/icon.svg",
+  apple: "/icon.svg",
+ },
  category: "education",
  verification: {
  google: process.env.GOOGLE_SITE_VERIFICATION,
