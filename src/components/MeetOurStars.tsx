@@ -113,11 +113,11 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  className="snap-start shrink-0 w-[300px] sm:w-[330px] max-w-[330px] self-start"
  >
  <div
- className="bg-surface rounded-2xl border border-border overflow-hidden relative"
+ className="bg-surface rounded-2xl border border-border overflow-hidden relative transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:border-primary/40 cursor-pointer"
  style={{ height: isExpanded ? "auto" : 460 }}
  >
  <div
- className={`group ${member.headerColor} transition-all duration-500 ease-in-out h-36 hover:h-[370px] cursor-pointer`}
+ className={`${member.headerColor} h-36 cursor-pointer`}
  />
  {member.photoUrl ? (
  <Image
