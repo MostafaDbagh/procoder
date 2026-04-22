@@ -888,6 +888,17 @@ export default function AdminDashboard() {
  }
  };
 
+ const activateTeam = async (id: string) => {
+ if (!confirm("Activate team member? They will be visible on the site.")) return;
+ try {
+ await adminFetch(`/team/${id}`, { method: "PUT", body: JSON.stringify({ isActive: true }) });
+ await loadTeam();
+ await loadOverview();
+ } catch (e) {
+ setErr(e instanceof Error ? e.message : "Failed");
+ }
+ };
+
  const deleteTeamPermanent = async (id: string, name: string) => {
  if (!confirm(`Permanently delete "${name}"? This cannot be undone.`)) return;
  try {
@@ -2347,15 +2358,13 @@ export default function AdminDashboard() {
  >
  Edit
  </button>
- {r.isActive ? (
  <button
  type="button"
- className="text-red-400 text-xs"
- onClick={() => deactivateTeam(String(r._id))}
+ className={r.isActive ? "text-red-400 text-xs" : "text-emerald-400 text-xs"}
+ onClick={() => r.isActive ? deactivateTeam(String(r._id)) : activateTeam(String(r._id))}
  >
- Deactivate
+ {r.isActive ? "Deactivate" : "Activate"}
  </button>
- ) : null}
  <button
  type="button"
  className="text-red-600 text-xs font-semibold"
