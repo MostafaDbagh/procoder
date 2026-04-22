@@ -113,7 +113,7 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  className="snap-start shrink-0 w-[300px] sm:w-[330px] max-w-[330px] self-start"
  >
  <div
- className="bg-surface rounded-2xl border border-border overflow-hidden relative transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:border-primary/40 cursor-pointer"
+ className="bg-surface rounded-2xl border border-border overflow-hidden relative transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/20 hover:border-primary/50 cursor-pointer"
  style={{ height: isExpanded ? "auto" : 460 }}
  >
  <div
@@ -181,7 +181,7 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  onClick={() =>
  setExpandedBio(isExpanded ? null : member.key)
  }
- className="font-semibold text-foreground hover:text-primary transition-colors inline ms-1"
+ className="font-semibold text-primary hover:text-primary/70 transition-colors inline ms-1"
  >
  {isExpanded ? t("starsShowLess") : t("starsReadMore")}
  </button>

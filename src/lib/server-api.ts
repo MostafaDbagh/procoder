@@ -24,6 +24,8 @@ export interface APITeamMember {
  color: string;
  headerColor?: string;
  linkedin?: string;
+ facebook?: string;
+ instagram?: string;
  order?: number;
  rating?: number;
  reviews?: number;
