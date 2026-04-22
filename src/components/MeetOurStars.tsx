@@ -181,7 +181,7 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  onClick={() =>
  setExpandedBio(isExpanded ? null : member.key)
  }
- className="font-semibold text-primary hover:text-primary/70 transition-colors inline ms-1"
+ className="font-semibold text-primary cursor-pointer inline ms-1"
  >
  {isExpanded ? t("starsShowLess") : t("starsReadMore")}
  </button>
