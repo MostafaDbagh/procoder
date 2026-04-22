@@ -132,13 +132,17 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
 
  <div className={`px-6 pb-3 ${member.photoUrl ? "pt-12" : "pt-5"}`}>
  <h3 className="text-xl font-bold mb-1">{member.name}</h3>
+ {(member.rating > 0 || member.reviews > 0) && (
  <div className="flex items-center gap-1.5 mb-3">
- <Star className="w-5 h-5 fill-amber-400 text-amber-400" />
- <span className="font-bold text-sm">{member.rating}</span>
- <span className="text-muted text-xs">
- ({t("starsRatingsCount", { count: member.reviews })})
- </span>
+  <Star className="w-5 h-5 fill-amber-400 text-amber-400" />
+  {member.rating > 0 && <span className="font-bold text-sm">{member.rating}</span>}
+  {member.reviews > 0 && (
+  <span className="text-muted text-xs">
+   ({t("starsRatingsCount", { count: member.reviews })})
+  </span>
+  )}
  </div>
+ )}
  <div style={{ width: 240, maxWidth: "100%" }}>
  <div className="h-px bg-border" />
  </div>
