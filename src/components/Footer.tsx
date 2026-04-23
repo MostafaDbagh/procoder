@@ -4,13 +4,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { LocalizedLink } from "@/components/LocalizedLink";
-import { Mail, LayoutDashboard, GraduationCap, Shield, Briefcase } from "lucide-react";
+import { Mail, LayoutDashboard, GraduationCap, Shield } from "lucide-react";
 
 export function Footer() {
  const t = useTranslations("footer");
  const nav = useTranslations("nav");
  const cats = useTranslations("categories");
- const careersT = useTranslations("careers");
 
  return (
  <footer className="bg-surface border-t border-border">
@@ -69,41 +68,11 @@ export function Footer() {
  <div>
  <h3 className="font-semibold mb-4">{t("quickLinks")}</h3>
  <ul className="space-y-2.5">
- <li>
- <LocalizedLink href="/" className="text-sm text-muted hover:text-primary transition-colors">
- {nav("home")}
- </LocalizedLink>
- </li>
- <li>
- <LocalizedLink href="/courses" className="text-sm text-muted hover:text-primary transition-colors">
- {nav("courses")}
- </LocalizedLink>
- </li>
- <li>
- <LocalizedLink href="/recommend" className="text-sm text-muted hover:text-primary transition-colors">
- {nav("recommend")}
- </LocalizedLink>
- </li>
- <li>
- <LocalizedLink href="/challenge" className="text-sm text-muted hover:text-primary transition-colors">
- {nav("challenge")}
- </LocalizedLink>
- </li>
- <li>
- <LocalizedLink href="/blog" className="text-sm text-muted hover:text-primary transition-colors">
- {nav("blog")}
- </LocalizedLink>
- </li>
- <li>
- <LocalizedLink href="/about" className="text-sm text-muted hover:text-primary transition-colors">
- {t("about")}
- </LocalizedLink>
- </li>
- <li>
- <LocalizedLink href="/contact" className="text-sm text-muted hover:text-primary transition-colors">
- {t("contact")}
- </LocalizedLink>
- </li>
+ <li><LocalizedLink href="/" className="text-sm text-muted hover:text-primary transition-colors">{nav("home")}</LocalizedLink></li>
+ <li><LocalizedLink href="/courses" className="text-sm text-muted hover:text-primary transition-colors">{nav("courses")}</LocalizedLink></li>
+ <li><LocalizedLink href="/recommend" className="text-sm text-muted hover:text-primary transition-colors">{nav("recommend")}</LocalizedLink></li>
+ <li><LocalizedLink href="/challenge" className="text-sm text-muted hover:text-primary transition-colors">{nav("challenge")}</LocalizedLink></li>
+ <li><LocalizedLink href="/blog" className="text-sm text-muted hover:text-primary transition-colors">{nav("blog")}</LocalizedLink></li>
  </ul>
  </div>
 
@@ -111,35 +80,14 @@ export function Footer() {
  <div>
  <h3 className="font-semibold mb-4">{t("categories")}</h3>
  <ul className="space-y-2.5">
- <li>
- <LocalizedLink href="/courses" className="text-sm text-muted hover:text-primary transition-colors">
- {cats("programming")}
- </LocalizedLink>
- </li>
- <li>
- <LocalizedLink href="/courses" className="text-sm text-muted hover:text-primary transition-colors">
- {cats("robotics")}
- </LocalizedLink>
- </li>
- <li>
- <LocalizedLink href="/courses" className="text-sm text-muted hover:text-primary transition-colors">
- {cats("algorithms")}
- </LocalizedLink>
- </li>
- <li>
- <LocalizedLink href="/courses" className="text-sm text-muted hover:text-primary transition-colors">
- {cats("arabic")}
- </LocalizedLink>
- </li>
- <li>
- <LocalizedLink href="/courses" className="text-sm text-muted hover:text-primary transition-colors">
- {cats("arabic")}
- </LocalizedLink>
- </li>
+ <li><LocalizedLink href="/courses" className="text-sm text-muted hover:text-primary transition-colors">{cats("programming")}</LocalizedLink></li>
+ <li><LocalizedLink href="/courses" className="text-sm text-muted hover:text-primary transition-colors">{cats("robotics")}</LocalizedLink></li>
+ <li><LocalizedLink href="/courses" className="text-sm text-muted hover:text-primary transition-colors">{cats("algorithms")}</LocalizedLink></li>
+ <li><LocalizedLink href="/courses" className="text-sm text-muted hover:text-primary transition-colors">{cats("arabic")}</LocalizedLink></li>
  </ul>
  </div>
 
- {/* Contact & Legal */}
+ {/* Reach Out */}
  <div>
  <h3 className="font-semibold mb-4">{t("contact")}</h3>
  <div className="flex items-center gap-2 text-sm text-muted mb-4">
@@ -147,24 +95,13 @@ export function Footer() {
  <span>{t("email")}</span>
  </div>
  <ul className="space-y-2.5">
- <li>
- <LocalizedLink href="/privacy" className="text-sm text-muted hover:text-primary transition-colors">
- {t("privacy")}
- </LocalizedLink>
- </li>
- <li>
- <LocalizedLink href="/terms" className="text-sm text-muted hover:text-primary transition-colors">
- {t("terms")}
- </LocalizedLink>
- </li>
- <li>
- <LocalizedLink href="/careers" className="text-sm text-muted hover:text-primary transition-colors inline-flex items-center gap-1.5">
- <Briefcase className="w-3.5 h-3.5" />
- {careersT("footerLink")}
- </LocalizedLink>
- </li>
+ <li><LocalizedLink href="/about" className="text-sm text-muted hover:text-primary transition-colors">{t("about")}</LocalizedLink></li>
+ <li><LocalizedLink href="/contact" className="text-sm text-muted hover:text-primary transition-colors">{t("contact")}</LocalizedLink></li>
+ <li><LocalizedLink href="/privacy" className="text-sm text-muted hover:text-primary transition-colors">{t("privacy")}</LocalizedLink></li>
+ <li><LocalizedLink href="/terms" className="text-sm text-muted hover:text-primary transition-colors">{t("terms")}</LocalizedLink></li>
  </ul>
  </div>
+
  </div>
 
  <div className="mt-10 pt-8 border-t border-border">

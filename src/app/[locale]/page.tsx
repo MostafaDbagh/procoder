@@ -75,7 +75,7 @@ export default async function HomePage({
  <>
  <Hero />
  <LearnByFun />
- <WhyProgramming />
+ {/* <WhyProgramming /> */}
  <CategorySection categories={cmsCategories} />
  <HowItWorks />
  <MeetOurStars cmsTeam={cmsTeam} />

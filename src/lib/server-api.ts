@@ -254,6 +254,60 @@ export async function getBlogPostSSR(slug: string): Promise<APIBlogPost | null> 
  }
 }
 
+// ── Pricing ───────────────────────────────────────────────────────────────────
+
+export interface LocalizedStr { en: string; ar: string }
+
+export interface APIPricingPlan {
+  _id: string;
+  key: string;
+  name: LocalizedStr;
+  priceDisplay: LocalizedStr;
+  period: LocalizedStr;
+  description: LocalizedStr;
+  features: LocalizedStr[];
+  highlighted: boolean;
+  badge: LocalizedStr;
+  ctaHref: string;
+  ctaLabel: LocalizedStr;
+  order: number;
+}
+
+export interface APIPricingDiscount {
+  _id: string;
+  key: string;
+  title: LocalizedStr;
+  value: LocalizedStr;
+  description: LocalizedStr;
+  iconColor: string;
+  order: number;
+}
+
+export interface APIPricingFaq {
+  _id: string;
+  question: LocalizedStr;
+  answer: LocalizedStr;
+  order: number;
+}
+
+export interface APIPricingData {
+  plans: APIPricingPlan[];
+  discounts: APIPricingDiscount[];
+  faqs: APIPricingFaq[];
+}
+
+export async function getPricingISR(): Promise<APIPricingData | null> {
+  try {
+    const res = await fetch(`${serverApiRoot()}/pricing`, {
+      next: { revalidate: 300 },
+    });
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
+}
+
 export async function getChallengePublicLatestISR(): Promise<PublicMonthlyChallenge | null> {
  try {
  const res = await fetch(`${serverApiRoot()}/challenges/public/latest`, {

@@ -1,0 +1,80 @@
+import type { Metadata } from "next";
+import { setRequestLocale } from "next-intl/server";
+import { Suspense } from "react";
+import FreeTrialContent from "./FreeTrialContent";
+import { BreadcrumbSchema } from "@/components/StructuredData";
+
+const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
+
+const meta = {
+  en: {
+    title: "Free Trial Class for Kids | Coding, Robotics & Arabic — StemTechLab",
+    description:
+      "Book a free 60-minute live class for your child. No credit card, no commitment. Coding, robotics, Arabic & more for ages 6–18. GCC & worldwide.",
+  },
+  ar: {
+    title: "حصة تجريبية مجانية للأطفال | برمجة وروبوتات وعربية — ستم تك لاب",
+    description:
+      "احجز حصة مباشرة مجانية لطفلك ٦٠ دقيقة. بدون بطاقة ائتمان أو التزام. برمجة وروبوتات وعربية للأعمار ٦–١٨.",
+  },
+};
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const lang = locale === "ar" ? "ar" : "en";
+
+  return {
+    title: meta[lang].title,
+    description: meta[lang].description,
+    alternates: {
+      canonical: `${SITE_URL}/${lang}/free-trial`,
+      languages: {
+        en: `${SITE_URL}/en/free-trial`,
+        ar: `${SITE_URL}/ar/free-trial`,
+        "x-default": `${SITE_URL}/en/free-trial`,
+      },
+    },
+    openGraph: {
+      title: meta[lang].title,
+      description: meta[lang].description,
+      url: `${SITE_URL}/${lang}/free-trial`,
+      type: "website",
+      siteName: "StemTechLab",
+      locale: lang === "ar" ? "ar_SA" : "en_US",
+      alternateLocale: lang === "ar" ? "en_US" : "ar_SA",
+      images: [{ url: `${SITE_URL}/og`, width: 1200, height: 630, alt: "StemTechLab Free Trial" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: meta[lang].title,
+      description: meta[lang].description,
+    },
+  };
+}
+
+export default async function FreeTrialPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
+  return (
+    <>
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", url: `${SITE_URL}/${locale}` },
+          { name: "Free Trial", url: `${SITE_URL}/${locale}/free-trial` },
+        ]}
+      />
+      <Suspense>
+        <FreeTrialContent />
+      </Suspense>
+    </>
+  );
+}
