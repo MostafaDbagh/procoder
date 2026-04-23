@@ -33,9 +33,14 @@ const STEPS = 4;
 
 const inputCls =
  "w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none";
+const inputErrCls =
+ "w-full px-4 py-3 rounded-xl bg-background border border-red-400 text-foreground placeholder:text-muted focus:border-red-400 focus:ring-2 focus:ring-red-400/20 transition-all outline-none";
 const selectCls =
  "w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none";
+const selectErrCls =
+ "w-full px-4 py-3 rounded-xl bg-background border border-red-400 text-foreground focus:border-red-400 focus:ring-2 focus:ring-red-400/20 transition-all outline-none";
 const labelCls = "block text-sm font-medium mb-2";
+const errSpan = <span className="mt-1 text-xs text-red-500 font-medium">This field is required</span>;
 
 export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModalProps) {
  const t = useTranslations("enroll");
@@ -110,6 +115,8 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  }));
 
  const [error, setError] = useState("");
+ const [stepAttempted, setStepAttempted] = useState(false);
+
  // Anti-bot: track when the modal was first opened
  const [formLoadedAt] = useState(() => Date.now());
  // Honeypot — invisible field that bots fill
@@ -119,6 +126,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  const handleSubmit = async (e: React.FormEvent) => {
  e.preventDefault();
  if (cooldown) return;
+ if (!canNext()) { setStepAttempted(true); return; }
  setSubmitting(true);
  setError("");
  try {
@@ -375,27 +383,31 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  value={form.parentName}
  onChange={(e) => set("parentName", e.target.value)}
  placeholder={t("namePlaceholder")}
- className={inputCls}
+ className={stepAttempted && !form.parentName ? inputErrCls : inputCls}
  />
+ {stepAttempted && !form.parentName && errSpan}
  </div>
  <div>
  <label className={labelCls}>{t("relationship")} *</label>
- <select required value={form.relationship} onChange={(e) => set("relationship", e.target.value)} className={selectCls}>
+ <select required value={form.relationship} onChange={(e) => set("relationship", e.target.value)} className={stepAttempted && !form.relationship ? selectErrCls : selectCls}>
  <option value="">{t("selectRelation")}</option>
  <option value="mother">{t("mother")}</option>
  <option value="father">{t("father")}</option>
  <option value="guardian">{t("guardian")}</option>
  <option value="other">{t("other")}</option>
  </select>
+ {stepAttempted && !form.relationship && errSpan}
  </div>
  </div>
  <div>
  <label className={labelCls}>{t("parentEmail")} *</label>
- <input type="email" required value={form.email} onChange={(e) => set("email", e.target.value)} placeholder={t("emailPlaceholder")} className={inputCls} />
+ <input type="email" required value={form.email} onChange={(e) => set("email", e.target.value)} placeholder={t("emailPlaceholder")} className={stepAttempted && !form.email ? inputErrCls : inputCls} />
+ {stepAttempted && !form.email && errSpan}
  </div>
  <div>
  <label className={labelCls}>{t("phone")} *</label>
- <input type="tel" required value={form.phone} onChange={(e) => set("phone", e.target.value)} placeholder={t("phonePlaceholder")} className={inputCls} />
+ <input type="tel" required value={form.phone} onChange={(e) => set("phone", e.target.value)} placeholder={t("phonePlaceholder")} className={stepAttempted && !form.phone ? inputErrCls : inputCls} />
+ {stepAttempted && !form.phone && errSpan}
  </div>
  </motion.div>
  )}
@@ -416,16 +428,18 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  <div className="grid sm:grid-cols-2 gap-4">
  <div>
  <label className={labelCls}>{t("childName")} *</label>
- <input type="text" required value={form.childName} onChange={(e) => set("childName", e.target.value)} placeholder={t("childNamePlaceholder")} className={inputCls} />
+ <input type="text" required value={form.childName} onChange={(e) => set("childName", e.target.value)} placeholder={t("childNamePlaceholder")} className={stepAttempted && !form.childName ? inputErrCls : inputCls} />
+ {stepAttempted && !form.childName && errSpan}
  </div>
  <div>
  <label className={labelCls}>{t("childAge")} *</label>
- <select required value={form.childAge} onChange={(e) => set("childAge", e.target.value)} className={selectCls}>
+ <select required value={form.childAge} onChange={(e) => set("childAge", e.target.value)} className={stepAttempted && !form.childAge ? selectErrCls : selectCls}>
  <option value="">{t("selectAge")}</option>
  {Array.from({ length: 13 }, (_, i) => i + 6).map((a) => (
  <option key={a} value={a}>{a}</option>
  ))}
  </select>
+ {stepAttempted && !form.childAge && errSpan}
  </div>
  </div>
  <div className="grid sm:grid-cols-2 gap-4">
@@ -440,13 +454,14 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  </div>
  <div>
  <label className={labelCls}>{t("gradeLevel")} *</label>
- <select required value={form.gradeLevel} onChange={(e) => set("gradeLevel", e.target.value)} className={selectCls}>
+ <select required value={form.gradeLevel} onChange={(e) => set("gradeLevel", e.target.value)} className={stepAttempted && !form.gradeLevel ? selectErrCls : selectCls}>
  <option value="">{t("selectGrade")}</option>
  <option value="1-3">{t("grade1_3")}</option>
  <option value="4-6">{t("grade4_6")}</option>
  <option value="7-9">{t("grade7_9")}</option>
  <option value="10-12">{t("grade10_12")}</option>
  </select>
+ {stepAttempted && !form.gradeLevel && errSpan}
  </div>
  </div>
  <div>
@@ -477,6 +492,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  </div>
  <div>
  <label className={labelCls}>{t("preferredDays")} *</label>
+ {stepAttempted && form.preferredDays.length === 0 && errSpan}
  <div className="flex flex-wrap gap-2">
  {(["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] as const).map((day) => (
  <button
@@ -496,6 +512,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  </div>
  <div>
  <label className={labelCls}>{t("preferredTime")} *</label>
+ {stepAttempted && !form.preferredTime && errSpan}
  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
  {(["morning", "afternoon", "evening", "flexible"] as const).map((time) => (
  <button
@@ -694,6 +711,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  <input type="checkbox" checked={form.agreeTerms} onChange={(e) => set("agreeTerms", e.target.checked)} className="mt-1 w-4 h-4 rounded border-border text-primary accent-primary" />
  <span className="text-sm text-muted leading-relaxed">{t("agreeTerms")} *</span>
  </label>
+ {stepAttempted && !form.agreeTerms && errSpan}
  <label className="flex items-start gap-3 cursor-pointer">
  <input type="checkbox" checked={form.agreePhotos} onChange={(e) => set("agreePhotos", e.target.checked)} className="mt-1 w-4 h-4 rounded border-border text-primary accent-primary" />
  <span className="text-sm text-muted leading-relaxed">{t("agreePhotos")}</span>
@@ -720,7 +738,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  {step < STEPS ? (
  <button
  type="button"
- onClick={() => canNext() && setStep(step + 1)}
+ onClick={() => { if (canNext()) { setStepAttempted(false); setStep(step + 1); } else { setStepAttempted(true); } }}
  disabled={!canNext()}
  className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all ${
  canNext()

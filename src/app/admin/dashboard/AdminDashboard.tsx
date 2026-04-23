@@ -413,6 +413,12 @@ export default function AdminDashboard() {
  null | { mode: "create" } | { mode: "edit"; id: string }
  >(null);
 
+ // ── Pricing ──
+ const [pricingPlans, setPricingPlans] = useState<Record<string, unknown>[]>([]);
+ const [pricingDiscounts, setPricingDiscounts] = useState<Record<string, unknown>[]>([]);
+ const [pricingModal, setPricingModal] = useState<null | { type: "plan" | "discount"; data?: Record<string, unknown> }>(null);
+ const [pricingForm, setPricingForm] = useState<Record<string, string>>({});
+
  const [enrollmentDetail, setEnrollmentDetail] = useState<{
  enrollment: Record<string, unknown>;
  linkedUser: Record<string, unknown> | null;
@@ -634,6 +640,15 @@ export default function AdminDashboard() {
  setCareersMeta(meta);
  }, [careerFilter, careersPage]);
 
+ const loadPricing = useCallback(async () => {
+ const [plans, discounts] = await Promise.all([
+ adminFetch<Record<string, unknown>[]>("/pricing/admin/plans"),
+ adminFetch<Record<string, unknown>[]>("/pricing/admin/discounts"),
+ ]);
+ setPricingPlans(Array.isArray(plans) ? plans : []);
+ setPricingDiscounts(Array.isArray(discounts) ? discounts : []);
+ }, []);
+
  useEffect(() => {
  if (!getAdminToken()) return;
  let cancelled = false;
@@ -655,6 +670,7 @@ export default function AdminDashboard() {
  if (tab === "team") await loadTeam();
  if (tab === "blog") await loadBlog();
  if (tab === "careers") await loadCareers();
+ if (tab === "pricing") await loadPricing();
  if (!cancelled) setErr("");
  } catch (e) {
  if (!cancelled) {
@@ -680,6 +696,7 @@ export default function AdminDashboard() {
  loadPromos,
  loadBlog,
  loadCareers,
+ loadPricing,
  ]);
 
  /** Purge ISR cache for public pages so admin changes appear immediately. */
@@ -2630,27 +2647,209 @@ export default function AdminDashboard() {
  )}
 
  {tab === "pricing" && (
- <div className="space-y-6">
- <p className="text-xs text-slate-500">Current pricing tiers configured for the platform.</p>
+ <div className="space-y-8">
+ {/* Plans */}
+ <div>
+ <div className="flex items-center justify-between mb-3">
+ <p className="text-sm font-semibold text-white">Plans</p>
+ <button type="button" onClick={() => { setPricingForm({ type: "plan" }); setPricingModal({ type: "plan" }); }}
+ className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-1 text-xs text-slate-200 hover:bg-slate-700">+ Add Plan</button>
+ </div>
+ {pricingPlans.length === 0 && <p className="text-xs text-slate-500">No plans yet.</p>}
  <div className="grid gap-4 sm:grid-cols-3">
- {[
- { name: "Free Trial", price: "Free", desc: "1 full live class (60 min), no card needed.", color: "text-emerald-400", border: "border-emerald-900/40" },
- { name: "Monthly", price: "From $49/mo", desc: "2 classes/week, recordings, progress tracking, parent dashboard.", color: "text-blue-400", border: "border-blue-900/40" },
- { name: "Best Value", price: "From $37/mo", desc: "Annual plan — 25% off, priority scheduling, sibling discount.", color: "text-purple-400", border: "border-purple-900/40" },
- ].map((tier) => (
- <div key={tier.name} className={`rounded-xl border ${tier.border} bg-slate-900/50 p-5`}>
- <p className={`text-sm font-semibold mb-1 ${tier.color}`}>{tier.name}</p>
- <p className="text-lg font-bold text-white mb-2">{tier.price}</p>
- <p className="text-xs text-slate-400 leading-relaxed">{tier.desc}</p>
+ {pricingPlans.map((plan) => {
+ const id = String(plan._id);
+ return (
+ <div key={id} className="rounded-xl border border-slate-800 bg-slate-900/50 p-5 flex flex-col gap-2">
+ <div className="flex items-start justify-between gap-2">
+ <div>
+ {(() => { const b = plan.badge && typeof plan.badge === "object" ? (plan.badge as Record<string,string>).en : ""; return b ? <span className="text-xs text-yellow-400 font-medium">{b}</span> : null; })()}
+ <p className="text-sm font-semibold text-primary">{typeof plan.name === "object" ? (plan.name as Record<string,string>).en : String(plan.name)}</p>
+ <p className="text-lg font-bold text-white">{typeof plan.priceDisplay === "object" ? (plan.priceDisplay as Record<string,string>).en : String(plan.priceDisplay ?? "")}</p>
+ {(() => { const p = plan.period && typeof plan.period === "object" ? (plan.period as Record<string,string>).en : ""; return p ? <p className="text-xs text-slate-500">{p}</p> : null; })()}
  </div>
+ <div className="flex flex-col gap-1 shrink-0">
+ <button type="button" onClick={() => {
+ const name = typeof plan.name === "object" ? (plan.name as Record<string,string>).en : "";
+ const price = typeof plan.priceDisplay === "object" ? (plan.priceDisplay as Record<string,string>).en : "";
+ const period = typeof plan.period === "object" ? (plan.period as Record<string,string>).en : "";
+ const desc = typeof plan.description === "object" ? (plan.description as Record<string,string>).en : "";
+ const features = Array.isArray(plan.features) ? plan.features.map((f: unknown) => typeof f === "object" ? (f as Record<string,string>).en : String(f)).join("\n") : "";
+ setPricingForm({ type: "plan", _id: id, key: String(plan.key ?? ""), name, price, period, desc, features, order: String(plan.order ?? 0) });
+ setPricingModal({ type: "plan", data: plan });
+ }} className="text-xs text-primary hover:underline">Edit</button>
+ <button type="button" onClick={async () => {
+ if (!confirm("Delete this plan?")) return;
+ await adminFetch(`/pricing/admin/plans/${id}`, { method: "DELETE" });
+ await loadPricing();
+ }} className="text-xs text-red-400 hover:underline">Delete</button>
+ </div>
+ </div>
+ <p className="text-xs text-slate-400 leading-relaxed">{typeof plan.description === "object" ? (plan.description as Record<string,string>).en : ""}</p>
+ {Array.isArray(plan.features) && plan.features.length > 0 && (
+ <ul className="text-xs text-slate-500 space-y-0.5 mt-1">
+ {plan.features.map((f: unknown, i: number) => (
+ <li key={i}>• {typeof f === "object" ? (f as Record<string,string>).en : String(f)}</li>
  ))}
+ </ul>
+ )}
  </div>
- <div className="rounded-xl border border-slate-800 bg-slate-900/30 p-5">
- <p className="text-xs font-semibold text-slate-400 mb-3 uppercase tracking-wide">Family Discounts</p>
- <div className="grid gap-3 sm:grid-cols-3 text-xs text-slate-300">
- <div><span className="text-yellow-400 font-bold">15% off</span> — Sibling discount (2nd child)</div>
- <div><span className="text-yellow-400 font-bold">10% off</span> — Quarterly plan (3 months upfront)</div>
- <div><span className="text-yellow-400 font-bold">25% off</span> — Annual plan (full year)</div>
+ );
+ })}
+ </div>
+ </div>
+
+ {/* Discounts */}
+ <div>
+ <div className="flex items-center justify-between mb-3">
+ <p className="text-sm font-semibold text-white">Family Discounts</p>
+ <button type="button" onClick={() => { setPricingForm({ type: "discount" }); setPricingModal({ type: "discount" }); }}
+ className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-1 text-xs text-slate-200 hover:bg-slate-700">+ Add Discount</button>
+ </div>
+ {pricingDiscounts.length === 0 && <p className="text-xs text-slate-500">No discounts yet.</p>}
+ <div className="rounded-xl border border-slate-800 bg-slate-900/30 overflow-hidden">
+ <table className="w-full text-left text-xs">
+ <thead className="border-b border-slate-800 text-slate-500">
+ <tr>
+ <th className="p-3">Title</th>
+ <th className="p-3">Value</th>
+ <th className="p-3">Description</th>
+ <th className="p-3 w-24">Actions</th>
+ </tr>
+ </thead>
+ <tbody>
+ {pricingDiscounts.map((d) => {
+ const id = String(d._id);
+ const title = typeof d.title === "object" ? (d.title as Record<string,string>).en : String(d.title ?? "");
+ const value = typeof d.value === "object" ? (d.value as Record<string,string>).en : String(d.value ?? "");
+ const desc = typeof d.description === "object" ? (d.description as Record<string,string>).en : String(d.description ?? "");
+ return (
+ <tr key={id} className="border-t border-slate-800/60">
+ <td className="p-3 font-medium text-slate-200">{title}</td>
+ <td className="p-3 text-yellow-400 font-bold">{value}</td>
+ <td className="p-3 text-slate-400">{desc}</td>
+ <td className="p-3 space-x-3">
+ <button type="button" onClick={() => {
+ setPricingForm({ type: "discount", _id: id, key: String(d.key ?? ""), title, value, desc, order: String(d.order ?? 0) });
+ setPricingModal({ type: "discount", data: d });
+ }} className="text-primary hover:underline">Edit</button>
+ <button type="button" onClick={async () => {
+ if (!confirm("Delete this discount?")) return;
+ await adminFetch(`/pricing/admin/discounts/${id}`, { method: "DELETE" });
+ await loadPricing();
+ }} className="text-red-400 hover:underline">Delete</button>
+ </td>
+ </tr>
+ );
+ })}
+ </tbody>
+ </table>
+ </div>
+ </div>
+ </div>
+ )}
+
+ {pricingModal && (
+ <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
+ <div className="w-full max-w-lg rounded-2xl border border-slate-700 bg-slate-950 p-6 text-sm text-slate-200 shadow-xl space-y-4">
+ <div className="flex items-center justify-between">
+ <h2 className="text-base font-semibold text-white">
+ {pricingForm._id ? "Edit" : "Add"} {pricingModal.type === "plan" ? "Plan" : "Discount"}
+ </h2>
+ <button type="button" onClick={() => setPricingModal(null)} className="text-slate-400 hover:text-white text-lg">✕</button>
+ </div>
+
+ {pricingModal.type === "plan" ? (
+ <div className="space-y-3">
+ <div className="grid grid-cols-2 gap-3">
+ <label className="block text-xs text-slate-500">Key (unique ID)
+ <input value={pricingForm.key ?? ""} onChange={(e) => setPricingForm((f) => ({ ...f, key: e.target.value }))}
+ className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-white text-xs" placeholder="e.g. monthly" />
+ </label>
+ <label className="block text-xs text-slate-500">Order
+ <input type="number" value={pricingForm.order ?? "0"} onChange={(e) => setPricingForm((f) => ({ ...f, order: e.target.value }))}
+ className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-white text-xs" />
+ </label>
+ </div>
+ <label className="block text-xs text-slate-500">Name (EN)
+ <input value={pricingForm.name ?? ""} onChange={(e) => setPricingForm((f) => ({ ...f, name: e.target.value }))}
+ className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-white text-xs" placeholder="Monthly" />
+ </label>
+ <div className="grid grid-cols-2 gap-3">
+ <label className="block text-xs text-slate-500">Price Display
+ <input value={pricingForm.price ?? ""} onChange={(e) => setPricingForm((f) => ({ ...f, price: e.target.value }))}
+ className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-white text-xs" placeholder="From $49" />
+ </label>
+ <label className="block text-xs text-slate-500">Period Label
+ <input value={pricingForm.period ?? ""} onChange={(e) => setPricingForm((f) => ({ ...f, period: e.target.value }))}
+ className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-white text-xs" placeholder="/ month per child" />
+ </label>
+ </div>
+ <label className="block text-xs text-slate-500">Description (EN)
+ <input value={pricingForm.desc ?? ""} onChange={(e) => setPricingForm((f) => ({ ...f, desc: e.target.value }))}
+ className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-white text-xs" />
+ </label>
+ <label className="block text-xs text-slate-500">Features (one per line)
+ <textarea rows={4} value={pricingForm.features ?? ""} onChange={(e) => setPricingForm((f) => ({ ...f, features: e.target.value }))}
+ className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-white text-xs" placeholder="2 live classes per week&#10;Class recordings&#10;Progress tracking" />
+ </label>
+ </div>
+ ) : (
+ <div className="space-y-3">
+ <div className="grid grid-cols-2 gap-3">
+ <label className="block text-xs text-slate-500">Key (unique ID)
+ <input value={pricingForm.key ?? ""} onChange={(e) => setPricingForm((f) => ({ ...f, key: e.target.value }))}
+ className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-white text-xs" placeholder="e.g. sibling" />
+ </label>
+ <label className="block text-xs text-slate-500">Order
+ <input type="number" value={pricingForm.order ?? "0"} onChange={(e) => setPricingForm((f) => ({ ...f, order: e.target.value }))}
+ className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-white text-xs" />
+ </label>
+ </div>
+ <label className="block text-xs text-slate-500">Title (EN)
+ <input value={pricingForm.title ?? ""} onChange={(e) => setPricingForm((f) => ({ ...f, title: e.target.value }))}
+ className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-white text-xs" placeholder="Sibling Discount" />
+ </label>
+ <label className="block text-xs text-slate-500">Value
+ <input value={pricingForm.value ?? ""} onChange={(e) => setPricingForm((f) => ({ ...f, value: e.target.value }))}
+ className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-white text-xs" placeholder="15% off" />
+ </label>
+ <label className="block text-xs text-slate-500">Description (EN)
+ <input value={pricingForm.desc ?? ""} onChange={(e) => setPricingForm((f) => ({ ...f, desc: e.target.value }))}
+ className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-white text-xs" placeholder="Enroll a second child and save 15%" />
+ </label>
+ </div>
+ )}
+
+ <div className="flex justify-end gap-3 pt-2">
+ <button type="button" onClick={() => setPricingModal(null)}
+ className="rounded-lg border border-slate-700 px-4 py-2 text-xs text-slate-300 hover:bg-slate-800">Cancel</button>
+ <button type="button" onClick={async () => {
+ if (pricingModal.type === "plan") {
+ const features = (pricingForm.features ?? "").split("\n").filter(Boolean).map((f) => ({ en: f.trim(), ar: "" }));
+ await adminFetch("/pricing/admin/plans", { method: "PUT", body: JSON.stringify({
+ ...(pricingForm._id ? { _id: pricingForm._id } : {}),
+ key: pricingForm.key,
+ name: { en: pricingForm.name ?? "", ar: "" },
+ priceDisplay: { en: pricingForm.price ?? "", ar: "" },
+ period: { en: pricingForm.period ?? "", ar: "" },
+ description: { en: pricingForm.desc ?? "", ar: "" },
+ features,
+ order: Number(pricingForm.order ?? 0),
+ }) });
+ } else {
+ await adminFetch("/pricing/admin/discounts", { method: "PUT", body: JSON.stringify({
+ ...(pricingForm._id ? { _id: pricingForm._id } : {}),
+ key: pricingForm.key,
+ title: { en: pricingForm.title ?? "", ar: "" },
+ value: { en: pricingForm.value ?? "", ar: "" },
+ description: { en: pricingForm.desc ?? "", ar: "" },
+ order: Number(pricingForm.order ?? 0),
+ }) });
+ }
+ setPricingModal(null);
+ await loadPricing();
+ }} className="rounded-lg bg-primary px-5 py-2 text-xs font-semibold text-white hover:opacity-90">Save</button>
  </div>
  </div>
  </div>
