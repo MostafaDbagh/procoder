@@ -45,7 +45,8 @@ type Tab =
  | "blog"
  | "careers"
  | "pricing"
- | "free_trial";
+ | "free_trial"
+ | "subscribers";
 
 type AdminCategoryRow = {
  _id: string;
@@ -309,6 +310,7 @@ const TABS: { id: Tab; label: string }[] = [
  { id: "careers", label: "Careers" },
  { id: "pricing", label: "Pricing" },
  { id: "free_trial", label: "Free Trial" },
+ { id: "subscribers", label: "Subscribers" },
 ];
 
 export default function AdminDashboard() {
@@ -648,7 +650,7 @@ export default function AdminDashboard() {
  if (tab === "users") await loadUsers();
  if (tab === "payments") await loadPayments();
  if (tab === "promos") await loadPromos();
- if (tab === "contacts" || tab === "free_trial") await loadContacts();
+ if (tab === "contacts" || tab === "free_trial" || tab === "subscribers") await loadContacts();
  if (tab === "challenges") await loadChallenges();
  if (tab === "team") await loadTeam();
  if (tab === "blog") await loadBlog();
@@ -2592,6 +2594,38 @@ export default function AdminDashboard() {
  </tbody>
  </table>
  </div>
+ </div>
+ )}
+
+ {tab === "subscribers" && (
+ <div className="space-y-4">
+ <p className="text-xs text-slate-500">Email addresses subscribed via the newsletter form.</p>
+ <div className="overflow-x-auto rounded-xl border border-slate-800">
+ <table className="w-full min-w-[500px] text-left text-sm">
+ <thead className="border-b border-slate-800 text-slate-500">
+ <tr>
+ <th className="p-2">Date</th>
+ <th className="p-2">Name</th>
+ <th className="p-2">Email</th>
+ </tr>
+ </thead>
+ <tbody>
+ {contacts
+ .filter((r) => String(r.subject ?? "").toLowerCase().includes("newsletter"))
+ .map((r) => (
+ <tr key={String(r._id)} className="border-t border-slate-800/80">
+ <td className="p-2 text-xs text-slate-400">{String(r.createdAt ?? "").slice(0, 10)}</td>
+ <td className="p-2 text-xs">{String(r.name)}</td>
+ <td className="p-2 text-xs">{String(r.email)}</td>
+ </tr>
+ ))}
+ {contacts.filter((r) => String(r.subject ?? "").toLowerCase().includes("newsletter")).length === 0 && (
+ <tr><td colSpan={3} className="p-4 text-center text-slate-500 text-xs">No subscribers yet.</td></tr>
+ )}
+ </tbody>
+ </table>
+ </div>
+ <p className="text-xs text-slate-600">Total: {contacts.filter((r) => String(r.subject ?? "").toLowerCase().includes("newsletter")).length} subscriber(s)</p>
  </div>
  )}
 
