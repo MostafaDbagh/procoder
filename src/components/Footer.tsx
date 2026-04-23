@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { LocalizedLink } from "@/components/LocalizedLink";
-import { Sparkles, Mail, LayoutDashboard, GraduationCap, Shield, Briefcase } from "lucide-react";
+import { Mail, LayoutDashboard, GraduationCap, Shield, Briefcase } from "lucide-react";
 
 export function Footer() {
  const t = useTranslations("footer");
@@ -18,8 +19,8 @@ export function Footer() {
  {/* Brand */}
  <div>
  <div className="flex items-center gap-2 mb-4">
- <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
- <Sparkles className="w-5 h-5 text-white" />
+ <div className="w-9 h-9 rounded-xl overflow-hidden flex items-center justify-center">
+ <Image src="/logo.svg" alt="StemTechLab" width={36} height={36} />
  </div>
  <span className="text-xl font-bold bg-gradient-to-r from-primary to-purple bg-clip-text text-transparent">
  StemTechLab
