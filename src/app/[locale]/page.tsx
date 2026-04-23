@@ -16,7 +16,7 @@ const meta = {
  en: {
  title: "Live coding, robotics & Arabic for kids (6–18)",
  description:
- "STEM and coding for kids: live online classes, tutorial-style lessons, and AI-matched courses. Scratch, Python, robotics, algorithms, Arabic. Small groups, ages 6–18. GCC & worldwide. Free trial.",
+ "Live STEM & coding classes for kids: Scratch, Python, robotics, algorithms and Arabic. AI-matched courses, small groups, ages 6–18. GCC & worldwide. Free trial.",
  },
  ar: {
  title: "برمجة وروبوتات للأطفال ٦–١٨",

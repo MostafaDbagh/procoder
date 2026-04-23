@@ -255,7 +255,7 @@ export default function CourseDetailContent() {
  {/* eslint-disable-next-line @next/next/no-img-element */}
  <img
  src={coverSrc}
- alt=""
+ alt={course.title}
  className="absolute inset-0 w-full h-full object-cover"
  />
  </div>

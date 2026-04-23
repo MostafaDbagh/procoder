@@ -134,8 +134,8 @@ export const CourseCard = React.memo(function CourseCard({ course, index = 0, ti
  fill
  className="object-cover"
  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 320px"
- unoptimized
  />
+
  ) : (
  <>
  <div className="absolute top-[-20px] right-[-20px] w-24 h-24 rounded-full bg-white/30 dark:bg-white/5" />

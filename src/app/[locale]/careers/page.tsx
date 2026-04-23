@@ -9,7 +9,7 @@ const meta = {
   en: {
     title: "Careers at StemTechLab | Teach Kids Coding & STEM Online",
     description:
-      "Join StemTechLab as an online STEM teacher, kids coding instructor, or Arabic tutor. Remote positions for certified educators. Teach kids ages 6–18 worldwide. Apply now.",
+      "Join StemTechLab as an online STEM teacher, coding instructor, or Arabic tutor. Remote roles for certified educators. Teach kids ages 6–18 worldwide.",
   },
   ar: {
     title: "وظائف ستم تك لاب | علّم البرمجة وSTEM للأطفال أونلاين",

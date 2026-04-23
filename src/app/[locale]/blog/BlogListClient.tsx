@@ -124,7 +124,7 @@ function BlogCard({ post, lang, index }: { post: APIBlogPost; lang: "en" | "ar";
  {/* Cover */}
  {post.coverImage ? (
  <div className="h-48 bg-gradient-to-br from-primary/10 to-purple/10 overflow-hidden relative">
- <Image src={post.coverImage} alt={post.title[lang]} fill className="object-cover" unoptimized />
+ <Image src={post.coverImage} alt={post.title[lang]} fill className="object-cover" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
  </div>
  ) : (
  <div className="h-48 bg-gradient-to-br from-primary/5 to-purple/5 flex items-center justify-center">

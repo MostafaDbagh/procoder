@@ -126,7 +126,6 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  width={88}
  height={88}
  className="absolute left-1/2 top-[4.25rem] z-10 h-[5.5rem] w-[5.5rem] -translate-x-1/2 rounded-full border-4 border-surface object-cover bg-surface shadow-md pointer-events-none"
- unoptimized
  />
  ) : null}
 

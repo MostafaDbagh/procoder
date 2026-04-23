@@ -22,7 +22,7 @@ export const metadata: Metadata = {
  template: "%s | StemTechLab",
  },
  description:
- "StemTechLab uses AI to match kids ages 6–18 with the perfect live STEM, coding, and Arabic classes. Certified instructors, small groups, GCC & worldwide. Free trial.",
+ "StemTechLab matches kids ages 6–18 with live STEM, coding & Arabic classes. Certified instructors, small groups, GCC & worldwide. Free trial.",
  keywords: [
  // EN — highest-volume, highest-intent terms only (Bing still reads this; Google ignores it)
  "kids coding classes",
