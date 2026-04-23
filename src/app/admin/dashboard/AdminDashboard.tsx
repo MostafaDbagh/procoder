@@ -43,7 +43,9 @@ type Tab =
  | "payments"
  | "promos"
  | "blog"
- | "careers";
+ | "careers"
+ | "pricing"
+ | "free_trial";
 
 type AdminCategoryRow = {
  _id: string;
@@ -305,6 +307,8 @@ const TABS: { id: Tab; label: string }[] = [
  { id: "team", label: "Team" },
  { id: "blog", label: "Blog" },
  { id: "careers", label: "Careers" },
+ { id: "pricing", label: "Pricing" },
+ { id: "free_trial", label: "Free Trial" },
 ];
 
 export default function AdminDashboard() {
@@ -644,7 +648,7 @@ export default function AdminDashboard() {
  if (tab === "users") await loadUsers();
  if (tab === "payments") await loadPayments();
  if (tab === "promos") await loadPromos();
- if (tab === "contacts") await loadContacts();
+ if (tab === "contacts" || tab === "free_trial") await loadContacts();
  if (tab === "challenges") await loadChallenges();
  if (tab === "team") await loadTeam();
  if (tab === "blog") await loadBlog();
@@ -2157,6 +2161,7 @@ export default function AdminDashboard() {
  <th className="p-2">Date</th>
  <th className="p-2">Name</th>
  <th className="p-2">Email</th>
+ <th className="p-2">Phone</th>
  <th className="p-2">Subject</th>
  <th className="p-2">Status</th>
  <th className="p-2 w-24">Actions</th>
@@ -2173,6 +2178,7 @@ export default function AdminDashboard() {
  </td>
  <td className="p-2">{String(r.name)}</td>
  <td className="p-2 text-xs">{String(r.email)}</td>
+ <td className="p-2 text-xs text-slate-400">{r.phone ? String(r.phone) : "—"}</td>
  <td className="p-2 max-w-xs truncate text-xs">
  {String(r.subject)}
  </td>
@@ -2545,6 +2551,74 @@ export default function AdminDashboard() {
  </table>
  </div>
  <PaginationBar meta={careersMeta} noun="positions" onPageChange={setCareersPage} />
+ </div>
+ )}
+
+ {tab === "free_trial" && (
+ <div className="space-y-4">
+ <p className="text-xs text-slate-500">Free trial requests submitted via the website form.</p>
+ <div className="overflow-x-auto rounded-xl border border-slate-800">
+ <table className="w-full min-w-[700px] text-left text-sm">
+ <thead className="border-b border-slate-800 text-slate-500">
+ <tr>
+ <th className="p-2">Date</th>
+ <th className="p-2">Name</th>
+ <th className="p-2">Email</th>
+ <th className="p-2">Phone</th>
+ <th className="p-2">Subject</th>
+ <th className="p-2">Status</th>
+ </tr>
+ </thead>
+ <tbody>
+ {contacts
+ .filter((r) => String(r.subject ?? "").toLowerCase().includes("free trial"))
+ .map((r) => (
+ <tr key={String(r._id)} className="border-t border-slate-800/80">
+ <td className="p-2 text-xs text-slate-400">{String(r.createdAt ?? "").slice(0, 10)}</td>
+ <td className="p-2">{String(r.name)}</td>
+ <td className="p-2 text-xs">{String(r.email)}</td>
+ <td className="p-2 text-xs text-slate-400">{r.phone ? String(r.phone) : "—"}</td>
+ <td className="p-2 text-xs max-w-xs truncate">{String(r.subject)}</td>
+ <td className="p-2">
+ <span className={`rounded px-2 py-0.5 text-xs font-medium ${String(r.status) === "new" ? "bg-blue-950 text-blue-300" : String(r.status) === "replied" ? "bg-green-950 text-green-300" : "bg-slate-800 text-slate-300"}`}>
+ {String(r.status ?? "new")}
+ </span>
+ </td>
+ </tr>
+ ))}
+ {contacts.filter((r) => String(r.subject ?? "").toLowerCase().includes("free trial")).length === 0 && (
+ <tr><td colSpan={6} className="p-4 text-center text-slate-500 text-xs">No free trial requests yet.</td></tr>
+ )}
+ </tbody>
+ </table>
+ </div>
+ </div>
+ )}
+
+ {tab === "pricing" && (
+ <div className="space-y-6">
+ <p className="text-xs text-slate-500">Current pricing tiers configured for the platform.</p>
+ <div className="grid gap-4 sm:grid-cols-3">
+ {[
+ { name: "Free Trial", price: "Free", desc: "1 full live class (60 min), no card needed.", color: "text-emerald-400", border: "border-emerald-900/40" },
+ { name: "Monthly", price: "From $49/mo", desc: "2 classes/week, recordings, progress tracking, parent dashboard.", color: "text-blue-400", border: "border-blue-900/40" },
+ { name: "Best Value", price: "From $37/mo", desc: "Annual plan — 25% off, priority scheduling, sibling discount.", color: "text-purple-400", border: "border-purple-900/40" },
+ ].map((tier) => (
+ <div key={tier.name} className={`rounded-xl border ${tier.border} bg-slate-900/50 p-5`}>
+ <p className={`text-sm font-semibold mb-1 ${tier.color}`}>{tier.name}</p>
+ <p className="text-lg font-bold text-white mb-2">{tier.price}</p>
+ <p className="text-xs text-slate-400 leading-relaxed">{tier.desc}</p>
+ </div>
+ ))}
+ </div>
+ <div className="rounded-xl border border-slate-800 bg-slate-900/30 p-5">
+ <p className="text-xs font-semibold text-slate-400 mb-3 uppercase tracking-wide">Family Discounts</p>
+ <div className="grid gap-3 sm:grid-cols-3 text-xs text-slate-300">
+ <div><span className="text-yellow-400 font-bold">15% off</span> — Sibling discount (2nd child)</div>
+ <div><span className="text-yellow-400 font-bold">10% off</span> — Quarterly plan (3 months upfront)</div>
+ <div><span className="text-yellow-400 font-bold">25% off</span> — Annual plan (full year)</div>
+ </div>
+ </div>
  </div>
  )}
  </main>
