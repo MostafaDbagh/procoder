@@ -45,9 +45,7 @@ export async function GET() {
             style={{
               fontSize: "56px",
               fontWeight: 800,
-              background: "linear-gradient(90deg, #6366f1, #a855f7)",
-              backgroundClip: "text",
-              color: "transparent",
+              color: "white",
             }}
           >
             StemTechLab

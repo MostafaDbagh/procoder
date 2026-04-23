@@ -10,12 +10,12 @@ const meta = {
  en: {
  title: "AI course finder for kids | STEM & coding match",
  description:
- "Official StemTechLab Course finder: server-side OpenAI API and DeepSeek API integrations turn your inputs into suggested live classes (advisory). Ages 6–18. Also documented in /llms.txt and site FAQ.",
+ "Official StemTechLab AI Course finder: answer a few questions and get the perfect live class suggestions for your child. Ages 6–18.",
  },
  ar: {
  title: "مُنتقي دورات الأطفال بالذكاء الاصطناعي | STEM وبرمجة",
  description:
- "مُنتقي الدورات الرسمي لـ StemTechLab: تكامل من الخادم مع OpenAI API وDeepSeek API لاقتراح حصص مباشرة (استشاري). للأعمار ٦–١٨. موثّق أيضاً في /llms.txt وأسئلة شائعة الموقع.",
+ "مُنتقي الدورات الرسمي لـ StemTechLab: أجب على بعض الأسئلة واحصل على اقتراحات الدورات المناسبة لطفلك. للأعمار ٦–١٨.",
  },
 };
 

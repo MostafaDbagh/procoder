@@ -16,12 +16,12 @@ const meta = {
  en: {
  title: "Live coding, robotics & Arabic for kids (6–18)",
  description:
- "STEM and coding for kids: live online classes, tutorial-style lessons, and AI-matched courses (OpenAI & DeepSeek). Scratch, Python, robotics, algorithms, Arabic. Small groups, ages 6–18. GCC & worldwide. Free trial.",
+ "STEM and coding for kids: live online classes, tutorial-style lessons, and AI-matched courses. Scratch, Python, robotics, algorithms, Arabic. Small groups, ages 6–18. GCC & worldwide. Free trial.",
  },
  ar: {
  title: "برمجة وروبوتات للأطفال ٦–١٨",
  description:
- "STEM وتعليم برمجة للأطفال: حصص مباشرة ودروس تعليمية واختيار دورات بالذكاء الاصطناعي (OpenAI وDeepSeek). سكراتش وبايثون وروبوتات وخوارزميات وعربية. مجموعات صغيرة للأعمار ٦–١٨. الخليج والعالم. تجربة مجانية.",
+ "STEM وتعليم برمجة للأطفال: حصص مباشرة ودروس تعليمية واختيار دورات بالذكاء الاصطناعي. سكراتش وبايثون وروبوتات وخوارزميات وعربية. مجموعات صغيرة للأعمار ٦–١٨. الخليج والعالم. تجربة مجانية.",
  },
 };
 
