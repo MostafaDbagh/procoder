@@ -112,9 +112,10 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  transition={{ delay: i * 0.08 }}
  className="snap-start shrink-0 w-[300px] sm:w-[330px] max-w-[330px] self-start"
  >
- <div
- className="bg-surface rounded-2xl border border-border overflow-hidden relative transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/20 hover:border-primary/50 cursor-pointer"
- style={{ height: isExpanded ? "auto" : 460 }}
+ <motion.div
+ animate={{ height: isExpanded ? "auto" : 460 }}
+ transition={{ duration: 0.35, ease: "easeInOut" }}
+ className="bg-surface rounded-2xl border border-border overflow-hidden relative hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/20 hover:border-primary/50 cursor-pointer"
  >
  <div
  className={`${member.headerColor} h-36 cursor-pointer`}
@@ -192,7 +193,7 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  </p>
  ) : null}
  </div>
- </div>
+ </motion.div>
  </motion.div>
  );
  })}
