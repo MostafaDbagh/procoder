@@ -101,6 +101,7 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  <>
  <div
  ref={scrollRef}
+ dir="ltr"
  className={`flex items-start gap-5 overflow-x-auto pb-6 snap-x snap-mandatory transition-opacity duration-300 ${fading ? "opacity-0" : "opacity-100"}`}
  style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
  >
@@ -114,6 +115,7 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  <motion.div
  key={member.key}
  data-card
+ dir="auto"
  initial={{ opacity: 0, y: 20 }}
  whileInView={{ opacity: 1, y: 0 }}
  viewport={{ once: true }}
