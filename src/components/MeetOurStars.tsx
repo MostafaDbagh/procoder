@@ -39,11 +39,13 @@ type StarRow = {
 function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  const t = useTranslations("about");
  const scrollRef = useRef<HTMLDivElement>(null);
+ const isProgrammatic = useRef(false);
  const [currentPage, setCurrentPage] = useState(0);
  const [expandedBio, setExpandedBio] = useState<string | null>(null);
  const totalPages = Math.max(1, Math.ceil(teamRows.length / 3));
 
  const updatePage = useCallback(() => {
+ if (isProgrammatic.current) return;
  const el = scrollRef.current;
  if (!el) return;
  const cardWidth = 380;
@@ -66,16 +68,22 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  const gap = 20;
  const target = page * (cardWidth + gap) * 3;
 
+ isProgrammatic.current = true;
+
  if (wrap) {
  setFading(true);
  setTimeout(() => {
  el.scrollTo({ left: target, behavior: "instant" as ScrollBehavior });
  setCurrentPage(page);
- setTimeout(() => setFading(false), 50);
+ setTimeout(() => {
+ setFading(false);
+ isProgrammatic.current = false;
+ }, 50);
  }, 300);
  } else {
  el.scrollTo({ left: target, behavior: "smooth" });
  setCurrentPage(page);
+ setTimeout(() => { isProgrammatic.current = false; }, 600);
  }
  }, []);
 
@@ -132,13 +140,17 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
 
  <div className={`px-6 pb-3 ${member.photoUrl ? "pt-12" : "pt-5"}`}>
  <h3 className="text-xl font-bold mb-1">{member.name}</h3>
+ {(member.rating > 0 || member.reviews > 0) && (
  <div className="flex items-center gap-1.5 mb-3">
  <Star className="w-5 h-5 fill-amber-400 text-amber-400" />
- <span className="font-bold text-sm">{member.rating}</span>
+ {member.rating > 0 && <span className="font-bold text-sm">{member.rating}</span>}
+ {member.reviews > 0 && (
  <span className="text-muted text-xs">
  ({t("starsRatingsCount", { count: member.reviews })})
  </span>
+ )}
  </div>
+ )}
  <div style={{ width: 240, maxWidth: "100%" }}>
  <div className="h-px bg-border" />
  </div>
