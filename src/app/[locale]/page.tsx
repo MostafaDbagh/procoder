@@ -10,7 +10,6 @@ import { MeetOurStars } from "@/components/MeetOurStars";
 import { FAQ } from "@/components/FAQ";
 import { getTeamPublicISR, getCategoriesPublicISR } from "@/lib/server-api";
 import { OrganizationSchema, WebsiteSchema } from "@/components/StructuredData";
-import { Newsletter } from "@/components/Newsletter";
 
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
@@ -84,7 +83,6 @@ export default async function HomePage({
  <HowItWorks />
  <MeetOurStars cmsTeam={cmsTeam} />
  <FAQ />
- <Newsletter />
  <CTABanner />
  </>
  );
