@@ -1,6 +1,8 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo } from "react";
+import { AnimatePresence } from "framer-motion";
+
 import { useTranslations, useLocale } from "next-intl";
 import { AnimatedSection } from "./AnimatedSection";
 import { motion } from "framer-motion";
@@ -36,67 +38,56 @@ type StarRow = {
  photoUrl?: string;
 };
 
+const slideVariants = {
+ enter: (dir: number) => ({ x: dir >= 0 ? "100%" : "-100%", opacity: 0 }),
+ center: { x: 0, opacity: 1 },
+ exit: (dir: number) => ({ x: dir >= 0 ? "-100%" : "100%", opacity: 0 }),
+};
+
 function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  const t = useTranslations("about");
- const scrollRef = useRef<HTMLDivElement>(null);
  const [currentPage, setCurrentPage] = useState(0);
+ const [direction, setDirection] = useState(0);
  const [expandedBio, setExpandedBio] = useState<string | null>(null);
  const totalPages = Math.max(1, Math.ceil(teamRows.length / 3));
 
- const updatePage = useCallback(() => {
- const el = scrollRef.current;
- if (!el) return;
- const cardWidth = 380;
- const page = Math.round(el.scrollLeft / (cardWidth * 3));
- setCurrentPage(Math.min(page, totalPages - 1));
- }, [totalPages]);
-
- useEffect(() => {
- const el = scrollRef.current;
- el?.addEventListener("scroll", updatePage);
- return () => el?.removeEventListener("scroll", updatePage);
- }, [updatePage]);
-
- const [fading, setFading] = useState(false);
-
- const goToPage = useCallback((page: number, wrap = false) => {
- const el = scrollRef.current;
- if (!el) return;
- const cardWidth = el.querySelector("[data-card]")?.clientWidth || 370;
- const gap = 20;
- const target = page * (cardWidth + gap) * 3;
-
- if (wrap) {
- setFading(true);
- setTimeout(() => {
- el.scrollTo({ left: target, behavior: "instant" as ScrollBehavior });
+ const goToPage = useCallback((page: number, dir: number) => {
+ setDirection(dir);
  setCurrentPage(page);
- setTimeout(() => setFading(false), 50);
- }, 300);
- } else {
- el.scrollTo({ left: target, behavior: "smooth" });
- setCurrentPage(page);
- }
+ setExpandedBio(null);
  }, []);
 
  const scroll = (dir: "left" | "right") => {
  if (dir === "left") {
- const isFirst = currentPage === 0;
- goToPage(isFirst ? totalPages - 1 : currentPage - 1, isFirst);
+ const prev = currentPage === 0 ? totalPages - 1 : currentPage - 1;
+ goToPage(prev, -1);
  } else {
- const isLast = currentPage + 1 >= totalPages;
- goToPage(isLast ? 0 : currentPage + 1, isLast);
+ const next = currentPage + 1 >= totalPages ? 0 : currentPage + 1;
+ goToPage(next, 1);
  }
  };
 
+ const pages = useMemo(
+ () => Array.from({ length: totalPages }, (_, i) => teamRows.slice(i * 3, i * 3 + 3)),
+ [teamRows, totalPages],
+ );
+ const currentCards = pages[currentPage] ?? [];
+
  return (
  <>
- <div
- ref={scrollRef}
- className={`flex items-start gap-5 overflow-x-auto pb-6 snap-x snap-mandatory transition-opacity duration-300 ${fading ? "opacity-0" : "opacity-100"}`}
- style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+ <div className="overflow-hidden pb-6">
+ <AnimatePresence initial={false} custom={direction} mode="wait">
+ <motion.div
+ key={currentPage}
+ custom={direction}
+ variants={slideVariants}
+ initial="enter"
+ animate="center"
+ exit="exit"
+ transition={{ duration: 0.35, ease: "easeInOut" }}
+ className="flex gap-5 items-start"
  >
- {teamRows.map((member, i) => {
+ {currentCards.map((member, i) => {
  const isExpanded = expandedBio === member.key;
  const bioSnippet =
  member.bio.length > 90
@@ -105,21 +96,13 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  return (
  <motion.div
  key={member.key}
- data-card
- initial={{ opacity: 0, y: 20 }}
- whileInView={{ opacity: 1, y: 0 }}
- viewport={{ once: true }}
- transition={{ delay: i * 0.08 }}
- className="snap-start shrink-0 w-[300px] sm:w-[330px] max-w-[330px] self-start"
+ initial={{ opacity: 0, y: 16 }}
+ animate={{ opacity: 1, y: 0 }}
+ transition={{ delay: i * 0.07 }}
+ className="shrink-0 w-[300px] sm:w-[330px] max-w-[330px] self-start"
  >
- <motion.div
- animate={{ height: isExpanded ? "auto" : 460 }}
- transition={{ duration: 0.35, ease: "easeInOut" }}
- className="bg-surface rounded-2xl border border-border overflow-hidden relative hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/20 hover:border-primary/50 cursor-pointer"
- >
- <div
- className={`${member.headerColor} h-36 cursor-pointer`}
- />
+ <div className="bg-surface rounded-2xl border border-border overflow-hidden relative hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/20 hover:border-primary/50 transition-transform duration-300 cursor-pointer">
+ <div className={`${member.headerColor} h-36`} />
  {member.photoUrl ? (
  <Image
  src={member.photoUrl}
@@ -155,7 +138,6 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  <span>{t("starsExperience", { years: member.experience })}</span>
  </div>
  ) : null}
-
  {member.skills.length > 0 ? (
  <div className="flex items-start gap-2 text-sm text-muted mb-3">
  <Code2 className="w-4 h-4 shrink-0 mt-0.5" />
@@ -164,7 +146,6 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  </span>
  </div>
  ) : null}
-
  {member.location || member.flag ? (
  <div className="flex items-center gap-2 text-sm mb-4">
  {member.flag ? <span className="text-lg">{member.flag}</span> : null}
@@ -175,16 +156,13 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  ) : null}
  </div>
  ) : null}
-
  {member.bio ? (
  <p className="text-sm text-muted leading-relaxed">
  {isExpanded ? member.bio : bioSnippet}
  {member.bio.length > 90 ? (
  <button
  type="button"
- onClick={() =>
- setExpandedBio(isExpanded ? null : member.key)
- }
+ onClick={() => setExpandedBio(isExpanded ? null : member.key)}
  className="font-semibold text-primary cursor-pointer inline ms-1"
  >
  {isExpanded ? t("starsShowLess") : t("starsReadMore")}
@@ -193,10 +171,12 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  </p>
  ) : null}
  </div>
- </motion.div>
+ </div>
  </motion.div>
  );
  })}
+ </motion.div>
+ </AnimatePresence>
  </div>
 
  <div className="flex items-center justify-center gap-6 mt-12" dir="ltr">
@@ -214,7 +194,7 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  <button
  key={i}
  type="button"
- onClick={() => goToPage(i)}
+ onClick={() => goToPage(i, i > currentPage ? 1 : -1)}
  className="w-7 h-7 flex items-center justify-center transition-all"
  >
  {currentPage === i ? (
@@ -398,14 +378,6 @@ export function MeetOurStars({ cmsTeam }: MeetOurStarsProps) {
  )}
  </div>
 
- <style jsx global>{`
- .scrollbar-hide::-webkit-scrollbar {
- display: none;
- }
- [data-card] {
- scroll-snap-align: start;
- }
- `}</style>
  </section>
  );
 }
