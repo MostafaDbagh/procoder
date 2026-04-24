@@ -40,16 +40,35 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  const t = useTranslations("about");
  const scrollRef = useRef<HTMLDivElement>(null);
  const isProgrammatic = useRef(false);
+ const isMobileRef = useRef(false);
+ const [isMobile, setIsMobile] = useState(false);
  const [currentPage, setCurrentPage] = useState(0);
  const [expandedBio, setExpandedBio] = useState<string | null>(null);
- const totalPages = Math.max(1, Math.ceil(teamRows.length / 3));
+
+ useEffect(() => {
+ const check = () => {
+ const mobile = window.innerWidth < 768;
+ isMobileRef.current = mobile;
+ setIsMobile(mobile);
+ };
+ check();
+ window.addEventListener("resize", check);
+ return () => window.removeEventListener("resize", check);
+ }, []);
+
+ useEffect(() => { setCurrentPage(0); }, [isMobile]);
+
+ const cardsPerPage = isMobile ? 1 : 3;
+ const totalPages = Math.max(1, Math.ceil(teamRows.length / cardsPerPage));
 
  const updatePage = useCallback(() => {
  if (isProgrammatic.current) return;
  const el = scrollRef.current;
  if (!el) return;
- const cardWidth = 380;
- const page = Math.round(el.scrollLeft / (cardWidth * 3));
+ const cardWidth = el.querySelector("[data-card]")?.clientWidth || 330;
+ const gap = 20;
+ const perPage = isMobileRef.current ? 1 : 3;
+ const page = Math.round(el.scrollLeft / ((cardWidth + gap) * perPage));
  setCurrentPage(Math.min(page, totalPages - 1));
  }, [totalPages]);
 
@@ -64,9 +83,10 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  const goToPage = useCallback((page: number, wrap = false) => {
  const el = scrollRef.current;
  if (!el) return;
- const cardWidth = el.querySelector("[data-card]")?.clientWidth || 370;
+ const cardWidth = el.querySelector("[data-card]")?.clientWidth || 330;
  const gap = 20;
- const target = page * (cardWidth + gap) * 3;
+ const perPage = isMobileRef.current ? 1 : 3;
+ const target = page * (cardWidth + gap) * perPage;
 
  isProgrammatic.current = true;
 
