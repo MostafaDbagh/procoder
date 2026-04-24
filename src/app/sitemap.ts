@@ -68,6 +68,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
  languages: {
  en: `${SITE_URL}/en${page.path}`,
  ar: `${SITE_URL}/ar${page.path}`,
+ "x-default": `${SITE_URL}/en${page.path}`,
  },
  },
  });

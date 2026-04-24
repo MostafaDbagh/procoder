@@ -95,14 +95,6 @@ export const metadata: Metadata = {
  "max-snippet": -1,
  },
  },
- alternates: {
- canonical: `${SITE_URL}/en`,
- languages: {
- en: `${SITE_URL}/en`,
- ar: `${SITE_URL}/ar`,
- "x-default": `${SITE_URL}/en`,
- },
- },
  icons: {
   icon: [
    { url: "/favicon.ico", sizes: "any" },

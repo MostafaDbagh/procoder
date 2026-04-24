@@ -20,6 +20,7 @@ export async function generateMetadata({
  languages: {
  en: `${SITE_URL}/en/instructor`,
  ar: `${SITE_URL}/ar/instructor`,
+ "x-default": `${SITE_URL}/en/instructor`,
  },
  },
  };

@@ -24,6 +24,7 @@ export async function generateMetadata({
  languages: {
  en: `${SITE_URL}/en/parent/login`,
  ar: `${SITE_URL}/ar/parent/login`,
+ "x-default": `${SITE_URL}/en/parent/login`,
  },
  },
  };

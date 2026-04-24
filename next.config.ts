@@ -16,6 +16,13 @@ const nextConfig: NextConfig = {
   /** Common typo: crawlers and humans expect singular "llm". */
   async redirects() {
     return [
+      // Canonicalize to www — prevents Google from treating non-www and www as separate URLs
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "stemtechlab.com" }],
+        destination: "https://www.stemtechlab.com/:path*",
+        permanent: true,
+      },
       { source: "/llm.txt", destination: "/llms.txt", permanent: true },
       { source: "/llm-full.txt", destination: "/llms-full.txt", permanent: true },
     ];
