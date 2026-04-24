@@ -105,10 +105,11 @@ export const metadata: Metadata = {
  },
  icons: {
   icon: [
+   { url: "/favicon.ico", sizes: "any" },
    { url: "/icon.png", type: "image/png", sizes: "180x180" },
    { url: "/icon.svg", type: "image/svg+xml" },
   ],
-  shortcut: "/icon.png",
+  shortcut: "/favicon.ico",
   apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
  },
  category: "education",
@@ -137,6 +138,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
  return (
  <html lang="en" className={`${geistSans.variable} h-full antialiased`} suppressHydrationWarning>
  <head>
+ <link rel="icon" href="/favicon.ico" sizes="any" />
+ <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+ <link rel="apple-touch-icon" href="/apple-icon.png" />
  {/* Performance: preconnect to stem-Be when NEXT_PUBLIC_API_ORIGIN is set (never hardcode deploy URLs) */}
  {API_PRECONNECT ? (
  <>
