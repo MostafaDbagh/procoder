@@ -1,8 +1,27 @@
 import type { MetadataRoute } from "next";
 import { courses as staticCourses } from "@/data/courses";
-import { getCoursesISR, getBlogPostsSSR } from "@/lib/server-api";
+import { getCoursesISR, serverApiRoot } from "@/lib/server-api";
 
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
+
+// Revalidate sitemap every 6 hours instead of on every request
+export const revalidate = 21600;
+
+async function getBlogSlugsForSitemap(): Promise<{ slug: string; publishedAt?: string }[]> {
+ try {
+  const res = await fetch(`${serverApiRoot()}/blog?limit=500`, {
+   next: { revalidate: 21600 },
+  });
+  if (!res.ok) return [];
+  const data = await res.json();
+  return (data?.items ?? []).map((p: { slug: string; publishedAt?: string }) => ({
+   slug: p.slug,
+   publishedAt: p.publishedAt,
+  }));
+ } catch {
+  return [];
+ }
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
  const apiCourses = await getCoursesISR();
@@ -94,10 +113,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
  }
 
  // Blog posts
- const blogData = await getBlogPostsSSR();
- if (blogData?.items) {
+ const blogPosts = await getBlogSlugsForSitemap();
+ if (blogPosts.length > 0) {
  for (const locale of locales) {
- for (const post of blogData.items) {
+ for (const post of blogPosts) {
  entries.push({
  url: `${SITE_URL}/${locale}/blog/${post.slug}`,
  lastModified: post.publishedAt ? new Date(post.publishedAt) : now,
@@ -107,6 +126,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
  languages: {
  en: `${SITE_URL}/en/blog/${post.slug}`,
  ar: `${SITE_URL}/ar/blog/${post.slug}`,
+ "x-default": `${SITE_URL}/en/blog/${post.slug}`,
  },
  },
  });
