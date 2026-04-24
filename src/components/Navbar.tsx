@@ -53,6 +53,7 @@ export function Navbar() {
  { href: "/", label: t("home") },
  { href: "/courses", label: t("courses") },
  { href: "/recommend", label: t("recommend") },
+ { href: "/parents", label: t("parents") },
  { href: "/blog", label: t("blog") },
  { href: "/contact", label: t("contact") },
  ], [t]);
