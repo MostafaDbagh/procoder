@@ -147,24 +147,30 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  className="snap-start shrink-0 w-[300px] sm:w-[330px] max-w-[330px] self-start"
  >
  <div
- className="bg-surface rounded-2xl border border-border overflow-hidden relative transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/20 hover:border-primary/50 cursor-pointer"
- style={{ minHeight: 422 }}
+ className="bg-surface rounded-2xl overflow-hidden relative transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/20 cursor-pointer"
+ style={{ minHeight: 422, borderBottom: "4px solid #c4b5fd", borderRight: "4px solid #c4b5fd", borderTop: "1px solid rgba(196,181,253,0.4)", borderLeft: "1px solid rgba(196,181,253,0.4)", boxShadow: "inset 4px 4px 16px rgba(196,181,253,0.15)" }}
  >
- <div
- className={`${member.headerColor} h-36 cursor-pointer`}
- />
+ <div className="flex justify-center pt-8 pb-4">
  {member.photoUrl ? (
+ <div className="relative">
+ <div className="absolute inset-0 rounded-full bg-primary/20 blur-xl scale-110" />
  <Image
  src={member.photoUrl}
  alt={member.name}
- width={88}
- height={88}
- className="absolute left-1/2 top-[4.25rem] z-10 h-[5.5rem] w-[5.5rem] -translate-x-1/2 rounded-full border-4 border-surface object-cover bg-surface shadow-md pointer-events-none"
+ width={110}
+ height={110}
+ className="relative z-10 h-28 w-28 rounded-full object-cover shadow-lg" style={{ border: "3px solid #c4b5fd" }}
  unoptimized
  />
- ) : null}
+ </div>
+ ) : (
+ <div className="h-28 w-28 rounded-full bg-primary/10 border-4 border-primary/20 flex items-center justify-center text-3xl font-bold text-primary">
+ {member.name.charAt(0).toUpperCase()}
+ </div>
+ )}
+ </div>
 
- <div className={`px-6 pb-3 ${member.photoUrl ? "pt-12" : "pt-5"}`}>
+ <div className="px-6 pb-3">
  <h3 className="text-xl font-bold mb-1">{member.name}</h3>
  {member.role && (
  <p className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-primary bg-primary/10 px-2.5 py-1 rounded-full mb-2">
