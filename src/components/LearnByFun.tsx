@@ -57,11 +57,11 @@ export function LearnByFun() {
  >
  <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
  {/* Background circle */}
- <circle cx="60" cy="60" r="50" fill="#5B7FD6" opacity="0.08" />
- <circle cx="60" cy="60" r="38" fill="#5B7FD6" opacity="0.06" />
+ <circle cx="60" cy="60" r="50" fill="#44259a" opacity="0.08" />
+ <circle cx="60" cy="60" r="38" fill="#44259a" opacity="0.06" />
 
  {/* Gamepad body */}
- <rect x="30" y="45" width="60" height="35" rx="12" fill="#5B7FD6" opacity="0.7" />
+ <rect x="30" y="45" width="60" height="35" rx="12" fill="#44259a" opacity="0.7" />
  <rect x="34" y="49" width="52" height="27" rx="9" fill="#4A6BBF" opacity="0.5" />
 
  {/* D-pad left */}
@@ -75,9 +75,9 @@ export function LearnByFun() {
  <circle cx="78" cy="62" r="3.5" fill="#8B7BC8" opacity="0.9" />
 
  {/* Left grip */}
- <path d="M30 60 Q22 62 20 72 Q19 78 24 80 L32 78 Q30 72 30 65Z" fill="#5B7FD6" opacity="0.6" />
+ <path d="M30 60 Q22 62 20 72 Q19 78 24 80 L32 78 Q30 72 30 65Z" fill="#44259a" opacity="0.6" />
  {/* Right grip */}
- <path d="M90 60 Q98 62 100 72 Q101 78 96 80 L88 78 Q90 72 90 65Z" fill="#5B7FD6" opacity="0.6" />
+ <path d="M90 60 Q98 62 100 72 Q101 78 96 80 L88 78 Q90 72 90 65Z" fill="#44259a" opacity="0.6" />
 
  {/* Stars bouncing around */}
  <motion.g

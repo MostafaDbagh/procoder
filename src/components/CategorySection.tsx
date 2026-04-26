@@ -195,8 +195,8 @@ export function CategorySection({ categories: apiCategories }: Props) {
  animate={{ y: [0, -4, 0] }}
  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
  >
- <circle cx="32" cy="46" r="12" fill="#5B7FD6" opacity="0.15" />
- <rect x="24" y="40" width="16" height="12" rx="3" fill="#5B7FD6" opacity="0.6" />
+ <circle cx="32" cy="46" r="12" fill="#44259a" opacity="0.15" />
+ <rect x="24" y="40" width="16" height="12" rx="3" fill="#44259a" opacity="0.6" />
  <text x="32" y="50" textAnchor="middle" fontSize="8" fontWeight="bold" fill="white" fontFamily="monospace" opacity="0.9">&lt;/&gt;</text>
  </motion.g>
  <motion.g
@@ -252,7 +252,7 @@ export function CategorySection({ categories: apiCategories }: Props) {
  animate={{ opacity: [0.2, 0.5, 0.2] }}
  transition={{ duration: 2, repeat: Infinity, delay: 0.3 }}
  />
- <motion.circle cx="105" cy="50" r="2" fill="#5B7FD6" opacity="0.4"
+ <motion.circle cx="105" cy="50" r="2" fill="#44259a" opacity="0.4"
  animate={{ opacity: [0.2, 0.5, 0.2] }}
  transition={{ duration: 2.2, repeat: Infinity, delay: 0.9 }}
  />
