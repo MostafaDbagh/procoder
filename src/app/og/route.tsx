@@ -2,7 +2,9 @@ import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
 
-export async function GET() {
+export async function GET(request: Request) {
+  const { origin } = new URL(request.url);
+
   return new ImageResponse(
     (
       <div
@@ -21,35 +23,17 @@ export async function GET() {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "16px",
             marginBottom: "32px",
           }}
         >
-          <div
-            style={{
-              width: "88px",
-              height: "88px",
-              borderRadius: "20px",
-              background: "linear-gradient(135deg, #7c6ff7, #5b52e8)",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "0px",
-            }}
-          >
-            <span style={{ fontSize: "32px", fontWeight: 800, color: "white", lineHeight: 1.1, letterSpacing: "-1px" }}>STL</span>
-            <div style={{ width: "56px", height: "4px", background: "white", borderRadius: "2px", marginTop: "4px" }} />
-          </div>
-          <span
-            style={{
-              fontSize: "56px",
-              fontWeight: 800,
-              color: "white",
-            }}
-          >
-            StemTechLab
-          </span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={`${origin}/logo.png`}
+            width={480}
+            height={283}
+            alt="STEM Tech Lab"
+            style={{ objectFit: "contain" }}
+          />
         </div>
         <p
           style={{

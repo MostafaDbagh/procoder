@@ -17,13 +17,8 @@ export function Footer() {
  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
  {/* Brand */}
  <div>
- <div className="flex items-center gap-2 mb-4">
- <div className="w-9 h-9 rounded-xl overflow-hidden flex items-center justify-center">
- <Image src="/logo.svg" alt="StemTechLab" width={36} height={36} />
- </div>
- <span className="text-xl font-bold bg-gradient-to-r from-primary to-purple bg-clip-text text-transparent">
- StemTechLab
- </span>
+ <div className="mb-4">
+ <Image src="/logo.png" alt="StemTechLab" width={100} height={59} className="object-contain" />
  </div>
  <p className="text-muted text-sm leading-relaxed mb-5">
  {t("description")}

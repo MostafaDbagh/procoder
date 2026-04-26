@@ -68,11 +68,8 @@ export function Navbar() {
  <nav className="max-w-[96rem] mx-auto px-4 sm:px-6 lg:px-8">
  <div className="flex items-center justify-between h-16">
  {/* Logo */}
- <LocalizedLink href="/" className="flex items-center gap-2 group">
- <Image src="/logo.svg" alt="StemTechLab" width={40} height={40} priority />
- <span className="text-xl font-bold bg-gradient-to-r from-primary to-purple bg-clip-text text-transparent">
- StemTechLab
- </span>
+ <LocalizedLink href="/" className="flex items-center group">
+ <Image src="/logo.png" alt="StemTechLab" width={92} height={54} priority className="object-contain" />
  </LocalizedLink>
 
  {/* Desktop nav */}
