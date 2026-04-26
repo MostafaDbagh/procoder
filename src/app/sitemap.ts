@@ -41,7 +41,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
  { path: "/parents", priority: 0.85, changeFrequency: "monthly" as const },
  { path: "/pricing", priority: 0.9, changeFrequency: "monthly" as const },
  { path: "/free-trial", priority: 0.9, changeFrequency: "monthly" as const },
- { path: "/blog", priority: 0.85, changeFrequency: "weekly" as const },
+ { path: "/blogs", priority: 0.85, changeFrequency: "weekly" as const },
  { path: "/about", priority: 0.7, changeFrequency: "monthly" as const },
  { path: "/contact", priority: 0.6, changeFrequency: "monthly" as const },
  { path: "/privacy", priority: 0.3, changeFrequency: "yearly" as const },
@@ -120,15 +120,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
  for (const locale of locales) {
  for (const post of blogPosts) {
  entries.push({
- url: siteUrl(locale, `/blog/${post.slug}`),
+ url: siteUrl(locale, `/blogs/${post.slug}`),
  lastModified: post.publishedAt ? new Date(post.publishedAt) : now,
  changeFrequency: "monthly",
  priority: 0.7,
  alternates: {
  languages: {
- en: siteUrl("en", `/blog/${post.slug}`),
- ar: siteUrl("ar", `/blog/${post.slug}`),
- "x-default": siteUrl("en", `/blog/${post.slug}`),
+ en: siteUrl("en", `/blogs/${post.slug}`),
+ ar: siteUrl("ar", `/blogs/${post.slug}`),
+ "x-default": siteUrl("en", `/blogs/${post.slug}`),
  },
  },
  });

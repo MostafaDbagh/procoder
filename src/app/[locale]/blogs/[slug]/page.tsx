@@ -21,11 +21,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
  return {
  title,
  description,
- alternates: buildAlternates(lang, `/blog/${slug}`),
+ alternates: buildAlternates(lang, `/blogs/${slug}`),
  openGraph: {
  title,
  description,
- url: siteUrl(lang, `/blog/${slug}`),
+ url: siteUrl(lang, `/blogs/${slug}`),
  type: "article",
  siteName: "StemTechLab",
  locale: lang === "ar" ? "ar_SA" : "en_US",
@@ -62,8 +62,8 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ loc
  <>
  <BreadcrumbSchema items={[
  { name: "Home", url: siteUrl(lang, "") },
- { name: "Blog", url: siteUrl(lang, "/blog") },
- { name: post.title[lang], url: siteUrl(lang, `/blog/${slug}`) },
+ { name: "Blogs", url: siteUrl(lang, "/blogs") },
+ { name: post.title[lang], url: siteUrl(lang, `/blogs/${slug}`) },
  ]} />
  <script
  type="application/ld+json"
@@ -77,7 +77,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ loc
  datePublished: post.publishedAt,
  dateModified: post.publishedAt,
  publisher: { "@type": "Organization", name: "StemTechLab", url: SITE_URL },
- mainEntityOfPage: siteUrl(lang, `/blog/${slug}`),
+ mainEntityOfPage: siteUrl(lang, `/blogs/${slug}`),
  ...(post.coverImage ? { image: post.coverImage } : {}),
  inLanguage: locale,
  keywords: post.tags.join(", "),

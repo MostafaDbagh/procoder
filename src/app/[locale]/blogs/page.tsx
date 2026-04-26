@@ -29,8 +29,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
  return {
  title: meta[lang].title,
  description: meta[lang].description,
- alternates: buildAlternates(lang, "/blog"),
- openGraph: { title: meta[lang].title, description: meta[lang].description, url: siteUrl(lang, "/blog"), type: "website", siteName: "StemTechLab", locale: lang === "ar" ? "ar_SA" : "en_US", alternateLocale: lang === "ar" ? "en_US" : "ar_SA", images: [{ url: `${SITE_URL}/og`, width: 1200, height: 630, alt: "StemTechLab" }] },
+ alternates: buildAlternates(lang, "/blogs"),
+ openGraph: { title: meta[lang].title, description: meta[lang].description, url: siteUrl(lang, "/blogs"), type: "website", siteName: "StemTechLab", locale: lang === "ar" ? "ar_SA" : "en_US", alternateLocale: lang === "ar" ? "en_US" : "ar_SA", images: [{ url: `${SITE_URL}/og`, width: 1200, height: 630, alt: "StemTechLab" }] },
  twitter: { card: "summary_large_image", title: meta[lang].title, description: meta[lang].description },
  };
 }

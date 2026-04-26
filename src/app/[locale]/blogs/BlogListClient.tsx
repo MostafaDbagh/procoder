@@ -119,7 +119,7 @@ function BlogCard({ post, lang, index }: { post: APIBlogPost; lang: "en" | "ar";
  viewport={{ once: true }}
  transition={{ delay: index * 0.06 }}
  >
- <Link href={`/blog/${post.slug}`} className="block group h-full">
+ <Link href={`/blogs/${post.slug}`} className="block group h-full">
  <div className="h-full bg-surface rounded-2xl border border-border overflow-hidden hover:shadow-xl hover:shadow-black/5 hover:-translate-y-1 transition-all duration-300">
  {/* Cover */}
  {post.coverImage ? (

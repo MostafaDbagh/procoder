@@ -76,7 +76,7 @@ export default function BlogDetailClient({ post, relatedCourses }: Props) {
  {/* Back */}
  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
  <Link
- href="/blog"
+ href="/blogs"
  className="inline-flex items-center gap-2 text-muted hover:text-primary font-medium mb-8 transition-colors text-sm"
  >
  <ArrowLeft className="w-4 h-4" />
