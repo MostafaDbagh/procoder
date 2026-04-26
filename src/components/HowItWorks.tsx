@@ -23,10 +23,10 @@ function GrowthIcon() {
  {/* Spiral arrow */}
  <path
  d="M18 85 Q10 70 22 60 Q34 50 26 38 Q20 28 30 22 L42 14"
- stroke="#44259a" strokeWidth="2.8" fill="none" strokeLinecap="round"
+ stroke="#c4b5fd" strokeWidth="2.8" fill="none" strokeLinecap="round"
  />
  {/* Arrow head */}
- <path d="M38 10 L44 14 L38 19" stroke="#44259a" strokeWidth="2.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+ <path d="M38 10 L44 14 L38 19" stroke="#c4b5fd" strokeWidth="2.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
 
  {/* Stars */}
  <polygon points="72,10 74,6 76,10 80,11 77,14 78,18 74,16 70,18 71,14 68,11" fill="#D4A46A" stroke="#2D3748" strokeWidth="1.2" />

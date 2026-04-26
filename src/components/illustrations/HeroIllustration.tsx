@@ -22,7 +22,7 @@ export function HeroIllustration() {
  >
  <defs>
  <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
- <stop offset="0%" stopColor="#44259a" stopOpacity="0.12" />
+ <stop offset="0%" stopColor="#c4b5fd" stopOpacity="0.12" />
  <stop offset="50%" stopColor="#8B7BC8" stopOpacity="0.08" />
  <stop offset="100%" stopColor="#5CC4A0" stopOpacity="0.12" />
  </linearGradient>
@@ -35,7 +35,7 @@ export function HeroIllustration() {
  <stop offset="100%" stopColor="#C48560" />
  </linearGradient>
  <linearGradient id="shirtBoy" x1="0%" y1="0%" x2="0%" y2="100%">
- <stop offset="0%" stopColor="#44259a" />
+ <stop offset="0%" stopColor="#c4b5fd" />
  <stop offset="100%" stopColor="#4A6BBF" />
  </linearGradient>
  <linearGradient id="shirtGirl" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -77,7 +77,7 @@ export function HeroIllustration() {
 
  {/* sidebar */}
  <rect x="165" y="225" width="40" height="130" rx="6" fill="#1A1E2E" />
- <rect x="172" y="238" width="24" height="3" rx="1.5" fill="#44259a" opacity="0.5" />
+ <rect x="172" y="238" width="24" height="3" rx="1.5" fill="#c4b5fd" opacity="0.5" />
  <rect x="172" y="248" width="18" height="3" rx="1.5" fill="#555E78" opacity="0.4" />
  <rect x="172" y="258" width="22" height="3" rx="1.5" fill="#555E78" opacity="0.4" />
  <rect x="172" y="268" width="16" height="3" rx="1.5" fill="#555E78" opacity="0.4" />
@@ -86,20 +86,20 @@ export function HeroIllustration() {
  {/* tab bar */}
  <rect x="205" y="225" width="190" height="18" fill="#1A1E2E" />
  <rect x="212" y="228" width="50" height="12" rx="3" fill="#252A3E" />
- <rect x="220" y="233" width="28" height="3" rx="1.5" fill="#44259a" opacity="0.6" />
+ <rect x="220" y="233" width="28" height="3" rx="1.5" fill="#c4b5fd" opacity="0.6" />
 
  {/* code lines — typing */}
  <motion.rect x="215" y="252" initial={{ width: 0 }} animate={{ width: 60 }} height="3.5" rx="1.5" fill="#8B7BC8" opacity="0.7" transition={{ delay: 0.8, duration: 0.5 }} />
  <motion.rect x="215" y="262" initial={{ width: 0 }} animate={{ width: 100 }} height="3.5" rx="1.5" fill="#5CC4A0" opacity="0.65" transition={{ delay: 1.0, duration: 0.5 }} />
- <motion.rect x="228" y="272" initial={{ width: 0 }} animate={{ width: 70 }} height="3.5" rx="1.5" fill="#44259a" opacity="0.55" transition={{ delay: 1.2, duration: 0.5 }} />
+ <motion.rect x="228" y="272" initial={{ width: 0 }} animate={{ width: 70 }} height="3.5" rx="1.5" fill="#c4b5fd" opacity="0.55" transition={{ delay: 1.2, duration: 0.5 }} />
  <motion.rect x="228" y="282" initial={{ width: 0 }} animate={{ width: 50 }} height="3.5" rx="1.5" fill="#D4A46A" opacity="0.6" transition={{ delay: 1.4, duration: 0.5 }} />
  <motion.rect x="215" y="292" initial={{ width: 0 }} animate={{ width: 85 }} height="3.5" rx="1.5" fill="#8B7BC8" opacity="0.5" transition={{ delay: 1.6, duration: 0.5 }} />
  <motion.rect x="228" y="302" initial={{ width: 0 }} animate={{ width: 55 }} height="3.5" rx="1.5" fill="#5CC4A0" opacity="0.5" transition={{ delay: 1.8, duration: 0.5 }} />
- <motion.rect x="215" y="312" initial={{ width: 0 }} animate={{ width: 95 }} height="3.5" rx="1.5" fill="#44259a" opacity="0.45" transition={{ delay: 2.0, duration: 0.5 }} />
+ <motion.rect x="215" y="312" initial={{ width: 0 }} animate={{ width: 95 }} height="3.5" rx="1.5" fill="#c4b5fd" opacity="0.45" transition={{ delay: 2.0, duration: 0.5 }} />
  <motion.rect x="215" y="322" initial={{ width: 0 }} animate={{ width: 40 }} height="3.5" rx="1.5" fill="#D4A46A" opacity="0.5" transition={{ delay: 2.2, duration: 0.5 }} />
 
  {/* blinking cursor */}
- <motion.rect x="255" y="322" width="2" height="10" rx="1" fill="#44259a"
+ <motion.rect x="255" y="322" width="2" height="10" rx="1" fill="#c4b5fd"
  animate={{ opacity: [1, 0, 1] }} transition={{ duration: 1, repeat: Infinity }}
  />
 
@@ -240,7 +240,7 @@ export function HeroIllustration() {
  {/* terminal lines */}
  <rect x="409" y="148" width="55" height="3.5" rx="1.5" fill="#5CC4A0" opacity="0.4" />
  <rect x="409" y="158" width="75" height="3.5" rx="1.5" fill="#888FA8" opacity="0.25" />
- <motion.rect x="409" y="168" width="45" height="3.5" rx="1.5" fill="#44259a" opacity="0.35"
+ <motion.rect x="409" y="168" width="45" height="3.5" rx="1.5" fill="#c4b5fd" opacity="0.35"
  animate={{ opacity: [0.2, 0.5, 0.2] }} transition={{ duration: 1.5, repeat: Infinity }}
  />
  </motion.g>
@@ -254,7 +254,7 @@ export function HeroIllustration() {
  <circle cx="55" cy="306" r="13" fill="#D4A46A" opacity="0.15" />
  <text x="55" y="311" textAnchor="middle" fontSize="14">🏆</text>
  <rect x="76" y="298" width="46" height="4" rx="2" fill="#888FA8" opacity="0.5" />
- <rect x="76" y="308" width="32" height="4" rx="2" fill="#44259a" opacity="0.5" />
+ <rect x="76" y="308" width="32" height="4" rx="2" fill="#c4b5fd" opacity="0.5" />
  <rect x="76" y="318" width="50" height="3" rx="1.5" fill="#555E78" opacity="0.35" />
  </motion.g>
  </motion.g>
@@ -264,9 +264,9 @@ export function HeroIllustration() {
  {/* Python */}
  <motion.g {...floatAnim(0, 3.5)}>
  <motion.g {...pulseAnim(0.2)}>
- <rect x="55" y="120" width="76" height="30" rx="15" fill="#44259a" opacity="0.15" />
- <rect x="55" y="120" width="76" height="30" rx="15" stroke="#44259a" strokeWidth="1" opacity="0.3" fill="none" />
- <text x="93" y="140" textAnchor="middle" fontSize="13" fontWeight="700" fontFamily="system-ui, sans-serif" fill="#44259a" opacity="0.85">
+ <rect x="55" y="120" width="76" height="30" rx="15" fill="#c4b5fd" opacity="0.15" />
+ <rect x="55" y="120" width="76" height="30" rx="15" stroke="#c4b5fd" strokeWidth="1" opacity="0.3" fill="none" />
+ <text x="93" y="140" textAnchor="middle" fontSize="13" fontWeight="700" fontFamily="system-ui, sans-serif" fill="#c4b5fd" opacity="0.85">
  Python
  </text>
  </motion.g>
@@ -355,12 +355,12 @@ export function HeroIllustration() {
  <polygon points="155,138 158,146 167,146 160,151 162,160 155,155 148,160 150,151 143,146 152,146" fill="#D4A46A" opacity="0.35" />
  </motion.g>
  <motion.g animate={{ opacity: [0.4, 1, 0.4], scale: [1, 1.2, 1] }} transition={{ duration: 2.8, repeat: Infinity, delay: 1 }} style={{ transformOrigin: "435px 58px" }}>
- <polygon points="435,49 437,55 443,55 438,59 440,65 435,61 430,65 432,59 427,55 433,55" fill="#44259a" opacity="0.35" />
+ <polygon points="435,49 437,55 443,55 438,59 440,65 435,61 430,65 432,59 427,55 433,55" fill="#c4b5fd" opacity="0.35" />
  </motion.g>
 
  {/* Floating dots */}
  <motion.circle cx="130" cy="395" r="4" fill="#8B7BC8" opacity="0.25" animate={{ opacity: [0.15, 0.4, 0.15] }} transition={{ duration: 2, repeat: Infinity, delay: 0.5 }} />
- <motion.circle cx="470" cy="390" r="3.5" fill="#44259a" opacity="0.25" animate={{ opacity: [0.2, 0.45, 0.2] }} transition={{ duration: 2.5, repeat: Infinity, delay: 1.2 }} />
+ <motion.circle cx="470" cy="390" r="3.5" fill="#c4b5fd" opacity="0.25" animate={{ opacity: [0.2, 0.45, 0.2] }} transition={{ duration: 2.5, repeat: Infinity, delay: 1.2 }} />
  <motion.circle cx="530" cy="340" r="3" fill="#D4A46A" opacity="0.2" animate={{ opacity: [0.15, 0.35, 0.15] }} transition={{ duration: 3, repeat: Infinity }} />
  <motion.circle cx="50" cy="160" r="3.5" fill="#5CC4A0" opacity="0.2" animate={{ opacity: [0.1, 0.35, 0.1] }} transition={{ duration: 2.2, repeat: Infinity, delay: 0.8 }} />
  </svg>

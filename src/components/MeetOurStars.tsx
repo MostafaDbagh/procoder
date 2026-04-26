@@ -25,6 +25,7 @@ export type MeetOurStarsProps = {
 type StarRow = {
  key: string;
  name: string;
+ role: string;
  headerColor: string;
  rating: number;
  reviews: number;
@@ -165,6 +166,11 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
 
  <div className={`px-6 pb-3 ${member.photoUrl ? "pt-12" : "pt-5"}`}>
  <h3 className="text-xl font-bold mb-1">{member.name}</h3>
+ {member.role && (
+ <p className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-primary bg-primary/10 px-2.5 py-1 rounded-full mb-2">
+ {member.role}
+ </p>
+ )}
  {(member.rating > 0 || member.reviews > 0) && (
  <div className="flex items-center gap-1.5 mb-3">
  <Star className="w-5 h-5 fill-amber-400 text-amber-400" />
@@ -333,6 +339,7 @@ export function MeetOurStars({ cmsTeam }: MeetOurStarsProps) {
  return {
  key: String(m._id),
  name: lang === "ar" ? m.name.ar : m.name.en,
+ role: lang === "ar" ? (m.role?.ar || m.role?.en || "") : (m.role?.en || m.role?.ar || ""),
  headerColor: resolveTeamStarHeaderColor(m.headerColor),
  rating,
  reviews,

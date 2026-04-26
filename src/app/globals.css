@@ -10,7 +10,7 @@
   --color-border: var(--border-color);
   --color-muted: var(--muted);
 
-  --color-primary: #44259a;
+  --color-primary: #c4b5fd;
   --color-primary-hover: #4F70C4;
   --color-purple: #8B7BC8;
   --color-purple-light: #B0A4D8;
@@ -86,5 +86,5 @@ html {
 
 /* Selection */
 ::selection {
-  background: #44259a30;
+  background: #c4b5fd30;
 }
