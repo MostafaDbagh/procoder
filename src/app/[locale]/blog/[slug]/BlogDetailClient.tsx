@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { APIBlogPost } from "@/lib/server-api";
@@ -27,6 +27,10 @@ interface Props {
 export default function BlogDetailClient({ post, relatedCourses }: Props) {
  const locale = useLocale();
  const lang = locale === "ar" ? "ar" : "en";
+
+ useEffect(() => {
+ fetch(`/api/blog/${post.slug}/view`, { method: "POST" }).catch(() => {});
+ }, [post.slug]);
 
  const publishDate = post.publishedAt
  ? new Date(post.publishedAt).toLocaleDateString(locale === "ar" ? "ar-SA" : "en-US", {

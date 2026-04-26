@@ -1,19 +1,17 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
-import { getBlogPostSSR, getCoursesISR } from "@/lib/server-api";
+import { getBlogPostISR, getCoursesISR } from "@/lib/server-api";
 import { BreadcrumbSchema } from "@/components/StructuredData";
 import BlogDetailClient from "./BlogDetailClient";
 import { buildAlternates, siteUrl } from "@/lib/seo";
-
-export const dynamic = "force-dynamic";
 
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
  const { locale, slug } = await params;
  const lang = locale === "ar" ? "ar" : "en";
- const post = await getBlogPostSSR(slug);
+ const post = await getBlogPostISR(slug);
 
  if (!post) return { title: "Post Not Found" };
 
@@ -51,9 +49,8 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ loc
  setRequestLocale(locale);
  const lang = locale === "ar" ? "ar" : "en";
 
- // Isolate courses fetch — don't let it cause a 5xx if it fails
  const [post, courses] = await Promise.all([
- getBlogPostSSR(slug),
+ getBlogPostISR(slug),
  getCoursesISR().catch(() => []),
  ]);
 

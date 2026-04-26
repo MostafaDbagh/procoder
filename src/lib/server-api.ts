@@ -244,9 +244,12 @@ export async function getBlogPostsSSR(params?: { category?: string; region?: str
  }
 }
 
-export async function getBlogPostSSR(slug: string): Promise<APIBlogPost | null> {
+export async function getBlogPostISR(slug: string): Promise<APIBlogPost | null> {
  try {
- const res = await fetch(`${serverApiRoot()}/blog/${slug}`, { cache: "no-store" });
+ const res = await fetch(`${serverApiRoot()}/blog/${slug}`, {
+   next: { revalidate: 300 },
+   signal: AbortSignal.timeout(8000),
+ });
  if (!res.ok) return null;
  return res.json();
  } catch {
