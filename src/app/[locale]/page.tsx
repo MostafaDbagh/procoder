@@ -10,6 +10,7 @@ import { MeetOurStars } from "@/components/MeetOurStars";
 import { FAQ } from "@/components/FAQ";
 import { getTeamPublicISR, getCategoriesPublicISR } from "@/lib/server-api";
 import { OrganizationSchema, WebsiteSchema } from "@/components/StructuredData";
+import { buildAlternates, siteUrl } from "@/lib/seo";
 
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
@@ -38,14 +39,11 @@ export async function generateMetadata({
  return {
  title: meta[lang].title,
  description: meta[lang].description,
- alternates: {
- canonical: `${SITE_URL}/${lang}`,
- languages: { en: `${SITE_URL}/en`, ar: `${SITE_URL}/ar`, "x-default": `${SITE_URL}/en` },
- },
+ alternates: buildAlternates(lang, ""),
  openGraph: {
  title: meta[lang].title,
  description: meta[lang].description,
- url: `${SITE_URL}/${lang}`,
+ url: siteUrl(lang, ""),
  type: "website",
  siteName: "StemTechLab",
  locale: lang === "ar" ? "ar_SA" : "en_US",

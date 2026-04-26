@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import PrivacyContent from "./PrivacyContent";
 import { BreadcrumbSchema } from "@/components/StructuredData";
+import { buildAlternates, siteUrl } from "@/lib/seo";
 
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
+
 
 const meta = {
  en: {
@@ -30,14 +32,11 @@ export async function generateMetadata({
  return {
  title: meta[lang].title,
  description: meta[lang].description,
- alternates: {
- canonical: `${SITE_URL}/${lang}/privacy`,
- languages: { en: `${SITE_URL}/en/privacy`, ar: `${SITE_URL}/ar/privacy`, "x-default": `${SITE_URL}/en/privacy` },
- },
+ alternates: buildAlternates(lang, "/privacy"),
  openGraph: {
  title: meta[lang].title,
  description: meta[lang].description,
- url: `${SITE_URL}/${lang}/privacy`,
+ url: siteUrl(lang, "/privacy"),
  type: "website",
  siteName: "StemTechLab",
  locale: lang === "ar" ? "ar_SA" : "en_US",

@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import CoursesContent from "./CoursesContent";
 import { BreadcrumbSchema } from "@/components/StructuredData";
+import { buildAlternates, siteUrl } from "@/lib/seo";
+
+const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 // Force SSR — admin price/status changes reflect immediately
 export const dynamic = "force-dynamic";
 
-const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 const meta = {
  en: {
@@ -33,14 +35,11 @@ export async function generateMetadata({
  return {
  title: meta[lang].title,
  description: meta[lang].description,
- alternates: {
- canonical: `${SITE_URL}/${lang}/courses`,
- languages: { en: `${SITE_URL}/en/courses`, ar: `${SITE_URL}/ar/courses`, "x-default": `${SITE_URL}/en/courses` },
- },
+ alternates: buildAlternates(lang, "/courses"),
  openGraph: {
  title: meta[lang].title,
  description: meta[lang].description,
- url: `${SITE_URL}/${lang}/courses`,
+ url: siteUrl(lang, "/courses"),
  type: "website",
  siteName: "StemTechLab",
  locale: lang === "ar" ? "ar_SA" : "en_US",

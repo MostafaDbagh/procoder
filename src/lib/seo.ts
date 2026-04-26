@@ -6,3 +6,31 @@ export const PRIVATE_APP_ROBOTS: NonNullable<Metadata["robots"]> = {
   follow: false,
   googleBot: { index: false, follow: false },
 };
+
+const SITE = process.env.SITE_URL || "https://www.stemtechlab.com";
+
+/**
+ * Returns the canonical URL for a given locale and path.
+ * English (default locale) has no prefix: /about
+ * Arabic has /ar prefix: /ar/about
+ */
+export function siteUrl(lang: string, path: string = ""): string {
+  const prefix = lang === "en" ? "" : `/${lang}`;
+  const p = path && !path.startsWith("/") ? `/${path}` : path;
+  return `${SITE}${prefix}${p}`;
+}
+
+/**
+ * Builds the alternates block (canonical + hreflang) for a page.
+ * path should start with "/" e.g. "/about" or "" for home.
+ */
+export function buildAlternates(lang: string, path: string = "") {
+  return {
+    canonical: siteUrl(lang, path),
+    languages: {
+      en: siteUrl("en", path),
+      ar: siteUrl("ar", path),
+      "x-default": siteUrl("en", path),
+    },
+  };
+}

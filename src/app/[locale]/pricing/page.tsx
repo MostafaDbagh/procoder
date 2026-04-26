@@ -4,8 +4,10 @@ import { Suspense } from "react";
 import PricingContent from "./PricingContent";
 import { BreadcrumbSchema } from "@/components/StructuredData";
 import { getPricingISR } from "@/lib/server-api";
+import { buildAlternates, siteUrl } from "@/lib/seo";
 
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
+
 
 const meta = {
   en: {
@@ -31,18 +33,11 @@ export async function generateMetadata({
   return {
     title: meta[lang].title,
     description: meta[lang].description,
-    alternates: {
-      canonical: `${SITE_URL}/${lang}/pricing`,
-      languages: {
-        en: `${SITE_URL}/en/pricing`,
-        ar: `${SITE_URL}/ar/pricing`,
-        "x-default": `${SITE_URL}/en/pricing`,
-      },
-    },
+    alternates: buildAlternates(lang, "/pricing"),
     openGraph: {
       title: meta[lang].title,
       description: meta[lang].description,
-      url: `${SITE_URL}/${lang}/pricing`,
+      url: siteUrl(lang, "/pricing"),
       type: "website",
       siteName: "StemTechLab",
       locale: lang === "ar" ? "ar_SA" : "en_US",

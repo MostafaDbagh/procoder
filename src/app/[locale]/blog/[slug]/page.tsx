@@ -4,6 +4,7 @@ import { setRequestLocale } from "next-intl/server";
 import { getBlogPostSSR, getCoursesISR } from "@/lib/server-api";
 import { BreadcrumbSchema } from "@/components/StructuredData";
 import BlogDetailClient from "./BlogDetailClient";
+import { buildAlternates, siteUrl } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -12,7 +13,6 @@ const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
  const { locale, slug } = await params;
  const lang = locale === "ar" ? "ar" : "en";
- const alt = lang === "en" ? "ar" : "en";
  const post = await getBlogPostSSR(slug);
 
  if (!post) return { title: "Post Not Found" };
@@ -23,11 +23,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
  return {
  title,
  description,
- alternates: { canonical: `${SITE_URL}/${lang}/blog/${slug}`, languages: { en: `${SITE_URL}/en/blog/${slug}`, ar: `${SITE_URL}/ar/blog/${slug}`, "x-default": `${SITE_URL}/en/blog/${slug}` } },
+ alternates: buildAlternates(lang, `/blog/${slug}`),
  openGraph: {
  title,
  description,
- url: `${SITE_URL}/${lang}/blog/${slug}`,
+ url: siteUrl(lang, `/blog/${slug}`),
  type: "article",
  siteName: "StemTechLab",
  locale: lang === "ar" ? "ar_SA" : "en_US",
@@ -49,23 +49,24 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function BlogDetailPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
  const { locale, slug } = await params;
  setRequestLocale(locale);
+ const lang = locale === "ar" ? "ar" : "en";
 
+ // Isolate courses fetch — don't let it cause a 5xx if it fails
  const [post, courses] = await Promise.all([
  getBlogPostSSR(slug),
- getCoursesISR(),
+ getCoursesISR().catch(() => []),
  ]);
 
  if (!post) notFound();
 
- // Find related courses
  const relatedCourses = (courses || []).filter((c) => post.relatedCourses.includes(c.slug));
 
  return (
  <>
  <BreadcrumbSchema items={[
- { name: "Home", url: `${SITE_URL}/${locale}` },
- { name: "Blog", url: `${SITE_URL}/${locale}/blog` },
- { name: post.title[locale === "ar" ? "ar" : "en"], url: `${SITE_URL}/${locale}/blog/${slug}` },
+ { name: "Home", url: siteUrl(lang, "") },
+ { name: "Blog", url: siteUrl(lang, "/blog") },
+ { name: post.title[lang], url: siteUrl(lang, `/blog/${slug}`) },
  ]} />
  <script
  type="application/ld+json"
@@ -73,13 +74,13 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ loc
  __html: JSON.stringify({
  "@context": "https://schema.org",
  "@type": "BlogPosting",
- headline: post.title[locale === "ar" ? "ar" : "en"],
- description: post.excerpt[locale === "ar" ? "ar" : "en"],
+ headline: post.title[lang],
+ description: post.excerpt[lang],
  author: { "@type": "Person", name: post.author.name },
  datePublished: post.publishedAt,
  dateModified: post.publishedAt,
  publisher: { "@type": "Organization", name: "StemTechLab", url: SITE_URL },
- mainEntityOfPage: `${SITE_URL}/${locale}/blog/${slug}`,
+ mainEntityOfPage: siteUrl(lang, `/blog/${slug}`),
  ...(post.coverImage ? { image: post.coverImage } : {}),
  inLanguage: locale,
  keywords: post.tags.join(", "),

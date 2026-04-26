@@ -3,8 +3,10 @@ import { Suspense } from "react";
 import { setRequestLocale } from "next-intl/server";
 import ContactContent from "./ContactContent";
 import { BreadcrumbSchema } from "@/components/StructuredData";
+import { buildAlternates, siteUrl } from "@/lib/seo";
 
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
+
 
 const meta = {
  en: {
@@ -31,14 +33,11 @@ export async function generateMetadata({
  return {
  title: meta[lang].title,
  description: meta[lang].description,
- alternates: {
- canonical: `${SITE_URL}/${lang}/contact`,
- languages: { en: `${SITE_URL}/en/contact`, ar: `${SITE_URL}/ar/contact`, "x-default": `${SITE_URL}/en/contact` },
- },
+ alternates: buildAlternates(lang, "/contact"),
  openGraph: {
  title: meta[lang].title,
  description: meta[lang].description,
- url: `${SITE_URL}/${lang}/contact`,
+ url: siteUrl(lang, "/contact"),
  type: "website",
  siteName: "StemTechLab",
  locale: lang === "ar" ? "ar_SA" : "en_US",

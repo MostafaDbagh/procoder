@@ -6,6 +6,7 @@ import { courses as staticCourses } from "@/data/courses";
 import CourseDetailContent from "./CourseDetailContent";
 import { BreadcrumbSchema } from "@/components/StructuredData";
 import { getCourseISR, getCourseSlugsISR } from "@/lib/server-api";
+import { buildAlternates, siteUrl } from "@/lib/seo";
 
 // Force SSR — admin price/status changes reflect immediately
 export const dynamic = "force-dynamic";
@@ -58,14 +59,11 @@ export async function generateMetadata({
  return {
  title,
  description: seoDescription,
- alternates: {
- canonical: `${SITE_URL}/${lang}/courses/${id}`,
- languages: { en: `${SITE_URL}/en/courses/${id}`, ar: `${SITE_URL}/ar/courses/${id}`, "x-default": `${SITE_URL}/en/courses/${id}` },
- },
+ alternates: buildAlternates(lang, `/courses/${id}`),
  openGraph: {
  title: `${title} | StemTechLab`,
  description: seoDescription,
- url: `${SITE_URL}/${lang}/courses/${id}`,
+ url: siteUrl(lang, `/courses/${id}`),
  type: "website",
  siteName: "StemTechLab",
  locale: lang === "ar" ? "ar_SA" : "en_US",

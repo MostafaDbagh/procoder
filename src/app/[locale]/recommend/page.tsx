@@ -3,8 +3,10 @@ import { setRequestLocale } from "next-intl/server";
 import RecommendContent from "./RecommendContent";
 import { getCoursesISR } from "@/lib/server-api";
 import { BreadcrumbSchema } from "@/components/StructuredData";
+import { buildAlternates, siteUrl } from "@/lib/seo";
 
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
+
 
 const meta = {
  en: {
@@ -31,14 +33,11 @@ export async function generateMetadata({
  return {
  title: meta[lang].title,
  description: meta[lang].description,
- alternates: {
- canonical: `${SITE_URL}/${lang}/recommend`,
- languages: { en: `${SITE_URL}/en/recommend`, ar: `${SITE_URL}/ar/recommend`, "x-default": `${SITE_URL}/en/recommend` },
- },
+ alternates: buildAlternates(lang, "/recommend"),
  openGraph: {
  title: meta[lang].title,
  description: meta[lang].description,
- url: `${SITE_URL}/${lang}/recommend`,
+ url: siteUrl(lang, "/recommend"),
  type: "website",
  siteName: "StemTechLab",
  locale: lang === "ar" ? "ar_SA" : "en_US",

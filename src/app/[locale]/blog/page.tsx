@@ -3,10 +3,12 @@ import { setRequestLocale } from "next-intl/server";
 import { getBlogPostsSSR } from "@/lib/server-api";
 import { BreadcrumbSchema } from "@/components/StructuredData";
 import BlogListClient from "./BlogListClient";
+import { buildAlternates, siteUrl } from "@/lib/seo";
+
+const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 export const dynamic = "force-dynamic";
 
-const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 const meta = {
  en: {
@@ -27,8 +29,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
  return {
  title: meta[lang].title,
  description: meta[lang].description,
- alternates: { canonical: `${SITE_URL}/${lang}/blog`, languages: { en: `${SITE_URL}/en/blog`, ar: `${SITE_URL}/ar/blog`, "x-default": `${SITE_URL}/en/blog` } },
- openGraph: { title: meta[lang].title, description: meta[lang].description, url: `${SITE_URL}/${lang}/blog`, type: "website", siteName: "StemTechLab", locale: lang === "ar" ? "ar_SA" : "en_US", alternateLocale: lang === "ar" ? "en_US" : "ar_SA", images: [{ url: `${SITE_URL}/og`, width: 1200, height: 630, alt: "StemTechLab" }] },
+ alternates: buildAlternates(lang, "/blog"),
+ openGraph: { title: meta[lang].title, description: meta[lang].description, url: siteUrl(lang, "/blog"), type: "website", siteName: "StemTechLab", locale: lang === "ar" ? "ar_SA" : "en_US", alternateLocale: lang === "ar" ? "en_US" : "ar_SA", images: [{ url: `${SITE_URL}/og`, width: 1200, height: 630, alt: "StemTechLab" }] },
  twitter: { card: "summary_large_image", title: meta[lang].title, description: meta[lang].description },
  };
 }

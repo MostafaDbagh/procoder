@@ -3,8 +3,10 @@ import { setRequestLocale } from "next-intl/server";
 import ChallengeContent from "./ChallengeContent";
 import { getChallengePublicLatestISR } from "@/lib/server-api";
 import { BreadcrumbSchema } from "@/components/StructuredData";
+import { buildAlternates, siteUrl } from "@/lib/seo";
 
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
+
 
 const meta = {
  en: {
@@ -41,14 +43,11 @@ export async function generateMetadata({
  return {
  title,
  description,
- alternates: {
- canonical: `${SITE_URL}/${lang}/challenge`,
- languages: { en: `${SITE_URL}/en/challenge`, ar: `${SITE_URL}/ar/challenge`, "x-default": `${SITE_URL}/en/challenge` },
- },
+ alternates: buildAlternates(lang, "/challenge"),
  openGraph: {
  title,
  description,
- url: `${SITE_URL}/${lang}/challenge`,
+ url: siteUrl(lang, "/challenge"),
  type: "website",
  siteName: "StemTechLab",
  locale: lang === "ar" ? "ar_SA" : "en_US",
