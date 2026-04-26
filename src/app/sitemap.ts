@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { courses as staticCourses } from "@/data/courses";
 import { getCoursesISR, serverApiRoot } from "@/lib/server-api";
+import { siteUrl } from "@/lib/seo";
 
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
@@ -79,15 +80,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
  for (const locale of locales) {
  for (const page of staticPages) {
  entries.push({
- url: `${SITE_URL}/${locale}${page.path}`,
+ url: siteUrl(locale, page.path),
  lastModified: now,
  changeFrequency: page.changeFrequency,
  priority: page.priority,
  alternates: {
  languages: {
- en: `${SITE_URL}/en${page.path}`,
- ar: `${SITE_URL}/ar${page.path}`,
- "x-default": `${SITE_URL}/en${page.path}`,
+ en: siteUrl("en", page.path),
+ ar: siteUrl("ar", page.path),
+ "x-default": siteUrl("en", page.path),
  },
  },
  });
@@ -98,14 +99,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
  for (const locale of locales) {
  for (const slug of slugSet) {
  entries.push({
- url: `${SITE_URL}/${locale}/courses/${slug}`,
+ url: siteUrl(locale, `/courses/${slug}`),
  lastModified: now,
  changeFrequency: "monthly",
  priority: 0.8,
  alternates: {
  languages: {
- en: `${SITE_URL}/en/courses/${slug}`,
- ar: `${SITE_URL}/ar/courses/${slug}`,
+ en: siteUrl("en", `/courses/${slug}`),
+ ar: siteUrl("ar", `/courses/${slug}`),
+ "x-default": siteUrl("en", `/courses/${slug}`),
  },
  },
  });
@@ -118,15 +120,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
  for (const locale of locales) {
  for (const post of blogPosts) {
  entries.push({
- url: `${SITE_URL}/${locale}/blog/${post.slug}`,
+ url: siteUrl(locale, `/blog/${post.slug}`),
  lastModified: post.publishedAt ? new Date(post.publishedAt) : now,
  changeFrequency: "monthly",
  priority: 0.7,
  alternates: {
  languages: {
- en: `${SITE_URL}/en/blog/${post.slug}`,
- ar: `${SITE_URL}/ar/blog/${post.slug}`,
- "x-default": `${SITE_URL}/en/blog/${post.slug}`,
+ en: siteUrl("en", `/blog/${post.slug}`),
+ ar: siteUrl("ar", `/blog/${post.slug}`),
+ "x-default": siteUrl("en", `/blog/${post.slug}`),
  },
  },
  });
