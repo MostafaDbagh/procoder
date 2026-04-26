@@ -48,15 +48,18 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  useEffect(() => {
  const check = () => {
  const mobile = window.innerWidth < 768;
+ if (mobile !== isMobileRef.current) {
  isMobileRef.current = mobile;
  setIsMobile(mobile);
+ setCurrentPage(0);
+ }
  };
- check();
+ isMobileRef.current = window.innerWidth < 768;
+ if (isMobileRef.current) setIsMobile(true);
  window.addEventListener("resize", check);
  return () => window.removeEventListener("resize", check);
+ // eslint-disable-next-line react-hooks/exhaustive-deps
  }, []);
-
- useEffect(() => { setCurrentPage(0); }, [isMobile]);
 
  const cardsPerPage = isMobile ? 1 : 3;
  const totalPages = Math.max(1, Math.ceil(teamRows.length / cardsPerPage));
