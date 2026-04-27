@@ -25,12 +25,23 @@ export function siteUrl(lang: string, path: string = ""): string {
  * path should start with "/" e.g. "/about" or "" for home.
  */
 export function buildAlternates(lang: string, path: string = "") {
+  const arUrl = siteUrl("ar", path);
+  const enUrl = siteUrl("en", path);
   return {
     canonical: siteUrl(lang, path),
     languages: {
-      en: siteUrl("en", path),
-      ar: siteUrl("ar", path),
-      "x-default": siteUrl("en", path),
+      en: enUrl,
+      "en-US": enUrl,
+      "en-GB": enUrl,
+      ar: arUrl,
+      "ar-SA": arUrl,
+      "ar-AE": arUrl,
+      "ar-QA": arUrl,
+      "ar-OM": arUrl,
+      "ar-KW": arUrl,
+      "ar-BH": arUrl,
+      "ar-EG": arUrl,
+      "x-default": enUrl,
     },
   };
 }

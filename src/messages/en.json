@@ -261,7 +261,7 @@
     "arabic2": "Arabic"
   },
   "footer": {
-    "description": "A warm learning home empowering children and teens ages 6–18 through coding, robotics, and Arabic with hands-on education that builds creativity, confidence, and real-world skills.",
+    "description": "The first AI agent that analyses your child's learning behaviour and recommends the right STEM path to build their future. Live coding, robotics & Arabic for ages 6–18.",
     "quickLinks": "Quick Links",
     "categories": "Categories",
     "contact": "Reach Out",
@@ -821,5 +821,30 @@
     "privacy": "No spam, ever. Unsubscribe anytime.",
     "footerTitle": "Learning Tips Weekly",
     "footerSubtitle": "Free resources for parents every week."
+  },
+  "seo": {
+    "defaultTitle": "StemTechLab — AI-Powered Coding, STEM & Arabic Learning for Kids Online",
+    "defaultDescription": "We use AI to help kids and parents find the right learning path and unlock creative thinking. Bilingual live courses in coding, robotics, AI, and Arabic for children ages 6–18 across Saudi Arabia, UAE, and the Gulf.",
+    "keywords": "coding for kids, online STEM courses for kids, kids coding classes, AI course finder for kids, Arabic learning online, kids programming online, robotics for kids, Scratch programming, Python for kids, game development for kids, web development for kids, algorithms for kids, artificial intelligence for kids, bilingual education online, kids online tutoring, STEM education Saudi Arabia, STEM education UAE, kids coding Gulf, live online classes kids, certified coding teacher, creative coding kids, computational thinking kids, future skills for kids, kids tech academy, stemtechlab, e-learning for kids, online Arabic course kids, AI-powered course recommendation, kids STEM platform, math and coding for kids, AI learning assistant for kids, AI helps kids learn, AI for creative thinking kids, AI course matching, personalized learning AI, AI education platform kids, parents AI learning guide, AI goal setting kids, creative thinking with AI, AI tutoring kids online",
+    "homeTitle": "StemTechLab — AI-Powered Learning Where Every Child Thrives",
+    "homeDescription": "We use AI to guide kids and parents toward the right courses and creative goals. Live coding, robotics, AI, and Arabic classes for ages 6–18 — small groups, certified teachers, real results.",
+    "coursesTitle": "Coding, AI & Arabic Courses for Kids | StemTechLab",
+    "coursesDescription": "Explore live online coding, robotics, AI, and Arabic language courses for children ages 6–18. Our AI helps match every child to the right course for their age, level, and creative goals.",
+    "recommendTitle": "AI Course Finder for Kids — Find the Perfect Match | StemTechLab",
+    "recommendDescription": "Our AI-powered course finder helps parents and kids discover the best STEM, coding, or Arabic course. Tell us your child's age, interests, and goals — our AI does the rest.",
+    "parentsTitle": "For Parents | AI-Guided Progress Tracking | StemTechLab",
+    "parentsDescription": "We use AI to help parents understand their child's learning journey, set creative goals, and track real progress — all in one dashboard with weekly reports and teacher feedback.",
+    "pricingTitle": "Kids Coding & STEM Course Pricing | StemTechLab",
+    "pricingDescription": "Flexible plans for kids coding, AI, robotics, and Arabic courses. Our AI recommends the best plan for your child's goals. Start with a free trial — no credit card required.",
+    "aboutTitle": "About Us | AI-Powered Kids Learning Platform | StemTechLab",
+    "aboutDescription": "StemTechLab uses AI to help every child and parent achieve their learning goals through creative thinking. Bilingual STEM, coding, robotics, and Arabic courses for Gulf kids ages 6–18.",
+    "blogTitle": "Blog | AI, STEM & Kids Learning Tips | StemTechLab",
+    "blogDescription": "Articles and tips on AI in education, creative thinking, kids coding, Arabic learning, and STEM skills — for parents and teachers who want the best for their children.",
+    "challengeTitle": "Monthly AI & Coding Challenge | StemTechLab",
+    "challengeDescription": "Monthly AI, coding, and robotics challenges that push kids to think creatively and achieve new goals. Compete, learn, and grow with StemTechLab.",
+    "freeTrialTitle": "Book a Free AI-Matched Trial Class | StemTechLab",
+    "freeTrialDescription": "Our AI matches your child to the perfect trial class based on their age and interests. Try a full 60-minute live session free — no card, no commitment.",
+    "aiFeatureTitle": "How We Use AI at StemTechLab",
+    "aiFeatureDescription": "At StemTechLab, AI is at the heart of everything we do. We use AI to recommend the right courses, personalise each child's learning path, help parents set meaningful goals, and nurture creative thinking — so every child can achieve their full potential."
   }
 }

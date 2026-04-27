@@ -10,14 +10,14 @@ const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 const meta = {
  en: {
- title: "About StemTechLab | Kids’ STEM & coding education",
+ title: "About StemTechLab | First AI agent for kids’ learning & future",
  description:
- "StemTechLab offers live STEM, coding, and Arabic classes for ages 6–18. Certified instructors, small groups, AI-powered course matching. GCC & worldwide.",
+ "StemTechLab built the first AI agent that analyses children’s learning behaviour and actions to recommend the right path and build their future. Live STEM, coding & Arabic for ages 6–18. GCC & worldwide.",
  },
  ar: {
- title: "عن ستم تك لاب | تعليم STEM وبرمجة للأطفال",
+ title: "عن ستم تك لاب | أول وكيل ذكاء اصطناعي لتحليل تعلّم الأطفال",
  description:
- "ستم تك لاب: STEM وبرمجة وعربية مباشرة للأعمار ٦–١٨. مدرّسون معتمدون، مجموعات صغيرة، اختيار ذكي للدورات. الخليج والعالم.",
+ "ستم تك لاب: أول وكيل ذكاء اصطناعي يحلّل سلوكيات الطفل وأفعاله التعليمية ليوصي بالمسار الصحيح ويبني مستقبله. برمجة وSTEM وعربية مباشرة للأعمار ٦–١٨. الخليج والعالم.",
  },
 };
 

@@ -9,14 +9,14 @@ const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 const meta = {
  en: {
- title: "For parents | Kids’ STEM & coding progress",
+ title: "For Parents | AI analyses your child’s behaviour & builds their future",
  description:
- "See how StemTechLab supports families: progress, attendance, and instructor notes for your child’s live coding and STEM classes—all in one parent-friendly hub.",
+ "StemTechLab’s AI agent analyses your child’s learning actions and behaviours to recommend the right STEM path and shape their future. Track progress, attendance & instructor notes — all in one hub.",
  },
  ar: {
- title: "لأولياء الأمور | تقدم طفلك في البرمجة وSTEM",
+ title: "لأولياء الأمور | ذكاء اصطناعي يحلّل سلوك طفلك ويبني مستقبله",
  description:
- "اطّلع على كيف تدعم ستم تك لاب العائلات: التقدم والحضور وملاحظات المدرّس لحصص البرمجة وSTEM المباشرة—في مكان واحد لولي الأمر.",
+ "وكيل ذكاء ستم تك لاب الاصطناعي يحلّل سلوكيات طفلك وأفعاله التعليمية ليوصي بمسار STEM المناسب ويبني مستقبله. تابع التقدم والحضور وملاحظات المدرّس في مكان واحد.",
  },
 };
 
