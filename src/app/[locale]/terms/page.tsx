@@ -11,12 +11,12 @@ const meta = {
  en: {
  title: "Terms of Service",
  description:
- "Terms for using StemTechLab’s kids’ learning platform and live classes.",
+ "StemTechLab terms of service: enrollment rules, cancellation and refund policy, acceptable use for students ages 6–18, instructor conduct standards, session recording policy, and platform usage conditions for parents and guardians.",
  },
  ar: {
  title: "شروط الخدمة",
  description:
- "شروط استخدام منصة ستم تك لاب والحصص المباشرة للأطفال.",
+ "شروط خدمة ستم تك لاب: قواعد التسجيل، سياسة الإلغاء والاسترداد، الاستخدام المقبول للطلاب من ٦ إلى ١٨ سنة، معايير سلوك المعلمين، سياسة تسجيل الجلسات، وشروط الاستخدام لأولياء الأمور.",
  },
 };
 

@@ -13,12 +13,12 @@ const meta = {
   en: {
     title: "Pricing | Kids' Coding & STEM Classes — StemTechLab",
     description:
-      "Transparent pricing for live kids' coding, robotics & Arabic classes. Free trial, flexible monthly plans, and up to 25% off annual bundles. No hidden fees.",
+      "StemTechLab pricing: 1 free trial class (no credit card), then monthly, quarterly (10% off), or annual (25% off) plans. Sibling discount 15% for a second child. School and group packages on request. All prices published — no hidden fees.",
   },
   ar: {
     title: "الأسعار | دورات برمجة وSTEM للأطفال — ستم تك لاب",
     description:
-      "أسعار شفافة لحصص البرمجة والروبوتات والعربية المباشرة للأطفال. تجربة مجانية، خطط شهرية مرنة، وخصم يصل إلى ٢٥٪. بدون رسوم مخفية.",
+      "أسعار ستم تك لاب: حصة تجريبية مجانية بدون بطاقة ائتمان، ثم خطط شهرية أو ربع سنوية (خصم ١٠٪) أو سنوية (خصم ٢٥٪). خصم ١٥٪ للطفل الثاني. باقات المدارس والمجموعات بالطلب. جميع الأسعار منشورة بدون رسوم مخفية.",
   },
 };
 

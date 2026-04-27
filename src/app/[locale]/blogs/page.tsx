@@ -14,11 +14,11 @@ const meta = {
  en: {
  title: "Blog — Tips, Guides & News for Parents",
  description:
- "Expert articles and tutorials for parents: kids’ coding, STEM education, robotics, and Arabic learning—in Saudi Arabia, UAE, the GCC, and worldwide.",
+ "Practical guides for parents on how to choose the right coding course for your child, when to start robotics, how to support Arabic learning at home, and what STEM skills matter most by age. Written for families in Saudi Arabia, UAE, GCC, and worldwide.",
  },
  ar: {
  title: "المدونة — نصائح وأدلة وأخبار للوالدين",
- description: "مقالات متخصصة حول تعليم البرمجة والروبوتات والعربية والعلوم للأطفال في السعودية والإمارات والخليج.",
+ description: "أدلة عملية لأولياء الأمور حول اختيار دورة البرمجة المناسبة لطفلك، متى تبدأ بالروبوتات، كيف تدعم تعلم العربية في المنزل، ومهارات STEM الأهم حسب العمر. موجّهة للعائلات في السعودية والإمارات والخليج والعالم.",
  },
 };
 

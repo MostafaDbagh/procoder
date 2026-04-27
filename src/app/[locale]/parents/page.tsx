@@ -11,12 +11,12 @@ const meta = {
  en: {
  title: "For Parents | AI analyses your child’s behaviour & builds their future",
  description:
- "StemTechLab’s AI agent analyses your child’s learning actions and behaviours to recommend the right STEM path and shape their future. Track progress, attendance & instructor notes — all in one hub.",
+ "Everything parents need to know about StemTechLab: use the AI course finder to match your child to the right course, then track attendance, progress, and instructor notes from the parent dashboard. Certified teachers, max 8 students per class, COPPA-compliant.",
  },
  ar: {
  title: "لأولياء الأمور | ذكاء اصطناعي يحلّل سلوك طفلك ويبني مستقبله",
  description:
- "وكيل ذكاء ستم تك لاب الاصطناعي يحلّل سلوكيات طفلك وأفعاله التعليمية ليوصي بمسار STEM المناسب ويبني مستقبله. تابع التقدم والحضور وملاحظات المدرّس في مكان واحد.",
+ "كل ما يحتاجه ولي الأمر في ستم تك لاب: استخدم منتقي الدورات بالذكاء الاصطناعي لاختيار الدورة المناسبة لطفلك، ثم تابع الحضور والتقدم وملاحظات المعلم من لوحة التحكم الخاصة بك. معلمون معتمدون، حد أقصى ٨ طلاب في الفصل، متوافق مع COPPA.",
  },
 };
 

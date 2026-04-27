@@ -11,12 +11,12 @@ const meta = {
  en: {
  title: "Privacy Policy",
  description:
- "How StemTechLab handles children’s data and online safety (COPPA-aware).",
+ "StemTechLab privacy policy: what data we collect from parents and children, how it is stored and protected, COPPA compliance details, third-party AI providers (OpenAI, DeepSeek) disclosure, and how to request data deletion.",
  },
  ar: {
  title: "سياسة الخصوصية",
  description:
- "كيف تتعامل ستم تك لاب مع بيانات الأطفال والسلامة عبر الإنترنت.",
+ "سياسة خصوصية ستم تك لاب: البيانات التي نجمعها من أولياء الأمور والأطفال، كيف نحفظها ونحميها، التوافق مع COPPA، الإفصاح عن مزودي الذكاء الاصطناعي (OpenAI وDeepSeek)، وكيفية طلب حذف البيانات.",
  },
 };
 
