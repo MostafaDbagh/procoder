@@ -264,20 +264,51 @@ export function adminLogin(
 
 // --- AI Recommendation ---
 
+export interface ChildProfile {
+ age: number | null;
+ gender: string | null;
+ interests: string[];
+ adjectives: string[];
+ experience_level: string | null;
+ parent_goals: string[];
+ learning_style: string | null;
+ energy_level: string | null;
+ special_needs: string | null;
+}
+
+export interface LearningPathStep {
+ phase: "now" | "next" | "future";
+ slug: string;
+ title: { en: string; ar: string } | string;
+}
+
+export interface ConversationTurn {
+ role: "user" | "assistant";
+ content: string;
+}
+
 export interface RecommendResponse {
  ids: string[];
  message: string;
+ profile?: ChildProfile;
+ confidence?: number;
+ followUpQuestions?: string[];
+ learningPath?: LearningPathStep[];
 }
 
 export function getAIRecommendation(
  message: string,
  locale: string,
- init?: Pick<RequestInit, "signal">
+ options?: { signal?: AbortSignal; conversationHistory?: ConversationTurn[] }
 ): Promise<RecommendResponse> {
  return request<RecommendResponse>("/recommend", {
  method: "POST",
- body: JSON.stringify({ message, locale }),
- signal: init?.signal,
+ body: JSON.stringify({
+  message,
+  locale,
+  conversationHistory: options?.conversationHistory ?? [],
+ }),
+ signal: options?.signal,
  });
 }
 
