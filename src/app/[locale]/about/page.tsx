@@ -12,12 +12,12 @@ const meta = {
  en: {
  title: "About StemTechLab | First AI agent for kids’ learning & future",
  description:
- "StemTechLab is a live online learning platform for children ages 6–18 offering Programming, Robotics, Algorithms, and Arabic Language courses. Certified instructors, max 8 students per class, AI-powered course matching (OpenAI + DeepSeek), COPPA-compliant. Serving families across the GCC and worldwide.",
+ "StemTechLab is the only live online STEM platform for kids that combines Arabic-native instruction, GCC focus, and AI-powered course matching in one place. Programming, Robotics, Algorithms & Arabic for ages 6–18. Certified instructors, max 8 students, COPPA-compliant.",
  },
  ar: {
  title: "عن ستم تك لاب | أول وكيل ذكاء اصطناعي لتحليل تعلّم الأطفال",
  description:
- "ستم تك لاب منصة تعليم مباشر أونلاين للأطفال من ٦ إلى ١٨ سنة، تقدم دورات في البرمجة والروبوتات والخوارزميات واللغة العربية. معلمون معتمدون، حد أقصى ٨ طلاب في كل فصل، تطابق الدورات بالذكاء الاصطناعي، ومتوافقة مع COPPA. تخدم العائلات في الخليج وحول العالم.",
+ "ستم تك لاب هي المنصة الوحيدة للتعليم المباشر أونلاين التي تجمع التعليم بالعربية الأصلية، والتركيز على الخليج، ومطابقة الدورات بالذكاء الاصطناعي في مكان واحد. برمجة وروبوتات وخوارزميات وعربية للأعمار ٦–١٨. معلمون معتمدون، حد أقصى ٨ طلاب، متوافقة مع COPPA.",
  },
 };
 

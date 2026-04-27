@@ -22,7 +22,7 @@ export function OrganizationSchema() {
  "@type": "EducationalOrganization",
  name: "StemTechLab",
  description:
- "Live online STEM & Arabic classes for kids ages 6–18. Small groups, certified teachers, bilingual (English & Arabic). GCC & worldwide.",
+ "The only live online STEM platform for kids that combines Arabic-native instruction, GCC focus, and AI-powered course matching in one place. Courses in Programming, Robotics, Algorithms, and Arabic Language for ages 6–18. Certified teachers, max 8 students per class, free trial.",
  url: SITE_URL,
  logo: `${SITE_URL}/logo.svg`,
  image: `${SITE_URL}/og`,
