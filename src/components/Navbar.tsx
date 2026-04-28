@@ -200,9 +200,9 @@ function LangToggle({
  dir="ltr"
  aria-label={isAr ? "Switch to English" : "Switch to Arabic"}
  style={{ fontFamily: "var(--font-nunito), var(--font-geist-sans), sans-serif" }}
- className="relative flex items-center h-9 rounded-full p-[3px] bg-white border border-slate-200
- shadow-[0_2px_10px_rgba(0,0,0,0.08),0_1px_3px_rgba(0,0,0,0.06)]
- hover:shadow-[0_4px_18px_rgba(167,139,250,0.25),0_2px_6px_rgba(0,0,0,0.10)]
+ className="relative flex items-center h-9 rounded-full p-[3px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80
+ shadow-[0_2px_10px_rgba(0,0,0,0.08),0_1px_3px_rgba(0,0,0,0.06)] dark:shadow-[0_2px_10px_rgba(0,0,0,0.25),0_1px_3px_rgba(0,0,0,0.15)]
+ hover:shadow-[0_4px_18px_rgba(167,139,250,0.25),0_2px_6px_rgba(0,0,0,0.10)] dark:hover:shadow-[0_4px_18px_rgba(167,139,250,0.30),0_2px_6px_rgba(0,0,0,0.20)]
  hover:border-primary/50 transition-all duration-300 select-none no-underline"
  >
  {/* sliding highlight */}
@@ -216,13 +216,13 @@ function LangToggle({
  />
 
  {/* EN */}
- <span className={`relative z-10 flex items-center justify-center gap-[5px] w-14 h-full text-[11.5px] font-extrabold tracking-wide transition-colors duration-200 ${!isAr ? "text-white drop-shadow-sm" : "text-slate-500"}`}>
+ <span className={`relative z-10 flex items-center justify-center gap-[5px] w-14 h-full text-[11.5px] font-extrabold tracking-wide transition-colors duration-200 ${!isAr ? "text-white drop-shadow-sm" : "text-slate-500 dark:text-slate-400"}`}>
  <span className="leading-none text-[13px]">🇬🇧</span>
  <span>EN</span>
  </span>
 
  {/* AR */}
- <span className={`relative z-10 flex items-center justify-center gap-[5px] w-14 h-full text-[11.5px] font-extrabold tracking-wide transition-colors duration-200 ${isAr ? "text-white drop-shadow-sm" : "text-slate-500"}`}>
+ <span className={`relative z-10 flex items-center justify-center gap-[5px] w-14 h-full text-[11.5px] font-extrabold tracking-wide transition-colors duration-200 ${isAr ? "text-white drop-shadow-sm" : "text-slate-500 dark:text-slate-400"}`}>
  <span>AR</span>
  <span className="leading-none text-[13px]">🇦🇪</span>
  </span>
