@@ -1,5 +1,30 @@
 import type { Metadata } from "next";
 
+const BREADCRUMB_AR: Record<string, string> = {
+  Home: "الرئيسية",
+  Courses: "الدورات",
+  Blog: "المدونة",
+  About: "من نحن",
+  Pricing: "الأسعار",
+  Contact: "تواصل معنا",
+  "Free Trial": "تجربة مجانية",
+  Careers: "الوظائف",
+  Privacy: "الخصوصية",
+  Terms: "الشروط والأحكام",
+  Recommend: "اقتراح الدورات",
+  Challenge: "التحدي",
+  Parents: "للوالدين",
+  "For Parents": "للوالدين",
+  "Course finder": "محدد الدورات",
+  Blogs: "المدونة",
+};
+
+/** Returns the breadcrumb label in the correct language. */
+export function bcLabel(name: string, locale: string): string {
+  if (locale !== "ar") return name;
+  return BREADCRUMB_AR[name] ?? name;
+}
+
 /** Member, instructor, and admin app surfaces — keep out of organic search. */
 export const PRIVATE_APP_ROBOTS: NonNullable<Metadata["robots"]> = {
   index: false,

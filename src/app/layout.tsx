@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { headers } from "next/headers";
 import Script from "next/script";
 import { Geist } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
@@ -125,9 +126,15 @@ export const metadata: Metadata = {
  },
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({ children }: { children: ReactNode }) {
+ // next-intl middleware forwards the resolved locale as a request header.
+ // Reading it here sets lang/dir in the raw HTML Googlebot receives — no JS required.
+ const hdrs = await headers();
+ const locale = hdrs.get("x-next-intl-locale") ?? "en";
+ const dir = locale === "ar" ? "rtl" : "ltr";
+
  return (
- <html lang="en" className={`${geistSans.variable} h-full antialiased`} suppressHydrationWarning>
+ <html lang={locale} dir={dir} className={`${geistSans.variable} h-full antialiased`} suppressHydrationWarning>
  <head>
  <link rel="icon" href="/favicon.ico" sizes="any" />
  <link rel="icon" href="/icon.png" type="image/png" />

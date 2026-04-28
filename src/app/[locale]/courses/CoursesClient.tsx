@@ -63,7 +63,9 @@ function apiToLocal(c: APICourse, locale: string) {
  color: c.color,
  iconName: c.iconName,
  _title: locale === "ar" ? c.title.ar : c.title.en,
+ _titleOther: locale === "ar" ? c.title.en : c.title.ar,
  _desc: locale === "ar" ? c.description.ar : c.description.en,
+ _descOther: locale === "ar" ? c.description.en : c.description.ar,
  titleKey: "",
  descKey: "",
  skillKeys: [] as string[],
@@ -117,6 +119,7 @@ export function CoursesClient({ initialCourses }: Props) {
  : staticCourses.map((c) => ({ ...c, _title: "", _desc: "" }));
 
  const filtered = useMemo(() => {
+ const q = search.trim().toLowerCase();
  return allCourses.filter((c) => {
  if (category !== "all" && c.category !== category) return false;
  if (level !== "all" && c.level !== level) return false;
@@ -124,9 +127,19 @@ export function CoursesClient({ initialCourses }: Props) {
  const [min, max] = age.split("-").map(Number);
  if (c.ageMax < min || c.ageMin > max) return false;
  }
- if (search) {
+ if (q) {
  const title = (fromApi ? c._title : ct(c.titleKey)).toLowerCase();
- if (!title.includes(search.toLowerCase())) return false;
+ const titleOther = (fromApi ? (c as ReturnType<typeof apiToLocal>)._titleOther ?? "" : "").toLowerCase();
+ const desc = (fromApi ? (c as ReturnType<typeof apiToLocal>)._desc ?? "" : "").toLowerCase();
+ const descOther = (fromApi ? (c as ReturnType<typeof apiToLocal>)._descOther ?? "" : "").toLowerCase();
+ const catName = c.category.toLowerCase();
+ if (
+ !title.includes(q) &&
+ !titleOther.includes(q) &&
+ !desc.includes(q) &&
+ !descOther.includes(q) &&
+ !catName.includes(q)
+ ) return false;
  }
  return true;
  });
@@ -164,16 +177,17 @@ export function CoursesClient({ initialCourses }: Props) {
  {/* Search */}
  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="max-w-xl mx-auto mb-8">
  <div className="relative">
- <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted" />
+ <Search className="absolute start-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted" />
  <input
  type="text"
  value={search}
+ dir="auto"
  onChange={(e) => setSearch(e.target.value)}
  placeholder={`${t("all")}...`}
- className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-surface border border-border text-foreground placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none shadow-sm"
+ className="w-full ps-12 pe-4 py-3.5 rounded-2xl bg-surface border border-border text-foreground placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none shadow-sm"
  />
  {search && (
- <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-muted hover:text-foreground hover:bg-surface-hover transition-colors">
+ <button onClick={() => setSearch("")} className="absolute end-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-muted hover:text-foreground hover:bg-surface-hover transition-colors">
  <X className="w-4 h-4" />
  </button>
  )}
@@ -195,7 +209,7 @@ export function CoursesClient({ initialCourses }: Props) {
  }`}
  >
  <Icon className="w-4 h-4" />
- {tab.value === "all" ? t("all") : tab.value.charAt(0).toUpperCase() + tab.value.slice(1)}
+ {tab.value === "all" ? t("all") : (t(`categoryLabels.${tab.value}`) || tab.value)}
  </button>
  );
  })}
@@ -253,8 +267,8 @@ export function CoursesClient({ initialCourses }: Props) {
  ))}
  </div>
  {hasFilters && (
- <button onClick={clearFilters} className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium text-red-500 bg-red-50 dark:bg-red-950/30 hover:bg-red-100 dark:hover:bg-red-950/50 transition-colors sm:ml-auto">
- <X className="w-3 h-3" /> Clear all
+ <button onClick={clearFilters} className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium text-red-500 bg-red-50 dark:bg-red-950/30 hover:bg-red-100 dark:hover:bg-red-950/50 transition-colors sm:ms-auto">
+ <X className="w-3 h-3" /> {t("clearAll")}
  </button>
  )}
  </div>
@@ -263,7 +277,7 @@ export function CoursesClient({ initialCourses }: Props) {
  {/* Results count */}
  <div className="flex items-center justify-between mb-6">
  <p className="text-sm text-muted">
- {isLoading ? "" : `${filtered.length} course${filtered.length !== 1 ? "s" : ""} found`}
+ {isLoading ? "" : t("coursesFound", { count: filtered.length })}
  </p>
  {fromApi && (
  <span className="text-[10px] font-medium px-2 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400">

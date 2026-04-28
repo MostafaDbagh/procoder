@@ -244,6 +244,21 @@ export async function getBlogPostsSSR(params?: { category?: string; region?: str
  }
 }
 
+export async function getBlogPostsISR(params?: { category?: string; region?: string; page?: number }): Promise<BlogListResponse | null> {
+ try {
+ const query = new URLSearchParams();
+ if (params?.category) query.set("category", params.category);
+ if (params?.region) query.set("region", params.region);
+ if (params?.page) query.set("page", String(params.page));
+ const qs = query.toString();
+ const res = await fetch(`${serverApiRoot()}/blog${qs ? `?${qs}` : ""}`, { next: { revalidate: 300 } });
+ if (!res.ok) return null;
+ return res.json();
+ } catch {
+ return null;
+ }
+}
+
 export async function getBlogPostISR(slug: string): Promise<APIBlogPost | null> {
  try {
  const res = await fetch(`${serverApiRoot()}/blog/${slug}`, {

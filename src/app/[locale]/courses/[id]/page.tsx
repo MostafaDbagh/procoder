@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { getTranslations } from "next-intl/server";
 import { courses as staticCourses } from "@/data/courses";
 import CourseDetailContent from "./CourseDetailContent";
 import { BreadcrumbSchema } from "@/components/StructuredData";
 import { getCourseISR, getCourseSlugsISR } from "@/lib/server-api";
-import { buildAlternates, siteUrl } from "@/lib/seo";
+import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
+import { resolveArabicSlug, isArabicSlug } from "@/lib/arabicSlugs";
 
 // Force SSR — admin price/status changes reflect immediately
 export const dynamic = "force-dynamic";
@@ -27,9 +28,9 @@ export async function generateMetadata({
 }: {
  params: Promise<{ locale: string; id: string }>;
 }): Promise<Metadata> {
- const { locale, id } = await params;
+ const { locale, id: rawId } = await params;
+ const id = resolveArabicSlug(rawId);
  const lang = locale === "ar" ? "ar" : "en";
- const alt = lang === "en" ? "ar" : "en";
 
  const apiCourse = await getCourseISR(id);
  const staticCourse = staticCourses.find((c) => c.id === id);
@@ -42,18 +43,32 @@ export async function generateMetadata({
  let title: string;
  let seoDescription: string;
 
+ const levelLabel = (level: string, l: "ar" | "en") => {
+ const map: Record<string, { ar: string; en: string }> = {
+ beginner: { ar: "مبتدئ", en: "Beginner" },
+ intermediate: { ar: "متوسط", en: "Intermediate" },
+ advanced: { ar: "متقدم", en: "Advanced" },
+ };
+ return map[level]?.[l] ?? level;
+ };
+
  if (apiCourse) {
  title = lang === "ar" ? apiCourse.title.ar : apiCourse.title.en;
- const body =
- lang === "ar" ? apiCourse.description.ar : apiCourse.description.en;
+ const body = lang === "ar" ? apiCourse.description.ar : apiCourse.description.en;
  const ageRange = `${apiCourse.ageMin}–${apiCourse.ageMax}`;
- seoDescription = `${body} For ages ${ageRange}. ${apiCourse.level.charAt(0).toUpperCase() + apiCourse.level.slice(1)} level, ${apiCourse.lessons} lessons over ${apiCourse.durationWeeks} weeks.`;
+ const lvl = levelLabel(apiCourse.level, lang);
+ seoDescription = lang === "ar"
+ ? `${body} للأعمار ${ageRange}. مستوى ${lvl}، ${apiCourse.lessons} درسًا على مدى ${apiCourse.durationWeeks} أسابيع.`
+ : `${body} For ages ${ageRange}. ${lvl} level, ${apiCourse.lessons} lessons over ${apiCourse.durationWeeks} weeks.`;
  } else {
  const sc = staticCourse!;
  title = ct(sc.titleKey);
  const description = ct(sc.descKey);
  const ageRange = `${sc.ageMin}–${sc.ageMax}`;
- seoDescription = `${description} For ages ${ageRange}. ${sc.level.charAt(0).toUpperCase() + sc.level.slice(1)} level, ${sc.lessons} lessons over ${sc.durationWeeks} weeks.`;
+ const lvl = levelLabel(sc.level, lang);
+ seoDescription = lang === "ar"
+ ? `${description} للأعمار ${ageRange}. مستوى ${lvl}، ${sc.lessons} درسًا على مدى ${sc.durationWeeks} أسابيع.`
+ : `${description} For ages ${ageRange}. ${lvl} level, ${sc.lessons} lessons over ${sc.durationWeeks} weeks.`;
  }
 
  return {
@@ -68,7 +83,7 @@ export async function generateMetadata({
  siteName: "StemTechLab",
  locale: lang === "ar" ? "ar_SA" : "en_US",
  alternateLocale: lang === "ar" ? "en_US" : "ar_SA",
- images: [{ url: `${SITE_URL}/og`, width: 1200, height: 630, alt: title }],
+ images: [{ url: `${SITE_URL}/og?locale=${lang}&title=${encodeURIComponent(title)}&cat=${encodeURIComponent(apiCourse?.category ?? staticCourse?.category ?? "")}`, width: 1200, height: 630, alt: title }],
  },
  twitter: {
  card: "summary_large_image",
@@ -83,9 +98,17 @@ export default async function CourseDetailPage({
 }: {
  params: Promise<{ locale: string; id: string }>;
 }) {
- const { locale, id } = await params;
+ const { locale, id: rawId } = await params;
  setRequestLocale(locale);
 
+ // Redirect Arabic slugs (e.g. /ar/courses/بايثون) to their canonical English slug
+ if (isArabicSlug(rawId)) {
+ const resolved = resolveArabicSlug(rawId);
+ const target = locale === "en" ? `/courses/${resolved}` : `/ar/courses/${resolved}`;
+ redirect(target);
+ }
+
+ const id = rawId;
  const apiCourse = await getCourseISR(id);
  const staticCourse = staticCourses.find((c) => c.id === id);
  if (!apiCourse && !staticCourse) {
@@ -157,12 +180,15 @@ export default async function CourseDetailPage({
  ? ct(staticCourse.titleKey)
  : id;
 
+ const homeUrl = locale === "en" ? SITE_URL : `${SITE_URL}/${locale}`;
+ const coursesUrl = locale === "en" ? `${SITE_URL}/courses` : `${SITE_URL}/${locale}/courses`;
+ const courseUrl = locale === "en" ? `${SITE_URL}/courses/${id}` : `${SITE_URL}/${locale}/courses/${id}`;
  return (
  <>
  <BreadcrumbSchema items={[
- { name: "Home", url: `${SITE_URL}/${locale}` },
- { name: "Courses", url: `${SITE_URL}/${locale}/courses` },
- { name: courseTitle, url: `${SITE_URL}/${locale}/courses/${id}` },
+ { name: bcLabel("Home", locale), url: homeUrl },
+ { name: bcLabel("Courses", locale), url: coursesUrl },
+ { name: courseTitle, url: courseUrl },
  ]} />
  {courseSchema && (
  <script

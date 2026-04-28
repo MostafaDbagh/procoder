@@ -45,7 +45,7 @@ export default async function LocaleLayout({
  <LocaleHtmlAttrs />
  <OrganizationSchema />
  <WebsiteSchema />
- <FAQSchema />
+ <FAQSchema locale={locale} />
  <CourseFinderApplicationSchema />
  <LocalBusinessSchema />
  <Navbar />

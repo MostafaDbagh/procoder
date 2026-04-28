@@ -4,7 +4,7 @@ import { setRequestLocale } from "next-intl/server";
 import { getBlogPostISR, getCoursesISR } from "@/lib/server-api";
 import { BreadcrumbSchema } from "@/components/StructuredData";
 import BlogDetailClient from "./BlogDetailClient";
-import { buildAlternates, siteUrl } from "@/lib/seo";
+import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
 
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
  publishedTime: post.publishedAt,
  authors: [post.author.name],
  tags: post.tags,
- images: post.coverImage ? [{ url: post.coverImage }] : [{ url: `${SITE_URL}/og`, width: 1200, height: 630, alt: "StemTechLab" }],
+ images: post.coverImage ? [{ url: post.coverImage }] : [{ url: `${SITE_URL}/og?locale=${lang}`, width: 1200, height: 630, alt: "StemTechLab" }],
  },
  twitter: {
  card: "summary_large_image",
@@ -61,8 +61,8 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ loc
  return (
  <>
  <BreadcrumbSchema items={[
- { name: "Home", url: siteUrl(lang, "") },
- { name: "Blogs", url: siteUrl(lang, "/blogs") },
+ { name: bcLabel("Home", locale), url: siteUrl(lang, "") },
+ { name: bcLabel("Blogs", locale), url: siteUrl(lang, "/blogs") },
  { name: post.title[lang], url: siteUrl(lang, `/blogs/${slug}`) },
  ]} />
  <script

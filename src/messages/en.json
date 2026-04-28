@@ -136,6 +136,10 @@
     "learnMore": "Learn More",
     "noCourses": "We couldn't find a match right now — try adjusting your filters and we'll help you find the right fit!",
     "free": "Free",
+    "clearAll": "Clear all",
+    "clearFilters": "Clear filters",
+    "coursesFound": "{count} {count, plural, one {course} other {courses}} found",
+    "liveData": "Live data",
     "categoryLabels": {
       "programming": "Programming",
       "robotics": "Robotics",

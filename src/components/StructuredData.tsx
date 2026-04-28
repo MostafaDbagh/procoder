@@ -86,18 +86,32 @@ export function OrganizationSchema() {
  return <JsonLd data={data} />;
 }
 
-export function FAQSchema() {
- const faqs = [
+const FAQ_EN = [
  { q: "What age group are StemTechLab courses designed for?", a: "Ages 6–18 with paths by level. Most students take about two 1-hour live sessions per week." },
  { q: "How does StemTechLab suggest the best course for my child?", a: "Our Course Finder uses AI-powered matching to propose live courses that fit your child’s age, interests, and level. Parents choose what to enroll in." },
- { q: "How is my child's data and privacy protected?", a: "Encryption, COPPA-aware practices, and no selling of child data. Parents control student accounts." },
+ { q: "How is my child’s data and privacy protected?", a: "Encryption, COPPA-aware practices, and no selling of child data. Parents control student accounts." },
  { q: "Does my child need prior experience?", a: "No—beginners start with fundamentals; advanced tracks exist too. Our AI course finder and form help pick a level." },
  { q: "Do you offer free trial classes?", a: "Yes: one free live session, no obligation." },
  { q: "How are StemTechLab classes conducted?", a: "Live online in small groups or 1:1 with screen share, guided practice, and interactive tools." },
  { q: "What devices are needed for classes?", a: "Laptop or desktop plus stable internet. Coding runs in the browser; robotics kits ship where needed." },
  { q: "Which countries does StemTechLab serve?", a: "GCC, Turkey, North America, Europe, and more—in English or Arabic." },
  { q: "Can I reschedule or cancel classes?", a: "Reschedule up to 4 hours before class; plans can pause when your schedule changes." },
- ];
+];
+
+const FAQ_AR = [
+ { q: "ما الفئة العمرية التي تستهدفها دورات StemTechLab؟", a: "الأعمار من ٦ إلى ١٨ عامًا مع مسارات حسب المستوى. يأخذ معظم الطلاب جلستين مباشرتين مدة كل منهما ساعة أسبوعيًا." },
+ { q: "كيف تقترح StemTechLab أفضل دورة لطفلي؟", a: "يستخدم محدد الدورات لدينا تقنية الذكاء الاصطناعي لاقتراح الدورات المباشرة التي تناسب عمر طفلك واهتماماته ومستواه. يختار الوالدان الدورة التي يرغبون في التسجيل بها." },
+ { q: "كيف تُحمى بيانات طفلي وخصوصيته؟", a: "نعتمد التشفير ومعايير حماية بيانات الأطفال، ولا نبيع بيانات الأطفال إطلاقًا. يتحكم الوالدان في حسابات الطلاب." },
+ { q: "هل يحتاج طفلي إلى خبرة مسبقة؟", a: "لا—يبدأ المبتدئون بالأساسيات، وتتوفر مسارات متقدمة أيضًا. يساعد محدد الدورات والنموذج على اختيار المستوى المناسب." },
+ { q: "هل تقدمون حصصًا تجريبية مجانية؟", a: "نعم: جلسة مباشرة مجانية واحدة دون أي التزام." },
+ { q: "كيف تُعقد حصص StemTechLab؟", a: "مباشرة عبر الإنترنت في مجموعات صغيرة أو فردية مع مشاركة الشاشة وممارسة موجّهة وأدوات تفاعلية." },
+ { q: "ما الأجهزة المطلوبة للحصص؟", a: "حاسوب محمول أو مكتبي مع اتصال إنترنت مستقر. تعمل البرمجة في المتصفح؛ وتُشحن مجموعات الروبوتات حيثما لزم." },
+ { q: "ما الدول التي تخدمها StemTechLab؟", a: "دول الخليج وتركيا وأمريكا الشمالية وأوروبا وغيرها—باللغتين العربية والإنجليزية." },
+ { q: "هل يمكنني إعادة جدولة الحصص أو إلغاؤها؟", a: "يمكن إعادة الجدولة قبل ٤ ساعات من الحصة؛ ويمكن تعليق الخطة عند تغيّر جدولك." },
+];
+
+export function FAQSchema({ locale = "en" }: { locale?: string }) {
+ const faqs = locale === "ar" ? FAQ_AR : FAQ_EN;
 
  const data = {
  "@context": "https://schema.org",

@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import CoursesContent from "./CoursesContent";
 import { BreadcrumbSchema } from "@/components/StructuredData";
-import { buildAlternates, siteUrl } from "@/lib/seo";
+import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
 
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
-// Force SSR — admin price/status changes reflect immediately
-export const dynamic = "force-dynamic";
+// ISR: rebuild every 5 minutes so price/status changes land quickly
+// without hammering the backend on every crawl hit.
+export const revalidate = 300;
 
 
 const meta = {
@@ -30,7 +31,6 @@ export async function generateMetadata({
 }): Promise<Metadata> {
  const { locale } = await params;
  const lang = locale === "ar" ? "ar" : "en";
- const alt = lang === "en" ? "ar" : "en";
 
  return {
  title: meta[lang].title,
@@ -44,7 +44,7 @@ export async function generateMetadata({
  siteName: "StemTechLab",
  locale: lang === "ar" ? "ar_SA" : "en_US",
  alternateLocale: lang === "ar" ? "en_US" : "ar_SA",
- images: [{ url: `${SITE_URL}/og`, width: 1200, height: 630, alt: "StemTechLab" }],
+ images: [{ url: `${SITE_URL}/og?locale=${lang}`, width: 1200, height: 630, alt: "StemTechLab" }],
  },
  twitter: {
  card: "summary_large_image",
@@ -62,11 +62,13 @@ export default async function CoursesPage({
  const { locale } = await params;
  setRequestLocale(locale);
  const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
+ const homeUrl = locale === "en" ? SITE_URL : `${SITE_URL}/${locale}`;
+ const coursesUrl = locale === "en" ? `${SITE_URL}/courses` : `${SITE_URL}/${locale}/courses`;
  return (
  <>
  <BreadcrumbSchema items={[
- { name: "Home", url: `${SITE_URL}/${locale}` },
- { name: "Courses", url: `${SITE_URL}/${locale}/courses` },
+ { name: bcLabel("Home", locale), url: homeUrl },
+ { name: bcLabel("Courses", locale), url: coursesUrl },
  ]} />
  <CoursesContent />
  </>

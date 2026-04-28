@@ -136,6 +136,10 @@
     "learnMore": "اعرف المزيد",
     "noCourses": "لم نجد مطابقة الآن — جرّب تعديل الفلاتر وسنساعدك في إيجاد المناسب!",
     "free": "مجاني",
+    "clearAll": "مسح الكل",
+    "clearFilters": "مسح الفلاتر",
+    "coursesFound": "{count} {count, plural, one {دورة} other {دورات}} وجدت",
+    "liveData": "بيانات مباشرة",
     "categoryLabels": {
       "programming": "البرمجة",
       "robotics": "الروبوتات",

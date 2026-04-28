@@ -3,7 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
 import FreeTrialContent from "./FreeTrialContent";
 import { BreadcrumbSchema } from "@/components/StructuredData";
-import { buildAlternates, siteUrl } from "@/lib/seo";
+import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
 
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
@@ -41,7 +41,7 @@ export async function generateMetadata({
       siteName: "StemTechLab",
       locale: lang === "ar" ? "ar_SA" : "en_US",
       alternateLocale: lang === "ar" ? "en_US" : "ar_SA",
-      images: [{ url: `${SITE_URL}/og`, width: 1200, height: 630, alt: "StemTechLab Free Trial" }],
+      images: [{ url: `${SITE_URL}/og?locale=${lang}`, width: 1200, height: 630, alt: "StemTechLab Free Trial" }],
     },
     twitter: {
       card: "summary_large_image",
@@ -63,8 +63,8 @@ export default async function FreeTrialPage({
     <>
       <BreadcrumbSchema
         items={[
-          { name: "Home", url: `${SITE_URL}/${locale}` },
-          { name: "Free Trial", url: `${SITE_URL}/${locale}/free-trial` },
+          { name: bcLabel("Home", locale), url: `${SITE_URL}/${locale}` },
+          { name: bcLabel("Free Trial", locale), url: `${SITE_URL}/${locale}/free-trial` },
         ]}
       />
       <Suspense>
