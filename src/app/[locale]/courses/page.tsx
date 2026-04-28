@@ -62,8 +62,8 @@ export default async function CoursesPage({
  const { locale } = await params;
  setRequestLocale(locale);
  const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
- const homeUrl = locale === "en" ? SITE_URL : `${SITE_URL}/${locale}`;
- const coursesUrl = locale === "en" ? `${SITE_URL}/courses` : `${SITE_URL}/${locale}/courses`;
+ const homeUrl = `${SITE_URL}/${locale}`;
+ const coursesUrl = `${SITE_URL}/${locale}/courses`;
  return (
  <>
  <BreadcrumbSchema items={[

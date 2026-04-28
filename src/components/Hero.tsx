@@ -40,8 +40,9 @@ export function Hero() {
  bottom: bubble.bottom,
  left: bubble.left,
  }}
- animate={{ y: [0, -8, 0] }}
- transition={{ duration: 4 + i * 0.5, repeat: Infinity, ease: "easeInOut", delay: bubble.delay }}
+ initial={{ opacity: 0, scale: 0.8 }}
+ animate={{ opacity: 1, scale: 1 }}
+ transition={{ duration: 0.5, delay: bubble.delay, ease: "easeOut" }}
  >
  <span className={`${bubble.fontSize} font-semibold text-foreground/40 dark:text-foreground/25 select-none`}>
  {bubble.text}

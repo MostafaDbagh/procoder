@@ -53,13 +53,7 @@ export function HeroIllustration() {
  </defs>
 
  {/* ── Background ── */}
- <motion.ellipse
- cx="280" cy="260" rx="250" ry="210"
- fill="url(#bgGrad)"
- initial={{ scale: 0.92 }}
- animate={{ scale: [0.92, 1, 0.92] }}
- transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
- />
+ <ellipse cx="280" cy="260" rx="250" ry="210" fill="url(#bgGrad)" />
 
  {/* ═══════════ DESK ═══════════ */}
  <rect x="80" y="370" width="400" height="12" rx="6" fill="#C4A47A" opacity="0.7" />
@@ -262,37 +256,25 @@ export function HeroIllustration() {
  {/* ═══════════ FLOATING TECH WORDS ═══════════ */}
 
  {/* Python */}
- <motion.g {...floatAnim(0, 3.5)}>
- <motion.g {...pulseAnim(0.2)}>
+ <g>
  <rect x="55" y="120" width="76" height="30" rx="15" fill="#c4b5fd" opacity="0.15" />
  <rect x="55" y="120" width="76" height="30" rx="15" stroke="#c4b5fd" strokeWidth="1" opacity="0.3" fill="none" />
- <text x="93" y="140" textAnchor="middle" fontSize="13" fontWeight="700" fontFamily="system-ui, sans-serif" fill="#c4b5fd" opacity="0.85">
- Python
- </text>
- </motion.g>
- </motion.g>
+ <text x="93" y="140" textAnchor="middle" fontSize="13" fontWeight="700" fontFamily="system-ui, sans-serif" fill="#c4b5fd" opacity="0.85">Python</text>
+ </g>
 
  {/* AI */}
- <motion.g {...floatAnim(0.5, 2.8)}>
- <motion.g {...pulseAnim(0.8)}>
+ <g>
  <rect x="450" y="80" width="52" height="30" rx="15" fill="#8B7BC8" opacity="0.15" />
  <rect x="450" y="80" width="52" height="30" rx="15" stroke="#8B7BC8" strokeWidth="1" opacity="0.3" fill="none" />
- <text x="476" y="100" textAnchor="middle" fontSize="15" fontWeight="800" fontFamily="system-ui, sans-serif" fill="#8B7BC8" opacity="0.9">
- AI
- </text>
- </motion.g>
- </motion.g>
+ <text x="476" y="100" textAnchor="middle" fontSize="15" fontWeight="800" fontFamily="system-ui, sans-serif" fill="#8B7BC8" opacity="0.9">AI</text>
+ </g>
 
  {/* Arabic */}
- <motion.g {...floatAnim(1, 3.2)}>
- <motion.g {...pulseAnim(0.4)}>
+ <g>
  <rect x="25" y="195" width="68" height="28" rx="14" fill="#D4A46A" opacity="0.12" />
  <rect x="25" y="195" width="68" height="28" rx="14" stroke="#D4A46A" strokeWidth="1" opacity="0.3" fill="none" />
- <text x="59" y="214" textAnchor="middle" fontSize="13" fontWeight="700" fontFamily="system-ui, sans-serif" fill="#D4A46A" opacity="0.85">
- Arabic
- </text>
- </motion.g>
- </motion.g>
+ <text x="59" y="214" textAnchor="middle" fontSize="13" fontWeight="700" fontFamily="system-ui, sans-serif" fill="#D4A46A" opacity="0.85">Arabic</text>
+ </g>
 
  {/* JS */}
  <g>
@@ -304,37 +286,29 @@ export function HeroIllustration() {
  </g>
 
  {/* Robotics */}
- <motion.g {...floatAnim(0.8, 3)}>
- <motion.g {...pulseAnim(1.5)}>
+ <g>
  <rect x="474" y="280" width="82" height="28" rx="14" fill="#10B981" opacity="0.12" />
  <rect x="474" y="280" width="82" height="28" rx="14" stroke="#10B981" strokeWidth="1" opacity="0.3" fill="none" />
- <text x="515" y="299" textAnchor="middle" fontSize="12" fontWeight="700" fontFamily="system-ui, sans-serif" fill="#10B981" opacity="0.85">
- Robotics
- </text>
- </motion.g>
- </motion.g>
+ <text x="515" y="299" textAnchor="middle" fontSize="12" fontWeight="700" fontFamily="system-ui, sans-serif" fill="#10B981" opacity="0.85">Robotics</text>
+ </g>
 
  {/* Web Development */}
- <motion.g {...floatAnim(2, 3.3)}>
- <motion.g {...pulseAnim(0.6)}>
+ <g>
  <rect x="215" y="420" width="130" height="28" rx="14" fill="#5CC4A0" opacity="0.12" />
  <rect x="215" y="420" width="130" height="28" rx="14" stroke="#5CC4A0" strokeWidth="1" opacity="0.3" fill="none" />
- <text x="280" y="439" textAnchor="middle" fontSize="11" fontWeight="700" fontFamily="system-ui, sans-serif" fill="#5CC4A0" opacity="0.85">
- Web Development
- </text>
- </motion.g>
- </motion.g>
+ <text x="280" y="439" textAnchor="middle" fontSize="11" fontWeight="700" fontFamily="system-ui, sans-serif" fill="#5CC4A0" opacity="0.85">Web Development</text>
+ </g>
 
  {/* ═══════════ FLOATING DECORATIONS ═══════════ */}
 
  {/* Lightbulb */}
- <motion.g animate={{ y: [0, -10, 0], opacity: [0.5, 1, 0.5] }} transition={{ delay: 0.3, duration: 2.5, repeat: Infinity, ease: "easeInOut" }}>
+ <g>
  <circle cx="280" cy="100" r="16" fill="#D4A46A" opacity="0.2" />
  <rect x="276" y="116" width="8" height="5" rx="2" fill="#D4A46A" opacity="0.3" />
  <line x1="280" y1="80" x2="280" y2="74" stroke="#D4A46A" strokeWidth="2.5" strokeLinecap="round" opacity="0.35" />
  <line x1="296" y1="88" x2="300" y2="84" stroke="#D4A46A" strokeWidth="2.5" strokeLinecap="round" opacity="0.35" />
  <line x1="264" y1="88" x2="260" y2="84" stroke="#D4A46A" strokeWidth="2.5" strokeLinecap="round" opacity="0.35" />
- </motion.g>
+ </g>
 
  {/* Gear (spinning) */}
  <motion.g
@@ -351,12 +325,8 @@ export function HeroIllustration() {
  </motion.g>
 
  {/* Stars */}
- <motion.g animate={{ opacity: [0.3, 1, 0.3], scale: [0.9, 1.15, 0.9] }} transition={{ duration: 2, repeat: Infinity }} style={{ transformOrigin: "155px 148px" }}>
  <polygon points="155,138 158,146 167,146 160,151 162,160 155,155 148,160 150,151 143,146 152,146" fill="#D4A46A" opacity="0.35" />
- </motion.g>
- <motion.g animate={{ opacity: [0.4, 1, 0.4], scale: [1, 1.2, 1] }} transition={{ duration: 2.8, repeat: Infinity, delay: 1 }} style={{ transformOrigin: "435px 58px" }}>
  <polygon points="435,49 437,55 443,55 438,59 440,65 435,61 430,65 432,59 427,55 433,55" fill="#c4b5fd" opacity="0.35" />
- </motion.g>
 
  {/* Floating dots */}
  <motion.circle cx="130" cy="395" r="4" fill="#8B7BC8" opacity="0.25" animate={{ opacity: [0.15, 0.4, 0.15] }} transition={{ duration: 2, repeat: Infinity, delay: 0.5 }} />

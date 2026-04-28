@@ -375,42 +375,10 @@ export function MeetOurStars({ cmsTeam }: MeetOurStarsProps) {
  <AnimatedSection className="text-center mb-12">
  <div className="flex justify-center mb-4">
  <svg viewBox="0 0 200 130" fill="none" style={{ width: 120, height: 110 }}>
- <motion.path
- d="M30 30 L33 22 L36 30 L44 30 L38 35 L40 42 L33 38 L26 42 L28 35 L22 30 Z"
- fill="#FFD43B"
- stroke="#F59E0B"
- strokeWidth="1"
- strokeLinejoin="round"
- animate={{ y: [0, -6, 0] }}
- transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
- />
- <motion.path
- d="M12 65 L14 60 L16 65 L21 65 L17 68 L18 73 L14 70 L10 73 L11 68 L7 65 Z"
- fill="#FFD43B"
- stroke="#F59E0B"
- strokeWidth="1"
- strokeLinejoin="round"
- animate={{ y: [0, -5, 0] }}
- transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
- />
- <motion.path
- d="M168 25 L171 17 L174 25 L182 25 L176 30 L178 37 L171 33 L164 37 L166 30 L160 25 Z"
- fill="#FFD43B"
- stroke="#F59E0B"
- strokeWidth="1"
- strokeLinejoin="round"
- animate={{ y: [0, -7, 0] }}
- transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
- />
- <motion.path
- d="M185 70 L187 65 L189 70 L194 70 L190 73 L191 78 L187 75 L183 78 L184 73 L180 70 Z"
- fill="#FFD43B"
- stroke="#F59E0B"
- strokeWidth="1"
- strokeLinejoin="round"
- animate={{ y: [0, -4, 0] }}
- transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
- />
+ <path d="M30 30 L33 22 L36 30 L44 30 L38 35 L40 42 L33 38 L26 42 L28 35 L22 30 Z" fill="#FFD43B" stroke="#F59E0B" strokeWidth="1" strokeLinejoin="round" />
+ <path d="M12 65 L14 60 L16 65 L21 65 L17 68 L18 73 L14 70 L10 73 L11 68 L7 65 Z" fill="#FFD43B" stroke="#F59E0B" strokeWidth="1" strokeLinejoin="round" />
+ <path d="M168 25 L171 17 L174 25 L182 25 L176 30 L178 37 L171 33 L164 37 L166 30 L160 25 Z" fill="#FFD43B" stroke="#F59E0B" strokeWidth="1" strokeLinejoin="round" />
+ <path d="M185 70 L187 65 L189 70 L194 70 L190 73 L191 78 L187 75 L183 78 L184 73 L180 70 Z" fill="#FFD43B" stroke="#F59E0B" strokeWidth="1" strokeLinejoin="round" />
  <path
  d="M100 2 L118 42 L162 42 L126 66 L140 110 L100 86 L60 110 L74 66 L38 42 L82 42 Z"
  fill="#FFD43B"

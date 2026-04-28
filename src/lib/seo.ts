@@ -40,9 +40,8 @@ const SITE = process.env.SITE_URL || "https://www.stemtechlab.com";
  * Arabic has /ar prefix: /ar/about
  */
 export function siteUrl(lang: string, path: string = ""): string {
-  const prefix = lang === "en" ? "" : `/${lang}`;
   const p = path && !path.startsWith("/") ? `/${path}` : path;
-  return `${SITE}${prefix}${p}`;
+  return `${SITE}/${lang}${p}`;
 }
 
 /**

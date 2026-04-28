@@ -112,7 +112,7 @@ export default async function CourseDetailPage({
  // Redirect Arabic slugs (e.g. /ar/courses/بايثون) to their canonical English slug
  if (isArabicSlug(rawId)) {
  const resolved = resolveArabicSlug(rawId);
- const target = locale === "en" ? `/courses/${resolved}` : `/ar/courses/${resolved}`;
+ const target = `/${locale}/courses/${resolved}`;
  redirect(target);
  }
 
@@ -188,9 +188,9 @@ export default async function CourseDetailPage({
  ? ct(staticCourse.titleKey)
  : id;
 
- const homeUrl = locale === "en" ? SITE_URL : `${SITE_URL}/${locale}`;
- const coursesUrl = locale === "en" ? `${SITE_URL}/courses` : `${SITE_URL}/${locale}/courses`;
- const courseUrl = locale === "en" ? `${SITE_URL}/courses/${id}` : `${SITE_URL}/${locale}/courses/${id}`;
+ const homeUrl = `${SITE_URL}/${locale}`;
+ const coursesUrl = `${SITE_URL}/${locale}/courses`;
+ const courseUrl = `${SITE_URL}/${locale}/courses/${id}`;
  return (
  <>
  <BreadcrumbSchema items={[

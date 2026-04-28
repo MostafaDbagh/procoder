@@ -39,8 +39,8 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
  setRequestLocale(locale);
  const data = await getBlogPostsISR();
 
- const homeUrl = locale === "en" ? SITE_URL : `${SITE_URL}/${locale}`;
- const blogsUrl = locale === "en" ? `${SITE_URL}/blogs` : `${SITE_URL}/${locale}/blogs`;
+ const homeUrl = `${SITE_URL}/${locale}`;
+ const blogsUrl = `${SITE_URL}/${locale}/blogs`;
  return (
  <>
  <BreadcrumbSchema items={[

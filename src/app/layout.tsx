@@ -2,13 +2,20 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { headers } from "next/headers";
 import Script from "next/script";
-import { Geist } from "next/font/google";
+import { Geist, Nunito } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const geistSans = Geist({
  variable: "--font-geist-sans",
  subsets: ["latin"],
+});
+
+const nunito = Nunito({
+ variable: "--font-nunito",
+ subsets: ["latin"],
+ weight: ["700", "800", "900"],
+ display: "swap",
 });
 
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
@@ -134,7 +141,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
  const dir = locale === "ar" ? "rtl" : "ltr";
 
  return (
- <html lang={locale} dir={dir} className={`${geistSans.variable} h-full antialiased`} suppressHydrationWarning>
+ <html lang={locale} dir={dir} className={`${geistSans.variable} ${nunito.variable} h-full antialiased`} suppressHydrationWarning>
  <head>
  <link rel="icon" href="/favicon.ico" sizes="any" />
  <link rel="icon" href="/icon.png" type="image/png" />
