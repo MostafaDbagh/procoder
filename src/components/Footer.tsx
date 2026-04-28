@@ -20,7 +20,7 @@ export function Footer() {
  <div className="mb-4">
  <Image src="/logo.png" alt="StemTechLab" width={100} height={59} className="object-contain" />
  </div>
- <p className="text-muted text-sm leading-relaxed mb-5">
+ <p className="text-muted text-sm leading-relaxed mb-5 max-w-[290px]">
  {t("description")}
  </p>
  <div className="flex items-center gap-3">
