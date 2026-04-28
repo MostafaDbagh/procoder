@@ -52,23 +52,31 @@ export async function generateMetadata({
  return map[level]?.[l] ?? level;
  };
 
+ // Truncate body to leave room for the appended stats (age, level, duration)
+ const truncate = (s: string, max: number) =>
+ s.length <= max ? s : s.slice(0, s.lastIndexOf(" ", max) || max) + "…";
+
  if (apiCourse) {
  title = lang === "ar" ? apiCourse.title.ar : apiCourse.title.en;
- const body = lang === "ar" ? apiCourse.description.ar : apiCourse.description.en;
+ const rawBody = lang === "ar" ? apiCourse.description.ar : apiCourse.description.en;
  const ageRange = `${apiCourse.ageMin}–${apiCourse.ageMax}`;
  const lvl = levelLabel(apiCourse.level, lang);
- seoDescription = lang === "ar"
- ? `${body} للأعمار ${ageRange}. مستوى ${lvl}، ${apiCourse.lessons} درسًا على مدى ${apiCourse.durationWeeks} أسابيع.`
- : `${body} For ages ${ageRange}. ${lvl} level, ${apiCourse.lessons} lessons over ${apiCourse.durationWeeks} weeks.`;
+ const suffix = lang === "ar"
+ ? ` للأعمار ${ageRange}. مستوى ${lvl}، ${apiCourse.lessons} درسًا على مدى ${apiCourse.durationWeeks} أسابيع.`
+ : ` For ages ${ageRange}. ${lvl} level, ${apiCourse.lessons} lessons over ${apiCourse.durationWeeks} weeks.`;
+ const body = truncate(rawBody.split("\n")[0], 120 - suffix.length);
+ seoDescription = body + suffix;
  } else {
  const sc = staticCourse!;
  title = ct(sc.titleKey);
- const description = ct(sc.descKey);
+ const rawDesc = ct(sc.descKey);
  const ageRange = `${sc.ageMin}–${sc.ageMax}`;
  const lvl = levelLabel(sc.level, lang);
- seoDescription = lang === "ar"
- ? `${description} للأعمار ${ageRange}. مستوى ${lvl}، ${sc.lessons} درسًا على مدى ${sc.durationWeeks} أسابيع.`
- : `${description} For ages ${ageRange}. ${lvl} level, ${sc.lessons} lessons over ${sc.durationWeeks} weeks.`;
+ const suffix = lang === "ar"
+ ? ` للأعمار ${ageRange}. مستوى ${lvl}، ${sc.lessons} درسًا على مدى ${sc.durationWeeks} أسابيع.`
+ : ` For ages ${ageRange}. ${lvl} level, ${sc.lessons} lessons over ${sc.durationWeeks} weeks.`;
+ const description = truncate(rawDesc.split("\n")[0], 120 - suffix.length);
+ seoDescription = description + suffix;
  }
 
  return {

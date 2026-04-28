@@ -15,12 +15,12 @@ const meta = {
  en: {
  title: "Kids’ coding & STEM courses | Live online (6–18)",
  description:
- "12 live online courses for children ages 6–18: Scratch, Python, Web Development, Game Dev, Robotics, Advanced Robotics, Algorithms, Competitive Programming (IOI/ICPC), and 4 Arabic Language tracks. Each course lists age range, level, duration, and lesson count. Free trial available.",
+ "Live coding & STEM courses for kids 6–18: Python, Scratch, Robotics, Algorithms, Game Dev & Arabic. Certified teachers, small groups. Free trial.",
  },
  ar: {
  title: "دورات برمجة وSTEM للأطفال | مباشرة أونلاين ٦–١٨",
  description:
- "١٢ دورة مباشرة أونلاين للأطفال من ٦ إلى ١٨ سنة: سكراتش، بايثون، تطوير مواقع، تطوير ألعاب، روبوتات، روبوتات متقدمة، خوارزميات، برمجة تنافسية (IOI/ICPC)، وأربع مسارات للغة العربية. كل دورة تحدد الفئة العمرية والمستوى والمدة وعدد الحصص. تجربة مجانية متاحة.",
+ "١٢ دورة مباشرة للأطفال ٦–١٨: بايثون، سكراتش، روبوتات، خوارزميات، تطوير الألعاب، عربية. معلمون معتمدون، مجموعات صغيرة. تجربة مجانية.",
  },
 };
 
