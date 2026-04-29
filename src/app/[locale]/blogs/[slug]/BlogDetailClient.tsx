@@ -139,7 +139,8 @@ export default function BlogDetailClient({ post, relatedCourses }: Props) {
  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="mb-10">
  <img
  src={post.coverImage}
- alt={post.title[lang]}
+ alt={post.title[lang] ?? ""}
+ loading="lazy"
  className="w-full rounded-2xl border border-border"
  />
  </motion.div>

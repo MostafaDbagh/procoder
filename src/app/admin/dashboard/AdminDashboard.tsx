@@ -5029,6 +5029,7 @@ function TeamFormModal({
  <img
  src={teamPhotoPreviewSrc(form.photoUrl)}
  alt=""
+ aria-hidden="true"
  className="h-16 w-16 rounded-full border border-slate-600 object-cover"
  />
  <button
