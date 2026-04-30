@@ -108,6 +108,8 @@ export interface APICourse {
  /** Cover image (Cloudinary or `/uploads/courses/...`). */
  imageUrl?: string;
  imagePublicId?: string;
+ /** Lower number = appears first in the catalog. Default 0. */
+ sortOrder?: number;
 }
 
 export function fetchCourses(params?: {
@@ -333,6 +335,8 @@ export interface CreateCourseData {
  discountPercent?: number;
  imageUrl?: string;
  imagePublicId?: string;
+ /** Lower number = appears first in the catalog. Default 0. */
+ sortOrder?: number;
 }
 
 function authRequest<T>(
