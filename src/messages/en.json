@@ -13,7 +13,7 @@
     "lightMode": "Light Mode",
     "language": "العربية",
     "menu": "Menu",
-    "pricing": "Pricing",
+    "freeTrial": "Free Trial",
     "bookDemo": "Book a Free Trial Class",
     "bookDemoSubject": "Free trial class — {course}",
     "bookDemoSubjectGeneric": "Free trial class"
@@ -30,6 +30,7 @@
     "intro": "StemTechLab is a warm, bilingual learning home for children ages 6–18 across Saudi Arabia, UAE, and around the world. Our caring, certified teachers guide your child through hands-on adventures in coding, robotics, algorithms, and Arabic — in small, live classes where every child is seen, heard, and celebrated.",
     "cta": "Explore Courses",
     "secondaryCta": "Find the Right Fit",
+    "freeTrialCta": "Try a Free Class Together",
     "trustBadges": "Loved by 500+ families across the GCC"
   },
   "learnWithFun": {
@@ -288,7 +289,7 @@
     "forgotOtpTitle": "Enter verification code",
     "forgotOtpHint": "We sent a 4-digit code to {email}.",
     "forgotOtpBoxesLabel": "4-digit code",
-    "forgotOtpScreenSubtitle": "Type the code from your email. It expires in 15 minutes.",
+    "forgotOtpScreenSubtitle": "Type the code from your email. It expires in 5 minutes.",
     "forgotOtpVerify": "Verify code",
     "forgotOtpVerifying": "Verifying…",
     "forgotOtpSuccessTitle": "Code verified",

@@ -5,7 +5,7 @@ const BREADCRUMB_AR: Record<string, string> = {
   Courses: "الدورات",
   Blog: "المدونة",
   About: "من نحن",
-  Pricing: "الأسعار",
+
   Contact: "تواصل معنا",
   "Free Trial": "تجربة مجانية",
   Careers: "الوظائف",

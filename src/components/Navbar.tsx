@@ -49,6 +49,7 @@ export function Navbar() {
  { href: "/", label: t("home") },
  { href: "/courses", label: t("courses") },
  { href: "/recommend", label: t("recommend") },
+ { href: "/free-trial", label: t("freeTrial") },
  { href: "/parents", label: t("parents") },
  { href: "/blogs", label: t("blog") },
  { href: "/contact", label: t("contact") },
@@ -92,7 +93,7 @@ export function Navbar() {
  {/* Actions */}
  <div className="flex items-center gap-2">
  <LocalizedLink
- href={contactWithTrialSubject}
+ href="/free-trial"
  className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary to-purple text-white text-sm font-semibold shadow-[0_4px_14px_rgba(139,123,200,0.40)] hover:shadow-[0_6px_20px_rgba(139,123,200,0.55)] hover:scale-[1.03] hover:brightness-110 transition-all duration-200 md:me-5"
  >
  {t("bookDemo")}
@@ -102,9 +103,9 @@ export function Navbar() {
  <LangToggle locale={locale} switchHref={switchHref} />
  </div>
 
- <button
+<button
  onClick={toggleTheme}
- className="p-2 rounded-xl text-muted hover:text-foreground hover:bg-surface-hover transition-colors"
+className="hidden md:inline-flex p-2 rounded-xl text-muted hover:text-foreground hover:bg-surface-hover transition-colors"
  aria-label={theme === "dark" ? t("lightMode") : t("darkMode")}
  >
  <AnimatePresence mode="wait" initial={false}>
@@ -123,6 +124,10 @@ export function Navbar() {
  </motion.div>
  </AnimatePresence>
  </button>
+
+<div className="md:hidden w-full max-w-[100px]">
+<LangToggle locale={locale} switchHref={switchHref} mobile />
+</div>
 
  {/* Mobile toggle */}
  <button
@@ -166,11 +171,14 @@ export function Navbar() {
  </LocalizedLink>
  );
  })}
- <div className={`flex px-4 py-1 ${locale === "ar" ? "justify-start" : "justify-end"}`}>
- <LangToggle locale={locale} switchHref={switchHref} />
- </div>
+<button
+onClick={toggleTheme}
+className="mx-4 mt-1 w-[calc(100%-2rem)] px-4 py-3 rounded-xl border border-border text-sm font-semibold text-foreground bg-surface hover:bg-surface-hover transition-colors"
+>
+{theme === "dark" ? t("lightMode") : t("darkMode")}
+</button>
  <LocalizedLink
- href={contactWithTrialSubject}
+ href="/free-trial"
  className="block mx-4 mt-2 px-4 py-3 rounded-xl bg-gradient-to-r from-primary to-purple text-white text-sm font-semibold text-center shadow-[0_4px_14px_rgba(139,123,200,0.40)]"
  >
  {t("bookDemo")}
@@ -188,9 +196,11 @@ export function Navbar() {
 function LangToggle({
  locale,
  switchHref,
+mobile = false,
 }: {
  locale: string;
  switchHref: string;
+mobile?: boolean;
 }) {
  const isAr = locale === "ar";
 
@@ -200,10 +210,12 @@ function LangToggle({
  dir="ltr"
  aria-label={isAr ? "Switch to English" : "Switch to Arabic"}
  style={{ fontFamily: "var(--font-nunito), var(--font-geist-sans), sans-serif" }}
- className="relative flex items-center h-9 rounded-full p-[3px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80
+className={`relative flex items-center rounded-full p-[3px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80
  shadow-[0_2px_10px_rgba(0,0,0,0.08),0_1px_3px_rgba(0,0,0,0.06)] dark:shadow-[0_2px_10px_rgba(0,0,0,0.25),0_1px_3px_rgba(0,0,0,0.15)]
  hover:shadow-[0_4px_18px_rgba(167,139,250,0.25),0_2px_6px_rgba(0,0,0,0.10)] dark:hover:shadow-[0_4px_18px_rgba(167,139,250,0.30),0_2px_6px_rgba(0,0,0,0.20)]
- hover:border-primary/50 transition-all duration-300 select-none no-underline"
+hover:border-primary/50 transition-all duration-300 select-none no-underline ${
+mobile ? "h-8 max-w-[100px] w-full" : "h-9"
+}`}
  >
  {/* sliding highlight */}
  <motion.span
@@ -216,13 +228,13 @@ function LangToggle({
  />
 
  {/* EN */}
- <span className={`relative z-10 flex items-center justify-center gap-[5px] w-14 h-full text-[11.5px] font-extrabold tracking-wide transition-colors duration-200 ${!isAr ? "text-white drop-shadow-sm" : "text-slate-500 dark:text-slate-400"}`}>
+<span className={`relative z-10 flex items-center justify-center gap-[5px] ${mobile ? "w-[44px]" : "w-14"} h-full text-[11.5px] font-extrabold tracking-wide transition-colors duration-200 ${!isAr ? "text-white drop-shadow-sm" : "text-slate-500 dark:text-slate-400"}`}>
  <span className="leading-none text-[13px]">🇬🇧</span>
  <span>EN</span>
  </span>
 
  {/* AR */}
- <span className={`relative z-10 flex items-center justify-center gap-[5px] w-14 h-full text-[11.5px] font-extrabold tracking-wide transition-colors duration-200 ${isAr ? "text-white drop-shadow-sm" : "text-slate-500 dark:text-slate-400"}`}>
+<span className={`relative z-10 flex items-center justify-center gap-[5px] ${mobile ? "w-[44px]" : "w-14"} h-full text-[11.5px] font-extrabold tracking-wide transition-colors duration-200 ${isAr ? "text-white drop-shadow-sm" : "text-slate-500 dark:text-slate-400"}`}>
  <span>AR</span>
  <span className="leading-none text-[13px]">🇦🇪</span>
  </span>

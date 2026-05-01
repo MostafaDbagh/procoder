@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
@@ -232,6 +232,51 @@ export function AuthModal({
  setLoginForm({ email: "", password: "" });
  }, 300);
  };
+
+ const verifyOtp = useCallback(async () => {
+ const code = otp.join("");
+ if (code.length !== 4 || otpPhase === "verifying" || otpPhase === "success") {
+ return;
+ }
+ setError("");
+ setOtpPhase("verifying");
+ try {
+ const res = await fetch(`${API}/auth/parent/verify-reset-otp`, {
+ method: "POST",
+ headers: { "Content-Type": "application/json" },
+ body: JSON.stringify({ email: forgotEmail.trim(), code }),
+ });
+ const data = (await res.json().catch(() => ({}))) as {
+ message?: string;
+ ok?: boolean;
+ };
+ if (!res.ok || !data.ok) {
+ setOtpPhase("error");
+ setError(
+ data.message ||
+ (isRtl ? "تحقق من الرمز وحاول مرة أخرى" : "Check the code and try again")
+ );
+ return;
+ }
+ setOtpPhase("success");
+ if (otpAdvanceTimer.current) clearTimeout(otpAdvanceTimer.current);
+ otpAdvanceTimer.current = setTimeout(() => {
+ otpAdvanceTimer.current = null;
+ setForgotStep("newpass");
+ setOtpPhase("idle");
+ }, 1400);
+ } catch {
+ setOtpPhase("error");
+ setError(isRtl ? "حدث خطأ. حاول مرة أخرى." : "Something went wrong. Try again.");
+ }
+ }, [API, forgotEmail, isRtl, otp, otpPhase]);
+
+ useEffect(() => {
+ if (forgotStep !== "otp") return;
+ if (otp.join("").length !== 4) return;
+ if (otpPhase !== "idle") return;
+ void verifyOtp();
+ }, [forgotStep, otp, otpPhase, verifyOtp]);
 
  return (
  <AnimatePresence>
@@ -577,7 +622,7 @@ export function AuthModal({
  <button
  type="submit"
  disabled={submitting || !emailLooksValid(forgotEmail)}
- className="w-full rounded-2xl bg-emerald-500 py-3.5 font-semibold text-white shadow-md transition-all hover:scale-[1.01] hover:shadow-lg disabled:opacity-70"
+ className="w-full rounded-2xl bg-black py-3.5 font-semibold text-white shadow-md transition-all hover:scale-[1.01] hover:bg-black/90 hover:shadow-lg disabled:opacity-70"
  >
  {submitting ? <Loader2 className="mx-auto h-5 w-5 animate-spin" /> : ta("forgotSendCode")}
  </button>
@@ -656,38 +701,9 @@ export function AuthModal({
 
  <form
  className="space-y-5"
- onSubmit={async (e) => {
+ onSubmit={(e) => {
  e.preventDefault();
- const code = otp.join("");
- if (code.length !== 4 || otpPhase === "verifying" || otpPhase === "success") return;
- setError("");
- setOtpPhase("verifying");
- try {
- const res = await fetch(`${API}/auth/parent/verify-reset-otp`, {
- method: "POST",
- headers: { "Content-Type": "application/json" },
- body: JSON.stringify({ email: forgotEmail.trim(), code }),
- });
- const data = (await res.json().catch(() => ({}))) as { message?: string; ok?: boolean };
- if (!res.ok || !data.ok) {
- setOtpPhase("error");
- setError(
- data.message ||
- (isRtl ? "تحقق من الرمز وحاول مرة أخرى" : "Check the code and try again")
- );
- return;
- }
- setOtpPhase("success");
- if (otpAdvanceTimer.current) clearTimeout(otpAdvanceTimer.current);
- otpAdvanceTimer.current = setTimeout(() => {
- otpAdvanceTimer.current = null;
- setForgotStep("newpass");
- setOtpPhase("idle");
- }, 1400);
- } catch {
- setOtpPhase("error");
- setError(isRtl ? "حدث خطأ. حاول مرة أخرى." : "Something went wrong. Try again.");
- }
+ void verifyOtp();
  }}
  >
  <div

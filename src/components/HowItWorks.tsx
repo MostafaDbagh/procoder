@@ -94,7 +94,7 @@ export function HowItWorks() {
  {/* Book Free Trial link */}
  <AnimatedSection delay={0.5} className="text-center mt-10">
  <LocalizedLink
- href="/contact?subject=Book%20a%20Free%20Trial%20Class"
+ href="/free-trial"
  className="inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl bg-primary text-white font-semibold text-base shadow-md shadow-primary/10 hover:shadow-lg hover:scale-[1.02] transition-all"
  >
  {t("step2Title")}

@@ -66,6 +66,7 @@ export function Footer() {
  <li><LocalizedLink href="/" className="text-sm text-muted hover:text-primary transition-colors">{nav("home")}</LocalizedLink></li>
  <li><LocalizedLink href="/courses" className="text-sm text-muted hover:text-primary transition-colors">{nav("courses")}</LocalizedLink></li>
  <li><LocalizedLink href="/recommend" className="text-sm text-muted hover:text-primary transition-colors">{nav("recommend")}</LocalizedLink></li>
+ <li><LocalizedLink href="/free-trial" className="text-sm text-muted hover:text-primary transition-colors">{nav("freeTrial")}</LocalizedLink></li>
  <li><LocalizedLink href="/challenge" className="text-sm text-muted hover:text-primary transition-colors">{nav("challenge")}</LocalizedLink></li>
  <li><LocalizedLink href="/blogs" className="text-sm text-muted hover:text-primary transition-colors">{nav("blog")}</LocalizedLink></li>
  </ul>
