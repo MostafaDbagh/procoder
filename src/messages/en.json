@@ -27,11 +27,11 @@
   "hero": {
     "title": "Where Every Child Discovers the Joy of Learning",
     "subtitle": "Nurturing young minds through creativity, confidence, and the wonder of technology.",
-    "intro": "StemTechLab is a warm, bilingual learning home for children ages 6–18 across Saudi Arabia, UAE, and around the world. Our caring, certified teachers guide your child through hands-on adventures in coding, robotics, algorithms, and Arabic — in small, live classes where every child is seen, heard, and celebrated.",
+    "intro": "StemTechLab is a warm, bilingual learning home for children ages 6–18 in the UAE, Netherlands, and Germany. Our caring, certified teachers guide your child through hands-on adventures in coding, robotics, algorithms, and Arabic — in small, live classes where every child is seen, heard, and celebrated.",
     "cta": "Explore Courses",
     "secondaryCta": "Find the Right Fit",
     "freeTrialCta": "Try a Free Class Together",
-    "trustBadges": "Loved by 500+ families across the GCC"
+    "trustBadges": "Serving families in UAE, Netherlands & Germany"
   },
   "learnWithFun": {
     "title": "Learning That Feels Like Play",
@@ -337,7 +337,7 @@
     "value4Desc": "Whether you're in Dubai or London, in English or Arabic — every family is welcome here.",
     "storyTitle": "Our Story",
     "storyP1": "We started StemTechLab because we believe every child deserves a teacher who sees them, a classroom where they feel safe, and lessons that make their hearts sing.",
-    "storyP2": "Today, we teach coding, robotics, and Arabic to families around the world — always in small, live classes where every child's name is known and every question is welcomed.",
+    "storyP2": "Today, we teach coding, robotics, and Arabic to families in the UAE, Netherlands, and Germany — always in small, live classes where every child's name is known and every question is welcomed.",
     "teamTitle": "The People Who Care",
     "teamSubtitle": "Teachers, builders, and dreamers — all here for your child",
     "member1Name": "Mohamed Ali",
@@ -812,7 +812,7 @@
     "submitting": "Booking...",
     "successTitle": "You're booked!",
     "successDesc": "We'll WhatsApp or call you within 2 hours to confirm your free trial slot. We can't wait to meet your child!",
-    "trustBadge1": "500+ families tried us",
+    "trustBadge1": "Free — no card needed",
     "trustBadge2": "4.9 ★ average rating",
     "trustBadge3": "No card needed"
   },
@@ -829,8 +829,8 @@
   },
   "seo": {
     "defaultTitle": "StemTechLab — AI-Powered Coding, STEM & Arabic Learning for Kids Online",
-    "defaultDescription": "We use AI to help kids and parents find the right learning path and unlock creative thinking. Bilingual live courses in coding, robotics, AI, and Arabic for children ages 6–18 across Saudi Arabia, UAE, and the Gulf.",
-    "keywords": "coding for kids, online STEM courses for kids, kids coding classes, AI course finder for kids, Arabic learning online, kids programming online, robotics for kids, Scratch programming, Python for kids, game development for kids, web development for kids, algorithms for kids, artificial intelligence for kids, bilingual education online, kids online tutoring, STEM education Saudi Arabia, STEM education UAE, kids coding Gulf, live online classes kids, certified coding teacher, creative coding kids, computational thinking kids, future skills for kids, kids tech academy, stemtechlab, e-learning for kids, online Arabic course kids, AI-powered course recommendation, kids STEM platform, math and coding for kids, AI learning assistant for kids, AI helps kids learn, AI for creative thinking kids, AI course matching, personalized learning AI, AI education platform kids, parents AI learning guide, AI goal setting kids, creative thinking with AI, AI tutoring kids online",
+    "defaultDescription": "We use AI to help kids and parents find the right learning path and unlock creative thinking. Bilingual live courses in coding, robotics, AI, and Arabic for children ages 6–18 in the UAE, Netherlands, and Germany.",
+    "keywords": "coding for kids, online STEM courses for kids, kids coding classes, AI course finder for kids, Arabic learning online, kids programming online, robotics for kids, Scratch programming, Python for kids, game development for kids, web development for kids, algorithms for kids, artificial intelligence for kids, bilingual education online, kids online tutoring, STEM education UAE, kids coding UAE, kids coding Netherlands, kids coding Germany, coding for kids Dubai, coding for kids Amsterdam, coding for kids Berlin, live online classes kids, certified coding teacher, creative coding kids, computational thinking kids, future skills for kids, kids tech academy, stemtechlab, e-learning for kids, online Arabic course kids, AI-powered course recommendation, kids STEM platform, math and coding for kids, AI learning assistant for kids, AI helps kids learn, AI for creative thinking kids, AI course matching, personalized learning AI, AI education platform kids, parents AI learning guide, AI goal setting kids, creative thinking with AI, AI tutoring kids online, expat kids coding UAE, Arabic kids Netherlands, Arabic kids Germany, online Arabic school Europe",
     "homeTitle": "StemTechLab — AI-Powered Learning Where Every Child Thrives",
     "homeDescription": "We use AI to guide kids and parents toward the right courses and creative goals. Live coding, robotics, AI, and Arabic classes for ages 6–18 — small groups, certified teachers, real results.",
     "coursesTitle": "Coding, AI & Arabic Courses for Kids | StemTechLab",
@@ -842,7 +842,7 @@
     "pricingTitle": "Kids Coding & STEM Course Pricing | StemTechLab",
     "pricingDescription": "Flexible plans for kids coding, AI, robotics, and Arabic courses. Our AI recommends the best plan for your child's goals. Start with a free trial — no credit card required.",
     "aboutTitle": "About Us | AI-Powered Kids Learning Platform | StemTechLab",
-    "aboutDescription": "StemTechLab uses AI to help every child and parent achieve their learning goals through creative thinking. Bilingual STEM, coding, robotics, and Arabic courses for Gulf kids ages 6–18.",
+    "aboutDescription": "StemTechLab uses AI to help every child and parent achieve their learning goals through creative thinking. Bilingual STEM, coding, robotics, and Arabic courses for kids ages 6–18 in UAE, Netherlands, and Germany.",
     "blogTitle": "Blog | AI, STEM & Kids Learning Tips | StemTechLab",
     "blogDescription": "Articles and tips on AI in education, creative thinking, kids coding, Arabic learning, and STEM skills — for parents and teachers who want the best for their children.",
     "challengeTitle": "Monthly AI & Coding Challenge | StemTechLab",

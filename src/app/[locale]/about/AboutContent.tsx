@@ -11,8 +11,6 @@ import {
  Rocket,
  Telescope,
  Heart,
- Users,
- GraduationCap,
  Globe,
  ShieldCheck,
  Code2,
@@ -71,12 +69,6 @@ export default function AboutContent({ cmsTeam }: AboutContentProps) {
  }))
  : fallbackTeam;
 
- const stats = [
- { value: "500+", label: t("statStudents"), icon: Users },
- { value: "50+", label: t("statCourses"), icon: GraduationCap },
- { value: "12+", label: t("statInstructors"), icon: Brain },
- { value: "5", label: t("statCategories"), icon: BookOpen },
- ];
 
  return (
  <div className="py-12 sm:py-20">
@@ -128,28 +120,6 @@ export default function AboutContent({ cmsTeam }: AboutContentProps) {
  <h2 className="text-xl sm:text-2xl font-bold mb-3">{t("aiTechTitle")}</h2>
  <p className="text-muted leading-relaxed">{t("aiTechBody")}</p>
  </div>
- </div>
- </div>
- </AnimatedSection>
-
- {/* Stats */}
- <AnimatedSection className="mb-20">
- <div className="bg-primary rounded-3xl p-8 sm:p-12">
- <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
- {stats.map((stat, i) => (
- <motion.div
- key={i}
- initial={{ opacity: 0, scale: 0.8 }}
- whileInView={{ opacity: 1, scale: 1 }}
- viewport={{ once: true }}
- transition={{ delay: i * 0.1 }}
- className="text-center"
- >
- <stat.icon className="w-8 h-8 text-white/80 mx-auto mb-3" />
- <p className="text-3xl sm:text-4xl font-bold text-white mb-1">{stat.value}</p>
- <p className="text-white/70 text-sm">{stat.label}</p>
- </motion.div>
- ))}
  </div>
  </div>
  </AnimatedSection>

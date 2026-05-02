@@ -16,12 +16,12 @@ const meta = {
  en: {
  title: "AI-powered kids' coding, robotics & STEM (6–18) | StemTechLab",
  description:
- "Live STEM, coding & Arabic classes for kids 6–18. AI course matching, Arabic-native teachers, max 8 students. GCC & worldwide. Free trial.",
+ "Live STEM, coding & Arabic classes for kids 6–18. AI course matching, Arabic-native teachers, max 8 students. UAE, Netherlands & Germany. Free trial.",
  },
  ar: {
  title: "وكيل ذكاء اصطناعي لتحليل تعلّم طفلك | برمجة وSTEM ٦–١٨",
  description:
- "دروس مباشرة في برمجة وروبوتات وعربية للأطفال ٦–١٨. مطابقة بالذكاء الاصطناعي، معلمون معتمدون، حد أقصى ٨ طلاب. الخليج والعالم. تجربة مجانية.",
+ "دروس مباشرة في برمجة وروبوتات وعربية للأطفال ٦–١٨. مطابقة بالذكاء الاصطناعي، معلمون معتمدون، حد أقصى ٨ طلاب. الإمارات وهولندا وألمانيا. تجربة مجانية.",
  },
 };
 

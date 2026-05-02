@@ -125,7 +125,7 @@ className="hidden md:inline-flex p-2 rounded-xl text-muted hover:text-foreground
  </AnimatePresence>
  </button>
 
-<div className="md:hidden w-full max-w-[100px]">
+<div className="md:hidden w-[120px]">
 <LangToggle locale={locale} switchHref={switchHref} mobile />
 </div>
 
@@ -214,7 +214,7 @@ className={`relative flex items-center rounded-full p-[3px] bg-white dark:bg-sla
  shadow-[0_2px_10px_rgba(0,0,0,0.08),0_1px_3px_rgba(0,0,0,0.06)] dark:shadow-[0_2px_10px_rgba(0,0,0,0.25),0_1px_3px_rgba(0,0,0,0.15)]
  hover:shadow-[0_4px_18px_rgba(167,139,250,0.25),0_2px_6px_rgba(0,0,0,0.10)] dark:hover:shadow-[0_4px_18px_rgba(167,139,250,0.30),0_2px_6px_rgba(0,0,0,0.20)]
 hover:border-primary/50 transition-all duration-300 select-none no-underline ${
-mobile ? "h-8 max-w-[100px] w-full" : "h-9"
+mobile ? "h-8 w-full" : "h-9"
 }`}
  >
  {/* sliding highlight */}

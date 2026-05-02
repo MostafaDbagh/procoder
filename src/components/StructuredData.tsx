@@ -9,7 +9,7 @@ function organizationContactPoints() {
  "@type": "ContactPoint",
  contactType: "customer service",
  availableLanguage: ["English", "Arabic"],
- areaServed: ["SA", "AE", "QA", "KW", "BH", "OM", "TR", "CA", "US", "GB", "DE", "FR"],
+ areaServed: ["AE", "NL", "DE"],
  };
  if (PUBLIC_CONTACT_EMAIL) cp.email = PUBLIC_CONTACT_EMAIL;
  if (PUBLIC_CONTACT_PHONE) cp.telephone = PUBLIC_CONTACT_PHONE;
@@ -22,7 +22,7 @@ export function OrganizationSchema() {
  "@type": "EducationalOrganization",
  name: "StemTechLab",
  description:
- "The only live online STEM platform for kids that combines Arabic-native instruction, GCC focus, and AI-powered course matching in one place. Courses in Programming, Robotics, Algorithms, and Arabic Language for ages 6–18. Certified teachers, max 8 students per class, free trial.",
+ "Live online STEM platform for kids combining Arabic-native instruction, AI-powered course matching, and small-group classes. Courses in Programming, Robotics, Algorithms, and Arabic Language for ages 6–18 in UAE, Netherlands, and Germany. Certified teachers, max 8 students per class, free trial.",
  url: SITE_URL,
  logo: `${SITE_URL}/logo.svg`,
  image: `${SITE_URL}/og`,
@@ -36,10 +36,7 @@ export function OrganizationSchema() {
  "Personalized learning",
  ],
  areaServed: [
- "Saudi Arabia", "United Arab Emirates", "Kuwait", "Qatar",
- "Bahrain", "Oman", "Turkey", "Syria", "Iraq", "Jordan",
- "Egypt", "Lebanon", "Canada", "United States", "United Kingdom",
- "Germany", "France", "Netherlands", "Sweden", "Australia",
+ "United Arab Emirates", "Netherlands", "Germany",
  ].map((name) => ({ "@type": "Country", name })),
  address: {
  "@type": "PostalAddress",
@@ -50,7 +47,6 @@ export function OrganizationSchema() {
  "https://www.facebook.com/stemtechlab",
  "https://www.instagram.com/stemtechlab",
  "https://www.linkedin.com/company/stemtechlab",
- "https://www.youtube.com/@stemtechlab",
  ],
  };
  const cps = organizationContactPoints();
@@ -94,20 +90,22 @@ const FAQ_EN = [
  { q: "Do you offer free trial classes?", a: "Yes: one free live session, no obligation." },
  { q: "How are StemTechLab classes conducted?", a: "Live online in small groups or 1:1 with screen share, guided practice, and interactive tools." },
  { q: "What devices are needed for classes?", a: "Laptop or desktop plus stable internet. Coding runs in the browser; robotics kits ship where needed." },
- { q: "Which countries does StemTechLab serve?", a: "GCC, Turkey, North America, Europe, and more—in English or Arabic." },
+ { q: "Which countries does StemTechLab serve?", a: "UAE, Netherlands, and Germany — in English or Arabic." },
+ { q: "Are StemTechLab teachers certified and Arabic-native?", a: "Yes — all teachers are certified specialists in teaching children. Many are native Arabic speakers, enabling instruction in both Arabic and English across all STEM subjects." },
  { q: "Can I reschedule or cancel classes?", a: "Reschedule up to 4 hours before class; plans can pause when your schedule changes." },
 ];
 
 const FAQ_AR = [
  { q: "ما الفئة العمرية التي تستهدفها دورات StemTechLab؟", a: "الأعمار من ٦ إلى ١٨ عامًا مع مسارات حسب المستوى. يأخذ معظم الطلاب جلستين مباشرتين مدة كل منهما ساعة أسبوعيًا." },
  { q: "كيف تقترح StemTechLab أفضل دورة لطفلي؟", a: "يستخدم محدد الدورات لدينا تقنية الذكاء الاصطناعي لاقتراح الدورات المباشرة التي تناسب عمر طفلك واهتماماته ومستواه. يختار الوالدان الدورة التي يرغبون في التسجيل بها." },
- { q: "كيف تُحمى بيانات طفلي وخصوصيته؟", a: "نعتمد التشفير ومعايير حماية بيانات الأطفال، ولا نبيع بيانات الأطفال إطلاقًا. يتحكم الوالدان في حسابات الطلاب." },
- { q: "هل يحتاج طفلي إلى خبرة مسبقة؟", a: "لا—يبدأ المبتدئون بالأساسيات، وتتوفر مسارات متقدمة أيضًا. يساعد محدد الدورات والنموذج على اختيار المستوى المناسب." },
- { q: "هل تقدمون حصصًا تجريبية مجانية؟", a: "نعم: جلسة مباشرة مجانية واحدة دون أي التزام." },
- { q: "كيف تُعقد حصص StemTechLab؟", a: "مباشرة عبر الإنترنت في مجموعات صغيرة أو فردية مع مشاركة الشاشة وممارسة موجّهة وأدوات تفاعلية." },
- { q: "ما الأجهزة المطلوبة للحصص؟", a: "حاسوب محمول أو مكتبي مع اتصال إنترنت مستقر. تعمل البرمجة في المتصفح؛ وتُشحن مجموعات الروبوتات حيثما لزم." },
- { q: "ما الدول التي تخدمها StemTechLab؟", a: "دول الخليج وتركيا وأمريكا الشمالية وأوروبا وغيرها—باللغتين العربية والإنجليزية." },
- { q: "هل يمكنني إعادة جدولة الحصص أو إلغاؤها؟", a: "يمكن إعادة الجدولة قبل ٤ ساعات من الحصة؛ ويمكن تعليق الخطة عند تغيّر جدولك." },
+ { q: "كيف تُحمى بيانات طفلي وخصوصيته؟", a: "نعتمد التشفير الكامل ومعايير حماية بيانات الأطفال، ولا نبيع بيانات الأطفال إطلاقًا. يتحكم الوالدان في حسابات الطلاب، والمنصة آمنة تمامًا للأطفال." },
+ { q: "هل يحتاج طفلي إلى خبرة مسبقة؟", a: "لا—يبدأ المبتدئون بالأساسيات، وتتوفر مسارات متقدمة أيضًا. يساعد محدد الدورات بالذكاء الاصطناعي على اختيار المستوى المناسب لعمر طفلك." },
+ { q: "هل تقدمون حصصًا تجريبية مجانية؟", a: "نعم: حصة مباشرة مجانية ٦٠ دقيقة — بدون بطاقة بنكية ولا أي التزام. متاح لعائلات دبي وأبوظبي وأمستردام وبرلين وغيرها." },
+ { q: "هل المعلمون عرب أصليون ومعتمدون؟", a: "نعم، جميع معلمينا معتمدون ومتخصصون في تعليم الأطفال. كثيرون منهم عرب أصليون يتيحون تعليم العربية والمحتوى التقني باللغتين العربية والإنجليزية." },
+ { q: "كيف تُعقد حصص StemTechLab؟", a: "مباشرة عبر الإنترنت في مجموعات صغيرة (حد أقصى ٨ طلاب) أو فردية مع مشاركة الشاشة وممارسة موجّهة وأدوات تفاعلية. مناسبة للتوقيتات في الإمارات وأوروبا." },
+ { q: "ما الأجهزة المطلوبة للحصص؟", a: "حاسوب محمول أو مكتبي مع اتصال إنترنت مستقر. تعمل البرمجة في المتصفح مباشرة." },
+ { q: "ما الدول التي تخدمها StemTechLab؟", a: "الإمارات (دبي، أبوظبي، الشارقة) وهولندا (أمستردام، روتردام) وألمانيا (برلين، ميونخ، هامبورغ) — باللغتين العربية والإنجليزية." },
+ { q: "هل يمكنني إعادة جدولة الحصص أو إلغاؤها؟", a: "يمكن إعادة الجدولة قبل ٤ ساعات من الحصة؛ ويمكن تعليق الخطة في أي وقت عند تغيّر جدولك." },
 ];
 
 export function FAQSchema({ locale = "en" }: { locale?: string }) {
@@ -133,7 +131,7 @@ export function WebsiteSchema() {
  name: "StemTechLab",
  url: SITE_URL,
  description:
- "Live kids’ classes in programming, robotics, algorithms & Arabic (ages 6–18). English & Arabic. GCC & worldwide.",
+ "Live kids’ classes in programming, robotics, algorithms & Arabic (ages 6–18). English & Arabic. UAE, Netherlands & Germany.",
  inLanguage: ["en", "ar"],
  potentialAction: {
  "@type": "SearchAction",
@@ -187,11 +185,14 @@ export function BreadcrumbSchema({ items }: { items: { name: string; url: string
 
 export function LocalBusinessSchema() {
  const locations = [
- { city: "Riyadh", country: "SA", lat: 24.7136, lng: 46.6753 },
  { city: "Dubai", country: "AE", lat: 25.2048, lng: 55.2708 },
  { city: "Abu Dhabi", country: "AE", lat: 24.4539, lng: 54.3773 },
- { city: "Doha", country: "QA", lat: 25.2854, lng: 51.531 },
- { city: "Kuwait City", country: "KW", lat: 29.3759, lng: 47.9774 },
+ { city: "Sharjah", country: "AE", lat: 25.3463, lng: 55.4209 },
+ { city: "Amsterdam", country: "NL", lat: 52.3676, lng: 4.9041 },
+ { city: "Rotterdam", country: "NL", lat: 51.9244, lng: 4.4777 },
+ { city: "Berlin", country: "DE", lat: 52.52, lng: 13.405 },
+ { city: "Munich", country: "DE", lat: 48.1351, lng: 11.582 },
+ { city: "Hamburg", country: "DE", lat: 53.5753, lng: 10.0153 },
  ];
 
  return (
