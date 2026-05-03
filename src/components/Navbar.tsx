@@ -52,6 +52,7 @@ export function Navbar() {
  { href: "/free-trial", label: t("freeTrial") },
  { href: "/parents", label: t("parents") },
  { href: "/blogs", label: t("blog") },
+ { href: "/faq", label: t("faq") },
  { href: "/contact", label: t("contact") },
  ], [t]);
 
