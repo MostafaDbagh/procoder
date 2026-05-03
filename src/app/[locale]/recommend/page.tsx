@@ -10,14 +10,14 @@ const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 const meta = {
  en: {
- title: "AI course finder for kids | STEM & coding match",
+ title: "AI Course Finder — Right Fit for Kids | StemTechLab",
  description:
- "Not sure which coding or STEM course fits your child? Tell us their age, interests, and experience level — our AI (OpenAI + DeepSeek) suggests the best-matching live course and a 3-step learning path. Free to use, no sign-up needed. Ages 6–18.",
+ "Not a quiz — real AI that analyses your child's learning behaviour (age, interests, experience, pace) and recommends the best-fit STEM, coding, or Arabic course + a 3-phase learning path. The first of its kind. Free, no sign-up. UAE, Netherlands & Germany.",
  },
  ar: {
- title: "مُنتقي دورات الأطفال بالذكاء الاصطناعي | STEM وبرمجة",
+ title: "منتقي الدورات بالذكاء الاصطناعي | ستم تك لاب",
  description:
- "لست متأكداً من الدورة المناسبة لطفلك؟ أخبرنا بعمره واهتماماته ومستواه، وسيقترح ذكاؤنا الاصطناعي (OpenAI + DeepSeek) أفضل دورة مباشرة ومسار تعلم من ٣ مراحل. مجاني، بدون تسجيل. للأعمار ٦–١٨.",
+ "ليس اختباراً عادياً — ذكاء اصطناعي حقيقي يحلّل سلوك تعلّم طفلك (العمر، الاهتمامات، الخبرة، الإيقاع) ويوصي بأنسب دورة STEM أو برمجة أو عربية مع مسار تعلم من ٣ مراحل. الأول من نوعه. مجاني، بدون تسجيل. الإمارات وهولندا وألمانيا.",
  },
 };
 

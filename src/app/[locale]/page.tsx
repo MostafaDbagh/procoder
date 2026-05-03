@@ -13,14 +13,14 @@ const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 const meta = {
  en: {
- title: "AI-powered kids' coding, robotics & STEM (6–18) | StemTechLab",
+ title: "AI Course Matching for Kids (6–18) | StemTechLab",
  description:
- "Live STEM, coding & Arabic classes for kids 6–18. AI course matching, Arabic-native teachers, max 8 students. UAE, Netherlands & Germany. Free trial.",
+ "The first AI that analyses how your child learns and matches them to the right STEM, coding, or Arabic course — not guesswork. Live classes, max 8 students, certified teachers. Parent dashboard included. UAE, Netherlands & Germany. Free trial.",
  },
  ar: {
- title: "وكيل ذكاء اصطناعي لتحليل تعلّم طفلك | برمجة وSTEM ٦–١٨",
+ title: "ذكاء اصطناعي يختار الدورة الأنسب لطفلك | ستم تك لاب",
  description:
- "دروس مباشرة في برمجة وروبوتات وعربية للأطفال ٦–١٨. مطابقة بالذكاء الاصطناعي، معلمون معتمدون، حد أقصى ٨ طلاب. الإمارات وهولندا وألمانيا. تجربة مجانية.",
+ "أول ذكاء اصطناعي يحلّل سلوك تعلّم طفلك ويطابقه مع الدورة الأنسب في STEM أو البرمجة أو العربية. دروس مباشرة، فصول بحد أقصى ٨ طلاب، معلمون معتمدون. لوحة تحكم لأولياء الأمور. الإمارات وهولندا وألمانيا. تجربة مجانية.",
  },
 };
 

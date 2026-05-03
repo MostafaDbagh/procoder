@@ -10,14 +10,14 @@ const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 const meta = {
  en: {
- title: "About StemTechLab | First AI agent for kids’ learning & future",
+ title: "About StemTechLab | AI STEM Platform for Kids (6–18)",
  description:
- "StemTechLab is a live online STEM platform for kids combining Arabic-native instruction, AI-powered course matching, and small classes. Programming, Robotics, Algorithms & Arabic for ages 6–18 in UAE, Netherlands & Germany. Certified instructors, max 8 students, COPPA-compliant.",
+ "We built the first AI that analyses a child’s learning behaviour to find the right course fit — not guesswork. Live STEM, coding & Arabic for kids 6–18 in UAE, Netherlands & Germany. Parent dashboard with real-time progress tracking, instructor notes, and weekly reports. Certified teachers, max 8 students, COPPA-compliant.",
  },
  ar: {
- title: "عن ستم تك لاب | منصة STEM وبرمجة موثوقة للأطفال",
+ title: "عن ستم تك لاب | منصة STEM ذكية للأطفال",
  description:
- "ستم تك لاب منصة تعليم مباشر أونلاين للأطفال تجمع التعليم بالعربية الأصلية ومطابقة الدورات بالذكاء الاصطناعي وفصول صغيرة. برمجة وروبوتات وخوارزميات وعربية للأعمار ٦–١٨ في الإمارات وهولندا وألمانيا. معلمون معتمدون، حد أقصى ٨ طلاب، متوافقة مع COPPA.",
+ "بنينا أول ذكاء اصطناعي يحلّل سلوك تعلّم طفلك لإيجاد الدورة الأنسب له — لا تخمين. دروس مباشرة في STEM والبرمجة والعربية للأطفال ٦–١٨ في الإمارات وهولندا وألمانيا. لوحة تحكم لأولياء الأمور بملاحظات المعلم وتقارير أسبوعية. معلمون معتمدون، حد أقصى ٨ طلاب، متوافقة مع COPPA.",
  },
 };
 
