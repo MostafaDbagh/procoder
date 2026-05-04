@@ -1,5 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
 
+export async function GET() {
+  return NextResponse.json({ ok: true, info: "Use POST with x-cron-secret header to submit URLs." });
+}
+
 const SITE = (process.env.SITE_URL || "https://www.stemtechlab.com").replace(/\/$/, "");
 const HOST = new URL(SITE).hostname;
 const KEY = "dccf1b07a60e4356883d6c6788540d35";
