@@ -126,9 +126,6 @@ className="hidden md:inline-flex p-2 rounded-xl text-muted hover:text-foreground
  </AnimatePresence>
  </button>
 
-<div className="md:hidden w-[120px]">
-<LangToggle locale={locale} switchHref={switchHref} mobile />
-</div>
 
  {/* Mobile toggle */}
  <button
@@ -172,12 +169,26 @@ className="hidden md:inline-flex p-2 rounded-xl text-muted hover:text-foreground
  </LocalizedLink>
  );
  })}
-<button
-onClick={toggleTheme}
-className="mx-4 mt-1 w-[calc(100%-2rem)] px-4 py-3 rounded-xl border border-border text-sm font-semibold text-foreground bg-surface hover:bg-surface-hover transition-colors"
->
-{theme === "dark" ? t("lightMode") : t("darkMode")}
-</button>
+<div className="mx-4 mt-1 flex gap-2">
+ <button
+  onClick={toggleTheme}
+  className="flex flex-1 items-center justify-center h-12 rounded-xl border border-border text-foreground bg-surface hover:bg-surface-hover transition-colors"
+  aria-label={theme === "dark" ? t("lightMode") : t("darkMode")}
+ >
+  {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+ </button>
+ <a
+  href={switchHref}
+  dir="ltr"
+  className="flex flex-1 items-center justify-center gap-2 h-12 rounded-xl border border-border text-sm font-semibold text-foreground bg-surface hover:bg-surface-hover transition-colors"
+ >
+  {locale === "ar" ? (
+   <><span className="text-base">🇬🇧</span><span>EN</span></>
+  ) : (
+   <><span className="text-base">🇦🇪</span><span>AR</span></>
+  )}
+ </a>
+</div>
  <LocalizedLink
  href="/free-trial"
  className="block mx-4 mt-2 px-4 py-3 rounded-xl bg-gradient-to-r from-primary to-purple text-white text-sm font-semibold text-center shadow-[0_4px_14px_rgba(139,123,200,0.40)]"

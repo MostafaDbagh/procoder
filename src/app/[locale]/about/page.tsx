@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import AboutContent from "./AboutContent";
-import { getTeamPublicISR } from "@/lib/server-api";
 import { BreadcrumbSchema } from "@/components/StructuredData";
 import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
 
@@ -58,7 +57,6 @@ export default async function AboutPage({
 }) {
  const { locale } = await params;
  setRequestLocale(locale);
- const cmsTeam = await getTeamPublicISR();
  return (
  <>
  <BreadcrumbSchema
@@ -67,7 +65,7 @@ export default async function AboutPage({
  { name: bcLabel("About", locale), url: `${SITE_URL}/${locale}/about` },
  ]}
  />
- <AboutContent cmsTeam={cmsTeam} />
+ <AboutContent />
  </>
  );
 }

@@ -362,6 +362,8 @@ export function MeetOurStars({ cmsTeam }: MeetOurStarsProps) {
  const carouselResetKey = `${teamRows.length}-${cmsTeam == null ? "null" : String(cmsTeam.length)}`;
  const isEmpty = teamRows.length === 0;
 
+ if (isEmpty) return null;
+
  return (
  <section className="py-20 sm:py-28 relative overflow-hidden">
  <StarDecoSVG className="absolute top-12 left-[5%] w-16 h-16 text-muted" />
@@ -405,11 +407,7 @@ export function MeetOurStars({ cmsTeam }: MeetOurStarsProps) {
  <p className="text-muted text-lg max-w-xl mx-auto">{t("starsSubtitle")}</p>
  </AnimatedSection>
 
- {isEmpty ? (
- <p className="text-center text-muted text-lg mt-4">{t("starsComingSoon")}</p>
- ) : (
  <MeetOurStarsCarousel key={carouselResetKey} teamRows={teamRows} />
- )}
  </div>
 
  <style jsx global>{`

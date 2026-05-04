@@ -3,9 +3,6 @@
 import { useTranslations, useLocale } from "next-intl";
 import { AnimatedSection, AnimatedCard } from "@/components/AnimatedSection";
 import { motion } from "framer-motion";
-import type { APITeamMember } from "@/lib/server-api";
-import { resolveTeamCardGradient } from "@/lib/teamStarPresets";
-import { publicOrAbsoluteAssetUrl } from "@/lib/mediaUrls";
 import {
  Sparkles,
  Rocket,
@@ -13,61 +10,20 @@ import {
  Heart,
  Globe,
  ShieldCheck,
- Code2,
+ Smile,
  BookOpen,
  Brain,
- ExternalLink,
 } from "lucide-react";
 
-type AboutContentProps = {
- cmsTeam: APITeamMember[] | null;
-};
-
-export default function AboutContent({ cmsTeam }: AboutContentProps) {
+export default function AboutContent() {
  const t = useTranslations("about");
- const locale = useLocale();
- const lang = locale === "ar" ? "ar" : "en";
 
  const values = [
  { icon: Heart, title: t("value1Title"), desc: t("value1Desc"), color: "from-pink-400 to-rose-400" },
  { icon: ShieldCheck, title: t("value2Title"), desc: t("value2Desc"), color: "from-emerald-400 to-teal-400" },
- { icon: Sparkles, title: t("value3Title"), desc: t("value3Desc"), color: "from-amber-400 to-orange-400" },
+ { icon: Smile, title: t("value3Title"), desc: t("value3Desc"), color: "from-amber-400 to-orange-400" },
  { icon: Globe, title: t("value4Title"), desc: t("value4Desc"), color: "from-blue-400 to-cyan-400" },
  ];
-
- type TeamRow = {
- id: string;
- name: string;
- role: string;
- avatar: string;
- color: string;
- linkedin?: string;
- photoUrl?: string;
- };
-
- const fallbackTeam: TeamRow[] = [
- { id: "static-1", name: t("member1Name"), role: t("member1Role"), avatar: "M", color: "from-blue-400 to-primary", photoUrl: undefined },
- { id: "static-2", name: t("member2Name"), role: t("member2Role"), avatar: "S", color: "from-purple to-violet-400", photoUrl: undefined },
- { id: "static-3", name: t("member3Name"), role: t("member3Role"), avatar: "A", color: "from-emerald-400 to-teal-400", photoUrl: undefined },
- { id: "static-4", name: t("member4Name"), role: t("member4Role"), avatar: "L", color: "from-pink-400 to-rose-400", photoUrl: undefined },
- { id: "static-5", name: t("member5Name"), role: t("member5Role"), avatar: "K", color: "from-amber-400 to-orange-400", photoUrl: undefined },
- { id: "static-6", name: t("member6Name"), role: t("member6Role"), avatar: "N", color: "from-cyan-400 to-blue-400", photoUrl: undefined },
- ];
-
- const team: TeamRow[] =
- cmsTeam && cmsTeam.length > 0
- ? [...cmsTeam]
- .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
- .map((m) => ({
- id: String(m._id),
- name: lang === "ar" ? m.name.ar : m.name.en,
- role: lang === "ar" ? m.role.ar : m.role.en,
- avatar: m.avatar,
- color: resolveTeamCardGradient(m.color),
- linkedin: m.linkedin?.trim() || undefined,
- photoUrl: m.photoUrl?.trim() || undefined,
- }))
- : fallbackTeam;
 
 
  return (
@@ -147,7 +103,7 @@ export default function AboutContent({ cmsTeam }: AboutContentProps) {
  <AnimatedSection className="mb-20">
  <div className="bg-surface rounded-2xl border border-border p-8 sm:p-12">
  <div className="max-w-3xl mx-auto text-center">
- <Code2 className="w-10 h-10 text-primary mx-auto mb-5" />
+ <BookOpen className="w-10 h-10 text-primary mx-auto mb-5" />
  <h2 className="text-2xl sm:text-3xl font-bold mb-5">{t("storyTitle")}</h2>
  <p className="text-muted leading-relaxed mb-4">{t("storyP1")}</p>
  <p className="text-muted leading-relaxed">{t("storyP2")}</p>
@@ -155,46 +111,6 @@ export default function AboutContent({ cmsTeam }: AboutContentProps) {
  </div>
  </AnimatedSection>
 
- {/* Team */}
- <AnimatedSection className="text-center mb-12">
- <h2 className="text-3xl sm:text-4xl font-bold mb-4">{t("teamTitle")}</h2>
- <p className="text-muted text-lg max-w-2xl mx-auto">{t("teamSubtitle")}</p>
- </AnimatedSection>
- <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
- {team.map((member, i) => (
- <AnimatedCard key={member.id} delay={i * 0.08}>
- <div className="bg-surface rounded-2xl border border-border p-7 text-center">
- <div
- className={`w-20 h-20 rounded-full bg-gradient-to-br ${member.color} flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold overflow-hidden shrink-0`}
- >
- {member.photoUrl ? (
- // eslint-disable-next-line @next/next/no-img-element -- dynamic API-hosted uploads
- <img
- src={publicOrAbsoluteAssetUrl(member.photoUrl)}
- alt={member.name}
- className="h-full w-full object-cover"
- />
- ) : (
- member.avatar
- )}
- </div>
- <h3 className="text-lg font-semibold mb-1">{member.name}</h3>
- <p className="text-muted text-sm mb-3">{member.role}</p>
- {member.linkedin ? (
- <a
- href={member.linkedin}
- target="_blank"
- rel="noopener noreferrer"
- className="inline-flex items-center gap-1 text-primary text-sm hover:underline"
- >
- <ExternalLink className="w-4 h-4" />
- LinkedIn
- </a>
- ) : null}
- </div>
- </AnimatedCard>
- ))}
- </div>
  </div>
  </div>
  );
