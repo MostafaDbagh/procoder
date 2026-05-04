@@ -6,6 +6,7 @@ import { CategorySection } from "@/components/CategorySection";
 import { HowItWorks } from "@/components/HowItWorks";
 import { CTABanner } from "@/components/CTABanner";
 import { MeetOurStars } from "@/components/MeetOurStars";
+import { FutureReadySection } from "@/components/FutureReadySection";
 import { getTeamPublicISR, getCategoriesPublicISR } from "@/lib/server-api";
 import { buildAlternates, siteUrl } from "@/lib/seo";
 
@@ -73,6 +74,7 @@ export default async function HomePage({
  {/* <WhyProgramming /> */}
  <CategorySection categories={cmsCategories} />
  <HowItWorks />
+ <FutureReadySection />
  <MeetOurStars cmsTeam={cmsTeam} />
  <CTABanner />
  </>

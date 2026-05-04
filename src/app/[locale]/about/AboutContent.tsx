@@ -2,6 +2,7 @@
 
 import { useTranslations, useLocale } from "next-intl";
 import { AnimatedSection, AnimatedCard } from "@/components/AnimatedSection";
+import { FutureReadySection } from "@/components/FutureReadySection";
 import { motion } from "framer-motion";
 import {
  Sparkles,
@@ -79,7 +80,11 @@ export default function AboutContent() {
  </div>
  </div>
  </AnimatedSection>
-
+ </div>
+ </div>
+ <FutureReadySection />
+ <div className="py-12 sm:py-20">
+ <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
  {/* Values */}
  <AnimatedSection className="text-center mb-12">
  <h2 className="text-3xl sm:text-4xl font-bold mb-4">{t("valuesTitle")}</h2>
@@ -111,6 +116,8 @@ export default function AboutContent() {
  </div>
  </AnimatedSection>
 
+ </div>
+ </div>
  </div>
  </div>
  );

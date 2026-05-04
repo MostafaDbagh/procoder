@@ -254,7 +254,7 @@
     "arabic2": "Arabic"
   },
   "footer": {
-    "description": "The first AI agent that analyses your child's learning behaviour and recommends the right STEM path to build their future. Live coding, robotics & Arabic for ages 6–18.",
+    "description": "AI-powered STEM learning for kids 6–18. Coding, robotics & Arabic — live classes, certified teachers.",
     "quickLinks": "Quick Links",
     "categories": "Categories",
     "contact": "Reach Out",
@@ -302,6 +302,21 @@
     "loading": "Loading...",
     "years": "years",
     "sessionIdleLogout": "You've been signed out after 30 minutes of quiet time. Welcome back anytime!"
+  },
+  "futureReady": {
+    "badge": "Our Mission",
+    "title": "We're Not Just Teaching.",
+    "titleHighlight": "We're Building Tomorrow's Leaders.",
+    "subtitle": "AI will replace millions of jobs. The children who won't be replaced are the ones who learn to think, build, and create — starting today.",
+    "body": "Every tool, app, and technology your child uses was built by someone who once sat exactly where they sit now. At StemTechLab, we don't just hand kids courses. We shape how they think. We teach them to use AI as a powerful tool — not as a replacement for their own mind. Because the real skill isn't knowing how to ask ChatGPT a question. It's knowing why the answer matters, how to improve it, and what to build with it.",
+    "pillar1Title": "Think Critically",
+    "pillar1Desc": "We build reasoning and problem-solving skills that no AI can replicate — the ability to ask the right questions and challenge every answer.",
+    "pillar2Title": "Master AI Tools",
+    "pillar2Desc": "We teach kids to use AI as a powerful assistant, not a shortcut for thinking. The tool works for them — not the other way around.",
+    "pillar3Title": "Build Real Things",
+    "pillar3Desc": "From games to robots to apps — kids graduate with things they actually made. That's a builder's mindset that lasts a lifetime.",
+    "quote": "Today's students. Tomorrow's builders.",
+    "cta": "Start the Journey"
   },
   "about": {
     "badge": "About StemTechLab",
