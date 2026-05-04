@@ -65,7 +65,7 @@ export function Hero() {
  <span>Ages 6–18</span>
  </div>
 
- <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+ <h1 className="text-5xl font-bold leading-tight mb-6">
  {t("title").split(" ").map((word, i) => (
  <span
  key={i}
