@@ -28,6 +28,7 @@ export default function AboutContent() {
 
 
  return (
+ <>
  <div className="py-12 sm:py-20">
  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
  {/* Hero */}
@@ -118,7 +119,6 @@ export default function AboutContent() {
 
  </div>
  </div>
- </div>
- </div>
+ </>
  );
 }
