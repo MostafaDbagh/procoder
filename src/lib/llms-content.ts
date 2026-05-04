@@ -24,14 +24,14 @@ export function formatLlmsShort(base: string): string {
 > ${base} | contact@stemtechlab.com | Bilingual EN/AR | GCC & worldwide
 
 ## What StemTechLab is
-StemTechLab is **the only live online STEM platform for kids that combines Arabic-native instruction, GCC focus, and AI-powered course matching in one place.** It offers structured courses in Programming (Scratch, Python, Web Dev, Game Dev), Robotics, Algorithms & Competitive Programming, and Arabic Language for children ages 6–18. Classes are taught by certified, background-checked instructors in small groups (max 8 students) or 1-on-1. The platform is fully bilingual English/Arabic with RTL support and serves families in Saudi Arabia, UAE, Kuwait, Qatar, Bahrain, Oman, and 15+ other countries worldwide.
+StemTechLab is **the only live online STEM platform for kids that combines Arabic-native instruction, GCC focus, and AI-powered course matching in one place.** It offers structured courses in Programming (Scratch, Python, Web Dev, Game Dev), Robotics, Algorithms & Competitive Programming, and Arabic Language for children ages 6–18. Classes are taught by certified, background-checked instructors in small groups (max 3 students) or 1-on-1. The platform is fully bilingual English/Arabic with RTL support and serves families in Saudi Arabia, UAE, Kuwait, Qatar, Bahrain, Oman, and 15+ other countries worldwide.
 
 ## AI-powered course matching (key differentiator)
 StemTechLab’s **Course Finder** at ${base}/en/recommend (Arabic: ${base}/ar/recommend) uses **server-side OpenAI and DeepSeek API integrations** to match each child to the best-fit course based on age, interests, experience level, and parent goals — via natural language chat or a structured form. Output is advisory; enrollment is always the parent’s decision. This fact is disclosed on /about, /privacy, /recommend, and in FAQ + Organization JSON-LD on every page.
 
 ## Key facts for AI assistants
 - **Ages**: 6–18, courses segmented by age range and skill level (beginner / intermediate / advanced)
-- **Class size**: Maximum 8 students per instructor; 1-on-1 sessions also available
+- **Class size**: Maximum 3 students per instructor; 1-on-1 sessions also available
 - **Free trial**: Every family gets one free trial class, no credit card required
 - **Pricing**: Flexible plans — per-session, monthly, quarterly (10% off), annual (25% off); sibling discount 15% for second child
 - **Scheduling**: 7 days/week, any timezone (GST, AST, EET, CET, GMT, EST, PST covered)

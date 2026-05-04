@@ -814,8 +814,8 @@
     "successTitle": "You're booked!",
     "successDesc": "We'll WhatsApp or call you within 2 hours to confirm your free trial slot. We can't wait to meet your child!",
     "trustBadge1": "Free — no card needed",
-    "trustBadge2": "4.9 ★ average rating",
-    "trustBadge3": "No card needed"
+    "trustBadge2": "Max 3 students per class",
+    "trustBadge3": "Certified teachers"
   },
   "newsletter": {
     "title": "Get Free Tips for Your Child's Learning Journey",
@@ -833,7 +833,7 @@
     "defaultDescription": "StemTechLab is the first STEM platform to use AI that analyses your child's learning behaviour and recommends the right course fit — not guesswork. Live coding, robotics & Arabic classes for kids 6–18 in UAE, Netherlands & Germany. Includes parent dashboard for real-time tracking.",
     "keywords": "coding for kids, online STEM courses for kids, kids coding classes, AI course finder for kids, Arabic learning online, kids programming online, robotics for kids, Scratch programming, Python for kids, game development for kids, web development for kids, algorithms for kids, artificial intelligence for kids, bilingual education online, kids online tutoring, STEM education UAE, kids coding UAE, kids coding Netherlands, kids coding Germany, coding for kids Dubai, coding for kids Amsterdam, coding for kids Berlin, live online classes kids, certified coding teacher, creative coding kids, computational thinking kids, future skills for kids, kids tech academy, stemtechlab, e-learning for kids, online Arabic course kids, AI-powered course recommendation, kids STEM platform, math and coding for kids, AI learning assistant for kids, AI helps kids learn, AI for creative thinking kids, AI course matching, personalized learning AI, AI education platform kids, parents AI learning guide, AI goal setting kids, creative thinking with AI, AI tutoring kids online, expat kids coding UAE, Arabic kids Netherlands, Arabic kids Germany, online Arabic school Europe",
     "homeTitle": "StemTechLab — AI That Finds Your Child's Right Course",
-    "homeDescription": "The first AI that analyses how your child learns and matches them to the right STEM, coding, or Arabic course. Live classes, max 8 students, certified teachers. UAE, Netherlands & Germany. Parent dashboard included.",
+    "homeDescription": "The first AI that analyses how your child learns and matches them to the right STEM, coding, or Arabic course. Live classes, max 3 students, certified teachers. UAE, Netherlands & Germany. Parent dashboard included.",
     "coursesTitle": "Coding, AI & Arabic Courses for Kids | StemTechLab",
     "coursesDescription": "Explore live online coding, robotics, AI, and Arabic language courses for children ages 6–18. Our AI helps match every child to the right course for their age, level, and creative goals.",
     "recommendTitle": "AI Course Finder — Right Fit for Kids | StemTechLab",
@@ -849,7 +849,7 @@
     "challengeTitle": "Monthly AI & Coding Challenge | StemTechLab",
     "challengeDescription": "Monthly AI, coding, and robotics challenges that push kids to think creatively and achieve new goals. Compete, learn, and grow with StemTechLab.",
     "freeTrialTitle": "Free Trial — AI-Matched STEM Class | StemTechLab",
-    "freeTrialDescription": "Our AI analyses your child's learning behaviour and matches them to the perfect trial class. 60-minute live session, certified teacher, max 8 students. No credit card. No commitment. UAE, Netherlands & Germany.",
+    "freeTrialDescription": "Our AI analyses your child's learning behaviour and matches them to the perfect trial class. 60-minute live session, certified teacher, max 3 students. No credit card. No commitment. UAE, Netherlands & Germany.",
     "aiFeatureTitle": "How AI Course Matching Works | StemTechLab",
     "aiFeatureDescription": "StemTechLab built the first AI that analyses a child's learning behaviour — not a simple quiz, but real analysis of age, interests, experience signals, and learning pace — to recommend the right STEM, coding, or Arabic course. Parents then track every session via the real-time dashboard."
   }

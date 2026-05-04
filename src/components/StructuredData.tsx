@@ -22,7 +22,7 @@ export function OrganizationSchema() {
  "@type": "EducationalOrganization",
  name: "StemTechLab",
  description:
- "Live online STEM platform for kids combining Arabic-native instruction, AI-powered course matching, and small-group classes. Courses in Programming, Robotics, Algorithms, and Arabic Language for ages 6–18 in UAE, Netherlands, and Germany. Certified teachers, max 8 students per class, free trial.",
+ "Live online STEM platform for kids combining Arabic-native instruction, AI-powered course matching, and small-group classes. Courses in Programming, Robotics, Algorithms, and Arabic Language for ages 6–18 in UAE, Netherlands, and Germany. Certified teachers, max 3 students per class, free trial.",
  url: SITE_URL,
  logo: `${SITE_URL}/logo.svg`,
  image: `${SITE_URL}/og`,
@@ -102,7 +102,7 @@ const FAQ_AR = [
  { q: "هل يحتاج طفلي إلى خبرة مسبقة؟", a: "لا—يبدأ المبتدئون بالأساسيات، وتتوفر مسارات متقدمة أيضًا. يساعد محدد الدورات بالذكاء الاصطناعي على اختيار المستوى المناسب لعمر طفلك." },
  { q: "هل تقدمون حصصًا تجريبية مجانية؟", a: "نعم: حصة مباشرة مجانية ٦٠ دقيقة — بدون بطاقة بنكية ولا أي التزام. متاح لعائلات دبي وأبوظبي وأمستردام وبرلين وغيرها." },
  { q: "هل المعلمون عرب أصليون ومعتمدون؟", a: "نعم، جميع معلمينا معتمدون ومتخصصون في تعليم الأطفال. كثيرون منهم عرب أصليون يتيحون تعليم العربية والمحتوى التقني باللغتين العربية والإنجليزية." },
- { q: "كيف تُعقد حصص StemTechLab؟", a: "مباشرة عبر الإنترنت في مجموعات صغيرة (حد أقصى ٨ طلاب) أو فردية مع مشاركة الشاشة وممارسة موجّهة وأدوات تفاعلية. مناسبة للتوقيتات في الإمارات وأوروبا." },
+ { q: "كيف تُعقد حصص StemTechLab؟", a: "مباشرة عبر الإنترنت في مجموعات صغيرة (حد أقصى ٣ طلاب) أو فردية مع مشاركة الشاشة وممارسة موجّهة وأدوات تفاعلية. مناسبة للتوقيتات في الإمارات وأوروبا." },
  { q: "ما الأجهزة المطلوبة للحصص؟", a: "حاسوب محمول أو مكتبي مع اتصال إنترنت مستقر. تعمل البرمجة في المتصفح مباشرة." },
  { q: "ما الدول التي تخدمها StemTechLab؟", a: "الإمارات (دبي، أبوظبي، الشارقة) وهولندا (أمستردام، روتردام) وألمانيا (برلين، ميونخ، هامبورغ) — باللغتين العربية والإنجليزية." },
  { q: "هل يمكنني إعادة جدولة الحصص أو إلغاؤها؟", a: "يمكن إعادة الجدولة قبل ٤ ساعات من الحصة؛ ويمكن تعليق الخطة في أي وقت عند تغيّر جدولك." },

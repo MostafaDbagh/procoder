@@ -9,7 +9,7 @@ import {
   CheckCircle2,
   Rocket,
   Users,
-  Star,
+  GraduationCap,
   Clock,
   Video,
   MessageCircle,
@@ -61,8 +61,8 @@ export default function FreeTrialContent() {
 
   const trustBadges = [
     { icon: Users, label: t("trustBadge1") },
-    { icon: Star, label: t("trustBadge2") },
-    { icon: Clock, label: t("trustBadge3") },
+    { icon: Users, label: t("trustBadge2") },
+    { icon: GraduationCap, label: t("trustBadge3") },
   ];
 
   const interests = [

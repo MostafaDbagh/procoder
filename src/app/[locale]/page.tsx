@@ -15,12 +15,12 @@ const meta = {
  en: {
  title: "AI Course Matching for Kids (6–18) | StemTechLab",
  description:
- "The first AI that analyses how your child learns and matches them to the right STEM, coding, or Arabic course — not guesswork. Live classes, max 8 students, certified teachers. Parent dashboard included. UAE, Netherlands & Germany. Free trial.",
+ "The first AI that analyses how your child learns and matches them to the right STEM, coding, or Arabic course — not guesswork. Live classes, max 3 students, certified teachers. Parent dashboard included. UAE, Netherlands & Germany. Free trial.",
  },
  ar: {
  title: "ذكاء اصطناعي يختار الدورة الأنسب لطفلك | ستم تك لاب",
  description:
- "أول ذكاء اصطناعي يحلّل سلوك تعلّم طفلك ويطابقه مع الدورة الأنسب في STEM أو البرمجة أو العربية. دروس مباشرة، فصول بحد أقصى ٨ طلاب، معلمون معتمدون. لوحة تحكم لأولياء الأمور. الإمارات وهولندا وألمانيا. تجربة مجانية.",
+ "أول ذكاء اصطناعي يحلّل سلوك تعلّم طفلك ويطابقه مع الدورة الأنسب في STEM أو البرمجة أو العربية. دروس مباشرة، فصول بحد أقصى ٣ طلاب، معلمون معتمدون. لوحة تحكم لأولياء الأمور. الإمارات وهولندا وألمانيا. تجربة مجانية.",
  },
 };
 
