@@ -25,6 +25,21 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // Notify IndexNow after revalidation — fire-and-forget
+    const site = (process.env.SITE_URL || "https://www.stemtechlab.com").replace(/\/$/, "");
+    const secret = process.env.CRON_SECRET;
+    if (secret) {
+      fetch(`${site}/api/indexnow`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-cron-secret": secret },
+        body: JSON.stringify(
+          paths.length > 0
+            ? { urls: paths.map((p) => `${site}${p}`) }
+            : {}
+        ),
+      }).catch(() => {});
+    }
+
     return NextResponse.json({ revalidated: true, paths });
   } catch (err) {
     return NextResponse.json(
