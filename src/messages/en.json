@@ -303,6 +303,20 @@
     "years": "years",
     "sessionIdleLogout": "You've been signed out after 30 minutes of quiet time. Welcome back anytime!"
   },
+  "futureThinkersSection": {
+    "title": "We Don't Just Teach.",
+    "titleHighlight": "We Build Future-Ready Thinkers.",
+    "body1": "Technology is changing fast — and the most valuable skill today isn't memorizing information, it's knowing how to think, adapt, and create.",
+    "body2": "At StemTechLab, we help students develop the mindset behind innovation. They don't just learn tools — they learn how to use them with purpose.",
+    "body3": "AI is part of their future. We teach students how to use it intelligently: to explore ideas, solve problems, and build meaningful projects — not just generate answers.",
+    "pillar1Title": "Think Clearly",
+    "pillar1Desc": "Students develop strong problem-solving and reasoning skills. They learn how to ask better questions, evaluate ideas, and think independently.",
+    "pillar2Title": "Use Technology with Purpose",
+    "pillar2Desc": "From AI tools to modern software, students learn how to use technology as a support for their thinking — not a replacement for it.",
+    "pillar3Title": "Build Real Projects",
+    "pillar3Desc": "Students apply what they learn by creating real outcomes — from simple applications to interactive projects — building confidence and practical skills along the way.",
+    "quote": "Today's learners. Tomorrow's innovators."
+  },
   "futureReady": {
     "badge": "Our Mission",
     "title": "We're Not Just Teaching.",

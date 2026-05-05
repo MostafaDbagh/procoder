@@ -400,6 +400,9 @@ export interface EnrollmentWithCourse {
  preferredTime: string;
  sessionFormat: string;
  createdAt: string;
+ lessonsDone: number;
+ nextSession: string | null;
+ badges: { name: string; awardedAt: string }[];
  course: {
  slug: string;
  title: { en: string; ar: string };
@@ -503,6 +506,10 @@ export interface InstructorStudent {
  learningGoals?: string;
  specialNeeds?: string;
  createdAt: string;
+ lessonsDone: number;
+ nextSession: string | null;
+ badges: { name: string; awardedAt: string }[];
+ totalLessons: number;
 }
 
 export interface InstructorDashboardData {
@@ -550,5 +557,16 @@ export function createInstructorNote(
 export function deleteInstructorNote(token: string, noteId: string): Promise<{ message: string }> {
  return authRequest<{ message: string }>(`/instructor/notes/${noteId}`, token, {
  method: "DELETE",
+ });
+}
+
+export function updateStudentProgress(
+ token: string,
+ enrollmentId: string,
+ data: { lessonsDone?: number; nextSession?: string | null; addBadge?: string; removeBadge?: string }
+): Promise<{ lessonsDone: number; nextSession: string | null; badges: { name: string; awardedAt: string }[] }> {
+ return authRequest(`/instructor/students/${enrollmentId}`, token, {
+ method: "PATCH",
+ body: JSON.stringify(data),
  });
 }

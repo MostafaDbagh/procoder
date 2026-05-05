@@ -2,6 +2,7 @@
 
 import { useTranslations, useLocale } from "next-intl";
 import { AnimatedSection, AnimatedCard } from "@/components/AnimatedSection";
+import { FutureThinkersSection } from "@/components/FutureThinkersSection";
 import { motion } from "framer-motion";
 import {
  Sparkles,
@@ -65,6 +66,8 @@ export default function AboutContent() {
  </div>
  </AnimatedCard>
  </div>
+
+ <FutureThinkersSection />
 
  {/* AI disclosure — crawlable HTML for search & LLMs */}
  <AnimatedSection className="mb-20">

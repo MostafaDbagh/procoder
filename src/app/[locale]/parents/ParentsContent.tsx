@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { AnimatedSection, AnimatedCard } from "@/components/AnimatedSection";
 import { AuthModal } from "@/components/AuthModal";
 import { LocalizedLink } from "@/components/LocalizedLink";
+import { FutureThinkersSection } from "@/components/FutureThinkersSection";
 import { motion } from "framer-motion";
 import {
  Heart,
@@ -141,6 +142,8 @@ export default function ParentsContent() {
  </div>
  </section>
 
+
+ <FutureThinkersSection />
 
  {/* ═══ WHY PARENTS TRUST US ═══ */}
  <section className="py-20 sm:py-28 bg-surface/50">
