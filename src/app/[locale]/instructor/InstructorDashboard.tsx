@@ -41,6 +41,9 @@ import {
   Star,
   X,
   Check,
+  Video,
+  Link2,
+  ExternalLink,
 } from "lucide-react";
 
 const noteTypes = [
@@ -306,6 +309,9 @@ export default function InstructorDashboard() {
 
                           {/* ── Badge management ── */}
                           <BadgeControls student={student} token={token!} onSaved={reload} />
+
+                          {/* ── Recorded sessions ── */}
+                          <RecordingControls student={student} token={token!} onSaved={reload} />
 
                           {/* Past notes */}
                           {studentNotes.length > 0 && (
@@ -597,6 +603,131 @@ function BadgeControls({ student, token, onSaved }: { student: InstructorStudent
             </button>
           );
         })}
+      </div>
+    </div>
+  );
+}
+
+function RecordingControls({ student, token, onSaved }: { student: InstructorStudent; token: string; onSaved: () => void }) {
+  const [url, setUrl] = useState("");
+  const [title, setTitle] = useState("");
+  const [sessionDate, setSessionDate] = useState(() => new Date().toISOString().slice(0, 10));
+  const [saving, setSaving] = useState(false);
+  const [removing, setRemoving] = useState<string | null>(null);
+  const [error, setError] = useState("");
+
+  const handleAdd = async () => {
+    if (!url.trim()) return;
+    setError("");
+    setSaving(true);
+    try {
+      await updateStudentProgress(token, student.enrollmentId, {
+        addRecording: { url: url.trim(), title: title.trim(), sessionDate },
+      });
+      setUrl("");
+      setTitle("");
+      onSaved();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to add recording");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleRemove = async (id: string) => {
+    setError("");
+    setRemoving(id);
+    try {
+      await updateStudentProgress(token, student.enrollmentId, { removeRecordingId: id });
+      onSaved();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to remove recording");
+    } finally {
+      setRemoving(null);
+    }
+  };
+
+  const recordings = student.recordings ?? [];
+
+  return (
+    <div className="bg-background rounded-xl p-4">
+      <h4 className="text-sm font-semibold mb-4 flex items-center gap-2">
+        <Video className="w-4 h-4 text-blue-500" />
+        Recorded Sessions
+        {recordings.length > 0 && (
+          <span className="ml-auto text-xs text-muted font-normal">{recordings.length} recording{recordings.length !== 1 ? "s" : ""}</span>
+        )}
+      </h4>
+
+      {/* Existing recordings */}
+      {recordings.length > 0 && (
+        <div className="space-y-2 mb-4">
+          {recordings.map((rec, idx) => (
+            <div key={rec._id} className="flex items-center gap-3 p-3 bg-surface rounded-xl border border-border">
+              <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center shrink-0">
+                <Video className="w-4 h-4 text-blue-500" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold truncate">{rec.title || `Session Recording ${idx + 1}`}</p>
+                <p className="text-xs text-muted">{new Date(rec.sessionDate).toLocaleDateString()}</p>
+              </div>
+              <a
+                href={rec.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 text-xs font-medium hover:bg-blue-100 dark:hover:bg-blue-950/50 transition-colors shrink-0"
+              >
+                <ExternalLink className="w-3 h-3" /> Open
+              </a>
+              <button
+                onClick={() => handleRemove(rec._id)}
+                disabled={removing === rec._id}
+                className="p-1.5 rounded-lg text-muted hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors shrink-0"
+              >
+                {removing === rec._id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />}
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Add new recording */}
+      <div className="space-y-2">
+        <input
+          type="url"
+          placeholder="Paste recording URL (Google Drive, YouTube, Zoom...)"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+          className="w-full px-3 py-2 rounded-lg bg-surface border border-border text-sm placeholder:text-muted focus:border-primary outline-none"
+        />
+        <div className="flex gap-2">
+          <input
+            type="text"
+            placeholder="Session title (optional)"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="flex-1 px-3 py-2 rounded-lg bg-surface border border-border text-sm placeholder:text-muted focus:border-primary outline-none"
+          />
+          <input
+            type="date"
+            value={sessionDate}
+            onChange={(e) => setSessionDate(e.target.value)}
+            className="px-3 py-2 rounded-lg bg-surface border border-border text-sm focus:border-primary outline-none"
+          />
+        </div>
+        {error && (
+          <p className="text-xs text-red-500 flex items-center gap-1">
+            <AlertCircle className="w-3 h-3" /> {error}
+          </p>
+        )}
+        <button
+          onClick={handleAdd}
+          disabled={saving || !url.trim()}
+          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Link2 className="w-4 h-4" />}
+          {saving ? "Adding..." : "Add Recording"}
+        </button>
       </div>
     </div>
   );

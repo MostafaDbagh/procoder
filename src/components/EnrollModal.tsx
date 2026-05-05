@@ -638,7 +638,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  ) : null}
  {priceQuote.promoDiscountAmount > 0 ? (
  <li className="flex justify-between gap-2">
- <span>{t("promoSavings")}</span>
+ <span>{t(priceQuote.isReferralCode ? "referralSavings" : "promoSavings")}</span>
  <span className="text-emerald-600 dark:text-emerald-400 tabular-nums">
  −
  {formatCoursePrice(
@@ -681,7 +681,11 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  {quoteLoading ? t("promoChecking") : t("promoApply")}
  </button>
  </div>
- {priceQuote?.promoError ? (
+ {priceQuote?.isReferralCode && priceQuote.referrerName ? (
+ <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+ ✓ {t("referralApplied", { name: priceQuote.referrerName })}
+ </p>
+ ) : priceQuote?.promoError ? (
  <p className="text-xs text-amber-600 dark:text-amber-400">
  {priceQuote.promoError}
  </p>

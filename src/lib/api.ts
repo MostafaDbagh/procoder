@@ -180,6 +180,8 @@ export interface PromoQuoteResponse {
  } | null;
  promoDiscountAmount: number;
  amountDue: number;
+ isReferralCode?: boolean;
+ referrerName?: string | null;
 }
 
 export function quotePromo(
@@ -403,6 +405,7 @@ export interface EnrollmentWithCourse {
  lessonsDone: number;
  nextSession: string | null;
  badges: { name: string; awardedAt: string }[];
+ recordings: { _id: string; url: string; title: string; sessionDate: string; addedAt: string }[];
  course: {
  slug: string;
  title: { en: string; ar: string };
@@ -421,7 +424,7 @@ export interface DashboardStats {
  activeCourses: number;
  completedCourses: number;
  totalLessons: number;
- hoursLearned: number;
+ lessonsCompleted: number;
  badges: number;
  streak: number;
 }
@@ -509,6 +512,7 @@ export interface InstructorStudent {
  lessonsDone: number;
  nextSession: string | null;
  badges: { name: string; awardedAt: string }[];
+ recordings: { _id: string; url: string; title: string; sessionDate: string; addedAt: string }[];
  totalLessons: number;
 }
 
@@ -563,8 +567,15 @@ export function deleteInstructorNote(token: string, noteId: string): Promise<{ m
 export function updateStudentProgress(
  token: string,
  enrollmentId: string,
- data: { lessonsDone?: number; nextSession?: string | null; addBadge?: string; removeBadge?: string }
-): Promise<{ lessonsDone: number; nextSession: string | null; badges: { name: string; awardedAt: string }[] }> {
+ data: {
+  lessonsDone?: number;
+  nextSession?: string | null;
+  addBadge?: string;
+  removeBadge?: string;
+  addRecording?: { url: string; title: string; sessionDate: string };
+  removeRecordingId?: string;
+ }
+): Promise<{ lessonsDone: number; nextSession: string | null; badges: { name: string; awardedAt: string }[]; recordings: { _id: string; url: string; title: string; sessionDate: string; addedAt: string }[] }> {
  return authRequest(`/instructor/students/${enrollmentId}`, token, {
  method: "PATCH",
  body: JSON.stringify(data),

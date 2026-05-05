@@ -216,17 +216,66 @@ export default function DashboardContent({ initialCourses }: Props) {
         {/* ═══ Stats Grid ═══ */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
           {[
-            { icon: BookOpen, label: t("coursesEnrolled"), value: stats.coursesEnrolled, color: "text-primary", bg: "bg-primary/10" },
-            { icon: Clock, label: t("hoursLearned"), value: stats.hoursLearned, color: "text-amber-500", bg: "bg-amber-500/10" },
-            { icon: Award, label: t("badges"), value: stats.badges, color: "text-purple", bg: "bg-purple/10" },
-            { icon: Flame, label: t("streak"), value: stats.streak, color: "text-rose-500", bg: "bg-rose-500/10" },
+            {
+              icon: BookOpen,
+              label: t("coursesEnrolled"),
+              value: stats.coursesEnrolled,
+              gradient: "from-violet-50 to-indigo-50 dark:from-violet-950/30 dark:to-indigo-950/20",
+              border: "border-violet-200/70 dark:border-violet-800/30",
+              iconBg: "bg-violet-100 dark:bg-violet-900/40",
+              iconColor: "text-violet-600 dark:text-violet-400",
+              numColor: "text-violet-700 dark:text-violet-300",
+              dot: "bg-violet-400",
+            },
+            {
+              icon: GraduationCap,
+              label: t("lessonsCompleted"),
+              value: stats.lessonsCompleted,
+              gradient: "from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/20",
+              border: "border-amber-200/70 dark:border-amber-800/30",
+              iconBg: "bg-amber-100 dark:bg-amber-900/40",
+              iconColor: "text-amber-600 dark:text-amber-400",
+              numColor: "text-amber-700 dark:text-amber-300",
+              dot: "bg-amber-400",
+            },
+            {
+              icon: Award,
+              label: t("badges"),
+              value: stats.badges,
+              gradient: "from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/20",
+              border: "border-emerald-200/70 dark:border-emerald-800/30",
+              iconBg: "bg-emerald-100 dark:bg-emerald-900/40",
+              iconColor: "text-emerald-600 dark:text-emerald-400",
+              numColor: "text-emerald-700 dark:text-emerald-300",
+              dot: "bg-emerald-400",
+            },
+            {
+              icon: Flame,
+              label: t("streak"),
+              value: stats.streak,
+              gradient: "from-rose-50 to-pink-50 dark:from-rose-950/30 dark:to-pink-950/20",
+              border: "border-rose-200/70 dark:border-rose-800/30",
+              iconBg: "bg-rose-100 dark:bg-rose-900/40",
+              iconColor: "text-rose-600 dark:text-rose-400",
+              numColor: "text-rose-700 dark:text-rose-300",
+              dot: "bg-rose-400",
+            },
           ].map((stat, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.05 }} className="bg-surface rounded-2xl border border-border p-5">
-              <div className={`w-10 h-10 rounded-xl ${stat.bg} flex items-center justify-center mb-3`}>
-                <stat.icon className={`w-5 h-5 ${stat.color}`} />
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 + i * 0.05 }}
+              className={`relative overflow-hidden rounded-2xl border ${stat.border} bg-gradient-to-br ${stat.gradient} p-5`}
+            >
+              <div className="flex items-start justify-between mb-5">
+                <div className={`w-11 h-11 rounded-xl ${stat.iconBg} flex items-center justify-center shadow-sm`}>
+                  <stat.icon className={`w-5 h-5 ${stat.iconColor}`} />
+                </div>
+                <span className={`w-2 h-2 rounded-full ${stat.dot} opacity-60 mt-1`} />
               </div>
-              <p className="text-3xl font-bold">{stat.value}</p>
-              <p className="text-sm text-muted">{stat.label}</p>
+              <p className={`text-4xl font-extrabold tracking-tight ${stat.numColor} mb-1`}>{stat.value}</p>
+              <p className="text-xs font-semibold text-muted uppercase tracking-wide">{stat.label}</p>
             </motion.div>
           ))}
         </motion.div>
@@ -358,6 +407,54 @@ export default function DashboardContent({ initialCourses }: Props) {
             </div>
           </motion.div>
         )}
+
+        {/* ═══ Recorded Sessions ═══ */}
+        {(() => {
+          const allRecordings = enrollments
+            .filter((e) => e.recordings && e.recordings.length > 0)
+            .flatMap((e) =>
+              e.recordings.map((r) => ({
+                ...r,
+                childName: e.childName,
+                courseTitle: e.course ? e.course.title[lang] : e.courseTitle || e.courseId,
+              }))
+            )
+            .sort((a, b) => new Date(b.sessionDate).getTime() - new Date(a.sessionDate).getTime());
+
+          if (allRecordings.length === 0) return null;
+          return (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.29 }} className="mb-10">
+              <h2 className="text-xl font-bold flex items-center gap-2 mb-5">
+                <Play className="w-5 h-5 text-blue-500" />
+                Recorded Sessions
+              </h2>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {allRecordings.map((rec, i) => (
+                  <motion.div key={rec._id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.31 + i * 0.04 }} className="bg-surface rounded-2xl border border-border p-5 flex flex-col gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center shrink-0">
+                        <Play className="w-5 h-5 text-blue-500" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-sm truncate">{rec.title || `Session Recording ${i + 1}`}</p>
+                        <p className="text-xs text-muted mt-0.5">{rec.childName} · {rec.courseTitle}</p>
+                      </div>
+                    </div>
+                    <p className="text-xs text-muted">{new Date(rec.sessionDate).toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric", year: "numeric" })}</p>
+                    <a
+                      href={rec.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-blue-500 text-white text-sm font-semibold hover:bg-blue-600 transition-colors"
+                    >
+                      <Play className="w-4 h-4" /> Watch Recording
+                    </a>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          );
+        })()}
 
         {/* ═══ Instructor Notes ═══ */}
         {otherNotes.length > 0 && (
@@ -634,7 +731,7 @@ function ReferralSection({ token, lang }: { token: string | null; lang: string }
 
   const handleCopy = () => {
     if (!code) return;
-    const text = `Join StemTechLab! Use my referral code ${code} for ${stats.discountPercent}% off your first course. https://www.stemtechlab.com/en/courses`;
+    const text = `Join StemTechLab! Use my referral code ${code} for ${stats.discountPercent}% off your first course.\n\nHow to use: go to any course → click Enroll → on the last step enter code "${code}" in the "Promo or referral code" field.\n\nhttps://www.stemtechlab.com/en/courses`;
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
