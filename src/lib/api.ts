@@ -62,8 +62,8 @@ async function request<T>(
 ): Promise<T> {
  const path = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
  const res = await fetch(`${apiRoot()}${path}`, {
- headers: { "Content-Type": "application/json", ...options?.headers },
  ...options,
+ headers: { "Content-Type": "application/json", ...options?.headers },
  });
 
  const data = (await parseJsonResponse(res)) as {
