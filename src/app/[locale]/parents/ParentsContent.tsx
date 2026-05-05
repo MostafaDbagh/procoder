@@ -71,7 +71,7 @@ export default function ParentsContent() {
  {t("badge")}
  </div>
 
- <h1 className="text-4xl sm:text-5xl font-bold leading-tight mb-6">
+ <h1 className="text-4xl sm:text-5xl lg:text-[52px] font-bold leading-tight mb-6">
  {t("heroTitle")}
  </h1>
 
