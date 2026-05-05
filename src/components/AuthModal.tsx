@@ -39,7 +39,7 @@ const inputCls =
 export function AuthModal({
  open,
  onClose,
- defaultTab = "signup",
+ defaultTab = "login",
  variant = "parent",
 }: AuthModalProps) {
  const t = useTranslations("parents");

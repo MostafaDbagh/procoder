@@ -214,68 +214,27 @@ export default function DashboardContent({ initialCourses }: Props) {
         </motion.div>
 
         {/* ═══ Stats Grid ═══ */}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-10">
           {[
-            {
-              icon: BookOpen,
-              label: t("coursesEnrolled"),
-              value: stats.coursesEnrolled,
-              gradient: "from-violet-50 to-indigo-50 dark:from-violet-950/30 dark:to-indigo-950/20",
-              border: "border-violet-200/70 dark:border-violet-800/30",
-              iconBg: "bg-violet-100 dark:bg-violet-900/40",
-              iconColor: "text-violet-600 dark:text-violet-400",
-              numColor: "text-violet-700 dark:text-violet-300",
-              dot: "bg-violet-400",
-            },
-            {
-              icon: GraduationCap,
-              label: t("lessonsCompleted"),
-              value: stats.lessonsCompleted,
-              gradient: "from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/20",
-              border: "border-amber-200/70 dark:border-amber-800/30",
-              iconBg: "bg-amber-100 dark:bg-amber-900/40",
-              iconColor: "text-amber-600 dark:text-amber-400",
-              numColor: "text-amber-700 dark:text-amber-300",
-              dot: "bg-amber-400",
-            },
-            {
-              icon: Award,
-              label: t("badges"),
-              value: stats.badges,
-              gradient: "from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/20",
-              border: "border-emerald-200/70 dark:border-emerald-800/30",
-              iconBg: "bg-emerald-100 dark:bg-emerald-900/40",
-              iconColor: "text-emerald-600 dark:text-emerald-400",
-              numColor: "text-emerald-700 dark:text-emerald-300",
-              dot: "bg-emerald-400",
-            },
-            {
-              icon: Flame,
-              label: t("streak"),
-              value: stats.streak,
-              gradient: "from-rose-50 to-pink-50 dark:from-rose-950/30 dark:to-pink-950/20",
-              border: "border-rose-200/70 dark:border-rose-800/30",
-              iconBg: "bg-rose-100 dark:bg-rose-900/40",
-              iconColor: "text-rose-600 dark:text-rose-400",
-              numColor: "text-rose-700 dark:text-rose-300",
-              dot: "bg-rose-400",
-            },
+            { icon: BookOpen,     label: t("coursesEnrolled"),   value: stats.coursesEnrolled,  iconBg: "bg-violet-500/10", iconColor: "text-violet-500" },
+            { icon: GraduationCap, label: t("lessonsCompleted"), value: stats.lessonsCompleted, iconBg: "bg-amber-500/10",  iconColor: "text-amber-500"  },
+            { icon: Award,        label: t("badges"),            value: stats.badges,           iconBg: "bg-emerald-500/10",iconColor: "text-emerald-500"},
+            { icon: Flame,        label: t("streak"),            value: stats.streak,           iconBg: "bg-rose-500/10",  iconColor: "text-rose-500"   },
           ].map((stat, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15 + i * 0.05 }}
-              className={`relative overflow-hidden rounded-2xl border ${stat.border} bg-gradient-to-br ${stat.gradient} p-5`}
+              className="bg-surface rounded-2xl border border-border p-4 flex items-center gap-3"
             >
-              <div className="flex items-start justify-between mb-5">
-                <div className={`w-11 h-11 rounded-xl ${stat.iconBg} flex items-center justify-center shadow-sm`}>
-                  <stat.icon className={`w-5 h-5 ${stat.iconColor}`} />
-                </div>
-                <span className={`w-2 h-2 rounded-full ${stat.dot} opacity-60 mt-1`} />
+              <div className={`w-10 h-10 rounded-xl ${stat.iconBg} flex items-center justify-center shrink-0`}>
+                <stat.icon className={`w-5 h-5 ${stat.iconColor}`} />
               </div>
-              <p className={`text-4xl font-extrabold tracking-tight ${stat.numColor} mb-1`}>{stat.value}</p>
-              <p className="text-xs font-semibold text-muted uppercase tracking-wide">{stat.label}</p>
+              <div className="min-w-0">
+                <p className="text-2xl font-bold leading-none">{stat.value}</p>
+                <p className="text-xs text-muted mt-1 leading-tight">{stat.label}</p>
+              </div>
             </motion.div>
           ))}
         </motion.div>
@@ -608,28 +567,22 @@ export default function DashboardContent({ initialCourses }: Props) {
         )}
 
         {/* ═══ Quick Stats Row ═══ */}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.38 }} className="grid sm:grid-cols-3 gap-4 mb-10">
-          <div className="bg-emerald-50 dark:bg-emerald-950/20 rounded-2xl border border-emerald-100 dark:border-emerald-900/30 p-5">
-            <div className="flex items-center gap-3 mb-2">
-              <CheckCircle2 className="w-5 h-5 text-emerald-500" />
-              <span className="font-semibold text-sm">Active Courses</span>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.38 }} className="grid sm:grid-cols-3 gap-3 mb-10">
+          {[
+            { icon: CheckCircle2, label: "Active Courses",  value: stats.activeCourses,   iconBg: "bg-emerald-500/10", iconColor: "text-emerald-500" },
+            { icon: Award,        label: "Completed",       value: stats.completedCourses, iconBg: "bg-violet-500/10",  iconColor: "text-violet-500"  },
+            { icon: TrendingUp,   label: "Total Lessons",   value: stats.totalLessons,     iconBg: "bg-blue-500/10",    iconColor: "text-blue-500"    },
+          ].map((s, i) => (
+            <div key={i} className="bg-surface rounded-2xl border border-border p-4 flex items-center gap-3">
+              <div className={`w-10 h-10 rounded-xl ${s.iconBg} flex items-center justify-center shrink-0`}>
+                <s.icon className={`w-5 h-5 ${s.iconColor}`} />
+              </div>
+              <div>
+                <p className="text-2xl font-bold leading-none">{s.value}</p>
+                <p className="text-xs text-muted mt-1">{s.label}</p>
+              </div>
             </div>
-            <p className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">{stats.activeCourses}</p>
-          </div>
-          <div className="bg-violet-50 dark:bg-violet-950/20 rounded-2xl border border-violet-100 dark:border-violet-900/30 p-5">
-            <div className="flex items-center gap-3 mb-2">
-              <Award className="w-5 h-5 text-violet-500" />
-              <span className="font-semibold text-sm">Completed</span>
-            </div>
-            <p className="text-3xl font-bold text-violet-600 dark:text-violet-400">{stats.completedCourses}</p>
-          </div>
-          <div className="bg-blue-50 dark:bg-blue-950/20 rounded-2xl border border-blue-100 dark:border-blue-900/30 p-5">
-            <div className="flex items-center gap-3 mb-2">
-              <TrendingUp className="w-5 h-5 text-blue-500" />
-              <span className="font-semibold text-sm">Total Lessons</span>
-            </div>
-            <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{stats.totalLessons}</p>
-          </div>
+          ))}
         </motion.div>
 
         {/* ═══ Recommended ═══ */}
