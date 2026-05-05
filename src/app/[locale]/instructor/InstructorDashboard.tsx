@@ -28,6 +28,8 @@ import {
   AlertCircle,
   ChevronDown,
   ChevronUp,
+  ChevronLeft,
+  ChevronRight,
   Clock,
   Calendar,
   Target,
@@ -68,6 +70,8 @@ export default function InstructorDashboard() {
   const [sending, setSending] = useState(false);
   const [expandedStudent, setExpandedStudent] = useState<string | null>(null);
   const [selectedCourse, setSelectedCourse] = useState<string>("all");
+  const [page, setPage] = useState(0);
+  const PAGE_SIZE = 20;
 
   const reload = useCallback(() => {
     if (!token) return;
@@ -150,6 +154,10 @@ export default function InstructorDashboard() {
   const filteredStudents = selectedCourse === "all"
     ? students
     : students.filter((s) => s.courseId === selectedCourse);
+  const totalPages = Math.ceil(filteredStudents.length / PAGE_SIZE);
+  const pagedStudents = filteredStudents.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+
+  const selectCourse = (slug: string) => { setSelectedCourse(slug); setPage(0); setExpandedStudent(null); };
 
   return (
     <div className="py-8 sm:py-14">
@@ -187,13 +195,13 @@ export default function InstructorDashboard() {
 
         {/* Course filter */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="flex flex-wrap gap-2 mb-8">
-          <button onClick={() => setSelectedCourse("all")} className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${selectedCourse === "all" ? "bg-primary text-white shadow-sm" : "bg-surface border border-border text-muted hover:text-foreground"}`}>
+          <button onClick={() => selectCourse("all")} className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${selectedCourse === "all" ? "bg-primary text-white shadow-sm" : "bg-surface border border-border text-muted hover:text-foreground"}`}>
             All Students ({students.length})
           </button>
           {courses.map((c) => {
             const count = students.filter((s) => s.courseId === c.slug).length;
             return (
-              <button key={c.slug} onClick={() => setSelectedCourse(c.slug)} className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${selectedCourse === c.slug ? "bg-primary text-white shadow-sm" : "bg-surface border border-border text-muted hover:text-foreground"}`}>
+              <button key={c.slug} onClick={() => selectCourse(c.slug)} className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${selectedCourse === c.slug ? "bg-primary text-white shadow-sm" : "bg-surface border border-border text-muted hover:text-foreground"}`}>
                 {c.title[lang]} ({count})
               </button>
             );
@@ -202,10 +210,22 @@ export default function InstructorDashboard() {
 
         {/* Students list */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25 }} className="space-y-4 mb-10">
-          <h2 className="text-xl font-bold flex items-center gap-2 mb-4">
-            <Users className="w-5 h-5 text-primary" />
-            My Students
-          </h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold flex items-center gap-2">
+              <Users className="w-5 h-5 text-primary" />
+              My Students
+              {filteredStudents.length > 0 && (
+                <span className="text-sm font-normal text-muted">
+                  ({filteredStudents.length} total)
+                </span>
+              )}
+            </h2>
+            {totalPages > 1 && (
+              <span className="text-sm text-muted">
+                Page {page + 1} of {totalPages}
+              </span>
+            )}
+          </div>
 
           {filteredStudents.length === 0 ? (
             <div className="bg-surface rounded-2xl border border-border p-10 text-center">
@@ -213,7 +233,7 @@ export default function InstructorDashboard() {
               <p className="text-muted">No students enrolled yet.</p>
             </div>
           ) : (
-            filteredStudents.map((student) => {
+            pagedStudents.map((student) => {
               const isExpanded = expandedStudent === student.enrollmentId;
               const studentNotes = recentNotes.filter((n) => n.enrollment === student.enrollmentId);
 
@@ -355,6 +375,48 @@ export default function InstructorDashboard() {
                 </div>
               );
             })
+          )}
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-center gap-2 pt-4">
+              <button
+                onClick={() => { setPage((p) => p - 1); setExpandedStudent(null); }}
+                disabled={page === 0}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-border text-sm font-medium text-muted hover:text-foreground hover:border-primary/40 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+              >
+                <ChevronLeft className="w-4 h-4" /> Prev
+              </button>
+
+              <div className="flex items-center gap-1">
+                {Array.from({ length: totalPages }, (_, i) => {
+                  const isActive = i === page;
+                  const isNearby = Math.abs(i - page) <= 2;
+                  const isEdge = i === 0 || i === totalPages - 1;
+                  if (!isNearby && !isEdge) {
+                    if (i === 1 || i === totalPages - 2) return <span key={i} className="px-1 text-muted text-sm">…</span>;
+                    return null;
+                  }
+                  return (
+                    <button
+                      key={i}
+                      onClick={() => { setPage(i); setExpandedStudent(null); }}
+                      className={`w-9 h-9 rounded-xl text-sm font-semibold transition-all ${isActive ? "bg-primary text-white shadow-sm" : "border border-border text-muted hover:text-foreground hover:border-primary/40"}`}
+                    >
+                      {i + 1}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <button
+                onClick={() => { setPage((p) => p + 1); setExpandedStudent(null); }}
+                disabled={page >= totalPages - 1}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-border text-sm font-medium text-muted hover:text-foreground hover:border-primary/40 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+              >
+                Next <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
           )}
         </motion.div>
       </div>

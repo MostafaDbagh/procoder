@@ -468,16 +468,16 @@ export default function DashboardContent({ initialCourses }: Props) {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: baseDelay }}
-                        className={`bg-surface rounded-2xl border p-5 flex items-center gap-4 ring-1 ${def.ring} shadow-lg ${def.glow}`}
+                        className={`bg-surface rounded-2xl border border-border p-5 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow`}
                       >
-                        <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${def.gradient} flex items-center justify-center shrink-0 shadow-md ${def.glow}`}>
+                        <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${def.gradient} flex items-center justify-center shrink-0 shadow-sm`}>
                           <BadgeIcon className="w-7 h-7 text-white drop-shadow" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className={`font-bold text-sm leading-snug ${def.textColor}`}>{def.name}</p>
                           <p className="text-xs text-muted mt-0.5 italic">{def.tagline}</p>
                           <p className="text-xs text-muted mt-1">{enrollment.childName} · {courseTitle}</p>
-                          <span className={`inline-block mt-2 px-2 py-0.5 rounded-full text-xs font-semibold bg-gradient-to-r ${def.gradient} bg-opacity-10 ${def.textColor}`}>
+                          <span className={`inline-block mt-2 px-2.5 py-0.5 rounded-full text-xs font-medium bg-black/5 dark:bg-white/10 ${def.textColor}`}>
                             {new Date(badge.awardedAt).toLocaleDateString()}
                           </span>
                         </div>
