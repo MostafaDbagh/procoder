@@ -192,6 +192,9 @@ export default function DashboardContent({ initialCourses }: Props) {
   const completedEnrollments = enrollments.filter((e) => e.status === "completed");
   const enrollmentsWithBadges = enrollments.filter((e) => e.badges && e.badges.length > 0);
 
+  const totalLessonsDone = enrollments.reduce((sum, e) => sum + (e.lessonsDone || 0), 0);
+  const totalBadgesEarned = enrollments.reduce((sum, e) => sum + (e.badges?.length || 0), 0);
+
   return (
     <div className="py-8 sm:py-14">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -216,9 +219,9 @@ export default function DashboardContent({ initialCourses }: Props) {
         {/* ═══ Stats Grid ═══ */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-10">
           {[
-            { icon: BookOpen,     label: t("coursesEnrolled"),   value: stats.coursesEnrolled,  iconBg: "bg-violet-500/10", iconColor: "text-violet-500" },
-            { icon: GraduationCap, label: t("lessonsCompleted"), value: stats.lessonsCompleted, iconBg: "bg-amber-500/10",  iconColor: "text-amber-500"  },
-            { icon: Award,        label: t("badges"),            value: stats.badges,           iconBg: "bg-emerald-500/10",iconColor: "text-emerald-500"},
+            { icon: BookOpen,     label: t("coursesEnrolled"),   value: stats.coursesEnrolled, iconBg: "bg-violet-500/10", iconColor: "text-violet-500" },
+            { icon: GraduationCap, label: t("lessonsCompleted"), value: totalLessonsDone,       iconBg: "bg-amber-500/10",  iconColor: "text-amber-500"  },
+            { icon: Award,        label: t("badges"),            value: totalBadgesEarned,      iconBg: "bg-emerald-500/10",iconColor: "text-emerald-500"},
             { icon: Flame,        label: t("streak"),            value: stats.streak,           iconBg: "bg-rose-500/10",  iconColor: "text-rose-500"   },
           ].map((stat, i) => (
             <motion.div

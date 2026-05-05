@@ -75,7 +75,7 @@ export default function ParentLoginContent({ idleSignOut = false }: { idleSignOu
  window.location.reload();
  }
  }}
- defaultTab="signup"
+ defaultTab="login"
  />
  </div>
  );

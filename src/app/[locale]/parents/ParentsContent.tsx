@@ -29,7 +29,7 @@ import {
 export default function ParentsContent() {
  const t = useTranslations("parents");
  const [authOpen, setAuthOpen] = useState(false);
- const [authTab, setAuthTab] = useState<"signup" | "login">("signup");
+ const [authTab, setAuthTab] = useState<"signup" | "login">("login");
 
  const trustCards = [
  { icon: BarChart3, title: t("trust1Title"), desc: t("trust1Desc"), color: "bg-blue-400" },

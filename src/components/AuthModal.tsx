@@ -334,15 +334,6 @@ export function AuthModal({
  {!success && tab !== "forgot" && !isInstructor && (
  <div className="flex p-1.5 mx-5 mt-5 bg-background rounded-xl border border-border">
  <button
- onClick={() => { setTab("signup"); setError(""); }}
- className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-semibold transition-all ${
- tab === "signup" ? "bg-primary text-white shadow-sm" : "text-muted hover:text-foreground"
- }`}
- >
- <UserPlus className="w-4 h-4" />
- {t("signupButton")}
- </button>
- <button
  onClick={() => { setTab("login"); setError(""); }}
  className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-semibold transition-all ${
  tab === "login" ? "bg-primary text-white shadow-sm" : "text-muted hover:text-foreground"
@@ -350,6 +341,15 @@ export function AuthModal({
  >
  <LogIn className="w-4 h-4" />
  {t("loginLink")}
+ </button>
+ <button
+ onClick={() => { setTab("signup"); setError(""); }}
+ className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-semibold transition-all ${
+ tab === "signup" ? "bg-primary text-white shadow-sm" : "text-muted hover:text-foreground"
+ }`}
+ >
+ <UserPlus className="w-4 h-4" />
+ {t("signupButton")}
  </button>
  </div>
  )}
@@ -387,81 +387,95 @@ export function AuthModal({
  animate={{ opacity: 1, x: 0 }}
  exit={{ opacity: 0, x: isRtl ? -20 : 20 }}
  onSubmit={handleSignup}
- className="space-y-5 mt-4"
+ className="space-y-6 mt-4"
  >
+ {/* Heading */}
+ <div className="text-center pb-1">
+ <p className="text-xl font-bold tracking-tight">Create your account</p>
+ <p className="text-sm text-muted mt-1.5">Join and track your child's learning journey</p>
+ </div>
+
+ {/* Enrollment hint */}
+ <div className="flex gap-3 items-start bg-primary/5 border border-primary/15 rounded-2xl px-4 py-4">
+ <ShieldCheck className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+ <p className="text-xs text-foreground/75 leading-relaxed">
+ {t("signupEnrollmentHint")}
+ </p>
+ </div>
+
+ {/* Fields */}
+ <div className="space-y-5">
  <div>
- <label className={`block text-sm font-medium mb-2 ${labelAlign}`}>
+ <label className={`block text-xs font-semibold uppercase tracking-wide text-muted mb-2 ${labelAlign}`}>
  {t("nameLabel")} <span className="text-red-500">*</span>
  </label>
  <input type="text" required value={signupForm.name} onChange={(e) => setSignupForm({ ...signupForm, name: e.target.value })} placeholder={t("namePlaceholder")} className={inputCls} />
  </div>
+
  <div>
- <label className={`block text-sm font-medium mb-2 ${labelAlign}`}>
+ <label className={`block text-xs font-semibold uppercase tracking-wide text-muted mb-2 ${labelAlign}`}>
  {t("emailLabel")} <span className="text-red-500">*</span>
  </label>
  <input type="email" required value={signupForm.email} onChange={(e) => setSignupForm({ ...signupForm, email: e.target.value })} placeholder={t("emailPlaceholder")} className={inputCls} />
  </div>
+
  <div>
- <label className={`block text-sm font-medium mb-2 ${labelAlign}`}>
+ <label className={`block text-xs font-semibold uppercase tracking-wide text-muted mb-2 ${labelAlign}`}>
  {t("phoneLabel")} <span className="text-red-500">*</span>
  </label>
  <input type="tel" required value={signupForm.phone} onChange={(e) => setSignupForm({ ...signupForm, phone: e.target.value })} placeholder={t("phonePlaceholder")} className={inputCls} />
  </div>
+
  <div>
- <label className={`block text-sm font-medium mb-2 ${labelAlign}`}>
+ <label className={`block text-xs font-semibold uppercase tracking-wide text-muted mb-2 ${labelAlign}`}>
  {t("passwordLabel")} <span className="text-red-500">*</span>
  </label>
  <PasswordInput
  required
  minLength={8}
  value={signupForm.password}
- onChange={(e) =>
- setSignupForm({ ...signupForm, password: e.target.value })
- }
+ onChange={(e) => setSignupForm({ ...signupForm, password: e.target.value })}
  placeholder={t("passwordPlaceholder")}
  inputClassName={inputCls}
  />
  </div>
+ </div>
 
- <p className="text-xs text-muted leading-relaxed">
- {t("signupEnrollmentHint")}
- </p>
-
+ {/* Eligibility states */}
  {signupEligibility === "checking" && (
  <p className="text-sm text-muted flex items-center gap-2">
  <Loader2 className="h-4 w-4 shrink-0 animate-spin" aria-hidden />
  {t("signupEligibilityChecking")}
  </p>
  )}
+
  {signupEligibility === "no" &&
  signupForm.name.trim().length >= 2 &&
- (emailLooksValid(signupForm.email) ||
- signupForm.phone.replace(/\D/g, "").length >= 8) && (
- <p className="text-sm text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 px-4 py-2 rounded-xl">
- {t("signupNoEnrollment")}
- </p>
+ (emailLooksValid(signupForm.email) || signupForm.phone.replace(/\D/g, "").length >= 8) && (
+ <div className="flex gap-3 items-start bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/40 rounded-2xl px-4 py-3.5">
+ <span className="text-amber-500 text-base leading-none mt-0.5">⚠</span>
+ <p className="text-sm text-amber-700 dark:text-amber-400">{t("signupNoEnrollment")}</p>
+ </div>
  )}
 
  {signupEligibility === "yes" && signupMatchedChildren.length > 0 && (
- <div className="rounded-xl border border-emerald-200 dark:border-emerald-900/40 bg-emerald-50/80 dark:bg-emerald-950/25 px-4 py-3 space-y-2">
- <p className="text-sm font-semibold text-emerald-900 dark:text-emerald-200 flex items-center gap-2">
+ <div className="rounded-2xl border border-emerald-200 dark:border-emerald-900/40 bg-emerald-50/80 dark:bg-emerald-950/25 px-4 py-4 space-y-2.5">
+ <p className="text-sm font-bold text-emerald-800 dark:text-emerald-200 flex items-center gap-2">
  <GraduationCap className="w-4 h-4 shrink-0" aria-hidden />
  {t("signupMatchedChildrenTitle")}
  </p>
- <p className="text-xs text-emerald-800/90 dark:text-emerald-300/90">
+ <p className="text-xs text-emerald-700/80 dark:text-emerald-300/80">
  {t("signupMatchedChildrenSubtitle")}
  </p>
- <ul className="list-disc ps-5 space-y-1.5 text-sm text-foreground">
+ <ul className="space-y-1.5">
  {signupMatchedChildren.map((c, idx) => (
- <li key={`${c.childName}-${idx}`}>
- <span className="font-medium">{c.childName}</span>
- {typeof c.childAge === "number"
- ? t("signupMatchedChildAge", { age: c.childAge })
- : null}
+ <li key={`${c.childName}-${idx}`} className="flex items-center gap-2 text-sm">
+ <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+ <span className="font-semibold">{c.childName}</span>
+ {typeof c.childAge === "number" ? t("signupMatchedChildAge", { age: c.childAge }) : null}
  {c.gradeLevel ? ` · ${c.gradeLevel}` : ""}
- <span className="text-muted">
- {" "}
- — {t("signupMatchedChildCourses", { count: c.enrollmentCount })}
+ <span className="text-muted text-xs ms-auto shrink-0">
+ {t("signupMatchedChildCourses", { count: c.enrollmentCount })}
  </span>
  </li>
  ))}
@@ -470,16 +484,21 @@ export function AuthModal({
  )}
 
  {error && (
- <p className="text-sm text-red-500 bg-red-50 dark:bg-red-950/30 px-4 py-2 rounded-xl">{error}</p>
+ <div className="flex items-start gap-2.5 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/40 px-4 py-3 rounded-xl">
+ <span className="text-red-500 text-lg leading-none mt-0.5">!</span>
+ <p className="text-sm text-red-600 dark:text-red-400 font-medium">{error}</p>
+ </div>
  )}
 
  <button
  type="submit"
  disabled={submitting || !signupCanSubmit}
- className="w-full py-3.5 rounded-2xl bg-primary text-white font-semibold shadow-md shadow-primary/10 hover:shadow-lg hover:scale-[1.01] transition-all disabled:opacity-70 disabled:cursor-not-allowed"
+ className="w-full py-3.5 rounded-2xl bg-primary text-white font-bold text-[15px] tracking-wide shadow-md shadow-primary/20 hover:brightness-105 active:scale-[0.99] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
  >
- {submitting ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : t("signupButton")}
+ {submitting ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "Create Account →"}
  </button>
+
+
  </motion.form>
  )}
 
@@ -491,23 +510,29 @@ export function AuthModal({
  animate={{ opacity: 1, x: 0 }}
  exit={{ opacity: 0, x: isRtl ? 20 : -20 }}
  onSubmit={handleLogin}
- className="space-y-5 mt-4"
+ className="space-y-4 mt-2"
  >
+ <div className="text-center pb-1">
+ <p className="text-xl font-bold tracking-tight">Welcome back</p>
+ <p className="text-sm text-muted mt-1">Sign in to your parent account</p>
+ </div>
+
  <div>
- <label className={`block text-sm font-medium mb-2 ${labelAlign}`}>
- {t("emailLabel")} <span className="text-red-500">*</span>
+ <label className={`block text-xs font-semibold uppercase tracking-wide text-muted mb-1.5 ${labelAlign}`}>
+ {t("emailLabel")}
  </label>
  <input type="email" required value={loginForm.email} onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })} placeholder={t("emailPlaceholder")} className={inputCls} />
  </div>
+
  <div>
- <div className={`flex items-center justify-between mb-2 ${labelAlign}`}>
- <label className="text-sm font-medium">
- {t("passwordLabel")} <span className="text-red-500">*</span>
+ <div className={`flex items-center justify-between mb-1.5 ${labelAlign}`}>
+ <label className="text-xs font-semibold uppercase tracking-wide text-muted">
+ {t("passwordLabel")}
  </label>
  {!isInstructor && (
  <button
  type="button"
- className="text-xs text-primary hover:underline"
+ className="text-xs text-primary font-medium hover:underline"
  onClick={() => {
  setTab("forgot");
  setError("");
@@ -523,21 +548,24 @@ export function AuthModal({
  required
  minLength={8}
  value={loginForm.password}
- onChange={(e) =>
- setLoginForm({ ...loginForm, password: e.target.value })
- }
+ onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
  placeholder={t("passwordPlaceholder")}
  inputClassName={inputCls}
  />
  </div>
 
  {error && (
- <p className="text-sm text-red-500 bg-red-50 dark:bg-red-950/30 px-4 py-2 rounded-xl">{error}</p>
+ <div className="flex items-start gap-2.5 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/40 px-4 py-3 rounded-xl">
+ <span className="text-red-500 text-lg leading-none mt-0.5">!</span>
+ <p className="text-sm text-red-600 dark:text-red-400 font-medium">{error}</p>
+ </div>
  )}
 
- <button type="submit" disabled={submitting} className="w-full py-3.5 rounded-2xl bg-primary text-white font-semibold shadow-md shadow-primary/10 hover:shadow-lg hover:scale-[1.01] transition-all disabled:opacity-70">
- {submitting ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : t("loginLink")}
+ <button type="submit" disabled={submitting} className="w-full py-3.5 rounded-2xl bg-primary text-white font-bold text-[15px] tracking-wide shadow-md shadow-primary/20 hover:shadow-lg hover:brightness-105 active:scale-[0.99] transition-all disabled:opacity-70">
+ {submitting ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "Sign in →"}
  </button>
+
+
  </motion.form>
  )}
 
