@@ -503,12 +503,20 @@ export default function InstructorDashboard() {
   );
 }
 
+const DAYS_OF_WEEK = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] as const;
+const DAY_SLOTS = ["morning", "afternoon", "evening"] as const;
+
 function ProgressControls({ student, token, onSaved }: { student: InstructorStudent; token: string; onSaved: () => void }) {
   const toDatetimeLocal = (v: string | null) =>
     v ? new Date(v).toISOString().slice(0, 16) : "";
 
+  const normalizeDays = (days: string[] | undefined): string[] =>
+    (days ?? []).map((d) => d.toLowerCase()).filter((d) => (DAYS_OF_WEEK as readonly string[]).includes(d));
+
   const [lessons, setLessons] = useState(student.lessonsDone);
   const [nextSession, setNextSession] = useState(() => toDatetimeLocal(student.nextSession));
+  const [preferredDays, setPreferredDays] = useState<string[]>(() => normalizeDays(student.preferredDays));
+  const [preferredTime, setPreferredTime] = useState<string>(() => (student.preferredTime || "").toLowerCase());
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [saveError, setSaveError] = useState("");
@@ -517,7 +525,13 @@ function ProgressControls({ student, token, onSaved }: { student: InstructorStud
   useEffect(() => {
     setLessons(student.lessonsDone);
     setNextSession(toDatetimeLocal(student.nextSession));
-  }, [student.lessonsDone, student.nextSession]);
+    setPreferredDays(normalizeDays(student.preferredDays));
+    setPreferredTime((student.preferredTime || "").toLowerCase());
+  }, [student.lessonsDone, student.nextSession, student.preferredDays, student.preferredTime]);
+
+  const toggleDay = (day: string) => {
+    setPreferredDays((prev) => (prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]));
+  };
 
   const handleSave = async () => {
     setSaving(true);
@@ -526,6 +540,8 @@ function ProgressControls({ student, token, onSaved }: { student: InstructorStud
       await updateStudentProgress(token, student.enrollmentId, {
         lessonsDone: Math.min(lessons, student.totalLessons || lessons),
         nextSession: nextSession || null,
+        preferredDays,
+        preferredTime,
       });
       setSaved(true);
       setTimeout(() => setSaved(false), 2500);
@@ -583,6 +599,54 @@ function ProgressControls({ student, token, onSaved }: { student: InstructorStud
               Clear date
             </button>
           )}
+        </div>
+      </div>
+      <div className="mb-3">
+        <label className="block text-xs text-muted mb-1.5 flex items-center gap-1.5">
+          <Calendar className="w-3.5 h-3.5" /> Days of week
+        </label>
+        <div className="flex flex-wrap gap-1.5">
+          {DAYS_OF_WEEK.map((day) => {
+            const active = preferredDays.includes(day);
+            return (
+              <button
+                key={day}
+                type="button"
+                onClick={() => toggleDay(day)}
+                className={`px-2.5 py-1.5 rounded-lg text-xs font-medium capitalize transition-all ${
+                  active
+                    ? "bg-primary text-white shadow-sm shadow-primary/10"
+                    : "bg-surface border border-border text-muted hover:border-primary/40"
+                }`}
+              >
+                {day.slice(0, 3)}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+      <div className="mb-3">
+        <label className="block text-xs text-muted mb-1.5 flex items-center gap-1.5">
+          <Clock className="w-3.5 h-3.5" /> Day slot
+        </label>
+        <div className="grid grid-cols-3 gap-1.5 max-w-sm">
+          {DAY_SLOTS.map((slot) => {
+            const active = preferredTime === slot;
+            return (
+              <button
+                key={slot}
+                type="button"
+                onClick={() => setPreferredTime(active ? "" : slot)}
+                className={`px-2.5 py-1.5 rounded-lg text-xs font-medium capitalize transition-all ${
+                  active
+                    ? "bg-primary text-white shadow-sm shadow-primary/10"
+                    : "bg-surface border border-border text-muted hover:border-primary/40"
+                }`}
+              >
+                {slot}
+              </button>
+            );
+          })}
         </div>
       </div>
       {saveError && (

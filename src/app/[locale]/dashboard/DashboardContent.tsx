@@ -431,13 +431,17 @@ export default function DashboardContent({ initialCourses }: Props) {
         {(() => {
           const allRecordings = enrollments
             .filter((e) => e.recordings && e.recordings.length > 0)
-            .flatMap((e) =>
-              e.recordings.map((r) => ({
+            .flatMap((e) => {
+              const ordered = [...e.recordings].sort(
+                (a, b) => new Date(a.sessionDate).getTime() - new Date(b.sessionDate).getTime()
+              );
+              return ordered.map((r, idx) => ({
                 ...r,
+                sessionNumber: idx + 1,
                 childName: e.childName,
                 courseTitle: e.course ? e.course.title[lang] : e.courseTitle || e.courseId,
-              }))
-            )
+              }));
+            })
             .sort((a, b) => new Date(b.sessionDate).getTime() - new Date(a.sessionDate).getTime());
 
           if (allRecordings.length === 0) return null;
@@ -455,7 +459,12 @@ export default function DashboardContent({ initialCourses }: Props) {
                         <Play className="w-5 h-5 text-blue-500" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-sm truncate">{rec.title || `Session Recording ${i + 1}`}</p>
+                        <div className="flex items-center gap-2">
+                          <p className="font-semibold text-sm truncate">{rec.title || `Session Recording ${rec.sessionNumber}`}</p>
+                          <span className="shrink-0 px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[11px] font-semibold">
+                            Session #{rec.sessionNumber}
+                          </span>
+                        </div>
                         <p className="text-xs text-muted mt-0.5">{rec.childName} · {rec.courseTitle}</p>
                       </div>
                     </div>
