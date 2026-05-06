@@ -726,9 +726,12 @@ export default function AdminDashboard() {
  /** Purge ISR cache for public pages so admin changes appear immediately. */
  const revalidatePublicPages = async (paths?: string[]) => {
  try {
+ const token = getAdminToken();
+ const headers = new Headers({ "Content-Type": "application/json" });
+ if (token) headers.set("Authorization", `Bearer ${token}`);
  await fetch("/api/revalidate", {
  method: "POST",
- headers: { "Content-Type": "application/json" },
+ headers,
  body: JSON.stringify({ paths: paths ?? ["/en", "/ar", "/en/courses", "/ar/courses"] }),
  });
  } catch { /* best-effort */ }
