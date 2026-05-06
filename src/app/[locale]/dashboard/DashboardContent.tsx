@@ -435,9 +435,11 @@ export default function DashboardContent({ initialCourses }: Props) {
               const ordered = [...e.recordings].sort(
                 (a, b) => new Date(a.sessionDate).getTime() - new Date(b.sessionDate).getTime()
               );
+              const total = ordered.length;
+              const baseline = e.lessonsDone && e.lessonsDone >= total ? e.lessonsDone : total;
               return ordered.map((r, idx) => ({
                 ...r,
-                sessionNumber: idx + 1,
+                sessionNumber: Math.max(1, baseline - (total - 1 - idx)),
                 childName: e.childName,
                 courseTitle: e.course ? e.course.title[lang] : e.courseTitle || e.courseId,
               }));
@@ -459,7 +461,7 @@ export default function DashboardContent({ initialCourses }: Props) {
                         <Play className="w-5 h-5 text-blue-500" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 justify-between">
                           <p className="font-semibold text-sm truncate">{rec.title || `Session Recording ${rec.sessionNumber}`}</p>
                           <span className="shrink-0 px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[11px] font-semibold">
                             Session #{rec.sessionNumber}
