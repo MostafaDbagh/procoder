@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, startTransition } from "react";
+import { useEffect, useState, startTransition, type FormEvent } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { useAuth } from "@/hooks/useAuth";
 import { isParentPortalRole } from "@/lib/auth-flow";
@@ -9,11 +9,13 @@ import {
   fetchParentDashboard,
   fetchParentReferral,
   fetchParentHomework,
+  createParentFeedback,
   type ParentDashboardData,
   type APICourse,
   type EnrollmentWithCourse,
   type InstructorNote,
   type HomeworkItem,
+  type ParentFeedbackCategory,
 } from "@/lib/api";
 import { BADGE_CATALOG, getBadge } from "@/lib/badges";
 import { CourseCard } from "@/components/CourseCard";
@@ -45,6 +47,8 @@ import {
   Gift,
   Copy,
   Share2,
+  MessageSquare,
+  Send,
 } from "lucide-react";
 
 const statusColors: Record<string, { bg: string; text: string; label: string }> = {
@@ -132,7 +136,7 @@ export default function DashboardContent({ initialCourses }: Props) {
   const [error, setError] = useState("");
   const [homework, setHomework] = useState<HomeworkItem[]>([]);
   const [hwUnread, setHwUnread] = useState(0);
-  const [activeTab, setActiveTab] = useState<"overview" | "badges" | "homework" | "referral">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "badges" | "homework" | "referral" | "feedback">("overview");
 
   useEffect(() => {
     if (authLoading || !isAuthenticated || !token) return;
@@ -265,6 +269,7 @@ export default function DashboardContent({ initialCourses }: Props) {
             { id: "badges",    icon: Trophy,        label: "Badges",    count: totalBadgesEarned + completedEnrollments.length + achievementNotes.length },
             { id: "homework",  icon: ClipboardList, label: "Homework",  count: homework.length, unread: hwUnread },
             { id: "referral",  icon: Gift,          label: "Referral" },
+            { id: "feedback",  icon: MessageSquare, label: lang === "ar" ? "ملاحظات" : "Feedback" },
           ] as const).map((tab) => (
             <button
               key={tab.id}
@@ -301,6 +306,11 @@ export default function DashboardContent({ initialCourses }: Props) {
         {/* ═══ Referral Tab ═══ */}
         {activeTab === "referral" && (
           <ReferralTab token={token} lang={lang} />
+        )}
+
+        {/* ═══ Feedback Tab ═══ */}
+        {activeTab === "feedback" && (
+          <FeedbackTab token={token} lang={lang} />
         )}
 
         {/* ═══ Enrollments ═══ */}
@@ -682,6 +692,140 @@ function BadgesTab({
             );
           })
         )}
+      </div>
+    </motion.div>
+  );
+}
+
+// ─── Feedback Tab ───────────────────────────────────────────────────────────
+function FeedbackTab({ token, lang }: { token: string | null; lang: string }) {
+  const [category, setCategory] = useState<ParentFeedbackCategory>("note");
+  const [message, setMessage] = useState("");
+  const [sending, setSending] = useState(false);
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
+  const isAr = lang === "ar";
+
+  const categories: { value: ParentFeedbackCategory; label: string }[] = [
+    { value: "note", label: isAr ? "ملاحظة عامة" : "General note" },
+    { value: "enhancement", label: isAr ? "تحسين" : "Enhancement" },
+    { value: "complaint", label: isAr ? "شكوى" : "Complaint" },
+    { value: "feature", label: isAr ? "ميزة مطلوبة" : "Requested feature" },
+    { value: "other", label: isAr ? "أخرى" : "Other" },
+  ];
+
+  const submit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!token || sending) return;
+    const body = message.trim();
+    if (!body) {
+      setError(isAr ? "اكتب ملاحظتك أولاً." : "Please type your feedback first.");
+      return;
+    }
+    try {
+      setSending(true);
+      setError("");
+      setSuccess("");
+      await createParentFeedback(token, { category, message: body });
+      setMessage("");
+      setCategory("note");
+      setSuccess(isAr ? "تم إرسال ملاحظتك إلى فريق الإدارة. شكراً لك." : "Your feedback was sent to the admin team. Thank you.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : isAr ? "تعذر إرسال الملاحظة." : "Could not send feedback.");
+    } finally {
+      setSending(false);
+    }
+  };
+
+  return (
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <form onSubmit={submit} className="bg-surface rounded-2xl border border-border p-6">
+          <div className="mb-6 flex items-start gap-4">
+            <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+              <MessageSquare className="w-5 h-5 text-primary" />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold">{isAr ? "أرسل ملاحظتك" : "Send feedback"}</h2>
+              <p className="text-sm text-muted mt-1">
+                {isAr
+                  ? "شاركنا أي ملاحظة أو تحسين أو شكوى أو ميزة تريدها في StemTechLab."
+                  : "Share any note, enhancement, complaint, or requested feature for StemTechLab."}
+              </p>
+            </div>
+          </div>
+
+          <fieldset className="mb-4">
+            <legend className="mb-2 text-sm font-semibold">{isAr ? "نوع الملاحظة" : "Feedback type"}</legend>
+            <div className="grid gap-2 sm:grid-cols-2">
+              {categories.map((c) => {
+                const selected = category === c.value;
+                return (
+                  <button
+                    key={c.value}
+                    type="button"
+                    aria-pressed={selected}
+                    onClick={() => setCategory(c.value)}
+                    className={`flex min-h-11 items-center justify-between rounded-xl border px-4 py-2.5 text-sm font-semibold transition-all ${
+                      selected
+                        ? "border-primary bg-primary/10 text-primary shadow-sm shadow-primary/10"
+                        : "border-border bg-background text-foreground hover:border-primary/40 hover:bg-surface-hover"
+                    }`}
+                  >
+                    <span>{c.label}</span>
+                    {selected ? <CheckCircle2 className="h-4 w-4 shrink-0" /> : null}
+                  </button>
+                );
+              })}
+            </div>
+          </fieldset>
+
+          <label className="block">
+            <span className="block text-sm font-semibold mb-2">{isAr ? "رسالتك" : "Your message"}</span>
+            <textarea
+              value={message}
+              onChange={(e) => setMessage(e.target.value.slice(0, 5000))}
+              rows={8}
+              placeholder={isAr ? "اكتب ما تريد تحسينه أو أي مشكلة واجهتها..." : "Type what we can improve, what went wrong, or the feature you want..."}
+              className="w-full resize-y rounded-xl border border-border bg-background px-4 py-3 text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-primary/30"
+            />
+          </label>
+
+          <div className="mt-2 flex items-center justify-between gap-4 text-xs text-muted">
+            <span>{isAr ? "ستصل رسالتك مباشرة إلى لوحة الإدارة." : "This goes directly to the admin dashboard."}</span>
+            <span>{message.length}/5000</span>
+          </div>
+
+          {success && (
+            <div className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-900/40 dark:bg-emerald-950/20 dark:text-emerald-300">
+              {success}
+            </div>
+          )}
+          {error && (
+            <div className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/40 dark:bg-red-950/20 dark:text-red-300">
+              {error}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={sending || !message.trim()}
+            className="mt-5 inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-white shadow-md shadow-primary/10 transition-all hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+            {sending ? (isAr ? "جارٍ الإرسال..." : "Sending...") : (isAr ? "إرسال" : "Send feedback")}
+          </button>
+        </form>
+
+        <aside className="rounded-2xl border border-border bg-surface p-6 h-fit">
+          <p className="font-semibold mb-3">{isAr ? "ما الذي يمكنك إرساله؟" : "What can you send?"}</p>
+          <ul className="space-y-3 text-sm text-muted">
+            <li>{isAr ? "ملاحظات عن تجربة طفلك أو الدروس." : "Notes about your child’s learning experience."}</li>
+            <li>{isAr ? "اقتراحات لتحسين المنصة أو لوحة ولي الأمر." : "Ideas to improve the platform or parent dashboard."}</li>
+            <li>{isAr ? "شكوى أو مشكلة تحتاج متابعة من الإدارة." : "A complaint or issue that needs admin follow-up."}</li>
+            <li>{isAr ? "ميزة جديدة تريد رؤيتها." : "A new feature you would like to see."}</li>
+          </ul>
+        </aside>
       </div>
     </motion.div>
   );

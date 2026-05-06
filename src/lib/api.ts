@@ -491,6 +491,32 @@ export function updateParentProfile(
  });
 }
 
+export type ParentFeedbackCategory = "note" | "enhancement" | "complaint" | "feature" | "other";
+
+export interface ParentFeedback {
+ _id: string;
+ user: string;
+ parentName: string;
+ parentEmail: string;
+ parentPhone?: string;
+ category: ParentFeedbackCategory;
+ message: string;
+ status: "new" | "read" | "resolved";
+ adminNote?: string;
+ createdAt: string;
+ updatedAt: string;
+}
+
+export function createParentFeedback(
+ token: string,
+ data: { category: ParentFeedbackCategory; message: string }
+): Promise<{ message: string; feedback: ParentFeedback }> {
+ return authRequest<{ message: string; feedback: ParentFeedback }>("/parent/feedback", token, {
+ method: "POST",
+ body: JSON.stringify(data),
+ });
+}
+
 // --- Instructor Dashboard ---
 
 export interface InstructorStudent {

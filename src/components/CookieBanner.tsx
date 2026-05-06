@@ -1,27 +1,51 @@
 "use client";
 
-import { useState } from "react";
+import { useSyncExternalStore } from "react";
 import { useLocale } from "next-intl";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { X } from "lucide-react";
 
 const STORAGE_KEY = "stl_cookie_consent";
+const CONSENT_EVENT = "stl_cookie_consent_change";
+
+function subscribe(callback: () => void) {
+  window.addEventListener("storage", callback);
+  window.addEventListener(CONSENT_EVENT, callback);
+  return () => {
+    window.removeEventListener("storage", callback);
+    window.removeEventListener(CONSENT_EVENT, callback);
+  };
+}
+
+function getConsentSnapshot() {
+  return localStorage.getItem(STORAGE_KEY) || "";
+}
+
+function getServerConsentSnapshot() {
+  return "accepted";
+}
 
 export function CookieBanner() {
   const locale = useLocale();
   const isAr = locale === "ar";
-  const [visible, setVisible] = useState(
-    () => typeof window !== "undefined" && !localStorage.getItem(STORAGE_KEY)
+  const consent = useSyncExternalStore(
+    subscribe,
+    getConsentSnapshot,
+    getServerConsentSnapshot
   );
+  const visible = !consent;
+
+  const saveChoice = (value: "accepted" | "declined") => {
+    localStorage.setItem(STORAGE_KEY, value);
+    window.dispatchEvent(new Event(CONSENT_EVENT));
+  };
 
   const accept = () => {
-    localStorage.setItem(STORAGE_KEY, "accepted");
-    setVisible(false);
+    saveChoice("accepted");
   };
 
   const decline = () => {
-    localStorage.setItem(STORAGE_KEY, "declined");
-    setVisible(false);
+    saveChoice("declined");
   };
 
   if (!visible) return null;

@@ -44,6 +44,7 @@ type Tab =
  | "promos"
  | "blog"
  | "careers"
+ | "parent_feedback"
  | "free_trial"
  | "subscribers";
 
@@ -132,6 +133,20 @@ const ENROLLMENT_PAYMENT_OPTIONS = [
  { value: "half", label: "Half paid (50%)" },
  { value: "deposit_15", label: "15% deposit paid" },
 ] as const;
+
+const PARENT_FEEDBACK_CATEGORIES = [
+ { value: "", label: "All types" },
+ { value: "note", label: "General note" },
+ { value: "enhancement", label: "Enhancement" },
+ { value: "complaint", label: "Complaint" },
+ { value: "feature", label: "Requested feature" },
+ { value: "other", label: "Other" },
+] as const;
+
+function parentFeedbackCategoryLabel(value: unknown) {
+ const key = String(value ?? "");
+ return PARENT_FEEDBACK_CATEGORIES.find((c) => c.value === key)?.label || key || "—";
+}
 
 function enrollmentDetailDisplay(v: unknown): string {
  if (v == null || v === "") return "—";
@@ -303,6 +318,7 @@ const TABS: { id: Tab; label: string }[] = [
  { id: "payments", label: "Payments" },
  { id: "promos", label: "Promos" },
  { id: "contacts", label: "Contact" },
+ { id: "parent_feedback", label: "Parent feedback" },
  { id: "challenges", label: "Challenges" },
  { id: "team", label: "Team" },
  { id: "blog", label: "Blog" },
@@ -355,6 +371,15 @@ export default function AdminDashboard() {
  status: "",
  q: "",
  challengeOnly: false,
+ });
+
+ const [parentFeedback, setParentFeedback] = useState<Record<string, unknown>[]>([]);
+ const [parentFeedbackMeta, setParentFeedbackMeta] = useState<ListMeta>(emptyMeta);
+ const [parentFeedbackPage, setParentFeedbackPage] = useState(1);
+ const [parentFeedbackFilter, setParentFeedbackFilter] = useState({
+ status: "",
+ category: "",
+ q: "",
  });
 
  const [challenges, setChallenges] = useState<Record<string, unknown>[]>([]);
@@ -530,6 +555,22 @@ export default function AdminDashboard() {
  setContactsMeta(meta);
  }, [conFilter, contactsPage]);
 
+ const loadParentFeedback = useCallback(async () => {
+ const q = new URLSearchParams();
+ if (parentFeedbackFilter.status) q.set("status", parentFeedbackFilter.status);
+ if (parentFeedbackFilter.category) q.set("category", parentFeedbackFilter.category);
+ if (parentFeedbackFilter.q) q.set("q", parentFeedbackFilter.q);
+ q.set("page", String(parentFeedbackPage));
+ q.set("limit", String(PAGE_SIZE));
+ const raw = await adminFetch<unknown>(`/admin/parent-feedback?${q}`);
+ const { items, meta } = normalizePagedResponse<Record<string, unknown>>(
+ raw,
+ PAGE_SIZE
+ );
+ setParentFeedback(items);
+ setParentFeedbackMeta(meta);
+ }, [parentFeedbackFilter, parentFeedbackPage]);
+
  const loadChallenges = useCallback(async () => {
  const q = new URLSearchParams();
  if (chFilter.q) q.set("q", chFilter.q);
@@ -649,6 +690,7 @@ export default function AdminDashboard() {
  if (tab === "payments") await loadPayments();
  if (tab === "promos") await loadPromos();
  if (tab === "contacts" || tab === "free_trial" || tab === "subscribers") await loadContacts();
+ if (tab === "parent_feedback") await loadParentFeedback();
  if (tab === "challenges") await loadChallenges();
  if (tab === "team") await loadTeam();
  if (tab === "blog") await loadBlog();
@@ -676,6 +718,7 @@ export default function AdminDashboard() {
  loadUsers,
  loadPayments,
  loadPromos,
+ loadParentFeedback,
  loadBlog,
  loadCareers,
  ]);
@@ -750,6 +793,28 @@ export default function AdminDashboard() {
  await loadOverview();
  } catch (e) {
  setErr(e instanceof Error ? e.message : "Failed");
+ }
+ };
+
+ const patchParentFeedback = async (id: string, patch: Record<string, unknown>) => {
+ try {
+ await adminFetch(`/admin/parent-feedback/${id}`, {
+ method: "PATCH",
+ body: JSON.stringify(patch),
+ });
+ await loadParentFeedback();
+ } catch (e) {
+ setErr(e instanceof Error ? e.message : "Feedback update failed");
+ }
+ };
+
+ const deleteParentFeedback = async (id: string) => {
+ if (!confirm("Delete this parent feedback permanently?")) return;
+ try {
+ await adminFetch(`/admin/parent-feedback/${id}`, { method: "DELETE" });
+ await loadParentFeedback();
+ } catch (e) {
+ setErr(e instanceof Error ? e.message : "Delete failed");
  }
  };
 
@@ -2218,6 +2283,130 @@ export default function AdminDashboard() {
  meta={contactsMeta}
  noun="messages"
  onPageChange={setContactsPage}
+ />
+ </div>
+ )}
+
+ {tab === "parent_feedback" && (
+ <div className="space-y-4">
+ <div className="flex flex-wrap items-center gap-3">
+ <FilterSelect
+ label="Status"
+ value={parentFeedbackFilter.status}
+ onChange={(v) => {
+ setParentFeedbackPage(1);
+ setParentFeedbackFilter((f) => ({ ...f, status: v }));
+ }}
+ options={[
+ { value: "", label: "All statuses" },
+ { value: "new", label: "New" },
+ { value: "read", label: "Read" },
+ { value: "resolved", label: "Resolved" },
+ ]}
+ />
+ <FilterSelect
+ label="Type"
+ value={parentFeedbackFilter.category}
+ onChange={(v) => {
+ setParentFeedbackPage(1);
+ setParentFeedbackFilter((f) => ({ ...f, category: v }));
+ }}
+ options={[...PARENT_FEEDBACK_CATEGORIES]}
+ />
+ <input
+ placeholder="search parent, email, message"
+ value={parentFeedbackFilter.q}
+ onChange={(e) => {
+ setParentFeedbackPage(1);
+ setParentFeedbackFilter((f) => ({ ...f, q: e.target.value }));
+ }}
+ className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm"
+ />
+ </div>
+
+ <div className="overflow-x-auto rounded-xl border border-slate-800">
+ <table className="w-full min-w-[980px] text-left text-sm">
+ <thead className="border-b border-slate-800 text-slate-500">
+ <tr>
+ <th className="p-2">Date</th>
+ <th className="p-2">Parent</th>
+ <th className="p-2">Type</th>
+ <th className="p-2">Message</th>
+ <th className="p-2">Status</th>
+ <th className="p-2">Admin note</th>
+ <th className="p-2 w-24">Actions</th>
+ </tr>
+ </thead>
+ <tbody>
+ {parentFeedback.map((r) => (
+ <tr key={String(r._id)} className="border-t border-slate-800/80 align-top">
+ <td className="p-2 text-xs text-slate-400">
+ {String(r.createdAt ?? "").slice(0, 10)}
+ </td>
+ <td className="p-2">
+ <div className="font-medium">{String(r.parentName ?? "—")}</div>
+ <div className="text-xs text-slate-400">{String(r.parentEmail ?? "—")}</div>
+ {r.parentPhone ? <div className="text-xs text-slate-500">{String(r.parentPhone)}</div> : null}
+ </td>
+ <td className="p-2">
+ <span className="rounded bg-slate-800 px-2 py-1 text-xs text-slate-200">
+ {parentFeedbackCategoryLabel(r.category)}
+ </span>
+ </td>
+ <td className="p-2 max-w-md whitespace-pre-wrap text-xs leading-relaxed text-slate-300">
+ {String(r.message ?? "")}
+ </td>
+ <td className="p-2">
+ <select
+ value={String(r.status ?? "new")}
+ onChange={(e) => patchParentFeedback(String(r._id), { status: e.target.value })}
+ className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-xs"
+ >
+ {["new", "read", "resolved"].map((s) => (
+ <option key={s} value={s}>{s}</option>
+ ))}
+ </select>
+ </td>
+ <td className="p-2">
+ <textarea
+ defaultValue={String(r.adminNote ?? "")}
+ rows={3}
+ maxLength={2000}
+ onBlur={(e) => {
+ const next = e.target.value.trim();
+ if (next !== String(r.adminNote ?? "").trim()) {
+ patchParentFeedback(String(r._id), { adminNote: next });
+ }
+ }}
+ placeholder="Internal note"
+ className="w-56 resize-y rounded border border-slate-700 bg-slate-950 px-2 py-1 text-xs text-slate-200"
+ />
+ </td>
+ <td className="p-2">
+ <button
+ type="button"
+ onClick={() => deleteParentFeedback(String(r._id))}
+ className="rounded border border-red-900/60 bg-red-950/40 px-2 py-1 text-xs text-red-200 hover:bg-red-950/70"
+ >
+ Delete
+ </button>
+ </td>
+ </tr>
+ ))}
+ {parentFeedback.length === 0 && (
+ <tr>
+ <td colSpan={7} className="p-6 text-center text-xs text-slate-500">
+ No parent feedback yet.
+ </td>
+ </tr>
+ )}
+ </tbody>
+ </table>
+ </div>
+ <PaginationBar
+ meta={parentFeedbackMeta}
+ noun="feedback"
+ onPageChange={setParentFeedbackPage}
  />
  </div>
  )}
