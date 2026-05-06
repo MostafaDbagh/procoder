@@ -581,3 +581,58 @@ export function updateStudentProgress(
  body: JSON.stringify(data),
  });
 }
+
+export interface HomeworkItem {
+ _id: string;
+ instructor: string;
+ instructorName: string;
+ enrollment: string;
+ courseId: string;
+ childName: string;
+ parentEmail: string;
+ title: string;
+ description: string;
+ dueDate: string | null;
+ status: "assigned" | "submitted" | "graded";
+ grade: string;
+ feedback: string;
+ readByParent: boolean;
+ createdAt: string;
+ updatedAt: string;
+}
+
+export function fetchInstructorHomework(token: string, enrollmentId?: string): Promise<HomeworkItem[]> {
+ const qs = enrollmentId ? `?enrollmentId=${enrollmentId}` : "";
+ return authRequest<HomeworkItem[]>(`/instructor/homework${qs}`, token);
+}
+
+export function createHomework(
+ token: string,
+ data: { enrollmentId: string; title: string; description?: string; dueDate?: string | null }
+): Promise<HomeworkItem> {
+ return authRequest<HomeworkItem>("/instructor/homework", token, {
+  method: "POST",
+  body: JSON.stringify(data),
+ });
+}
+
+export function updateHomework(
+ token: string,
+ hwId: string,
+ data: { title?: string; description?: string; dueDate?: string | null; status?: string; grade?: string; feedback?: string }
+): Promise<HomeworkItem> {
+ return authRequest<HomeworkItem>(`/instructor/homework/${hwId}`, token, {
+  method: "PATCH",
+  body: JSON.stringify(data),
+ });
+}
+
+export function deleteHomework(token: string, hwId: string): Promise<{ message: string }> {
+ return authRequest<{ message: string }>(`/instructor/homework/${hwId}`, token, {
+  method: "DELETE",
+ });
+}
+
+export function fetchParentHomework(token: string): Promise<{ homework: HomeworkItem[]; unreadCount: number }> {
+ return authRequest<{ homework: HomeworkItem[]; unreadCount: number }>("/parent/homework", token);
+}

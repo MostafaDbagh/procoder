@@ -8,10 +8,12 @@ import { useRouter } from "@/i18n/navigation";
 import {
   fetchParentDashboard,
   fetchParentReferral,
+  fetchParentHomework,
   type ParentDashboardData,
   type APICourse,
   type EnrollmentWithCourse,
   type InstructorNote,
+  type HomeworkItem,
 } from "@/lib/api";
 import { BADGE_CATALOG, getBadge } from "@/lib/badges";
 import { CourseCard } from "@/components/CourseCard";
@@ -39,6 +41,12 @@ import {
   Trophy,
   UserX,
   Bell,
+  ClipboardList,
+  CalendarClock,
+  BookMarked,
+  Gift,
+  Copy,
+  Share2,
 } from "lucide-react";
 
 const statusColors: Record<string, { bg: string; text: string; label: string }> = {
@@ -124,6 +132,9 @@ export default function DashboardContent({ initialCourses }: Props) {
   const [data, setData] = useState<ParentDashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [homework, setHomework] = useState<HomeworkItem[]>([]);
+  const [hwUnread, setHwUnread] = useState(0);
+  const [activeTab, setActiveTab] = useState<"overview" | "badges" | "homework" | "referral">("overview");
 
   useEffect(() => {
     if (authLoading || !isAuthenticated || !token) return;
@@ -139,6 +150,13 @@ export default function DashboardContent({ initialCourses }: Props) {
       .then((d) => { setData(d); startTransition(() => setLoading(false)); })
       .catch((err) => { setError(err.message); startTransition(() => setLoading(false)); });
   }, [token, authLoading, role]);
+
+  useEffect(() => {
+    if (!token || authLoading) return;
+    fetchParentHomework(token)
+      .then((res) => { setHomework(res.homework); setHwUnread(res.unreadCount); })
+      .catch(() => {});
+  }, [token, authLoading]);
 
   if (!authLoading && isAuthenticated && role && !isParentPortalRole(role)) {
     return <div className="flex justify-center py-32"><Loader2 className="w-8 h-8 text-primary animate-spin" /></div>;
@@ -242,7 +260,53 @@ export default function DashboardContent({ initialCourses }: Props) {
           ))}
         </motion.div>
 
+        {/* ═══ Tab Bar ═══ */}
+        <div className="flex gap-1 mb-8 border-b border-border overflow-x-auto">
+          {([
+            { id: "overview",  icon: BookMarked,   label: "Overview" },
+            { id: "badges",    icon: Trophy,        label: "Badges",    count: totalBadgesEarned + completedEnrollments.length + achievementNotes.length },
+            { id: "homework",  icon: ClipboardList, label: "Homework",  count: homework.length, unread: hwUnread },
+            { id: "referral",  icon: Gift,          label: "Referral" },
+          ] as const).map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex items-center gap-2 px-4 py-2.5 text-sm font-semibold border-b-2 whitespace-nowrap transition-colors ${activeTab === tab.id ? "border-primary text-primary" : "border-transparent text-muted hover:text-foreground"}`}
+            >
+              <tab.icon className="w-4 h-4 shrink-0" />
+              {tab.label}
+              {"unread" in tab && tab.unread > 0 && (
+                <span className="px-1.5 py-0.5 rounded-full bg-red-500 text-white text-xs font-bold leading-none">{tab.unread}</span>
+              )}
+              {"count" in tab && tab.count > 0 && (!("unread" in tab) || tab.unread === 0) && (
+                <span className="px-1.5 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-semibold">{tab.count}</span>
+              )}
+            </button>
+          ))}
+        </div>
+
+        {/* ═══ Homework Tab ═══ */}
+        {activeTab === "homework" && (
+          <HomeworkTab homework={homework} lang={lang} />
+        )}
+
+        {/* ═══ Badges Tab ═══ */}
+        {activeTab === "badges" && (
+          <BadgesTab
+            completedEnrollments={completedEnrollments}
+            achievementNotes={achievementNotes}
+            enrollmentsWithBadges={enrollmentsWithBadges}
+            lang={lang}
+          />
+        )}
+
+        {/* ═══ Referral Tab ═══ */}
+        {activeTab === "referral" && (
+          <ReferralTab token={token} lang={lang} />
+        )}
+
         {/* ═══ Enrollments ═══ */}
+        {activeTab === "overview" && (<>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25 }} className="mb-10">
           <div className="flex items-center justify-between mb-5">
             <h2 className="text-xl font-bold flex items-center gap-2">
@@ -475,100 +539,6 @@ export default function DashboardContent({ initialCourses }: Props) {
           )}
         </motion.div>
 
-        {/* ═══ Badges & Certificates ═══ */}
-        {(completedEnrollments.length > 0 || achievementNotes.length > 0 || enrollmentsWithBadges.length > 0) && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.36 }} className="mb-10">
-            <h2 className="text-xl font-bold flex items-center gap-2 mb-5">
-              <Trophy className="w-5 h-5 text-amber-500" />
-              Badges & Certificates
-            </h2>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {completedEnrollments.map((enrollment, i) => {
-                const courseTitle = enrollment.course ? enrollment.course.title[lang] : enrollment.courseTitle || enrollment.courseId;
-                return (
-                  <motion.div key={enrollment._id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.38 + i * 0.05 }} className="bg-surface rounded-2xl border border-amber-200 dark:border-amber-900/40 p-5 flex items-center gap-4">
-                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${enrollment.course?.color || "from-violet-500 to-primary"} flex items-center justify-center shrink-0`}>
-                      <Trophy className="w-7 h-7 text-white" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-sm leading-snug">{courseTitle}</p>
-                      <p className="text-xs text-muted mt-1">{enrollment.childName}</p>
-                      <span className="inline-block mt-2 px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 text-xs font-semibold">
-                        Course Completed
-                      </span>
-                    </div>
-                  </motion.div>
-                );
-              })}
-              {achievementNotes.map((note, i) => (
-                <motion.div key={note._id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.38 + (completedEnrollments.length + i) * 0.05 }} className="bg-surface rounded-2xl border border-violet-200 dark:border-violet-900/40 p-5 flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-primary flex items-center justify-center shrink-0">
-                    <Star className="w-7 h-7 text-white fill-white/30" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-sm leading-snug">{note.title}</p>
-                    <p className="text-xs text-muted mt-1">{note.childName}</p>
-                    <span className="inline-block mt-2 px-2 py-0.5 rounded-full bg-violet-100 dark:bg-violet-950/30 text-violet-700 dark:text-violet-400 text-xs font-semibold">
-                      Achievement
-                    </span>
-                  </div>
-                </motion.div>
-              ))}
-              {enrollmentsWithBadges.flatMap((enrollment, eIdx) =>
-                enrollment.badges.map((badge, bIdx) => {
-                  const def = getBadge(badge.name);
-                  const courseTitle = enrollment.course ? enrollment.course.title[lang] : enrollment.courseTitle || enrollment.courseId;
-                  const baseDelay = 0.38 + (completedEnrollments.length + achievementNotes.length + eIdx + bIdx) * 0.05;
-                  if (def) {
-                    const BadgeIcon = def.icon;
-                    return (
-                      <motion.div
-                        key={`${enrollment._id}-${badge.name}`}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: baseDelay }}
-                        className={`bg-surface rounded-2xl border border-border p-5 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow`}
-                      >
-                        <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${def.gradient} flex items-center justify-center shrink-0 shadow-sm`}>
-                          <BadgeIcon className="w-7 h-7 text-white drop-shadow" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className={`font-bold text-sm leading-snug ${def.textColor}`}>{def.name}</p>
-                          <p className="text-xs text-muted mt-0.5 italic">{def.tagline}</p>
-                          <p className="text-xs text-muted mt-1">{enrollment.childName} · {courseTitle}</p>
-                          <span className={`inline-block mt-2 px-2.5 py-0.5 rounded-full text-xs font-medium bg-black/5 dark:bg-white/10 ${def.textColor}`}>
-                            {new Date(badge.awardedAt).toLocaleDateString()}
-                          </span>
-                        </div>
-                      </motion.div>
-                    );
-                  }
-                  return (
-                    <motion.div
-                      key={`${enrollment._id}-${badge.name}`}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: baseDelay }}
-                      className="bg-surface rounded-2xl border border-amber-200 dark:border-amber-900/40 p-5 flex items-center gap-4"
-                    >
-                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shrink-0">
-                        <Star className="w-7 h-7 text-white fill-white/40" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-sm leading-snug">{badge.name}</p>
-                        <p className="text-xs text-muted mt-1">{enrollment.childName} · {courseTitle}</p>
-                        <span className="inline-block mt-2 px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 text-xs font-semibold">
-                          Instructor Badge · {new Date(badge.awardedAt).toLocaleDateString()}
-                        </span>
-                      </div>
-                    </motion.div>
-                  );
-                })
-              )}
-            </div>
-          </motion.div>
-        )}
-
         {/* ═══ Quick Stats Row ═══ */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.38 }} className="grid sm:grid-cols-3 gap-3 mb-10">
           {[
@@ -622,10 +592,361 @@ export default function DashboardContent({ initialCourses }: Props) {
           </motion.div>
         )}
 
-        {/* ═══ Invite a Friend ═══ */}
-        <ReferralSection key={token ?? "no-token"} token={token} lang={lang} />
+        </>)}
       </div>
     </div>
+  );
+}
+
+// ─── Badges Tab ────────────────────────────────────────────────────────────
+function BadgesTab({
+  completedEnrollments,
+  achievementNotes,
+  enrollmentsWithBadges,
+  lang,
+}: {
+  completedEnrollments: EnrollmentWithCourse[];
+  achievementNotes: ReturnType<typeof Array.prototype.filter>;
+  enrollmentsWithBadges: EnrollmentWithCourse[];
+  lang: "en" | "ar";
+}) {
+  const total =
+    completedEnrollments.length +
+    achievementNotes.length +
+    enrollmentsWithBadges.reduce((s: number, e: EnrollmentWithCourse) => s + (e.badges?.length || 0), 0);
+
+  if (total === 0) {
+    return (
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-10">
+        <div className="bg-surface rounded-2xl border border-border p-14 text-center">
+          <div className="w-20 h-20 rounded-full bg-amber-500/10 flex items-center justify-center mx-auto mb-5">
+            <Trophy className="w-10 h-10 text-amber-400" />
+          </div>
+          <p className="font-semibold text-lg mb-2">No badges yet</p>
+          <p className="text-sm text-muted max-w-sm mx-auto">
+            Complete courses or earn instructor awards to see badges and certificates here.
+          </p>
+        </div>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-10">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
+          <Trophy className="w-5 h-5 text-amber-500" />
+        </div>
+        <div>
+          <h2 className="text-xl font-bold">Badges &amp; Certificates</h2>
+          <p className="text-sm text-muted">{total} achievement{total !== 1 ? "s" : ""} earned</p>
+        </div>
+      </div>
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {completedEnrollments.map((enrollment, i) => {
+          const courseTitle = enrollment.course ? enrollment.course.title[lang] : enrollment.courseTitle || enrollment.courseId;
+          return (
+            <motion.div key={enrollment._id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}
+              className="bg-surface rounded-2xl border border-amber-200 dark:border-amber-900/40 p-5 flex items-center gap-4 hover:shadow-md transition-shadow">
+              <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${enrollment.course?.color || "from-violet-500 to-primary"} flex items-center justify-center shrink-0 shadow-sm`}>
+                <Trophy className="w-8 h-8 text-white drop-shadow" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-sm leading-snug">{courseTitle}</p>
+                <p className="text-xs text-muted mt-1">{enrollment.childName}</p>
+                <span className="inline-flex items-center gap-1 mt-2 px-2.5 py-1 rounded-full bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 text-xs font-semibold">
+                  <CheckCircle2 className="w-3 h-3" /> Course Completed
+                </span>
+              </div>
+            </motion.div>
+          );
+        })}
+        {(achievementNotes as InstructorNote[]).map((note, i) => (
+          <motion.div key={note._id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: (completedEnrollments.length + i) * 0.06 }}
+            className="bg-surface rounded-2xl border border-violet-200 dark:border-violet-900/40 p-5 flex items-center gap-4 hover:shadow-md transition-shadow">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500 to-primary flex items-center justify-center shrink-0 shadow-sm">
+              <Star className="w-8 h-8 text-white fill-white/30 drop-shadow" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold text-sm leading-snug">{note.title}</p>
+              <p className="text-xs text-muted mt-1">{note.childName}</p>
+              <span className="inline-flex items-center gap-1 mt-2 px-2.5 py-1 rounded-full bg-violet-100 dark:bg-violet-950/30 text-violet-700 dark:text-violet-400 text-xs font-semibold">
+                <Star className="w-3 h-3 fill-current" /> Achievement
+              </span>
+            </div>
+          </motion.div>
+        ))}
+        {enrollmentsWithBadges.flatMap((enrollment, eIdx) =>
+          (enrollment.badges ?? []).map((badge, bIdx) => {
+            const def = getBadge(badge.name);
+            const courseTitle = enrollment.course ? enrollment.course.title[lang] : enrollment.courseTitle || enrollment.courseId;
+            const delay = (completedEnrollments.length + achievementNotes.length + eIdx + bIdx) * 0.06;
+            if (def) {
+              const BadgeIcon = def.icon;
+              return (
+                <motion.div key={`${enrollment._id}-${badge.name}`} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay }}
+                  className="bg-surface rounded-2xl border border-border p-5 flex items-center gap-4 hover:shadow-md transition-shadow">
+                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${def.gradient} flex items-center justify-center shrink-0 shadow-sm`}>
+                    <BadgeIcon className="w-8 h-8 text-white drop-shadow" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className={`font-bold text-sm leading-snug ${def.textColor}`}>{def.name}</p>
+                    <p className="text-xs text-muted mt-0.5 italic">{def.tagline}</p>
+                    <p className="text-xs text-muted mt-1">{enrollment.childName} · {courseTitle}</p>
+                    <span className={`inline-block mt-2 px-2.5 py-0.5 rounded-full text-xs font-medium bg-black/5 dark:bg-white/10 ${def.textColor}`}>
+                      {new Date(badge.awardedAt).toLocaleDateString()}
+                    </span>
+                  </div>
+                </motion.div>
+              );
+            }
+            return (
+              <motion.div key={`${enrollment._id}-${badge.name}`} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay }}
+                className="bg-surface rounded-2xl border border-amber-200 dark:border-amber-900/40 p-5 flex items-center gap-4 hover:shadow-md transition-shadow">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shrink-0 shadow-sm">
+                  <Star className="w-8 h-8 text-white fill-white/40 drop-shadow" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold text-sm leading-snug">{badge.name}</p>
+                  <p className="text-xs text-muted mt-1">{enrollment.childName} · {courseTitle}</p>
+                  <span className="inline-block mt-2 px-2.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 text-xs font-semibold">
+                    Instructor Badge · {new Date(badge.awardedAt).toLocaleDateString()}
+                  </span>
+                </div>
+              </motion.div>
+            );
+          })
+        )}
+      </div>
+    </motion.div>
+  );
+}
+
+// ─── Referral Tab ───────────────────────────────────────────────────────────
+function ReferralTab({ token, lang }: { token: string | null; lang: string }) {
+  const [code, setCode] = useState<string | null>(null);
+  const [stats, setStats] = useState({ totalReferred: 0, discountPercent: 15 });
+  const [copied, setCopied] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!token) return;
+    let cancelled = false;
+    fetchParentReferral(token)
+      .then((d) => {
+        if (cancelled) return;
+        setCode(d.code || null);
+        setStats({ totalReferred: d.totalReferred || 0, discountPercent: d.discountPercent ?? 15 });
+      })
+      .catch(() => { if (!cancelled) setCode(null); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, [token]);
+
+  const shareText = code
+    ? `Join StemTechLab! Use my referral code ${code} for ${stats.discountPercent}% off your first course.\n\nHow to use: go to any course → click Enroll → on the last step enter code "${code}" in the "Promo or referral code" field.\n\nhttps://www.stemtechlab.com/en/courses`
+    : "";
+
+  const handleCopy = () => {
+    if (!code) return;
+    navigator.clipboard.writeText(shareText);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2500);
+  };
+
+  if (loading) {
+    return <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 text-primary animate-spin" /></div>;
+  }
+
+  if (!code) {
+    return (
+      <div className="text-center py-20 text-muted">
+        <Gift className="w-12 h-12 mx-auto mb-4 text-muted" />
+        <p>Referral program not available yet.</p>
+      </div>
+    );
+  }
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-10 max-w-2xl mx-auto">
+      {/* Hero card */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-primary to-purple rounded-3xl p-8 sm:p-10 text-white mb-6 text-center">
+        <div className="absolute -top-8 -right-8 w-40 h-40 rounded-full bg-white/5" />
+        <div className="absolute -bottom-10 -left-10 w-52 h-52 rounded-full bg-white/5" />
+        <div className="relative">
+          <div className="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center mx-auto mb-4">
+            <Gift className="w-8 h-8 text-white" />
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-2">
+            {lang === "ar" ? "ادعُ صديقاً" : "Invite a Friend"}
+          </h2>
+          <p className="text-white/80 text-sm sm:text-base max-w-sm mx-auto">
+            {lang === "ar"
+              ? `شارك رمزك وامنح صديقك ${stats.discountPercent}% خصم على أول دورة لهم`
+              : `Share your code and give a friend ${stats.discountPercent}% off their first course enrollment`}
+          </p>
+        </div>
+      </div>
+
+      {/* Code box */}
+      <div className="bg-surface rounded-2xl border border-border p-6 mb-4">
+        <p className="text-xs font-semibold text-muted uppercase tracking-wider mb-3 text-center">
+          {lang === "ar" ? "رمز الإحالة الخاص بك" : "Your Referral Code"}
+        </p>
+        <div className="flex items-center gap-3">
+          <div className="flex-1 bg-background border-2 border-dashed border-primary/30 rounded-xl py-4 text-center">
+            <span className="text-3xl font-bold text-primary tracking-[0.15em]">{code}</span>
+          </div>
+          <button
+            onClick={handleCopy}
+            className={`flex flex-col items-center gap-1.5 px-5 py-4 rounded-xl font-semibold text-sm transition-all ${copied ? "bg-emerald-500 text-white scale-95" : "bg-primary text-white hover:scale-[1.03]"}`}
+          >
+            {copied ? <CheckCircle2 className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
+            {copied ? (lang === "ar" ? "تم!" : "Copied!") : (lang === "ar" ? "نسخ" : "Copy")}
+          </button>
+        </div>
+      </div>
+
+      {/* How it works */}
+      <div className="bg-surface rounded-2xl border border-border p-6 mb-4">
+        <h3 className="font-semibold mb-4 flex items-center gap-2">
+          <Share2 className="w-4 h-4 text-primary" />
+          {lang === "ar" ? "كيف يعمل؟" : "How it works"}
+        </h3>
+        <ol className="space-y-3">
+          {[
+            lang === "ar" ? "شارك الرمز مع الأصدقاء والعائلة" : "Share your code with friends & family",
+            lang === "ar" ? "يختارون دورة ويضغطون تسجيل" : "They choose a course and click Enroll",
+            lang === "ar" ? `يدخلون الرمز "${code}" في خانة كود الخصم` : `They enter "${code}" in the promo/referral code field`,
+            lang === "ar" ? `يحصلون على خصم ${stats.discountPercent}% فوراً` : `They get ${stats.discountPercent}% off instantly`,
+          ].map((step, i) => (
+            <li key={i} className="flex items-start gap-3 text-sm">
+              <span className="w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                {i + 1}
+              </span>
+              <span className="text-muted leading-relaxed">{step}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      {/* Stats */}
+      {stats.totalReferred > 0 && (
+        <div className="bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/30 rounded-2xl p-5 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center shrink-0">
+            <CheckCircle2 className="w-6 h-6 text-emerald-500" />
+          </div>
+          <div>
+            <p className="font-bold text-emerald-700 dark:text-emerald-400 text-lg">{stats.totalReferred}</p>
+            <p className="text-sm text-emerald-600/80 dark:text-emerald-500/80">
+              {lang === "ar" ? "عائلة انضمت بفضلك" : `${stats.totalReferred === 1 ? "family" : "families"} referred so far`}
+            </p>
+          </div>
+        </div>
+      )}
+    </motion.div>
+  );
+}
+
+const HW_STATUS_STYLES: Record<string, { label: string; color: string }> = {
+  assigned: { label: "Assigned", color: "bg-blue-100 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400" },
+  submitted: { label: "Submitted", color: "bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400" },
+  graded: { label: "Graded", color: "bg-emerald-100 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400" },
+};
+
+function HomeworkTab({ homework, lang }: { homework: HomeworkItem[]; lang: string }) {
+  void lang;
+  if (homework.length === 0) {
+    return (
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-surface rounded-2xl border border-border p-12 text-center mb-10">
+        <ClipboardList className="w-12 h-12 text-muted mx-auto mb-4" />
+        <p className="font-semibold text-lg mb-1">No homework yet</p>
+        <p className="text-sm text-muted">Your child&apos;s instructor will assign homework here. Check back soon!</p>
+      </motion.div>
+    );
+  }
+
+  const byChild = homework.reduce<Record<string, HomeworkItem[]>>((acc, hw) => {
+    const key = hw.childName;
+    if (!acc[key]) acc[key] = [];
+    acc[key].push(hw);
+    return acc;
+  }, {});
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-10 space-y-8">
+      {Object.entries(byChild).map(([childName, items]) => (
+        <div key={childName}>
+          {Object.keys(byChild).length > 1 && (
+            <h3 className="text-base font-semibold mb-3 text-muted">{childName}</h3>
+          )}
+          <div className="space-y-3">
+            {items.map((hw, i) => {
+              const st = HW_STATUS_STYLES[hw.status] ?? HW_STATUS_STYLES.assigned;
+              const isOverdue = hw.dueDate && hw.status === "assigned" && new Date(hw.dueDate) < new Date();
+              return (
+                <motion.div
+                  key={hw._id}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.04 }}
+                  className={`bg-surface rounded-2xl border p-5 ${!hw.readByParent ? "border-primary/30 ring-2 ring-primary/10" : "border-border"}`}
+                >
+                  <div className="flex items-start justify-between gap-3 flex-wrap">
+                    <div className="flex items-start gap-3 flex-1 min-w-0">
+                      <div className="w-10 h-10 rounded-xl bg-violet-500/10 flex items-center justify-center shrink-0 mt-0.5">
+                        <ClipboardList className="w-5 h-5 text-violet-500" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap mb-1">
+                          <p className="font-semibold text-sm">{hw.title}</p>
+                          {!hw.readByParent && (
+                            <span className="px-1.5 py-0.5 rounded-full bg-primary text-white text-xs font-bold">New</span>
+                          )}
+                          <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${st.color}`}>{st.label}</span>
+                          {hw.grade && (
+                            <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-violet-100 dark:bg-violet-950/30 text-violet-700 dark:text-violet-400">
+                              {hw.grade}
+                            </span>
+                          )}
+                        </div>
+                        {hw.description && (
+                          <p className="text-sm text-muted leading-relaxed mb-2">{hw.description}</p>
+                        )}
+                        {hw.feedback && (
+                          <div className="flex items-start gap-2 p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/30 mb-2">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                            <p className="text-sm text-emerald-700 dark:text-emerald-400">{hw.feedback}</p>
+                          </div>
+                        )}
+                        <div className="flex items-center flex-wrap gap-3 text-xs text-muted">
+                          <span>By {hw.instructorName}</span>
+                          <span>&middot;</span>
+                          <span>{hw.courseId}</span>
+                          <span>&middot;</span>
+                          <span>Assigned {new Date(hw.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>
+                          {hw.dueDate && (
+                            <>
+                              <span>&middot;</span>
+                              <span className={`flex items-center gap-1 ${isOverdue ? "text-red-500 font-semibold" : ""}`}>
+                                <CalendarClock className="w-3 h-3" />
+                                Due {new Date(hw.dueDate).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                                {isOverdue && " (overdue)"}
+                              </span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </motion.div>
   );
 }
 
@@ -658,75 +979,6 @@ function NoteCard({ note, index }: { note: InstructorNote; index: number }) {
             <span>{note.childName}</span>
             <span>&middot;</span>
             <span className="capitalize">{note.type}</span>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-function ReferralSection({ token, lang }: { token: string | null; lang: string }) {
-  const [code, setCode] = useState<string | null>(null);
-  const [stats, setStats] = useState({ totalReferred: 0, discountPercent: 15 });
-  const [copied, setCopied] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (!token) return;
-    let cancelled = false;
-    fetchParentReferral(token)
-      .then((d) => {
-        if (cancelled) return;
-        setCode(d.code || null);
-        setStats({ totalReferred: d.totalReferred || 0, discountPercent: d.discountPercent ?? 15 });
-      })
-      .catch(() => { if (!cancelled) setCode(null); })
-      .finally(() => { if (!cancelled) setLoading(false); });
-    return () => { cancelled = true; };
-  }, [token]);
-
-  const handleCopy = () => {
-    if (!code) return;
-    const text = `Join StemTechLab! Use my referral code ${code} for ${stats.discountPercent}% off your first course.\n\nHow to use: go to any course → click Enroll → on the last step enter code "${code}" in the "Promo or referral code" field.\n\nhttps://www.stemtechlab.com/en/courses`;
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  if (loading || !code) return null;
-
-  return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-10">
-      <div className="bg-gradient-to-br from-primary/5 to-purple/5 rounded-2xl border border-primary/10 p-6 sm:p-8">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h3 className="text-lg font-bold mb-1 flex items-center gap-2">
-              🎁 {lang === "ar" ? "ادعُ صديقاً" : "Invite a Friend"}
-            </h3>
-            <p className="text-sm text-muted">
-              {lang === "ar"
-                ? `شارك رمزك وامنح صديقك ${stats.discountPercent}% خصم على أول دورة`
-                : `Share your code & give a friend ${stats.discountPercent}% off their first course`}
-            </p>
-            {stats.totalReferred > 0 && (
-              <p className="text-xs text-muted mt-1">
-                {lang === "ar" ? `${stats.totalReferred} عائلة دُعيت` : `${stats.totalReferred} families referred`}
-              </p>
-            )}
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="bg-surface border-2 border-dashed border-primary/30 rounded-xl px-5 py-3 text-center">
-              <p className="text-xs text-muted mb-0.5">{lang === "ar" ? "رمزك" : "Your code"}</p>
-              <p className="text-lg font-bold text-primary tracking-wider">{code}</p>
-            </div>
-            <button
-              onClick={handleCopy}
-              className={`px-5 py-3 rounded-xl font-semibold text-sm transition-all ${copied ? "bg-emerald-500 text-white" : "bg-primary text-white hover:scale-[1.02]"}`}
-            >
-              {copied
-                ? lang === "ar" ? "✓ تم النسخ" : "✓ Copied!"
-                : lang === "ar" ? "نسخ ومشاركة" : "Copy & Share"}
-            </button>
           </div>
         </div>
       </div>

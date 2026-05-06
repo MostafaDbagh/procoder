@@ -11,8 +11,13 @@ import {
   createInstructorNote,
   deleteInstructorNote,
   updateStudentProgress,
+  fetchInstructorHomework,
+  createHomework,
+  updateHomework,
+  deleteHomework,
   type InstructorDashboardData,
   type InstructorStudent,
+  type HomeworkItem,
 } from "@/lib/api";
 import { BADGE_CATALOG, getBadge } from "@/lib/badges";
 import { motion, AnimatePresence } from "framer-motion";
@@ -44,6 +49,10 @@ import {
   Video,
   Link2,
   ExternalLink,
+  ClipboardList,
+  Plus,
+  Pencil,
+  CalendarClock,
 } from "lucide-react";
 
 const noteTypes = [
@@ -196,6 +205,67 @@ export default function InstructorDashboard() {
           ))}
         </motion.div>
 
+        {/* My Courses */}
+        {courses.length > 0 && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.18 }} className="mb-10">
+            <h2 className="text-xl font-bold flex items-center gap-2 mb-5">
+              <BookOpen className="w-5 h-5 text-primary" />
+              My Courses
+            </h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {courses.map((course, i) => {
+                const count = students.filter((s) => s.courseId === course.slug).length;
+                const active = students.filter((s) => s.courseId === course.slug && s.status === "active").length;
+                const pending = students.filter((s) => s.courseId === course.slug && s.status === "pending").length;
+                return (
+                  <motion.div
+                    key={course.slug}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 + i * 0.05 }}
+                    className="bg-surface rounded-2xl border border-border p-5 flex flex-col gap-4"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${course.color || "from-primary to-primary"} flex items-center justify-center shrink-0`}>
+                        <BookOpen className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-sm leading-snug">{course.title[lang]}</h3>
+                        <p className="text-xs text-muted mt-0.5 capitalize">{course.category} · {course.level}</p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-2 text-center">
+                      <div className="bg-background rounded-xl p-2.5">
+                        <p className="text-lg font-bold text-primary">{count}</p>
+                        <p className="text-xs text-muted">Enrolled</p>
+                      </div>
+                      <div className="bg-background rounded-xl p-2.5">
+                        <p className="text-lg font-bold text-emerald-500">{active}</p>
+                        <p className="text-xs text-muted">Active</p>
+                      </div>
+                      <div className="bg-background rounded-xl p-2.5">
+                        <p className="text-lg font-bold text-amber-500">{pending}</p>
+                        <p className="text-xs text-muted">Pending</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between text-xs text-muted pt-1 border-t border-border">
+                      <span>{course.lessons} lessons</span>
+                      <button
+                        onClick={() => selectCourse(course.slug)}
+                        className="text-primary font-medium hover:underline"
+                      >
+                        View students →
+                      </button>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+
         {/* Course filter */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="flex flex-wrap gap-2 mb-8">
           <button onClick={() => selectCourse("all")} className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${selectedCourse === "all" ? "bg-primary text-white shadow-sm" : "bg-surface border border-border text-muted hover:text-foreground"}`}>
@@ -271,7 +341,7 @@ export default function InstructorDashboard() {
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
-                      {student.badges.length > 0 && (
+                      {(student.badges?.length ?? 0) > 0 && (
                         <span className="flex items-center gap-1 text-xs text-amber-600 dark:text-amber-400">
                           <Star className="w-3 h-3 fill-current" />{student.badges.length}
                         </span>
@@ -312,6 +382,9 @@ export default function InstructorDashboard() {
 
                           {/* ── Recorded sessions ── */}
                           <RecordingControls student={student} token={token!} onSaved={reload} />
+
+                          {/* ── Homework ── */}
+                          <HomeworkControls student={student} token={token!} />
 
                           {/* Past notes */}
                           {studentNotes.length > 0 && (
@@ -532,7 +605,7 @@ function BadgeControls({ student, token, onSaved }: { student: InstructorStudent
   const [saving, setSaving] = useState<string | null>(null);
   const [badgeError, setBadgeError] = useState("");
 
-  const awardedIds = new Set(student.badges.map((b) => b.name));
+  const awardedIds = new Set((student.badges ?? []).map((b) => b.name));
 
   const handleToggle = async (badgeId: string) => {
     setBadgeError("");
@@ -556,7 +629,7 @@ function BadgeControls({ student, token, onSaved }: { student: InstructorStudent
       <h4 className="text-sm font-semibold mb-4 flex items-center gap-2">
         <Award className="w-4 h-4 text-amber-500" />
         Award Badges
-        {student.badges.length > 0 && (
+        {(student.badges?.length ?? 0) > 0 && (
           <span className="ml-auto text-xs text-muted font-normal">
             {student.badges.length} awarded
           </span>
@@ -727,6 +800,237 @@ function RecordingControls({ student, token, onSaved }: { student: InstructorStu
         >
           {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Link2 className="w-4 h-4" />}
           {saving ? "Adding..." : "Add Recording"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+const HW_STATUSES = [
+  { value: "assigned", label: "Assigned", color: "bg-blue-100 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400" },
+  { value: "submitted", label: "Submitted", color: "bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400" },
+  { value: "graded", label: "Graded", color: "bg-emerald-100 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400" },
+];
+
+function HomeworkControls({ student, token }: { student: InstructorStudent; token: string }) {
+  const [items, setItems] = useState<HomeworkItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [editing, setEditing] = useState<string | null>(null);
+  const [error, setError] = useState("");
+
+  const [form, setForm] = useState({ title: "", description: "", dueDate: "" });
+  const [editForm, setEditForm] = useState<{ title: string; description: string; dueDate: string; status: string; grade: string; feedback: string }>({
+    title: "", description: "", dueDate: "", status: "assigned", grade: "", feedback: "",
+  });
+
+  const load = () => {
+    fetchInstructorHomework(token, student.enrollmentId)
+      .then((hw) => { setItems(hw); setLoading(false); })
+      .catch(() => setLoading(false));
+  };
+
+  useEffect(() => { load(); }, [student.enrollmentId]); // eslint-disable-line
+
+  const handleAdd = async () => {
+    if (!form.title.trim()) return;
+    setError("");
+    setSaving(true);
+    try {
+      await createHomework(token, {
+        enrollmentId: student.enrollmentId,
+        title: form.title.trim(),
+        description: form.description.trim(),
+        dueDate: form.dueDate || null,
+      });
+      setForm({ title: "", description: "", dueDate: "" });
+      load();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to add homework");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleUpdate = async (hwId: string) => {
+    setError("");
+    setSaving(true);
+    try {
+      await updateHomework(token, hwId, {
+        title: editForm.title,
+        description: editForm.description,
+        dueDate: editForm.dueDate || null,
+        status: editForm.status,
+        grade: editForm.grade,
+        feedback: editForm.feedback,
+      });
+      setEditing(null);
+      load();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to update");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDelete = async (hwId: string) => {
+    try {
+      await deleteHomework(token, hwId);
+      load();
+    } catch { /* silent */ }
+  };
+
+  const startEdit = (hw: HomeworkItem) => {
+    setEditing(hw._id);
+    setEditForm({
+      title: hw.title,
+      description: hw.description,
+      dueDate: hw.dueDate ? new Date(hw.dueDate).toISOString().slice(0, 10) : "",
+      status: hw.status,
+      grade: hw.grade,
+      feedback: hw.feedback,
+    });
+  };
+
+  return (
+    <div className="bg-background rounded-xl p-4">
+      <h4 className="text-sm font-semibold mb-4 flex items-center gap-2">
+        <ClipboardList className="w-4 h-4 text-violet-500" />
+        Homework
+        {items.length > 0 && (
+          <span className="ml-auto text-xs text-muted font-normal">{items.length} assignment{items.length !== 1 ? "s" : ""}</span>
+        )}
+      </h4>
+
+      {/* Existing homework */}
+      {loading ? (
+        <div className="flex justify-center py-4"><Loader2 className="w-5 h-5 animate-spin text-muted" /></div>
+      ) : items.length > 0 ? (
+        <div className="space-y-3 mb-4">
+          {items.map((hw) => {
+            const statusDef = HW_STATUSES.find((s) => s.value === hw.status) ?? HW_STATUSES[0];
+            return (
+              <div key={hw._id} className="bg-surface rounded-xl border border-border p-4">
+                {editing === hw._id ? (
+                  <div className="space-y-2">
+                    <input
+                      type="text"
+                      value={editForm.title}
+                      onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
+                      className="w-full px-3 py-2 rounded-lg bg-background border border-border text-sm focus:border-primary outline-none"
+                      placeholder="Homework title"
+                    />
+                    <textarea
+                      rows={2}
+                      value={editForm.description}
+                      onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
+                      className="w-full px-3 py-2 rounded-lg bg-background border border-border text-sm focus:border-primary outline-none resize-none"
+                      placeholder="Description"
+                    />
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="text-xs text-muted block mb-1">Due date</label>
+                        <input type="date" value={editForm.dueDate} onChange={(e) => setEditForm({ ...editForm, dueDate: e.target.value })} className="w-full px-2 py-1.5 rounded-lg bg-background border border-border text-sm focus:border-primary outline-none" />
+                      </div>
+                      <div>
+                        <label className="text-xs text-muted block mb-1">Status</label>
+                        <select value={editForm.status} onChange={(e) => setEditForm({ ...editForm, status: e.target.value })} className="w-full px-2 py-1.5 rounded-lg bg-background border border-border text-sm focus:border-primary outline-none">
+                          {HW_STATUSES.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
+                        </select>
+                      </div>
+                    </div>
+                    {editForm.status === "graded" && (
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <label className="text-xs text-muted block mb-1">Grade</label>
+                          <input type="text" value={editForm.grade} onChange={(e) => setEditForm({ ...editForm, grade: e.target.value })} placeholder="e.g. A+" className="w-full px-2 py-1.5 rounded-lg bg-background border border-border text-sm focus:border-primary outline-none" />
+                        </div>
+                        <div>
+                          <label className="text-xs text-muted block mb-1">Feedback</label>
+                          <input type="text" value={editForm.feedback} onChange={(e) => setEditForm({ ...editForm, feedback: e.target.value })} placeholder="Feedback..." className="w-full px-2 py-1.5 rounded-lg bg-background border border-border text-sm focus:border-primary outline-none" />
+                        </div>
+                      </div>
+                    )}
+                    <div className="flex gap-2">
+                      <button onClick={() => handleUpdate(hw._id)} disabled={saving} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-semibold hover:scale-[1.02] transition-all disabled:opacity-50">
+                        <Check className="w-3 h-3" /> Save
+                      </button>
+                      <button onClick={() => setEditing(null)} className="px-3 py-1.5 rounded-lg border border-border text-xs text-muted hover:text-foreground transition-colors">
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap mb-1">
+                        <p className="font-semibold text-sm">{hw.title}</p>
+                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${statusDef.color}`}>{statusDef.label}</span>
+                        {hw.grade && <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-violet-100 dark:bg-violet-950/30 text-violet-700 dark:text-violet-400">{hw.grade}</span>}
+                      </div>
+                      {hw.description && <p className="text-xs text-muted mb-1 leading-relaxed">{hw.description}</p>}
+                      {hw.feedback && <p className="text-xs text-muted italic mb-1">Feedback: {hw.feedback}</p>}
+                      <div className="flex items-center gap-3 text-xs text-muted mt-1">
+                        <span>Assigned {new Date(hw.createdAt).toLocaleDateString()}</span>
+                        {hw.dueDate && (
+                          <span className="flex items-center gap-1">
+                            <CalendarClock className="w-3 h-3" />
+                            Due {new Date(hw.dueDate).toLocaleDateString()}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1 shrink-0">
+                      <button onClick={() => startEdit(hw)} className="p-1.5 rounded-lg text-muted hover:text-primary hover:bg-primary/10 transition-colors">
+                        <Pencil className="w-3.5 h-3.5" />
+                      </button>
+                      <button onClick={() => handleDelete(hw._id)} className="p-1.5 rounded-lg text-muted hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors">
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      ) : null}
+
+      {/* Add new homework */}
+      <div className="space-y-2">
+        <input
+          type="text"
+          placeholder="Homework title (e.g. Complete variables exercise)"
+          value={form.title}
+          onChange={(e) => setForm({ ...form, title: e.target.value })}
+          className="w-full px-3 py-2 rounded-lg bg-surface border border-border text-sm placeholder:text-muted focus:border-primary outline-none"
+        />
+        <textarea
+          rows={2}
+          placeholder="Description / instructions (optional)"
+          value={form.description}
+          onChange={(e) => setForm({ ...form, description: e.target.value })}
+          className="w-full px-3 py-2 rounded-lg bg-surface border border-border text-sm placeholder:text-muted focus:border-primary outline-none resize-none"
+        />
+        <div className="flex items-center gap-2">
+          <div className="flex-1">
+            <label className="text-xs text-muted block mb-1">Due date (optional)</label>
+            <input
+              type="date"
+              value={form.dueDate}
+              onChange={(e) => setForm({ ...form, dueDate: e.target.value })}
+              className="w-full px-3 py-2 rounded-lg bg-surface border border-border text-sm focus:border-primary outline-none"
+            />
+          </div>
+        </div>
+        {error && <p className="text-xs text-red-500 flex items-center gap-1"><AlertCircle className="w-3 h-3" /> {error}</p>}
+        <button
+          onClick={handleAdd}
+          disabled={saving || !form.title.trim()}
+          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-violet-500 text-white text-sm font-semibold hover:bg-violet-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+          {saving ? "Assigning..." : "Assign Homework"}
         </button>
       </div>
     </div>
