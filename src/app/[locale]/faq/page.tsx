@@ -49,7 +49,7 @@ export default async function FAQPage({
   const lang = locale === "ar" ? "ar" : "en";
 
   const breadcrumbs = [
-    { name: bcLabel("home", lang), url: siteUrl(lang) },
+    { name: bcLabel("Home", lang), url: siteUrl(lang) },
     { name: lang === "ar" ? "الأسئلة الشائعة" : "FAQ", url: siteUrl(lang, "/faq") },
   ];
 

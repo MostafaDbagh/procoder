@@ -392,7 +392,7 @@ export function AuthModal({
  {/* Heading */}
  <div className="text-center pb-1">
  <p className="text-xl font-bold tracking-tight">Create your account</p>
- <p className="text-sm text-muted mt-1.5">Join and track your child's learning journey</p>
+ <p className="text-sm text-muted mt-1.5">Join and track your child&apos;s learning journey</p>
  </div>
 
  {/* Enrollment hint */}

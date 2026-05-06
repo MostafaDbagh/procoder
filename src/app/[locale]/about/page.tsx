@@ -11,12 +11,12 @@ const meta = {
  en: {
  title: "About StemTechLab | AI STEM Platform for Kids (6–18)",
  description:
- "We built the first AI that analyses a child’s learning behaviour to find the right course fit — not guesswork. Live STEM, coding & Arabic for kids 6–18 in UAE, Netherlands & Germany. Parent dashboard with real-time progress tracking, instructor notes, and weekly reports. Certified teachers, max 3 students, COPPA-compliant.",
+ "StemTechLab uses AI-assisted course matching to find the right course fit for each child. Live STEM, coding & Arabic for kids 6–18, parent dashboard, progress tracking, instructor notes, weekly reports, certified teachers, max 3 students, and child-privacy-aware practices.",
  },
  ar: {
  title: "عن ستم تك لاب | منصة STEM ذكية للأطفال",
  description:
- "بنينا أول ذكاء اصطناعي يحلّل سلوك تعلّم طفلك لإيجاد الدورة الأنسب له — لا تخمين. دروس مباشرة في STEM والبرمجة والعربية للأطفال ٦–١٨ في الإمارات وهولندا وألمانيا. لوحة تحكم لأولياء الأمور بملاحظات المعلم وتقارير أسبوعية. معلمون معتمدون، حد أقصى ٣ طلاب، متوافقة مع COPPA.",
+ "تستخدم ستم تك لاب مطابقة دورات مدعومة بالذكاء الاصطناعي لاختيار المسار الأنسب لكل طفل. دروس مباشرة في STEM والبرمجة والعربية للأطفال ٦–١٨، لوحة ولي الأمر، تتبع التقدم، ملاحظات المعلم، تقارير أسبوعية، معلمون معتمدون، وحد أقصى ٣ طلاب.",
  },
 };
 

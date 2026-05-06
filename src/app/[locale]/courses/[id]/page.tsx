@@ -4,7 +4,7 @@ import { setRequestLocale } from "next-intl/server";
 import { getTranslations } from "next-intl/server";
 import { courses as staticCourses } from "@/data/courses";
 import CourseDetailContent from "./CourseDetailContent";
-import { BreadcrumbSchema } from "@/components/StructuredData";
+import { BreadcrumbSchema, buildCourseSchema } from "@/components/StructuredData";
 import { getCourseISR, getCourseSlugsISR } from "@/lib/server-api";
 import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
 import { resolveArabicSlug, isArabicSlug } from "@/lib/arabicSlugs";
@@ -127,59 +127,6 @@ export default async function CourseDetailPage({
  ? await getTranslations({ locale, namespace: "courseData" })
  : null;
 
- const courseSchema =
- apiCourse || (staticCourse && ct)
- ? {
- "@context": "https://schema.org",
- "@type": "Course",
- name: apiCourse
- ? locale === "ar"
- ? apiCourse.title.ar
- : apiCourse.title.en
- : ct!(staticCourse!.titleKey),
- description: apiCourse
- ? locale === "ar"
- ? apiCourse.description.ar
- : apiCourse.description.en
- : ct!(staticCourse!.descKey),
- provider: {
- "@type": "Organization",
- name: "StemTechLab",
- url: SITE_URL,
- },
- educationalLevel: apiCourse?.level ?? staticCourse!.level,
- courseMode: "online",
- availableLanguage: ["English", "Arabic"],
- numberOfCredits: apiCourse?.lessons ?? staticCourse!.lessons,
- timeRequired: `P${apiCourse?.durationWeeks ?? staticCourse!.durationWeeks}W`,
- audience: {
- "@type": "EducationalAudience",
- educationalRole: "student",
- suggestedMinAge: apiCourse?.ageMin ?? staticCourse!.ageMin,
- suggestedMaxAge: apiCourse?.ageMax ?? staticCourse!.ageMax,
- },
- offers: {
- "@type": "Offer",
- category: "Paid",
- availability: "https://schema.org/InStock",
- ...(apiCourse && apiCourse.price > 0
- ? {
- price: String(apiCourse.price),
- priceCurrency: (apiCourse.currency || "USD").toUpperCase(),
- }
- : {}),
- },
- hasCourseInstance: {
- "@type": "CourseInstance",
- courseMode: "online",
- instructor: {
- "@type": "Person",
- name: "StemTechLab Instructor",
- },
- },
- }
- : null;
-
  const courseTitle = apiCourse
  ? locale === "ar"
  ? apiCourse.title.ar
@@ -191,6 +138,44 @@ export default async function CourseDetailPage({
  const homeUrl = `${SITE_URL}/${locale}`;
  const coursesUrl = `${SITE_URL}/${locale}/courses`;
  const courseUrl = `${SITE_URL}/${locale}/courses/${id}`;
+ const lang = locale === "ar" ? "ar" : "en";
+ const courseSchema =
+ apiCourse || (staticCourse && ct)
+ ? {
+ "@context": "https://schema.org",
+ ...buildCourseSchema(
+ apiCourse
+ ? {
+ name: apiCourse.title[lang],
+ description: apiCourse.description[lang],
+ url: siteUrl(lang, `/courses/${id}`),
+ ageMin: apiCourse.ageMin,
+ ageMax: apiCourse.ageMax,
+ level: apiCourse.level,
+ lessons: apiCourse.lessons,
+ durationWeeks: apiCourse.durationWeeks,
+ price: apiCourse.price,
+ currency: apiCourse.currency,
+ imageUrl: apiCourse.imageUrl,
+ skills: apiCourse.skills?.[lang],
+ }
+ : {
+ name: ct!(staticCourse!.titleKey),
+ description: ct!(staticCourse!.descKey),
+ url: siteUrl(lang, `/courses/${id}`),
+ ageMin: staticCourse!.ageMin,
+ ageMax: staticCourse!.ageMax,
+ level: staticCourse!.level,
+ lessons: staticCourse!.lessons,
+ durationWeeks: staticCourse!.durationWeeks,
+ price: staticCourse!.price,
+ currency: staticCourse!.currency,
+ skills: staticCourse!.skillKeys.map((key) => ct!(key)),
+ },
+ lang
+ ),
+ }
+ : null;
  return (
  <>
  <BreadcrumbSchema items={[

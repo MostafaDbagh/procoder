@@ -1,4 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { courses as staticCourses } from "@/data/courses";
+import { LOCALES, PUBLIC_STATIC_PATHS } from "@/lib/seo";
 
 export async function GET() {
   return NextResponse.json({ ok: true, info: "Use POST with x-cron-secret header to submit URLs." });
@@ -9,35 +11,8 @@ const HOST = new URL(SITE).hostname;
 const KEY = "dccf1b07a60e4356883d6c6788540d35";
 const KEY_LOCATION = `${SITE}/${KEY}.txt`;
 
-const STATIC_PATHS = [
-  "",
-  "/courses",
-  "/recommend",
-  "/free-trial",
-  "/parents",
-  "/blogs",
-  "/about",
-  "/contact",
-  "/faq",
-  "/challenge",
-  "/privacy",
-  "/terms",
-];
-
-const COURSE_SLUGS = [
-  "scratch",
-  "python",
-  "webdev",
-  "gamedev",
-  "robot-basics",
-  "robot-advanced",
-  "algo-intro",
-  "algo-competitive",
-  "arabic-reading",
-  "arabic-grammar",
-  "arabic-recitation",
-  "arabic-memorization",
-];
+const STATIC_PATHS = PUBLIC_STATIC_PATHS.map((page) => page.path);
+const COURSE_SLUGS = staticCourses.map((course) => course.id);
 
 /**
  * POST /api/indexnow
@@ -59,10 +34,10 @@ export async function POST(req: NextRequest) {
       urlList = body.urls;
     } else {
       urlList = [
-        ...["en", "ar"].flatMap((locale) =>
+        ...LOCALES.flatMap((locale) =>
           STATIC_PATHS.map((path) => `${SITE}/${locale}${path}`)
         ),
-        ...["en", "ar"].flatMap((locale) =>
+        ...LOCALES.flatMap((locale) =>
           COURSE_SLUGS.map((slug) => `${SITE}/${locale}/courses/${slug}`)
         ),
       ];

@@ -1,4 +1,6 @@
 const SITE_URL = (process.env.SITE_URL || "https://www.stemtechlab.com").replace(/\/$/, "");
+const ORG_ID = `${SITE_URL}/#organization`;
+const WEBSITE_ID = `${SITE_URL}/#website`;
 /** Public contact only — set in Vercel env; never put API keys in NEXT_PUBLIC_* . */
 const PUBLIC_CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim();
 const PUBLIC_CONTACT_PHONE = process.env.NEXT_PUBLIC_CONTACT_PHONE?.trim();
@@ -20,9 +22,12 @@ export function OrganizationSchema() {
  const data: Record<string, unknown> = {
  "@context": "https://schema.org",
  "@type": "EducationalOrganization",
+ "@id": ORG_ID,
  name: "StemTechLab",
+ legalName: "StemTechLab",
+ alternateName: ["STEM Tech Lab", "Stem Tech Lab"],
  description:
- "Live online STEM platform for kids combining Arabic-native instruction, AI-powered course matching, and small-group classes. Courses in Programming, Robotics, Algorithms, and Arabic Language for ages 6–18 in UAE, Netherlands, and Germany. Certified teachers, max 3 students per class, free trial.",
+ "Live online STEM platform for kids combining bilingual English/Arabic instruction, AI-powered course matching, and small-group classes. Courses in Programming, Robotics, Algorithms, and Arabic Language for ages 6–18 in the GCC, Europe, North America, and worldwide. Certified teachers, max 3 students per class, free trial.",
  url: SITE_URL,
  logo: `${SITE_URL}/logo.svg`,
  image: `${SITE_URL}/og`,
@@ -36,7 +41,17 @@ export function OrganizationSchema() {
  "Personalized learning",
  ],
  areaServed: [
- "United Arab Emirates", "Netherlands", "Germany",
+ "United Arab Emirates",
+ "Saudi Arabia",
+ "Qatar",
+ "Kuwait",
+ "Bahrain",
+ "Oman",
+ "Netherlands",
+ "Germany",
+ "United States",
+ "Canada",
+ "United Kingdom",
  ].map((name) => ({ "@type": "Country", name })),
  address: {
  "@type": "PostalAddress",
@@ -128,16 +143,62 @@ export function WebsiteSchema() {
  const data = {
  "@context": "https://schema.org",
  "@type": "WebSite",
+ "@id": WEBSITE_ID,
  name: "StemTechLab",
  url: SITE_URL,
  description:
- "Live kids’ classes in programming, robotics, algorithms & Arabic (ages 6–18). English & Arabic. UAE, Netherlands & Germany.",
+ "Live kids’ classes in programming, robotics, algorithms & Arabic (ages 6–18). English & Arabic. GCC, Europe, North America & worldwide.",
  inLanguage: ["en", "ar"],
+ publisher: { "@id": ORG_ID },
  potentialAction: {
  "@type": "SearchAction",
  target: `${SITE_URL}/en/courses?q={search_term_string}`,
  "query-input": "required name=search_term_string",
  },
+ };
+
+ return <JsonLd data={data} />;
+}
+
+export interface CourseListSchemaItem {
+ name: string;
+ description: string;
+ url: string;
+ ageMin: number;
+ ageMax: number;
+ level: string;
+ lessons: number;
+ durationWeeks: number;
+ price?: number;
+ currency?: string;
+ imageUrl?: string;
+ skills?: string[];
+}
+
+export function CourseCatalogSchema({
+ courses,
+ locale = "en",
+}: {
+ courses: CourseListSchemaItem[];
+ locale?: string;
+}) {
+ const data = {
+ "@context": "https://schema.org",
+ "@type": "ItemList",
+ name: locale === "ar" ? "دورات StemTechLab" : "StemTechLab course catalog",
+ description:
+ locale === "ar"
+ ? "دورات مباشرة أونلاين للأطفال في البرمجة والروبوتات والخوارزميات واللغة العربية."
+ : "Live online courses for kids in coding, robotics, algorithms, and Arabic.",
+ inLanguage: locale,
+ itemListOrder: "https://schema.org/ItemListOrderAscending",
+ numberOfItems: courses.length,
+ itemListElement: courses.map((course, index) => ({
+ "@type": "ListItem",
+ position: index + 1,
+ url: course.url,
+ item: buildCourseSchema(course, locale),
+ })),
  };
 
  return <JsonLd data={data} />;
@@ -165,6 +226,49 @@ export function CourseFinderApplicationSchema() {
  provider: { "@type": "Organization", name: "StemTechLab", url: SITE_URL },
  isAccessibleForFree: true,
  };
+ return <JsonLd data={data} />;
+}
+
+export function EducationalServiceSchema() {
+ const data = {
+ "@context": "https://schema.org",
+ "@type": "Service",
+ "@id": `${SITE_URL}/#live-online-classes`,
+ name: "StemTechLab live online classes",
+ serviceType: "Live online STEM, coding, robotics, algorithms, and Arabic classes for children",
+ provider: { "@id": ORG_ID },
+ areaServed: [
+ "United Arab Emirates",
+ "Saudi Arabia",
+ "Qatar",
+ "Kuwait",
+ "Bahrain",
+ "Oman",
+ "Netherlands",
+ "Germany",
+ "United States",
+ "Canada",
+ "United Kingdom",
+ ].map((name) => ({ "@type": "Country", name })),
+ audience: {
+ "@type": "EducationalAudience",
+ educationalRole: "student",
+ suggestedMinAge: 6,
+ suggestedMaxAge: 18,
+ },
+ availableChannel: {
+ "@type": "ServiceChannel",
+ serviceUrl: `${SITE_URL}/en/free-trial`,
+ availableLanguage: ["English", "Arabic"],
+ },
+ offers: {
+ "@type": "Offer",
+ url: `${SITE_URL}/en/free-trial`,
+ availability: "https://schema.org/InStock",
+ category: "Live online education",
+ },
+ };
+
  return <JsonLd data={data} />;
 }
 
@@ -240,6 +344,54 @@ function JsonLd({ data }: { data: Record<string, unknown> }) {
  dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
  />
  );
+}
+
+export function buildCourseSchema(course: CourseListSchemaItem, locale = "en") {
+ return {
+ "@type": "Course",
+ "@id": `${course.url}#course`,
+ name: course.name,
+ description: course.description,
+ url: course.url,
+ provider: { "@id": ORG_ID },
+ educationalLevel: course.level,
+ numberOfCredits: course.lessons,
+ timeRequired: `P${course.durationWeeks}W`,
+ audience: {
+ "@type": "EducationalAudience",
+ educationalRole: "student",
+ suggestedMinAge: course.ageMin,
+ suggestedMaxAge: course.ageMax,
+ },
+ availableLanguage: ["English", "Arabic"],
+ inLanguage: locale,
+ courseMode: "online",
+ ...(course.imageUrl ? { image: course.imageUrl } : {}),
+ ...(course.skills?.length ? { teaches: course.skills } : {}),
+ offers: {
+ "@type": "Offer",
+ url: course.url,
+ availability: "https://schema.org/InStock",
+ category: "Paid",
+ ...(course.price && course.price > 0
+ ? {
+ price: String(course.price),
+ priceCurrency: (course.currency || "USD").toUpperCase(),
+ }
+ : {}),
+ },
+ hasCourseInstance: [
+ {
+ "@type": "CourseInstance",
+ courseMode: "online",
+ instructor: {
+ "@type": "Person",
+ name: "StemTechLab Instructor",
+ affiliation: { "@id": ORG_ID },
+ },
+ },
+ ],
+ };
 }
 
 function catalogSection(name: string, items: Record<string, unknown>[]) {

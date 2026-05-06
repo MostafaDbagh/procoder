@@ -13,5 +13,5 @@ info:
  - /llms-full.txt — long-form facts, catalog, FAQ
  version: "1.0.0"
 servers:
- - url: https://stemtechlab.com
+ - url: https://www.stemtechlab.com
 paths: {}

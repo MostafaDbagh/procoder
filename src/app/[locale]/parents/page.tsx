@@ -11,7 +11,7 @@ const meta = {
  en: {
  title: "For Parents | AI analyses your child’s behaviour & builds their future",
  description:
- "Everything parents need to know about StemTechLab: use the AI course finder to match your child to the right course, then track attendance, progress, and instructor notes from the parent dashboard. Certified teachers, max 3 students per class, COPPA-compliant.",
+ "Everything parents need to know about StemTechLab: use the AI course finder to match your child to the right course, then track attendance, progress, and instructor notes from the parent dashboard. Certified teachers, max 3 students per class, child-privacy-aware practices.",
  },
  ar: {
  title: "لأولياء الأمور | ذكاء اصطناعي يحلّل سلوك طفلك ويبني مستقبله",

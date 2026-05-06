@@ -34,14 +34,59 @@ export const PRIVATE_APP_ROBOTS: NonNullable<Metadata["robots"]> = {
 
 const SITE = process.env.SITE_URL || "https://www.stemtechlab.com";
 
+export const SITE_URL = SITE.replace(/\/$/, "");
+
+export const LOCALES = ["en", "ar"] as const;
+export type SiteLocale = (typeof LOCALES)[number];
+
+export const PUBLIC_STATIC_PATHS = [
+ { path: "", priority: 1.0, changeFrequency: "weekly" as const },
+ { path: "/courses", priority: 0.9, changeFrequency: "weekly" as const },
+ { path: "/free-trial", priority: 0.9, changeFrequency: "monthly" as const },
+ { path: "/parents", priority: 0.85, changeFrequency: "monthly" as const },
+ { path: "/blogs", priority: 0.85, changeFrequency: "weekly" as const },
+ { path: "/recommend", priority: 0.8, changeFrequency: "monthly" as const },
+ { path: "/challenge", priority: 0.75, changeFrequency: "weekly" as const },
+ { path: "/about", priority: 0.7, changeFrequency: "monthly" as const },
+ { path: "/faq", priority: 0.65, changeFrequency: "monthly" as const },
+ { path: "/contact", priority: 0.6, changeFrequency: "monthly" as const },
+ { path: "/careers", priority: 0.45, changeFrequency: "monthly" as const },
+ { path: "/privacy", priority: 0.3, changeFrequency: "yearly" as const },
+ { path: "/terms", priority: 0.3, changeFrequency: "yearly" as const },
+] as const;
+
+export const PRIVATE_CRAWL_PATHS = [
+ "/api/",
+ "/admin",
+ "/admin/",
+ "/dashboard",
+ "/dashboard/",
+ "/instructor",
+ "/instructor/",
+ "/parent/login",
+ "/en/dashboard",
+ "/ar/dashboard",
+ "/en/dashboard/",
+ "/ar/dashboard/",
+ "/en/instructor",
+ "/ar/instructor",
+ "/en/instructor/",
+ "/ar/instructor/",
+ "/en/instructor/login",
+ "/ar/instructor/login",
+ "/en/parent/login",
+ "/ar/parent/login",
+ "/en/dashboard/courses/",
+ "/ar/dashboard/courses/",
+] as const;
+
 /**
  * Returns the canonical URL for a given locale and path.
- * English (default locale) has no prefix: /about
- * Arabic has /ar prefix: /ar/about
+ * Locale prefixes are always present because next-intl uses localePrefix: "always".
  */
 export function siteUrl(lang: string, path: string = ""): string {
-  const p = path && !path.startsWith("/") ? `/${path}` : path;
-  return `${SITE}/${lang}${p}`;
+ const p = path && !path.startsWith("/") ? `/${path}` : path;
+ return `${SITE_URL}/${lang}${p}`;
 }
 
 /**

@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { courses as staticCourses } from "@/data/courses";
 import { getCoursesISR, serverApiRoot } from "@/lib/server-api";
-import { siteUrl } from "@/lib/seo";
+import { LOCALES, PUBLIC_STATIC_PATHS, siteUrl } from "@/lib/seo";
 
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
@@ -30,22 +30,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
  ...(apiCourses?.map((c) => c.slug) ?? []),
  ...staticCourses.map((c) => c.id),
  ]);
- const locales = ["en", "ar"];
  const now = new Date();
-
- const staticPages = [
- { path: "", priority: 1.0, changeFrequency: "weekly" as const },
- { path: "/courses", priority: 0.9, changeFrequency: "weekly" as const },
- { path: "/recommend", priority: 0.8, changeFrequency: "monthly" as const },
- { path: "/challenge", priority: 0.75, changeFrequency: "weekly" as const },
- { path: "/parents", priority: 0.85, changeFrequency: "monthly" as const },
- { path: "/free-trial", priority: 0.9, changeFrequency: "monthly" as const },
- { path: "/blogs", priority: 0.85, changeFrequency: "weekly" as const },
- { path: "/about", priority: 0.7, changeFrequency: "monthly" as const },
- { path: "/contact", priority: 0.6, changeFrequency: "monthly" as const },
- { path: "/privacy", priority: 0.3, changeFrequency: "yearly" as const },
- { path: "/terms", priority: 0.3, changeFrequency: "yearly" as const },
- ];
 
  const entries: MetadataRoute.Sitemap = [];
 
@@ -74,10 +59,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
  changeFrequency: "monthly",
  priority: 0.3,
  });
+ entries.push({
+ url: `${SITE_URL}/ai.txt`,
+ lastModified: now,
+ changeFrequency: "monthly",
+ priority: 0.25,
+ });
+ entries.push({
+ url: `${SITE_URL}/ai-plugin.json`,
+ lastModified: now,
+ changeFrequency: "monthly",
+ priority: 0.2,
+ });
 
  // Static pages for each locale
- for (const locale of locales) {
- for (const page of staticPages) {
+ for (const locale of LOCALES) {
+ for (const page of PUBLIC_STATIC_PATHS) {
  entries.push({
  url: siteUrl(locale, page.path),
  lastModified: now,
@@ -95,7 +92,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
  }
 
  // Course detail pages (admin catalog + static fallback slugs)
- for (const locale of locales) {
+ for (const locale of LOCALES) {
  for (const slug of slugSet) {
  entries.push({
  url: siteUrl(locale, `/courses/${slug}`),
@@ -116,7 +113,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
  // Blog posts
  const blogPosts = await getBlogSlugsForSitemap();
  if (blogPosts.length > 0) {
- for (const locale of locales) {
+ for (const locale of LOCALES) {
  for (const post of blogPosts) {
  entries.push({
  url: siteUrl(locale, `/blogs/${post.slug}`),

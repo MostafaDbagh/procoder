@@ -14,7 +14,7 @@ import {
  OrganizationSchema,
  WebsiteSchema,
  FAQSchema,
- LocalBusinessSchema,
+ EducationalServiceSchema,
  CourseFinderApplicationSchema,
 } from "@/components/StructuredData";
 
@@ -48,7 +48,7 @@ export default async function LocaleLayout({
  <WebsiteSchema />
  <FAQSchema locale={locale} />
  <CourseFinderApplicationSchema />
- <LocalBusinessSchema />
+ <EducationalServiceSchema />
  <Navbar />
  <main className="flex-1">{children}</main>
  <Footer />

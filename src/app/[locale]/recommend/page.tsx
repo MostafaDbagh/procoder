@@ -12,12 +12,12 @@ const meta = {
  en: {
  title: "AI Course Finder — Right Fit for Kids | StemTechLab",
  description:
- "Not a quiz — real AI that analyses your child's learning behaviour (age, interests, experience, pace) and recommends the best-fit STEM, coding, or Arabic course + a 3-phase learning path. The first of its kind. Free, no sign-up. UAE, Netherlands & Germany.",
+ "AI-assisted course finder that analyses your child's age, interests, experience, pace, and goals to suggest the best-fit STEM, coding, or Arabic course plus a 3-phase learning path. Free, no sign-up.",
  },
  ar: {
  title: "منتقي الدورات بالذكاء الاصطناعي | ستم تك لاب",
  description:
- "ليس اختباراً عادياً — ذكاء اصطناعي حقيقي يحلّل سلوك تعلّم طفلك (العمر، الاهتمامات، الخبرة، الإيقاع) ويوصي بأنسب دورة STEM أو برمجة أو عربية مع مسار تعلم من ٣ مراحل. الأول من نوعه. مجاني، بدون تسجيل. الإمارات وهولندا وألمانيا.",
+ "منتقي دورات مدعوم بالذكاء الاصطناعي يحلّل عمر طفلك واهتماماته وخبرته وسرعته وأهدافه ليقترح أنسب دورة STEM أو برمجة أو عربية مع مسار تعلم من ٣ مراحل. مجاني، بدون تسجيل.",
  },
 };
 

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import CoursesContent from "./CoursesContent";
-import { BreadcrumbSchema } from "@/components/StructuredData";
+import { BreadcrumbSchema, CourseCatalogSchema, type CourseListSchemaItem } from "@/components/StructuredData";
+import { courses as staticCourses } from "@/data/courses";
+import { getCoursesISR } from "@/lib/server-api";
 import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
 
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
@@ -64,12 +66,48 @@ export default async function CoursesPage({
  const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
  const homeUrl = `${SITE_URL}/${locale}`;
  const coursesUrl = `${SITE_URL}/${locale}/courses`;
+ const lang = locale === "ar" ? "ar" : "en";
+ const [apiCourses, ct] = await Promise.all([
+ getCoursesISR(),
+ getTranslations({ locale, namespace: "courseData" }),
+ ]);
+ const schemaCourses: CourseListSchemaItem[] =
+ apiCourses && apiCourses.length > 0
+ ? apiCourses.map((course) => ({
+ name: course.title[lang],
+ description: course.description[lang],
+ url: siteUrl(lang, `/courses/${course.slug}`),
+ ageMin: course.ageMin,
+ ageMax: course.ageMax,
+ level: course.level,
+ lessons: course.lessons,
+ durationWeeks: course.durationWeeks,
+ price: course.price,
+ currency: course.currency,
+ imageUrl: course.imageUrl,
+ skills: course.skills?.[lang],
+ }))
+ : staticCourses.map((course) => ({
+ name: ct(course.titleKey),
+ description: ct(course.descKey),
+ url: siteUrl(lang, `/courses/${course.id}`),
+ ageMin: course.ageMin,
+ ageMax: course.ageMax,
+ level: course.level,
+ lessons: course.lessons,
+ durationWeeks: course.durationWeeks,
+ price: course.price,
+ currency: course.currency,
+ skills: course.skillKeys.map((key) => ct(key)),
+ }));
+
  return (
  <>
  <BreadcrumbSchema items={[
  { name: bcLabel("Home", locale), url: homeUrl },
  { name: bcLabel("Courses", locale), url: coursesUrl },
  ]} />
+ <CourseCatalogSchema locale={lang} courses={schemaCourses} />
  <CoursesContent />
  </>
  );

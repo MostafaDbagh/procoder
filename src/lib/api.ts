@@ -570,12 +570,14 @@ export function updateStudentProgress(
  data: {
   lessonsDone?: number;
   nextSession?: string | null;
+  preferredDays?: string[];
+  preferredTime?: string;
   addBadge?: string;
   removeBadge?: string;
   addRecording?: { url: string; title: string; sessionDate: string };
   removeRecordingId?: string;
  }
-): Promise<{ lessonsDone: number; nextSession: string | null; badges: { name: string; awardedAt: string }[]; recordings: { _id: string; url: string; title: string; sessionDate: string; addedAt: string }[] }> {
+): Promise<{ lessonsDone: number; nextSession: string | null; preferredDays: string[]; preferredTime: string; badges: { name: string; awardedAt: string }[]; recordings: { _id: string; url: string; title: string; sessionDate: string; addedAt: string }[] }> {
  return authRequest(`/instructor/students/${enrollmentId}`, token, {
  method: "PATCH",
  body: JSON.stringify(data),

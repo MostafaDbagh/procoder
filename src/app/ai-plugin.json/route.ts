@@ -15,7 +15,7 @@ export function GET() {
       url: "https://www.stemtechlab.com/openapi.yaml",
     },
     logo_url: "https://www.stemtechlab.com/logo.svg",
-    contact_email: "hello@stemtechlab.com",
+    contact_email: "contact@stemtechlab.com",
     legal_info_url: "https://www.stemtechlab.com/en/privacy",
   };
 

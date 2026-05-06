@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useLocale } from "next-intl";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { X } from "lucide-react";
@@ -10,13 +10,9 @@ const STORAGE_KEY = "stl_cookie_consent";
 export function CookieBanner() {
   const locale = useLocale();
   const isAr = locale === "ar";
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    if (!localStorage.getItem(STORAGE_KEY)) {
-      setVisible(true);
-    }
-  }, []);
+  const [visible, setVisible] = useState(
+    () => typeof window !== "undefined" && !localStorage.getItem(STORAGE_KEY)
+  );
 
   const accept = () => {
     localStorage.setItem(STORAGE_KEY, "accepted");
