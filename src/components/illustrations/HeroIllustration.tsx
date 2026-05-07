@@ -1,17 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
-
-const floatAnim = (delay: number, duration = 3) => ({
- animate: { y: [0, -10, 0] },
- transition: { delay, duration, repeat: Infinity, ease: "easeInOut" as const },
-});
-
-const pulseAnim = (delay: number) => ({
- animate: { scale: [1, 1.1, 1], opacity: [0.75, 1, 0.75] },
- transition: { delay, duration: 2.5, repeat: Infinity, ease: "easeInOut" as const },
-});
-
 export function HeroIllustration() {
  return (
  <svg
@@ -61,7 +47,7 @@ export function HeroIllustration() {
  <rect x="442" y="382" width="8" height="50" rx="3" fill="#B89468" opacity="0.5" />
 
  {/* ═══════════ LAPTOP ═══════════ */}
- <motion.g initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.7 }}>
+ <g>
  {/* lid */}
  <rect x="155" y="215" width="250" height="155" rx="10" fill="url(#laptopBody)" />
  {/* screen */}
@@ -82,20 +68,18 @@ export function HeroIllustration() {
  <rect x="212" y="228" width="50" height="12" rx="3" fill="#252A3E" />
  <rect x="220" y="233" width="28" height="3" rx="1.5" fill="#c4b5fd" opacity="0.6" />
 
- {/* code lines — typing */}
- <motion.rect x="215" y="252" initial={{ width: 0 }} animate={{ width: 60 }} height="3.5" rx="1.5" fill="#8B7BC8" opacity="0.7" transition={{ delay: 0.8, duration: 0.5 }} />
- <motion.rect x="215" y="262" initial={{ width: 0 }} animate={{ width: 100 }} height="3.5" rx="1.5" fill="#5CC4A0" opacity="0.65" transition={{ delay: 1.0, duration: 0.5 }} />
- <motion.rect x="228" y="272" initial={{ width: 0 }} animate={{ width: 70 }} height="3.5" rx="1.5" fill="#c4b5fd" opacity="0.55" transition={{ delay: 1.2, duration: 0.5 }} />
- <motion.rect x="228" y="282" initial={{ width: 0 }} animate={{ width: 50 }} height="3.5" rx="1.5" fill="#D4A46A" opacity="0.6" transition={{ delay: 1.4, duration: 0.5 }} />
- <motion.rect x="215" y="292" initial={{ width: 0 }} animate={{ width: 85 }} height="3.5" rx="1.5" fill="#8B7BC8" opacity="0.5" transition={{ delay: 1.6, duration: 0.5 }} />
- <motion.rect x="228" y="302" initial={{ width: 0 }} animate={{ width: 55 }} height="3.5" rx="1.5" fill="#5CC4A0" opacity="0.5" transition={{ delay: 1.8, duration: 0.5 }} />
- <motion.rect x="215" y="312" initial={{ width: 0 }} animate={{ width: 95 }} height="3.5" rx="1.5" fill="#c4b5fd" opacity="0.45" transition={{ delay: 2.0, duration: 0.5 }} />
- <motion.rect x="215" y="322" initial={{ width: 0 }} animate={{ width: 40 }} height="3.5" rx="1.5" fill="#D4A46A" opacity="0.5" transition={{ delay: 2.2, duration: 0.5 }} />
+ {/* code lines */}
+ <rect x="215" y="252" width="60" height="3.5" rx="1.5" fill="#8B7BC8" opacity="0.7" />
+ <rect x="215" y="262" width="100" height="3.5" rx="1.5" fill="#5CC4A0" opacity="0.65" />
+ <rect x="228" y="272" width="70" height="3.5" rx="1.5" fill="#c4b5fd" opacity="0.55" />
+ <rect x="228" y="282" width="50" height="3.5" rx="1.5" fill="#D4A46A" opacity="0.6" />
+ <rect x="215" y="292" width="85" height="3.5" rx="1.5" fill="#8B7BC8" opacity="0.5" />
+ <rect x="228" y="302" width="55" height="3.5" rx="1.5" fill="#5CC4A0" opacity="0.5" />
+ <rect x="215" y="312" width="95" height="3.5" rx="1.5" fill="#c4b5fd" opacity="0.45" />
+ <rect x="215" y="322" width="40" height="3.5" rx="1.5" fill="#D4A46A" opacity="0.5" />
 
- {/* blinking cursor */}
- <motion.rect x="255" y="322" width="2" height="10" rx="1" fill="#c4b5fd"
- animate={{ opacity: [1, 0, 1] }} transition={{ duration: 1, repeat: Infinity }}
- />
+ {/* cursor */}
+ <rect x="255" y="322" width="2" height="10" rx="1" fill="#c4b5fd" />
 
  {/* line numbers */}
  {[252, 262, 272, 282, 292, 302, 312, 322].map((y, i) => (
@@ -109,10 +93,10 @@ export function HeroIllustration() {
  <rect x="160" y="378" width="240" height="1.5" rx="0.75" fill="#4A5060" opacity="0.35" />
  {/* trackpad */}
  <rect x="245" y="373" width="70" height="10" rx="3" fill="#4A5060" opacity="0.3" />
- </motion.g>
+ </g>
 
  {/* ═══════════ BOY — left side ═══════════ */}
- <motion.g initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5, duration: 0.7 }}>
+ <g>
  {/* shadow under */}
  <ellipse cx="155" cy="372" rx="30" ry="4" fill="#000" opacity="0.06" />
 
@@ -158,10 +142,10 @@ export function HeroIllustration() {
  {/* hands */}
  <circle cx="120" cy="365" r="6" fill="url(#skinBoy)" />
  <circle cx="200" cy="365" r="6" fill="url(#skinBoy)" />
- </motion.g>
+ </g>
 
  {/* ═══════════ GIRL — right side ═══════════ */}
- <motion.g initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6, duration: 0.7 }}>
+ <g>
  {/* shadow under */}
  <ellipse cx="405" cy="372" rx="30" ry="4" fill="#000" opacity="0.06" />
 
@@ -220,11 +204,10 @@ export function HeroIllustration() {
  {/* hands */}
  <circle cx="360" cy="365" r="6" fill="url(#skinGirl)" />
  <circle cx="440" cy="365" r="6" fill="url(#skinGirl)" />
- </motion.g>
+ </g>
 
  {/* ═══════════ FLOATING CARD — terminal ═══════════ */}
- <motion.g initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.9, duration: 0.5 }}>
- <motion.g {...floatAnim(0.2, 4)}>
+ <g>
  <rect x="395" y="120" width="135" height="75" rx="10" fill="#1E2235" />
  <rect x="395" y="120" width="135" height="75" rx="10" stroke="#3A3F55" strokeWidth="1.2" fill="none" />
  {/* dots */}
@@ -234,15 +217,11 @@ export function HeroIllustration() {
  {/* terminal lines */}
  <rect x="409" y="148" width="55" height="3.5" rx="1.5" fill="#5CC4A0" opacity="0.4" />
  <rect x="409" y="158" width="75" height="3.5" rx="1.5" fill="#888FA8" opacity="0.25" />
- <motion.rect x="409" y="168" width="45" height="3.5" rx="1.5" fill="#c4b5fd" opacity="0.35"
- animate={{ opacity: [0.2, 0.5, 0.2] }} transition={{ duration: 1.5, repeat: Infinity }}
- />
- </motion.g>
- </motion.g>
+ <rect x="409" y="168" width="45" height="3.5" rx="1.5" fill="#c4b5fd" opacity="0.35" />
+ </g>
 
  {/* ═══════════ FLOATING CARD — achievement ═══════════ */}
- <motion.g initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.1, duration: 0.5 }}>
- <motion.g {...floatAnim(1.5, 3.6)}>
+ <g>
  <rect x="30" y="280" width="105" height="52" rx="10" fill="#1E2235" />
  <rect x="30" y="280" width="105" height="52" rx="10" stroke="#3A3F55" strokeWidth="1.2" fill="none" />
  <circle cx="55" cy="306" r="13" fill="#D4A46A" opacity="0.15" />
@@ -250,8 +229,7 @@ export function HeroIllustration() {
  <rect x="76" y="298" width="46" height="4" rx="2" fill="#888FA8" opacity="0.5" />
  <rect x="76" y="308" width="32" height="4" rx="2" fill="#c4b5fd" opacity="0.5" />
  <rect x="76" y="318" width="50" height="3" rx="1.5" fill="#555E78" opacity="0.35" />
- </motion.g>
- </motion.g>
+ </g>
 
  {/* ═══════════ FLOATING TECH WORDS ═══════════ */}
 
@@ -310,29 +288,25 @@ export function HeroIllustration() {
  <line x1="264" y1="88" x2="260" y2="84" stroke="#D4A46A" strokeWidth="2.5" strokeLinecap="round" opacity="0.35" />
  </g>
 
- {/* Gear (spinning) */}
- <motion.g
- animate={{ rotate: 360 }}
- transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
- style={{ transformOrigin: "510px 155px" }}
- >
+ {/* Gear */}
+ <g>
  <circle cx="510" cy="155" r="15" stroke="#5CC4A0" strokeWidth="3" fill="none" opacity="0.35" />
  <circle cx="510" cy="155" r="5.5" fill="#5CC4A0" opacity="0.25" />
  <line x1="510" y1="137" x2="510" y2="141" stroke="#5CC4A0" strokeWidth="3" strokeLinecap="round" opacity="0.35" />
  <line x1="510" y1="169" x2="510" y2="173" stroke="#5CC4A0" strokeWidth="3" strokeLinecap="round" opacity="0.35" />
  <line x1="492" y1="155" x2="496" y2="155" stroke="#5CC4A0" strokeWidth="3" strokeLinecap="round" opacity="0.35" />
  <line x1="524" y1="155" x2="528" y2="155" stroke="#5CC4A0" strokeWidth="3" strokeLinecap="round" opacity="0.35" />
- </motion.g>
+ </g>
 
  {/* Stars */}
  <polygon points="155,138 158,146 167,146 160,151 162,160 155,155 148,160 150,151 143,146 152,146" fill="#D4A46A" opacity="0.35" />
  <polygon points="435,49 437,55 443,55 438,59 440,65 435,61 430,65 432,59 427,55 433,55" fill="#c4b5fd" opacity="0.35" />
 
  {/* Floating dots */}
- <motion.circle cx="130" cy="395" r="4" fill="#8B7BC8" opacity="0.25" animate={{ opacity: [0.15, 0.4, 0.15] }} transition={{ duration: 2, repeat: Infinity, delay: 0.5 }} />
- <motion.circle cx="470" cy="390" r="3.5" fill="#c4b5fd" opacity="0.25" animate={{ opacity: [0.2, 0.45, 0.2] }} transition={{ duration: 2.5, repeat: Infinity, delay: 1.2 }} />
- <motion.circle cx="530" cy="340" r="3" fill="#D4A46A" opacity="0.2" animate={{ opacity: [0.15, 0.35, 0.15] }} transition={{ duration: 3, repeat: Infinity }} />
- <motion.circle cx="50" cy="160" r="3.5" fill="#5CC4A0" opacity="0.2" animate={{ opacity: [0.1, 0.35, 0.1] }} transition={{ duration: 2.2, repeat: Infinity, delay: 0.8 }} />
+ <circle cx="130" cy="395" r="4" fill="#8B7BC8" opacity="0.25" />
+ <circle cx="470" cy="390" r="3.5" fill="#c4b5fd" opacity="0.25" />
+ <circle cx="530" cy="340" r="3" fill="#D4A46A" opacity="0.2" />
+ <circle cx="50" cy="160" r="3.5" fill="#5CC4A0" opacity="0.2" />
  </svg>
  );
 }

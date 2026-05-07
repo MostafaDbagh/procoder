@@ -776,6 +776,27 @@ export default function AdminDashboard() {
  }
  };
 
+ const deleteEnrollment = async (id: string) => {
+ if (
+ !confirm(
+ "Permanently delete this enrollment?\n\nThis also removes its payment records, instructor notes, and homework. Revenue totals will update. This cannot be undone."
+ )
+ )
+ return;
+ try {
+ setErr("");
+ await adminFetch(`/admin/enrollments/${id}`, { method: "DELETE" });
+ setEnrollmentDetail((prev) =>
+ prev && String(prev.enrollment._id) === id ? null : prev
+ );
+ await loadEnrollments();
+ await loadOverview();
+ setAdminNotice("Enrollment deleted. Revenue updated.");
+ } catch (e) {
+ setErr(e instanceof Error ? e.message : "Delete failed");
+ }
+ };
+
  const patchContactStatus = async (id: string, status: string) => {
  try {
  await adminFetch(`/contact/${id}`, {
@@ -1859,6 +1880,15 @@ export default function AdminDashboard() {
  }
  >
  PayPal
+ </button>
+ <button
+ type="button"
+ className="text-rose-400 text-xs"
+ onClick={() =>
+ deleteEnrollment(String(r._id))
+ }
+ >
+ Delete
  </button>
  </td>
  </tr>
