@@ -4,6 +4,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { AnimatedSection, AnimatedCard } from "./AnimatedSection";
 import { motion } from "framer-motion";
 import { Gamepad2, Trophy, ShieldCheck } from "lucide-react";
+import { BrainPattern } from "./BrainPatterns";
 
 export function LearnByFun() {
  const t = useTranslations("learnWithFun");
@@ -44,7 +45,8 @@ export function LearnByFun() {
  ];
 
  return (
- <section className="py-20 sm:py-28">
+ <section className="relative overflow-hidden py-20 sm:py-28">
+ <BrainPattern variant="rubik" />
  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
  <AnimatedSection className="text-center mb-14">
  {/* Animated icon */}

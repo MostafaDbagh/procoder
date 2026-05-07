@@ -6,6 +6,7 @@ import { AnimatedSection, AnimatedCard } from "@/components/AnimatedSection";
 import { AuthModal } from "@/components/AuthModal";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { FutureThinkersSection } from "@/components/FutureThinkersSection";
+import { BrainPattern } from "@/components/BrainPatterns";
 import { motion } from "framer-motion";
 import {
  Heart,
@@ -20,7 +21,6 @@ import {
  Award,
  Clock,
  Video,
- ArrowRight,
  UserPlus,
  Star,
  LayoutDashboard,
@@ -29,7 +29,7 @@ import {
 export default function ParentsContent() {
  const t = useTranslations("parents");
  const [authOpen, setAuthOpen] = useState(false);
- const [authTab, setAuthTab] = useState<"signup" | "login">("login");
+ const [authTab] = useState<"signup" | "login">("login");
 
  const trustCards = [
  { icon: BarChart3, title: t("trust1Title"), desc: t("trust1Desc"), color: "bg-blue-400" },
@@ -146,7 +146,8 @@ export default function ParentsContent() {
  <FutureThinkersSection />
 
  {/* ═══ WHY PARENTS TRUST US ═══ */}
- <section className="py-20 sm:py-28 bg-surface/50">
+ <section className="relative overflow-hidden py-20 sm:py-28 bg-surface/50">
+ <BrainPattern variant="rubik" />
  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
  <AnimatedSection className="text-center mb-14">
  <h2 className="text-3xl sm:text-4xl font-bold mb-4">{t("trustTitle")}</h2>
@@ -170,7 +171,8 @@ export default function ParentsContent() {
  </section>
 
  {/* ═══ DASHBOARD PREVIEW ═══ */}
- <section className="py-20 sm:py-28">
+ <section className="relative overflow-hidden py-20 sm:py-28">
+ <BrainPattern variant="lego" />
  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
  <AnimatedSection className="text-center mb-14">
  <h2 className="text-3xl sm:text-4xl font-bold mb-4">{t("dashTitle")}</h2>
@@ -198,7 +200,8 @@ export default function ParentsContent() {
  </section>
 
  {/* ═══ OUR PROMISE ═══ */}
- <section className="py-20 sm:py-28 bg-surface/50">
+ <section className="relative overflow-hidden py-20 sm:py-28 bg-surface/50">
+ <BrainPattern variant="brain" />
  <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
  <AnimatedSection className="text-center mb-14">
  <div className="flex justify-center mb-4">
@@ -223,25 +226,6 @@ export default function ParentsContent() {
  </motion.div>
  ))}
  </div>
- </div>
- </section>
-
- {/* ═══ CTA ═══ */}
- <section className="py-20 sm:py-28">
- <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
- <AnimatedSection className="text-center">
- <div className="bg-primary rounded-3xl p-10 sm:p-14">
- <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">{t("ctaTitle")}</h2>
- <p className="text-white/80 text-lg mb-8 max-w-lg mx-auto">{t("ctaSubtitle")}</p>
- <button
- onClick={() => { setAuthTab("signup"); setAuthOpen(true); }}
- className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-white text-primary font-semibold text-lg hover:scale-[1.02] transition-transform shadow-lg"
- >
- {t("ctaButton")}
- <ArrowRight className="w-5 h-5" />
- </button>
- </div>
- </AnimatedSection>
  </div>
  </section>
 

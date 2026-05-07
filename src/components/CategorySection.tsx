@@ -19,6 +19,7 @@ import {
 import { ScratchCatIcon } from "@/components/icons/ScratchCatIcon";
 import type { LucideIcon } from "lucide-react";
 import type { APICategory } from "@/lib/server-api";
+import { BrainPattern } from "./BrainPatterns";
 
 type StaticCat = {
  key: string;
@@ -164,7 +165,8 @@ export function CategorySection({ categories: apiCategories }: Props) {
 
  if (apiCategories !== null && apiCategories.length === 0) {
  return (
- <section className="py-20 sm:py-28 bg-surface/50">
+ <section className="relative overflow-hidden py-20 sm:py-28 bg-surface/50">
+ <BrainPattern variant="lego" />
  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
  <p className="text-muted">{t("emptyCatalog")}</p>
  </div>
@@ -175,7 +177,8 @@ export function CategorySection({ categories: apiCategories }: Props) {
  const fromApi = apiCategories !== null && apiCategories.length > 0;
 
  return (
- <section className="py-20 sm:py-28 bg-surface/50">
+ <section className="relative overflow-hidden py-20 sm:py-28 bg-surface/50">
+ <BrainPattern variant="lego" />
  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
  <AnimatedSection className="text-center mb-14">
  <div className="flex justify-center mb-6">

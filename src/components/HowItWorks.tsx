@@ -5,6 +5,7 @@ import { LocalizedLink } from "@/components/LocalizedLink";
 import { AnimatedSection } from "./AnimatedSection";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { BrainPattern } from "./BrainPatterns";
 
 function GrowthIcon() {
  return (
@@ -46,7 +47,8 @@ export function HowItWorks() {
  ];
 
  return (
- <section className="py-20 sm:py-28">
+ <section className="relative overflow-hidden py-20 sm:py-28">
+ <BrainPattern variant="legoStack" />
  <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
  {/* Icon */}
  <AnimatedSection className="flex justify-center mb-6">

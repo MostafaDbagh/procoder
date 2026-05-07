@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { AnimatedSection } from "./AnimatedSection";
 import { BookOpen, CheckCircle2, Send, Rocket, Star, Zap, Atom } from "lucide-react";
 import { sendContactMessage } from "@/lib/api";
+import { BrainPattern } from "./BrainPatterns";
 
 export function CTABanner() {
  const n = useTranslations("newsletter");
@@ -33,7 +34,8 @@ export function CTABanner() {
  };
 
  return (
-  <section className="py-20 sm:py-28">
+  <section className="relative overflow-hidden py-20 sm:py-28">
+   <BrainPattern variant="tips" />
    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <AnimatedSection>
      <div className="relative overflow-hidden rounded-3xl border-0 border-t-4 border-l-4 border-r-4 border-b-8 border-t-border border-l-border border-r-border border-b-primary/50 bg-surface p-8 sm:p-16 text-center ">
