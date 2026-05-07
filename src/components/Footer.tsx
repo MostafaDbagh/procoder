@@ -12,7 +12,7 @@ export function Footer() {
  const cats = useTranslations("categories");
 
  return (
- <footer className="bg-surface border-t border-border">
+ <footer className="bg-surface border-t border-border relative">
  <div className="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
  {/* Brand */}
@@ -54,7 +54,10 @@ export function Footer() {
 
  {/* Quick Links */}
  <div>
- <h3 className="font-semibold mb-4">{t("quickLinks")}</h3>
+ <h3 className="font-bold mb-4 flex items-center gap-2">
+ <span className="w-2.5 h-2.5 rounded-full bg-primary" />
+ {t("quickLinks")}
+ </h3>
  <ul className="space-y-2.5">
  <li><LocalizedLink href="/" className="text-sm text-muted hover:text-primary transition-colors">{nav("home")}</LocalizedLink></li>
  <li><LocalizedLink href="/courses" className="text-sm text-muted hover:text-primary transition-colors">{nav("courses")}</LocalizedLink></li>
@@ -68,7 +71,10 @@ export function Footer() {
 
  {/* Categories */}
  <div>
- <h3 className="font-semibold mb-4">{t("categories")}</h3>
+ <h3 className="font-bold mb-4 flex items-center gap-2">
+ <span className="w-2.5 h-2.5 rounded-full bg-pink" />
+ {t("categories")}
+ </h3>
  <ul className="space-y-2.5">
  <li><LocalizedLink href="/courses" className="text-sm text-muted hover:text-primary transition-colors">{cats("programming")}</LocalizedLink></li>
  <li><LocalizedLink href="/courses" className="text-sm text-muted hover:text-primary transition-colors">{cats("robotics")}</LocalizedLink></li>
@@ -79,7 +85,10 @@ export function Footer() {
 
  {/* Reach Out */}
  <div>
- <h3 className="font-semibold mb-4">{t("contact")}</h3>
+ <h3 className="font-bold mb-4 flex items-center gap-2">
+ <span className="w-2.5 h-2.5 rounded-full bg-amber-400" />
+ {t("contact")}
+ </h3>
  <div className="flex items-center gap-2 text-sm text-muted mb-4">
  <Mail className="w-4 h-4" />
  <span>{t("email")}</span>

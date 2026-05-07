@@ -63,7 +63,7 @@ export function Navbar() {
  : `/en${pathname === "/" ? "" : pathname}` || "/en";
 
  return (
- <header className="sticky top-0 z-50 backdrop-blur-xl bg-surface/80 border-b border-border">
+ <header className="sticky top-0 z-50 backdrop-blur-xl bg-surface/85 border-b border-border">
  <nav className="max-w-[96rem] mx-auto px-4 sm:px-6 lg:px-8">
  <div className="flex items-center justify-between h-16">
  {/* Logo */}
@@ -79,13 +79,20 @@ export function Navbar() {
  <LocalizedLink
  key={link.href}
  href={link.href}
- className={`relative px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
+ className={`relative px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
  active
- ? "bg-primary/10 text-primary"
+ ? "bg-primary/15 text-primary"
  : "text-muted hover:text-foreground hover:bg-surface-hover"
  }`}
  >
  {link.label}
+ {active && (
+ <motion.span
+ layoutId="nav-active-dot"
+ className="absolute left-1/2 -bottom-1 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-primary"
+ transition={{ type: "spring", stiffness: 500, damping: 35 }}
+ />
+ )}
  </LocalizedLink>
  );
  })}
@@ -95,7 +102,7 @@ export function Navbar() {
  <div className="flex items-center gap-2">
  <LocalizedLink
  href="/free-trial"
- className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary to-purple text-white text-sm font-semibold shadow-[0_4px_14px_rgba(139,123,200,0.40)] hover:shadow-[0_6px_20px_rgba(139,123,200,0.55)] hover:scale-[1.03] hover:brightness-110 transition-all duration-200 md:me-5"
+ className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-primary via-purple to-pink text-white text-sm font-bold shadow-[0_4px_14px_rgba(139,123,200,0.40)] hover:shadow-[0_6px_20px_rgba(139,123,200,0.55)] hover:scale-[1.03] hover:brightness-110 transition-all duration-200 md:me-5"
  >
  {t("bookDemo")}
  </LocalizedLink>
@@ -106,7 +113,7 @@ export function Navbar() {
 
 <button
  onClick={toggleTheme}
-className="hidden md:inline-flex p-2 rounded-xl text-muted hover:text-foreground hover:bg-surface-hover transition-colors"
+className="hidden md:inline-flex p-2 rounded-full text-muted hover:text-foreground hover:bg-surface-hover transition-colors"
  aria-label={theme === "dark" ? t("lightMode") : t("darkMode")}
  >
  <AnimatePresence mode="wait" initial={false}>
@@ -130,7 +137,7 @@ className="hidden md:inline-flex p-2 rounded-xl text-muted hover:text-foreground
  {/* Mobile toggle */}
  <button
  onClick={() => setMobileOpen(!mobileOpen)}
- className="md:hidden p-2 rounded-xl text-muted hover:text-foreground hover:bg-surface-hover transition-colors"
+ className="md:hidden p-2 rounded-full text-muted hover:text-foreground hover:bg-surface-hover transition-colors"
  aria-label={t("menu")}
  >
  {mobileOpen ? (
@@ -159,9 +166,9 @@ className="hidden md:inline-flex p-2 rounded-xl text-muted hover:text-foreground
  <LocalizedLink
  key={link.href}
  href={link.href}
- className={`block px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
+ className={`block px-4 py-3 rounded-full text-sm font-semibold transition-colors ${
  active
- ? "text-primary bg-primary/10"
+ ? "text-primary bg-primary/15"
  : "text-muted hover:text-foreground hover:bg-surface-hover"
  }`}
  >
@@ -191,7 +198,7 @@ className="hidden md:inline-flex p-2 rounded-xl text-muted hover:text-foreground
 </div>
  <LocalizedLink
  href="/free-trial"
- className="block mx-4 mt-2 px-4 py-3 rounded-xl bg-gradient-to-r from-primary to-purple text-white text-sm font-semibold text-center shadow-[0_4px_14px_rgba(139,123,200,0.40)]"
+ className="block mx-4 mt-2 px-4 py-3 rounded-full bg-gradient-to-r from-primary via-purple to-pink text-white text-sm font-bold text-center shadow-[0_4px_14px_rgba(139,123,200,0.40)]"
  >
  {t("bookDemo")}
  </LocalizedLink>
