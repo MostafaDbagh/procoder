@@ -25,6 +25,16 @@ import {
  Star,
  LayoutDashboard,
 } from "lucide-react";
+import { ChatHeartIcon } from "@/components/icons/PillarIcons";
+import {
+ BarChartIcon,
+ BellNotifyIcon,
+ ReportIcon,
+ ShieldSafeIcon,
+ CalendarIcon,
+ ClockTimeIcon,
+ VideoCameraIcon,
+} from "@/components/icons/KidIcons";
 
 export default function ParentsContent() {
  const t = useTranslations("parents");
@@ -32,21 +42,21 @@ export default function ParentsContent() {
  const [authTab] = useState<"signup" | "login">("login");
 
  const trustCards = [
- { icon: BarChart3, title: t("trust1Title"), desc: t("trust1Desc"), color: "bg-blue-400" },
- { icon: Bell, title: t("trust2Title"), desc: t("trust2Desc"), color: "bg-amber-400" },
- { icon: FileText, title: t("trust3Title"), desc: t("trust3Desc"), color: "bg-violet-400" },
- { icon: ShieldCheck, title: t("trust4Title"), desc: t("trust4Desc"), color: "bg-emerald-400" },
- { icon: Calendar, title: t("trust5Title"), desc: t("trust5Desc"), color: "bg-rose-400" },
- { icon: MessageCircle, title: t("trust6Title"), desc: t("trust6Desc"), color: "bg-teal-400" },
+ { icon: BarChartIcon, title: t("trust1Title"), desc: t("trust1Desc"), bubble: "bg-blue-400/10 border-blue-400/30" },
+ { icon: BellNotifyIcon, title: t("trust2Title"), desc: t("trust2Desc"), bubble: "bg-amber-400/10 border-amber-400/30" },
+ { icon: ReportIcon, title: t("trust3Title"), desc: t("trust3Desc"), bubble: "bg-violet-400/10 border-violet-400/30" },
+ { icon: ShieldSafeIcon, title: t("trust4Title"), desc: t("trust4Desc"), bubble: "bg-emerald-400/10 border-emerald-400/30" },
+ { icon: CalendarIcon, title: t("trust5Title"), desc: t("trust5Desc"), bubble: "bg-rose-400/10 border-rose-400/30" },
+ { icon: ChatHeartIcon, title: t("trust6Title"), desc: t("trust6Desc"), bubble: "bg-teal-400/10 border-teal-400/30" },
  ];
 
  const dashItems = [
- { icon: BarChart3, text: t("dash1") },
- { icon: Bell, text: t("dash2") },
- { icon: FileText, text: t("dash3") },
- { icon: Clock, text: t("dash4") },
- { icon: Award, text: t("dash5") },
- { icon: Video, text: t("dash6") },
+ { icon: BarChartIcon, text: t("dash1") },
+ { icon: BellNotifyIcon, text: t("dash2") },
+ { icon: ReportIcon, text: t("dash3") },
+ { icon: ClockTimeIcon, text: t("dash4") },
+ { icon: ShieldSafeIcon, text: t("dash5") },
+ { icon: VideoCameraIcon, text: t("dash6") },
  ];
 
  const promises = [
@@ -79,22 +89,20 @@ export default function ParentsContent() {
  {t("heroSubtitle")}
  </p>
 
- <div className="flex flex-col sm:flex-row flex-wrap gap-3">
+ <div className="flex flex-col gap-3 max-w-lg">
  <button
  type="button"
  onClick={() => setAuthOpen(true)}
- className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-primary text-white font-semibold shadow-md shadow-primary/10 hover:shadow-lg hover:scale-[1.02] transition-all"
+ className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-primary text-white font-semibold shadow-md shadow-primary/10 hover:shadow-lg hover:scale-[1.02] transition-all"
  >
  <UserPlus className="w-5 h-5 shrink-0" />
  {t("heroCta")} / {t("loginLink")}
  </button>
  <LocalizedLink
  href="/parent/login"
- className="group inline-flex items-center justify-center gap-3 px-7 py-3.5 rounded-2xl border-2 border-border bg-surface text-foreground font-semibold shadow-sm transition-all hover:border-primary/45 hover:bg-primary/[0.06] hover:text-primary hover:shadow-md hover:scale-[1.02] dark:hover:bg-primary/10"
+ className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl border-2 border-border bg-surface text-foreground font-semibold shadow-sm transition-all hover:border-primary/45 hover:bg-primary/[0.06] hover:text-primary hover:shadow-md hover:scale-[1.02] dark:hover:bg-primary/10"
  >
- <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
- <LayoutDashboard className="w-5 h-5" aria-hidden />
- </span>
+ <LayoutDashboard className="w-5 h-5 shrink-0" aria-hidden />
  <span>{t("openDashboard")}</span>
  </LocalizedLink>
  </div>
@@ -158,8 +166,8 @@ export default function ParentsContent() {
  {trustCards.map((card, i) => (
  <AnimatedCard key={i} delay={i * 0.08}>
  <article className="bg-surface rounded-2xl border border-border p-7 h-full">
- <div className={`w-12 h-12 rounded-2xl ${card.color} flex items-center justify-center mb-5`}>
- <card.icon className="w-6 h-6 text-white" />
+ <div className={`w-16 h-16 rounded-2xl border-2 ${card.bubble} flex items-center justify-center mb-5`}>
+ <card.icon className="w-10 h-10" />
  </div>
  <h3 className="text-lg font-semibold mb-2">{card.title}</h3>
  <p className="text-muted text-sm leading-relaxed">{card.desc}</p>
@@ -189,8 +197,8 @@ export default function ParentsContent() {
  transition={{ delay: i * 0.08 }}
  className="flex items-center gap-4 bg-surface rounded-2xl border border-border p-5"
  >
- <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
- <item.icon className="w-5 h-5 text-primary" />
+ <div className="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center shrink-0">
+ <item.icon className="w-9 h-9" />
  </div>
  <p className="text-sm font-medium">{item.text}</p>
  </motion.div>

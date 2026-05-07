@@ -3,13 +3,18 @@
 import { useTranslations } from "next-intl";
 import { AnimatedSection, AnimatedCard } from "./AnimatedSection";
 import { motion } from "framer-motion";
-import { Lightbulb, Palette, Brain, Rocket } from "lucide-react";
+import {
+ IdeaLightIcon,
+ CreativePaletteIcon,
+ ThinkBrainIcon,
+ RocketLaunchIcon,
+} from "./icons/PillarIcons";
 
 const points = [
- { key: "point1", icon: Lightbulb, color: "bg-amber-400" },
- { key: "point2", icon: Palette, color: "bg-rose-400" },
- { key: "point3", icon: Brain, color: "bg-violet-400" },
- { key: "point4", icon: Rocket, color: "bg-emerald-400" },
+ { key: "point1", icon: IdeaLightIcon, bubble: "bg-amber-400/10 border-amber-400/30" },
+ { key: "point2", icon: CreativePaletteIcon, bubble: "bg-rose-400/10 border-rose-400/30" },
+ { key: "point3", icon: ThinkBrainIcon, bubble: "bg-violet-400/10 border-violet-400/30" },
+ { key: "point4", icon: RocketLaunchIcon, bubble: "bg-emerald-400/10 border-emerald-400/30" },
 ];
 
 function LaptopCodeIcon() {
@@ -136,8 +141,8 @@ export function WhyProgramming() {
  return (
  <AnimatedCard key={p.key} delay={i * 0.1}>
  <article className="bg-surface rounded-2xl border border-border p-7 h-full">
- <div className={`w-12 h-12 rounded-2xl ${p.color} flex items-center justify-center mb-5`}>
- <Icon className="w-6 h-6 text-white" />
+ <div className={`w-16 h-16 rounded-2xl border-2 ${p.bubble} flex items-center justify-center mb-5`}>
+ <Icon className="w-10 h-10" />
  </div>
  <h3 className="text-lg font-semibold mb-2">
  {t(`${p.key}Title`)}

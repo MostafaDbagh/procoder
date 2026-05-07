@@ -1,13 +1,15 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Home, BookOpen } from "lucide-react";
+import { Mascot } from "@/components/Mascot";
 
 export default async function LocaleNotFound() {
  const t = await getTranslations("notFound");
 
  return (
  <div className="flex flex-col items-center justify-center py-20 sm:py-28 px-4 text-center">
- <p className="text-7xl sm:text-8xl font-black text-primary/15 select-none tabular-nums leading-none mb-4">
+ <Mascot pose="wave" size={160} className="mb-2" />
+ <p className="text-5xl sm:text-7xl font-black text-primary/20 select-none tabular-nums leading-none mb-4">
  404
  </p>
  <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">

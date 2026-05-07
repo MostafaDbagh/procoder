@@ -2,13 +2,14 @@
 
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
-import { Brain, Cpu, Hammer } from "lucide-react";
 import { AnimatedSection, AnimatedCard } from "@/components/AnimatedSection";
+import { ThinkBrainIcon } from "@/components/icons/PillarIcons";
+import { ChipBrainIcon, BuildBlocksIcon } from "@/components/icons/KidIcons";
 
 const pillars = [
-  { icon: Brain, key: "pillar1", gradient: "from-violet-500 to-primary" },
-  { icon: Cpu, key: "pillar2", gradient: "from-cyan-500 to-blue-500" },
-  { icon: Hammer, key: "pillar3", gradient: "from-amber-500 to-orange-500" },
+  { icon: ThinkBrainIcon, key: "pillar1", bubble: "bg-violet-500/10 border-violet-500/20" },
+  { icon: ChipBrainIcon, key: "pillar2", bubble: "bg-cyan-500/10 border-cyan-500/20" },
+  { icon: BuildBlocksIcon, key: "pillar3", bubble: "bg-amber-500/10 border-amber-500/20" },
 ];
 
 export function FutureThinkersSection() {
@@ -41,9 +42,9 @@ export function FutureThinkersSection() {
             <AnimatedCard key={pillar.key} delay={i * 0.1}>
               <div className="bg-surface rounded-2xl border border-border p-7 h-full text-center">
                 <div
-                  className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${pillar.gradient} flex items-center justify-center mx-auto mb-5`}
+                  className={`w-20 h-20 rounded-3xl border-2 ${pillar.bubble} flex items-center justify-center mx-auto mb-5`}
                 >
-                  <pillar.icon className="w-7 h-7 text-white" />
+                  <pillar.icon className="w-12 h-12" />
                 </div>
                 <h3 className="text-lg font-semibold mb-3">
                   {t(`${pillar.key}Title`)}

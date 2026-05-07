@@ -11,9 +11,9 @@ import {
  Clock,
  Eye,
  Tag,
- ArrowRight,
  Search,
 } from "lucide-react";
+import { KidArrowRightIcon } from "@/components/icons/KidIcons";
 
 const categories = [
  { value: "all", label: "All", labelAr: "الكل" },
@@ -180,7 +180,7 @@ function BlogCard({ post, lang, index }: { post: APIBlogPost; lang: "en" | "ar";
  </div>
  <span className="text-sm font-semibold text-primary group-hover:underline flex items-center gap-1">
  {lang === "ar" ? "اقرأ" : "Read"}
- <ArrowRight className="w-3.5 h-3.5" />
+ <KidArrowRightIcon className="w-3.5 h-3.5" />
  </span>
  </div>
  </div>

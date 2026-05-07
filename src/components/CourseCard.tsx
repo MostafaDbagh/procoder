@@ -10,7 +10,6 @@ import {
  Clock,
  BookOpen,
  Users,
- ArrowRight,
  CalendarClock,
  TrendingUp,
  Blocks,
@@ -33,10 +32,30 @@ import {
 import type { Course } from "@/data/courses";
 import { publicOrAbsoluteAssetUrl } from "@/lib/mediaUrls";
 import { courseCategoryLabelKey, titleizeCategorySlug } from "@/lib/courseCategoryLabel";
+import {
+ ProgrammingThumb,
+ RoboticsThumb,
+ AlgorithmsThumb,
+ ArabicThumb,
+ GameDevThumb,
+ MobileAppThumb,
+ WebDevThumb,
+} from "./icons/PlayfulCategoryIcons";
+import { KidArrowRightIcon } from "./icons/KidIcons";
 
 const iconMap: Record<string, React.ElementType> = {
  Blocks, Code2, Globe, Bot, Cpu, Brain, Trophy, BookOpen, PenTool, BookMarked, Star, Gamepad2,
  Smartphone, Layout, AppWindow, Palette, Terminal,
+};
+
+const playfulCategoryIconMap: Record<string, React.ElementType> = {
+ programming: ProgrammingThumb,
+ robotics: RoboticsThumb,
+ algorithms: AlgorithmsThumb,
+ arabic: ArabicThumb,
+ "game-development": GameDevThumb,
+ "mobile-app-development": MobileAppThumb,
+ "web-development": WebDevThumb,
 };
 
 const categoryColors: Record<string, { badge: string; bg: string; accent: string }> = {
@@ -101,6 +120,8 @@ export const CourseCard = React.memo(function CourseCard({ course, index = 0, ti
  : null;
  const Icon = iconMap[course.iconName] || BookOpen;
  const labelKey = courseCategoryLabelKey(course.category);
+ const PlayfulIcon =
+ playfulCategoryIconMap[course.category] || playfulCategoryIconMap[labelKey];
  const colors =
  categoryColors[course.category] || categoryColors[labelKey] || categoryColors.programming;
  const categoryLabel = ct.has(`categoryLabels.${labelKey}` as never)
@@ -147,9 +168,13 @@ export const CourseCard = React.memo(function CourseCard({ course, index = 0, ti
  <>
  <div className="relative z-10 flex items-start gap-3 justify-between">
  <div
- className={`w-14 h-14 rounded-2xl overflow-hidden shrink-0 flex items-center justify-center shadow-sm bg-white dark:bg-surface ${colors.accent}`}
+ className={`w-16 h-16 rounded-2xl overflow-hidden shrink-0 flex items-center justify-center shadow-sm bg-white dark:bg-surface ${colors.accent}`}
  >
+ {PlayfulIcon ? (
+ <PlayfulIcon className="w-12 h-12" />
+ ) : (
  <Icon className="w-7 h-7" />
+ )}
  </div>
  <div className="flex gap-1.5 flex-wrap justify-end">
  <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${colors.badge}`}>
@@ -242,7 +267,7 @@ export const CourseCard = React.memo(function CourseCard({ course, index = 0, ti
  )}
  <span className={`text-sm font-semibold ${colors.accent} group-hover:underline flex items-center gap-1 transition-all group-hover:gap-2`}>
  {ct("learnMore")}
- <ArrowRight className="w-4 h-4" />
+ <KidArrowRightIcon className="w-4 h-4" />
  </span>
  </div>
  </div>

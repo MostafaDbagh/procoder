@@ -20,7 +20,6 @@ import {
  Users,
  BarChart3,
  CheckCircle2,
- ArrowRight,
  Loader2,
  Code2,
  Bot,
@@ -34,6 +33,7 @@ import {
  HelpCircle,
 } from "lucide-react";
 import { ScratchCatIcon } from "@/components/icons/ScratchCatIcon";
+import { KidArrowRightIcon } from "@/components/icons/KidIcons";
 
 const categoryBadge: Record<string, string> = {
  programming:
@@ -484,7 +484,7 @@ export default function CourseDetailContent() {
  className="inline-flex items-center gap-2 px-10 py-4 rounded-2xl bg-primary text-white font-semibold text-lg shadow-lg shadow-primary/10 hover:shadow-xl hover:shadow-primary/15 hover:scale-[1.02] transition-all duration-300"
  >
  {t("enrollNow")}
- <ArrowRight className="w-5 h-5" />
+ <KidArrowRightIcon className="w-5 h-5" />
  </button>
  </div>
  </AnimatedSection>

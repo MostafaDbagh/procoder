@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { KidArrowRightIcon } from "@/components/icons/KidIcons";
 
 function TargetArrowIcon({ className = "" }: { className?: string }) {
  return (
@@ -98,7 +98,7 @@ export function Hero() {
  className="inline-flex items-center gap-2 px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-2xl bg-primary text-white font-semibold text-sm sm:text-base shadow-lg shadow-primary/10 hover:shadow-xl hover:shadow-primary/15 transition-all duration-300 hover:scale-[1.02]"
  >
  {t("cta")}
- <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+ <KidArrowRightIcon className="w-4 h-4 sm:w-5 sm:h-5" />
  </LocalizedLink>
  <LocalizedLink
  href="/recommend"

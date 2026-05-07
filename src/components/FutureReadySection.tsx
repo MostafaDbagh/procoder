@@ -2,24 +2,29 @@
 
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
-import { Brain, Bot, Hammer, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { LocalizedLink } from "@/components/LocalizedLink";
+import {
+  ThinkBrainIcon,
+  AIBotIcon,
+  BuildToolsIcon,
+} from "@/components/icons/PillarIcons";
 
 const pillars = [
   {
-    icon: Brain,
+    icon: ThinkBrainIcon,
     key: "pillar1",
-    gradient: "from-violet-500 to-primary",
+    bubble: "bg-primary/10 border-primary/20",
   },
   {
-    icon: Bot,
+    icon: AIBotIcon,
     key: "pillar2",
-    gradient: "from-cyan-500 to-blue-500",
+    bubble: "bg-cyan-500/10 border-cyan-500/20",
   },
   {
-    icon: Hammer,
+    icon: BuildToolsIcon,
     key: "pillar3",
-    gradient: "from-amber-500 to-orange-500",
+    bubble: "bg-amber-500/10 border-amber-500/20",
   },
 ];
 
@@ -83,9 +88,9 @@ export function FutureReadySection() {
               className="bg-surface rounded-2xl border border-border p-8 text-center"
             >
               <div
-                className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${pillar.gradient} flex items-center justify-center mx-auto mb-5`}
+                className={`w-20 h-20 rounded-3xl border-2 ${pillar.bubble} flex items-center justify-center mx-auto mb-5`}
               >
-                <pillar.icon className="w-7 h-7 text-white" />
+                <pillar.icon className="w-12 h-12" />
               </div>
               <h3 className="text-lg font-bold mb-3">
                 {t(`${pillar.key}Title`)}

@@ -12,11 +12,11 @@ import {
  Grid3x3,
  Pencil,
  Sparkles,
- Send,
  CheckCircle2,
  ChevronDown,
  Lightbulb,
 } from "lucide-react";
+import { KidSendIcon } from "@/components/icons/KidIcons";
 
 const stepIcons = [Grid3x3, Pencil, Sparkles, Trophy];
 
@@ -332,7 +332,7 @@ export default function ChallengeContent({ cmsChallenge }: Props) {
  t("sending")
  ) : (
  <>
- <Send className="w-4 h-4" />
+ <KidSendIcon className="w-4 h-4" />
  {t("submit")}
  </>
  )}

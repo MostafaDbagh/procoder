@@ -13,9 +13,9 @@ import {
  Gamepad2,
  Smartphone,
  Layout,
- ArrowRight,
  Workflow,
 } from "lucide-react";
+import { KidArrowRightIcon } from "@/components/icons/KidIcons";
 import { ScratchCatIcon } from "@/components/icons/ScratchCatIcon";
 import type { LucideIcon } from "lucide-react";
 import type { APICategory } from "@/lib/server-api";
@@ -372,7 +372,7 @@ function CategoryCardApi({
  className="inline-flex items-center gap-1.5 text-sm font-semibold transition-all duration-300 group-hover:gap-2.5"
  style={{ color: style.color }}
  >
- {t("explore")} <ArrowRight className="w-4 h-4" />
+ {t("explore")} <KidArrowRightIcon className="w-4 h-4" />
  </span>
  </div>
  </LocalizedLink>
@@ -425,7 +425,7 @@ function CategoryCardStatic({
  className="inline-flex items-center gap-1.5 text-sm font-semibold transition-all duration-300 group-hover:gap-2.5"
  style={{ color: cat.color }}
  >
- {t("explore")} <ArrowRight className="w-4 h-4" />
+ {t("explore")} <KidArrowRightIcon className="w-4 h-4" />
  </span>
  </div>
  </LocalizedLink>

@@ -11,10 +11,17 @@ import {
  Phone,
  MapPin,
  Clock,
- Send,
  CheckCircle2,
  MessageCircle,
 } from "lucide-react";
+import { KidSendIcon } from "@/components/icons/KidIcons";
+import { ChatHeartIcon } from "@/components/icons/PillarIcons";
+import {
+ MailEnvelopeIcon,
+ PhoneCallIcon,
+ MapPinIcon as KidMapPinIcon,
+ ClockTimeIcon,
+} from "@/components/icons/KidIcons";
 
 export default function ContactContent() {
  const t = useTranslations("contact");
@@ -72,19 +79,19 @@ export default function ContactContent() {
  </svg>
  );
  const contactInfo = [
- { icon: Mail, label: t("emailInfo"), color: "from-blue-400 to-cyan-400", href: `mailto:${t("emailInfo")}` },
- { icon: Phone, label: t("phoneInfo"), color: "from-emerald-400 to-teal-400", href: `tel:${t("phoneInfo").replace(/\s/g, "")}` },
- { icon: WhatsAppIcon, label: t("whatsappInfo"), color: "from-[#25D366] to-[#128C7E]", href: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hi StemTechLab! I'd like to learn more about your kids' classes.")}`, external: true },
- { icon: MapPin, label: t("locationInfo"), color: "from-purple to-violet-400" },
- { icon: Clock, label: t("hoursInfo"), color: "from-orange to-amber-400" },
+ { icon: MailEnvelopeIcon, label: t("emailInfo"), bubble: "bg-cyan-400/10 border-cyan-400/30", href: `mailto:${t("emailInfo")}`, isPlayful: true },
+ { icon: PhoneCallIcon, label: t("phoneInfo"), bubble: "bg-emerald-400/10 border-emerald-400/30", href: `tel:${t("phoneInfo").replace(/\s/g, "")}`, isPlayful: true },
+ { icon: WhatsAppIcon, label: t("whatsappInfo"), bubble: "bg-[#25D366]/15 border-[#25D366]/30", href: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hi StemTechLab! I'd like to learn more about your kids' classes.")}`, external: true, isPlayful: false },
+ { icon: KidMapPinIcon, label: t("locationInfo"), bubble: "bg-violet-400/10 border-violet-400/30", isPlayful: true },
+ { icon: ClockTimeIcon, label: t("hoursInfo"), bubble: "bg-amber-400/10 border-amber-400/30", isPlayful: true },
  ];
 
  return (
  <div className="py-12 sm:py-20">
  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
  <AnimatedSection className="text-center mb-14">
- <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-5">
- <MessageCircle className="w-8 h-8 text-white" />
+ <div className="flex justify-center mb-5">
+ <ChatHeartIcon className="w-20 h-20" />
  </div>
  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
  {t("title")}
@@ -196,7 +203,7 @@ export default function ContactContent() {
  disabled={sending || cooldown}
  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl bg-primary text-white font-semibold shadow-lg shadow-primary/10 hover:shadow-xl hover:scale-[1.02] transition-all disabled:opacity-70 disabled:cursor-not-allowed"
  >
- <Send className="w-4 h-4" />
+ <KidSendIcon className="w-4 h-4" />
  {sending ? t("sending") : t("send")}
  </button>
  </form>
@@ -212,9 +219,13 @@ export default function ContactContent() {
  const inner = (
  <div className={`flex items-center gap-4 p-5 bg-surface rounded-2xl border border-border${info.href ? " hover:border-primary/40 hover:shadow-md transition-all cursor-pointer" : ""}`}>
  <div
- className={`w-12 h-12 rounded-xl bg-gradient-to-br ${info.color} flex items-center justify-center shrink-0`}
+ className={`w-14 h-14 rounded-2xl border-2 ${info.bubble} flex items-center justify-center shrink-0`}
  >
- <info.icon className="w-6 h-6 text-white" />
+ {info.isPlayful ? (
+ <info.icon className="w-9 h-9" />
+ ) : (
+ <info.icon className="w-6 h-6 text-[#25D366]" />
+ )}
  </div>
  <span className="text-sm font-medium" dir="ltr">{info.label}</span>
  </div>

@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { AnimatedSection } from "./AnimatedSection";
-import { BookOpen, CheckCircle2, Send, Rocket, Star, Zap, Atom } from "lucide-react";
+import { BookOpen, CheckCircle2, Rocket, Star, Zap, Atom } from "lucide-react";
+import { KidSendIcon } from "./icons/KidIcons";
 import { sendContactMessage } from "@/lib/api";
 import { BrainPattern } from "./BrainPatterns";
+import { Mascot } from "./Mascot";
 
 export function CTABanner() {
  const n = useTranslations("newsletter");
@@ -56,6 +58,11 @@ export function CTABanner() {
        <Atom className="w-5 h-5 text-mint" />
       </div>
 
+      {/* Peeking Bobo — head + chest poke up from the bottom edge */}
+      <div className="hidden md:block absolute right-6 lg:right-14 bottom-0 translate-y-[30%] z-20 pointer-events-none rotate-[-8deg]">
+       <Mascot pose="happy" size={118} />
+      </div>
+
       <div className="relative">
        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
         <BookOpen className="w-3.5 h-3.5" />
@@ -97,7 +104,7 @@ export function CTABanner() {
            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
           ) : (
            <>
-            <Send className="w-4 h-4" />
+            <KidSendIcon className="w-4 h-4" />
             {n("subscribe")}
            </>
           )}

@@ -4,8 +4,14 @@ import { useTranslations } from "next-intl";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { AnimatedSection } from "./AnimatedSection";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { KidArrowRightIcon } from "@/components/icons/KidIcons";
 import { BrainPattern } from "./BrainPatterns";
+import {
+ ChatHeartIcon,
+ LiveClassIcon,
+ GuideChatIcon,
+ BlossomStarIcon,
+} from "./icons/PillarIcons";
 
 function GrowthIcon() {
  return (
@@ -40,10 +46,10 @@ export function HowItWorks() {
  const t = useTranslations("howItWorks");
 
  const steps = [
- { title: t("step1Title"), desc: t("step1Desc"), bg: "bg-pink-100 dark:bg-pink-950/30", border: "border-pink-200 dark:border-pink-900/40", line: "border-pink-200 dark:border-pink-900/40" },
- { title: t("step2Title"), desc: t("step2Desc"), bg: "bg-amber-50 dark:bg-amber-950/25", border: "border-amber-200 dark:border-amber-900/40", line: "border-amber-200 dark:border-amber-900/40" },
- { title: t("step3Title"), desc: t("step3Desc"), bg: "bg-blue-50 dark:bg-blue-950/25", border: "border-blue-200 dark:border-blue-900/40", line: "border-blue-200 dark:border-blue-900/40" },
- { title: t("step4Title"), desc: t("step4Desc"), bg: "bg-purple-100 dark:bg-purple-950/30", border: "border-purple-200 dark:border-purple-900/40", line: "border-purple-200 dark:border-purple-900/40" },
+ { title: t("step1Title"), desc: t("step1Desc"), icon: ChatHeartIcon, bg: "bg-pink-100 dark:bg-pink-950/30", border: "border-pink-200 dark:border-pink-900/40", line: "border-pink-200 dark:border-pink-900/40" },
+ { title: t("step2Title"), desc: t("step2Desc"), icon: LiveClassIcon, bg: "bg-amber-50 dark:bg-amber-950/25", border: "border-amber-200 dark:border-amber-900/40", line: "border-amber-200 dark:border-amber-900/40" },
+ { title: t("step3Title"), desc: t("step3Desc"), icon: GuideChatIcon, bg: "bg-blue-50 dark:bg-blue-950/25", border: "border-blue-200 dark:border-blue-900/40", line: "border-blue-200 dark:border-blue-900/40" },
+ { title: t("step4Title"), desc: t("step4Desc"), icon: BlossomStarIcon, bg: "bg-purple-100 dark:bg-purple-950/30", border: "border-purple-200 dark:border-purple-900/40", line: "border-purple-200 dark:border-purple-900/40" },
  ];
 
  return (
@@ -75,9 +81,12 @@ export function HowItWorks() {
  >
  {/* Step card */}
  <div className={`${step.bg} ${step.border} border rounded-2xl px-5 sm:px-7 py-4 sm:py-5 flex items-center justify-between gap-3`}>
- <h3 className="text-base sm:text-xl font-extrabold text-foreground">
+ <div className="flex items-center gap-3 min-w-0">
+ <step.icon className="w-9 h-9 sm:w-10 sm:h-10 shrink-0" />
+ <h3 className="text-base sm:text-xl font-extrabold text-foreground truncate">
  {step.title}
  </h3>
+ </div>
  <span className="text-muted text-xs sm:text-sm font-medium whitespace-nowrap">
  Step {i + 1}
  </span>
@@ -97,10 +106,10 @@ export function HowItWorks() {
  <AnimatedSection delay={0.5} className="text-center mt-10">
  <LocalizedLink
  href="/free-trial"
- className="inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl bg-primary text-white font-semibold text-base shadow-md shadow-primary/10 hover:shadow-lg hover:scale-[1.02] transition-all"
+ className="inline-flex items-center gap-2 px-7 sm:px-8 py-3 sm:py-3.5 rounded-full border-[3px] border-black dark:border-foreground bg-gradient-to-br from-primary via-purple to-pink text-white font-extrabold text-sm sm:text-base uppercase tracking-wider shadow-[4px_4px_0_0_#000] dark:shadow-[4px_4px_0_0_var(--fg)] hover:translate-x-[1px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#000] dark:hover:shadow-[2px_2px_0_0_var(--fg)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-[0_0_0_0_#000] dark:active:shadow-[0_0_0_0_var(--fg)] transition-all duration-150"
  >
  {t("step2Title")}
- <ArrowRight className="w-5 h-5" />
+ <KidArrowRightIcon className="w-5 h-5" />
  </LocalizedLink>
  </AnimatedSection>
  </div>

@@ -15,6 +15,8 @@ import {
   MessageCircle,
   Gift,
 } from "lucide-react";
+import { ChatHeartIcon } from "@/components/icons/PillarIcons";
+import { VideoCameraIcon, GiftBoxIcon, SmileIcon } from "@/components/icons/KidIcons";
 
 const AGES = Array.from({ length: 13 }, (_, i) => i + 6);
 
@@ -49,9 +51,9 @@ export default function FreeTrialContent() {
   };
 
   const steps = [
-    { icon: MessageCircle, title: t("step1Title"), desc: t("step1Desc"), color: "from-primary to-purple" },
-    { icon: Video, title: t("step2Title"), desc: t("step2Desc"), color: "from-emerald-400 to-teal-500" },
-    { icon: Gift, title: t("step3Title"), desc: t("step3Desc"), color: "from-orange-400 to-amber-500" },
+    { icon: ChatHeartIcon, title: t("step1Title"), desc: t("step1Desc"), bubble: "bg-primary/10 border-primary/20" },
+    { icon: VideoCameraIcon, title: t("step2Title"), desc: t("step2Desc"), bubble: "bg-emerald-400/10 border-emerald-400/30" },
+    { icon: GiftBoxIcon, title: t("step3Title"), desc: t("step3Desc"), bubble: "bg-amber-400/10 border-amber-400/30" },
   ];
 
   const includes = [
@@ -104,8 +106,8 @@ export default function FreeTrialContent() {
             {steps.map((s, i) => (
               <AnimatedCard key={i} delay={0.07 * i}>
                 <div className="bg-surface border border-border rounded-2xl p-7 text-center">
-                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${s.color} flex items-center justify-center mx-auto mb-4`}>
-                    <s.icon className="w-7 h-7 text-white" />
+                  <div className={`w-20 h-20 rounded-3xl border-2 ${s.bubble} flex items-center justify-center mx-auto mb-4`}>
+                    <s.icon className="w-12 h-12" />
                   </div>
                   <div className="w-7 h-7 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center mx-auto mb-3">
                     {i + 1}
@@ -224,9 +226,16 @@ export default function FreeTrialContent() {
                   <button
                     type="submit"
                     disabled={sending}
-                    className="w-full py-4 rounded-2xl bg-primary text-white font-bold text-lg shadow-lg shadow-primary/20 hover:shadow-xl hover:scale-[1.01] transition-all disabled:opacity-70 disabled:cursor-not-allowed"
+                    className="w-full py-4 rounded-2xl bg-primary text-white font-bold text-lg shadow-lg shadow-primary/20 hover:shadow-xl hover:scale-[1.01] transition-all disabled:opacity-70 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2.5"
                   >
-                    {sending ? t("submitting") : t("submit")}
+                    {sending ? (
+                      t("submitting")
+                    ) : (
+                      <>
+                        <SmileIcon className="w-7 h-7" />
+                        {t("submit").replace(/\s*[→←]\s*$/, "")}
+                      </>
+                    )}
                   </button>
                 </form>
               )}

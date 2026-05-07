@@ -4,7 +4,21 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { AnimatedSection } from "./AnimatedSection";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, HelpCircle } from "lucide-react";
+import { HelpCircle } from "lucide-react";
+
+function KidArrow({ className = "" }: { className?: string }) {
+ return (
+  <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden>
+   <path
+    d="M6 9 L12 16 L18 9"
+    stroke="currentColor"
+    strokeWidth="3.2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+   />
+  </svg>
+ );
+}
 
 const tabs = ["classExperience", "customerSupport", "teacherQueries"] as const;
 
@@ -111,7 +125,7 @@ export function FAQ() {
  : "bg-border text-muted"
  }`}
  >
- <ChevronDown className="w-4 h-4" />
+ <KidArrow className="w-5 h-5" />
  </motion.div>
  </button>
  <AnimatePresence>
