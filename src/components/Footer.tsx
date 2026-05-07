@@ -12,7 +12,7 @@ export function Footer() {
  const cats = useTranslations("categories");
 
  return (
- <footer className="bg-surface border-t border-border relative">
+ <footer className="relative backdrop-blur-2xl bg-surface/60 dark:bg-surface/45 border-t border-white/40 dark:border-white/10 shadow-[0_-2px_10px_rgba(0,0,0,0.04)] dark:shadow-[0_-2px_10px_rgba(0,0,0,0.3)]">
  <div className="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
  {/* Brand */}

@@ -63,7 +63,7 @@ export function Navbar() {
  : `/en${pathname === "/" ? "" : pathname}` || "/en";
 
  return (
- <header className="sticky top-0 z-50 backdrop-blur-xl bg-surface/85 border-b border-border">
+ <header className="sticky top-0 z-50 backdrop-blur-2xl bg-surface/60 dark:bg-surface/45 border-b border-white/40 dark:border-white/10 shadow-sm dark:shadow-black/30">
  <nav className="max-w-[96rem] mx-auto px-4 sm:px-6 lg:px-8">
  <div className="flex items-center justify-between h-16">
  {/* Logo */}
