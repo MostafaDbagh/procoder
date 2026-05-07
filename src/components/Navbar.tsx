@@ -102,7 +102,7 @@ export function Navbar() {
  <div className="flex items-center gap-2">
  <LocalizedLink
  href="/free-trial"
- className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-primary via-purple to-pink text-white text-sm font-bold shadow-[0_4px_14px_rgba(139,123,200,0.40)] hover:shadow-[0_6px_20px_rgba(139,123,200,0.55)] hover:scale-[1.03] hover:brightness-110 transition-all duration-200 md:me-5"
+ className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-primary to-purple text-white text-sm font-bold shadow-[0_4px_14px_rgba(139,123,200,0.40)] hover:shadow-[0_6px_20px_rgba(139,123,200,0.55)] hover:scale-[1.03] hover:brightness-110 transition-all duration-200 md:me-5"
  >
  {t("bookDemo")}
  </LocalizedLink>
@@ -198,7 +198,7 @@ className="hidden md:inline-flex p-2 rounded-full text-muted hover:text-foregrou
 </div>
  <LocalizedLink
  href="/free-trial"
- className="block mx-4 mt-2 px-4 py-3 rounded-full bg-gradient-to-r from-primary via-purple to-pink text-white text-sm font-bold text-center shadow-[0_4px_14px_rgba(139,123,200,0.40)]"
+ className="block mx-4 mt-2 px-4 py-3 rounded-full bg-gradient-to-r from-primary to-purple text-white text-sm font-bold text-center shadow-[0_4px_14px_rgba(139,123,200,0.40)]"
  >
  {t("bookDemo")}
  </LocalizedLink>

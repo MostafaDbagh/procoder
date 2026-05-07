@@ -106,7 +106,7 @@ export function HowItWorks() {
  <AnimatedSection delay={0.5} className="text-center mt-10">
  <LocalizedLink
  href="/free-trial"
- className="inline-flex items-center gap-2 px-7 sm:px-8 py-3 sm:py-3.5 rounded-full border-[3px] border-black dark:border-foreground bg-gradient-to-br from-primary via-purple to-pink text-white font-extrabold text-sm sm:text-base uppercase tracking-wider shadow-[4px_4px_0_0_#000] dark:shadow-[4px_4px_0_0_var(--fg)] hover:translate-x-[1px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#000] dark:hover:shadow-[2px_2px_0_0_var(--fg)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-[0_0_0_0_#000] dark:active:shadow-[0_0_0_0_var(--fg)] transition-all duration-150"
+ className="inline-flex items-center gap-2 px-7 sm:px-8 py-3 sm:py-3.5 rounded-full border-[3px] border-black dark:border-foreground bg-primary text-white font-extrabold text-sm sm:text-base uppercase tracking-wider shadow-[4px_4px_0_0_#000] dark:shadow-[4px_4px_0_0_var(--fg)] hover:translate-x-[1px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#000] dark:hover:shadow-[2px_2px_0_0_var(--fg)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-[0_0_0_0_#000] dark:active:shadow-[0_0_0_0_var(--fg)] transition-all duration-150"
  >
  {t("step2Title")}
  <KidArrowRightIcon className="w-5 h-5" />
