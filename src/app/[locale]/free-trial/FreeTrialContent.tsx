@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { AnimatedSection, AnimatedCard } from "@/components/AnimatedSection";
 import { motion } from "framer-motion";
@@ -26,6 +26,22 @@ export default function FreeTrialContent() {
   const [form, setForm] = useState({ name: "", phone: "", age: "", interest: "", message: "" });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+
+  useEffect(() => {
+    if (!sent) return;
+    let cancelled = false;
+    (async () => {
+      const { default: confetti } = await import("canvas-confetti");
+      if (cancelled) return;
+      const colors = ["#A78BFA", "#FBBF24", "#10B981", "#F472B6", "#67E8F9"];
+      // Two angled bursts for a celebratory left+right pop.
+      confetti({ particleCount: 90, spread: 70, startVelocity: 45, origin: { x: 0.2, y: 0.6 }, colors });
+      confetti({ particleCount: 90, spread: 70, startVelocity: 45, origin: { x: 0.8, y: 0.6 }, colors });
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [sent]);
   const [hp, setHp] = useState("");
   const [formLoadedAt] = useState(() => Date.now());
 
