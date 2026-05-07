@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { motion } from "framer-motion";
-import { Sparkles, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 function TargetArrowIcon({ className = "" }: { className?: string }) {
  return (
@@ -73,11 +73,6 @@ export function Hero() {
  animate={{ opacity: 1, x: 0 }}
  transition={{ duration: 0.7, ease: "easeOut" }}
  >
- <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-primary/10 text-primary text-xs sm:text-sm font-medium mb-6">
- <Sparkles className="w-3 h-3 sm:w-4 sm:h-4" />
- <span>Ages 6–18</span>
- </div>
-
  <h1 className="text-[28px] sm:text-5xl lg:text-[52px] font-bold leading-tight mb-6">
  {t("title").split(" ").map((word, i) => (
  <span

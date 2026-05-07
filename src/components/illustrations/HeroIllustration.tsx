@@ -231,52 +231,6 @@ export function HeroIllustration() {
  <rect x="76" y="318" width="50" height="3" rx="1.5" fill="#555E78" opacity="0.35" />
  </g>
 
- {/* ═══════════ FLOATING TECH WORDS ═══════════ */}
-
- {/* Python */}
- <g>
- <rect x="55" y="120" width="76" height="30" rx="15" fill="#c4b5fd" opacity="0.15" />
- <rect x="55" y="120" width="76" height="30" rx="15" stroke="#c4b5fd" strokeWidth="1" opacity="0.3" fill="none" />
- <text x="93" y="140" textAnchor="middle" fontSize="13" fontWeight="700" fontFamily="system-ui, sans-serif" fill="#c4b5fd" opacity="0.85">Python</text>
- </g>
-
- {/* AI */}
- <g>
- <rect x="450" y="80" width="52" height="30" rx="15" fill="#8B7BC8" opacity="0.15" />
- <rect x="450" y="80" width="52" height="30" rx="15" stroke="#8B7BC8" strokeWidth="1" opacity="0.3" fill="none" />
- <text x="476" y="100" textAnchor="middle" fontSize="15" fontWeight="800" fontFamily="system-ui, sans-serif" fill="#8B7BC8" opacity="0.9">AI</text>
- </g>
-
- {/* Arabic */}
- <g>
- <rect x="25" y="195" width="68" height="28" rx="14" fill="#D4A46A" opacity="0.12" />
- <rect x="25" y="195" width="68" height="28" rx="14" stroke="#D4A46A" strokeWidth="1" opacity="0.3" fill="none" />
- <text x="59" y="214" textAnchor="middle" fontSize="13" fontWeight="700" fontFamily="system-ui, sans-serif" fill="#D4A46A" opacity="0.85">Arabic</text>
- </g>
-
- {/* JS */}
- <g>
- <rect x="475" y="200" width="48" height="28" rx="14" fill="#D4A46A" opacity="0.12" />
- <rect x="475" y="200" width="48" height="28" rx="14" stroke="#D4A46A" strokeWidth="1" opacity="0.3" fill="none" />
- <text x="499" y="219" textAnchor="middle" fontSize="14" fontWeight="800" fontFamily="system-ui, sans-serif" fill="#D4A46A" opacity="0.9">
- JS
- </text>
- </g>
-
- {/* Robotics */}
- <g>
- <rect x="474" y="280" width="82" height="28" rx="14" fill="#10B981" opacity="0.12" />
- <rect x="474" y="280" width="82" height="28" rx="14" stroke="#10B981" strokeWidth="1" opacity="0.3" fill="none" />
- <text x="515" y="299" textAnchor="middle" fontSize="12" fontWeight="700" fontFamily="system-ui, sans-serif" fill="#10B981" opacity="0.85">Robotics</text>
- </g>
-
- {/* Web Development */}
- <g>
- <rect x="215" y="420" width="130" height="28" rx="14" fill="#5CC4A0" opacity="0.12" />
- <rect x="215" y="420" width="130" height="28" rx="14" stroke="#5CC4A0" strokeWidth="1" opacity="0.3" fill="none" />
- <text x="280" y="439" textAnchor="middle" fontSize="11" fontWeight="700" fontFamily="system-ui, sans-serif" fill="#5CC4A0" opacity="0.85">Web Development</text>
- </g>
-
  {/* ═══════════ FLOATING DECORATIONS ═══════════ */}
 
  {/* Lightbulb */}

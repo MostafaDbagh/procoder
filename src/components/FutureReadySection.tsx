@@ -105,8 +105,10 @@ export function FutureReadySection() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="text-center"
         >
-          <p className="text-2xl sm:text-3xl font-bold mb-8 bg-gradient-to-r from-primary to-cyan-500 bg-clip-text text-transparent">
-            &ldquo;{t("quote")}&rdquo;
+          <p className="mb-8">
+            <span className="inline-block text-2xl sm:text-3xl font-bold px-5 py-2.5 rounded-2xl bg-primary/15 text-primary">
+              &ldquo;{t("quote")}&rdquo;
+            </span>
           </p>
           <LocalizedLink
             href="/free-trial"
