@@ -23,7 +23,7 @@ function KidArrow({ className = "" }: { className?: string }) {
 const tabs = ["classExperience", "customerSupport", "teacherQueries"] as const;
 
 const faqsByTab: Record<string, string[]> = {
- classExperience: ["ce1", "ce2", "ce3", "ce4", "ce5", "ce6", "ce7", "ce8"],
+ classExperience: ["ce1", "ce2", "ce3", "ce4", "ce5", "ce6", "ce7", "ce8", "ce9", "ce10", "ce11", "ce12"],
  customerSupport: ["cs1", "cs2", "cs3", "cs4", "cs5"],
  teacherQueries: ["tq1", "tq2", "tq3", "tq4"],
 };

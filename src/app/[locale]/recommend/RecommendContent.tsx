@@ -29,6 +29,7 @@ import {
  Calendar,
 } from "lucide-react";
 import { Mascot } from "@/components/Mascot";
+import { HowOurAIWorks } from "@/components/HowOurAIWorks";
 
 const interestOptions: { key: string; category: Category | "programming" }[] = [
  { key: "programming", category: "programming" },
@@ -483,6 +484,8 @@ export default function RecommendContent({ initialCourses }: Props) {
       </p>
      </div>
     </AnimatedSection>
+
+    <HowOurAIWorks />
 
     {/* Tab switcher */}
     <AnimatedSection delay={0.1} className="mb-8">
