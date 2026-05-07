@@ -33,23 +33,25 @@ export function HowOurAIWorks() {
         <p className="text-muted text-base max-w-2xl mx-auto">{t("howAiSubtitle")}</p>
       </header>
 
-      <ol className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <ol className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto">
         {steps.map((s, i) => (
           <motion.li
             key={s.key}
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: i * 0.08 }}
-            className="bg-surface rounded-2xl border border-border p-6 text-center"
+            transition={{ duration: 0.4, delay: i * 0.06 }}
+            className="bg-surface rounded-2xl border border-border p-5 sm:p-6 flex items-start gap-4 sm:gap-5"
           >
-            <div className={`w-16 h-16 rounded-2xl border-2 ${s.bubble} flex items-center justify-center mx-auto mb-4`}>
-              <s.icon className="w-10 h-10" />
+            <div className={`shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl border-2 ${s.bubble} flex items-center justify-center`}>
+              <s.icon className="w-9 h-9 sm:w-10 sm:h-10" />
             </div>
-            <h3 className="text-base font-bold mb-2">{t(`howAi${s.key}Title`)}</h3>
-            <p className="text-muted text-sm leading-relaxed">
-              {t(`howAi${s.key}Desc`)}
-            </p>
+            <div className="min-w-0 flex-1">
+              <h3 className="text-base sm:text-lg font-bold mb-1.5">{t(`howAi${s.key}Title`)}</h3>
+              <p className="text-muted text-sm leading-relaxed">
+                {t(`howAi${s.key}Desc`)}
+              </p>
+            </div>
           </motion.li>
         ))}
       </ol>

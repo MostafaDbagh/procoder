@@ -98,7 +98,7 @@ export default async function RecommendPage({
  featureList: [
  "Natural-language input in English or Arabic — no login required",
  "Server-side OpenAI + DeepSeek API integrations extract age, interests, skill level, and parent goals",
- "Deterministic scoring engine ranks 12 live courses (Programming, Robotics, Algorithms, Arabic) by age fit, level, and interest match",
+ "Deterministic scoring engine ranks live courses (Programming, Robotics, Algorithms, Arabic) by age fit, level, and interest match",
  "Returns top 2–3 best-fit courses with plain-English explanation",
  "Generates a personalized 3-phase learning path",
  "Asks follow-up questions when the child profile is incomplete",
