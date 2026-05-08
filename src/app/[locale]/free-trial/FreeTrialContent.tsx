@@ -175,7 +175,7 @@ export default function FreeTrialContent() {
                         value={form.name}
                         onChange={(e) => setForm({ ...form, name: e.target.value })}
                         placeholder={t("namePlaceholder")}
-                        className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                        className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted outline-none"
                       />
                     </div>
                     <div>
@@ -188,7 +188,7 @@ export default function FreeTrialContent() {
                         value={form.phone}
                         onChange={(e) => setForm({ ...form, phone: e.target.value })}
                         placeholder={t("phonePlaceholder")}
-                        className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                        className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted outline-none"
                       />
                     </div>
                   </div>
@@ -202,7 +202,7 @@ export default function FreeTrialContent() {
                         required
                         value={form.age}
                         onChange={(e) => setForm({ ...form, age: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                        className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground outline-none"
                       >
                         <option value="">{t("selectAge")}</option>
                         {AGES.map((a) => (
@@ -218,7 +218,7 @@ export default function FreeTrialContent() {
                         required
                         value={form.interest}
                         onChange={(e) => setForm({ ...form, interest: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                        className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground outline-none"
                       >
                         <option value="">{t("selectInterest")}</option>
                         {interests.map((opt) => (
@@ -235,7 +235,7 @@ export default function FreeTrialContent() {
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
                       placeholder={t("messagePlaceholder")}
-                      className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none resize-none"
+                      className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted outline-none resize-y min-h-[120px]"
                     />
                   </div>
 

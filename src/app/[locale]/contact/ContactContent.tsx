@@ -136,7 +136,7 @@ export default function ContactContent() {
  setForm({ ...form, name: e.target.value })
  }
  placeholder={t("namePlaceholder")}
- className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+ className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted outline-none"
  />
  </div>
  <div>
@@ -150,7 +150,7 @@ export default function ContactContent() {
  setForm({ ...form, email: e.target.value })
  }
  placeholder={t("emailPlaceholder")}
- className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+ className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted outline-none"
  />
  </div>
  </div>
@@ -166,7 +166,7 @@ export default function ContactContent() {
  setForm({ ...form, phone: e.target.value })
  }
  placeholder={t("phonePlaceholder")}
- className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+ className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted outline-none"
  />
  </div>
  <div>
@@ -180,7 +180,7 @@ export default function ContactContent() {
  setForm({ ...form, subject: e.target.value })
  }
  placeholder={t("subjectPlaceholder")}
- className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+ className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted outline-none"
  />
  </div>
  <div>
@@ -195,7 +195,7 @@ export default function ContactContent() {
  setForm({ ...form, message: e.target.value })
  }
  placeholder={t("messagePlaceholder")}
- className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none resize-none"
+ className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted outline-none resize-none"
  />
  </div>
  <button

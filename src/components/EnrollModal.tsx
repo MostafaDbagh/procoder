@@ -103,6 +103,22 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  void refreshQuote();
  }, [open, step, refreshQuote]);
 
+ // Celebrate when enrollment completes — two angled bursts in brand colors.
+ useEffect(() => {
+ if (!success) return;
+ let cancelled = false;
+ (async () => {
+ const { default: confetti } = await import("canvas-confetti");
+ if (cancelled) return;
+ const colors = ["#A78BFA", "#FBBF24", "#10B981", "#F472B6", "#67E8F9"];
+ confetti({ particleCount: 110, spread: 75, startVelocity: 48, origin: { x: 0.2, y: 0.5 }, colors });
+ confetti({ particleCount: 110, spread: 75, startVelocity: 48, origin: { x: 0.8, y: 0.5 }, colors });
+ })();
+ return () => {
+ cancelled = true;
+ };
+ }, [success]);
+
  const set = (key: string, value: string | boolean | string[]) =>
  setForm((p) => ({ ...p, [key]: value }));
 
@@ -326,17 +342,6 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  </div>
  <h3 className="text-xl font-bold mb-2">{t("successTitle")}</h3>
  <p className="text-muted mb-6 max-w-sm mx-auto">{t("successDesc")}</p>
- {successAmount ? (
- <p className="text-sm text-foreground font-medium mb-6">
- {t("successAmountDue", {
- amount: formatCoursePrice(
- successAmount.amountDue,
- successAmount.currency,
- locale
- ),
- })}
- </p>
- ) : null}
  <button
  onClick={handleClose}
  className="px-8 py-3 rounded-xl bg-primary text-white font-semibold hover:scale-[1.02] transition-transform"

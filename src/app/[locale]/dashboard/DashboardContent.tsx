@@ -532,12 +532,20 @@ export default function DashboardContent({ initialCourses }: Props) {
                 </motion.div>
               ))}
             </div>
-          ) : (
+          ) : totalLessonsDone > 0 ? (
             <div className="bg-emerald-50 dark:bg-emerald-950/20 rounded-2xl border border-emerald-100 dark:border-emerald-900/30 p-6 flex items-center gap-4">
               <CheckCircle2 className="w-8 h-8 text-emerald-500 shrink-0" />
               <div>
                 <p className="font-semibold text-emerald-700 dark:text-emerald-400">Perfect attendance!</p>
                 <p className="text-sm text-emerald-600/80 dark:text-emerald-500/80">No absences recorded — great job!</p>
+              </div>
+            </div>
+          ) : (
+            <div className="bg-surface rounded-2xl border border-border p-6 flex items-center gap-4">
+              <UserX className="w-8 h-8 text-muted shrink-0" />
+              <div>
+                <p className="font-semibold text-foreground">No classes yet</p>
+                <p className="text-sm text-muted">Attendance will show here once your child starts their first lesson.</p>
               </div>
             </div>
           )}
