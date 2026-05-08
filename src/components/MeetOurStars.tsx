@@ -169,15 +169,8 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  className="bg-surface rounded-2xl p-6 sm:p-7 transition-transform duration-200 hover:-translate-y-1"
  style={{
  minHeight: 440,
- borderStyle: "solid",
- borderColor: "#a78bfa",
- borderTopWidth: 0,
- borderLeftWidth: 0,
- borderRightWidth: "2px",
- borderBottomWidth: "2px",
- borderTopWidth: "1px",
- borderLeftWidth: "1px",
- boxShadow: "-3px -3px 10px rgba(0, 0, 0, 0.025)",
+ borderRight: "2px solid #a78bfa",
+ boxShadow: "#a78bfa 0 4px 0 0, rgba(0, 0, 0, 0.08) 0 4px 8px",
  }}
  >
  {/* Photo */}
