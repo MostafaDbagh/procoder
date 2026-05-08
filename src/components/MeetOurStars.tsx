@@ -166,11 +166,11 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  className="snap-start shrink-0 w-[300px] sm:w-[330px] max-w-[330px] self-start"
  >
  <article
- className="bg-surface rounded-2xl p-6 sm:p-7 transition-transform duration-200 hover:-translate-y-1"
+ className="bg-surface rounded-2xl p-6 sm:p-7 border border-border/60 transition-all duration-300 hover:-translate-y-1"
  style={{
  minHeight: 440,
- borderRight: "2px solid #a78bfa",
- boxShadow: "#a78bfa 0 4px 0 0, rgba(0, 0, 0, 0.08) 0 4px 8px",
+ borderBottom: "4px solid #a78bfa",
+ boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 10px -3px rgba(167, 139, 250, 0.18)",
  }}
  >
  {/* Photo */}
