@@ -18,14 +18,23 @@ const TEACHING_ROLES = new Set([
  "أخصائي stem", "أخصائي العربية",
 ]);
 
-/** Light, kid-friendly rotating palettes — soft pastels with a deeper accent. */
-const KID_PALETTES = [
- { bg: "#FFF5F8", header: "#FFD1DF", accent: "#E84A82", soft: "#FFE3EC", chip: "#FFFFFF" },
- { bg: "#F0F9FF", header: "#C9E8FB", accent: "#1E90D6", soft: "#DDF0FB", chip: "#FFFFFF" },
- { bg: "#FFFBEB", header: "#FFE8A8", accent: "#D89500", soft: "#FFF1C7", chip: "#FFFFFF" },
- { bg: "#F2FBEE", header: "#C9EBC0", accent: "#2A9F4A", soft: "#DDF1D5", chip: "#FFFFFF" },
- { bg: "#F7F3FF", header: "#D9C8FF", accent: "#7740E5", soft: "#E5DAFF", chip: "#FFFFFF" },
- { bg: "#FFF4EC", header: "#FFD3B8", accent: "#E66920", soft: "#FFE4D1", chip: "#FFFFFF" },
+/** Single uniform white-card palette — all team cards share the same look. */
+const KID_PALETTE = {
+ bg: "#FFFFFF",        // white card body
+ header: "#EDE9FE",    // soft lavender wavy header (kid-friendly accent only)
+ accent: "#1F2937",    // strong dark slate for name, role, body
+ soft: "#F5F3FF",      // pale purple photo glow
+ chip: "#F9FAFB",      // very light chip background
+};
+
+/** Per-card border + offset-shadow color — rotates so each card pops differently. */
+const CARD_BORDER_COLORS = [
+ "#A78BFA", // purple
+ "#F472B6", // pink
+ "#FBBF24", // amber
+ "#34D399", // emerald
+ "#60A5FA", // blue
+ "#FB923C", // orange
 ];
 
 export type MeetOurStarsProps = {
@@ -142,172 +151,134 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  {teamRows.map((member, i) => {
  const isExpanded = expandedBio === member.key;
  const bioSnippet =
- member.bio.length > 90
- ? `${member.bio.slice(0, 90)}...... `
+ member.bio.length > 120
+ ? `${member.bio.slice(0, 120)}… `
  : `${member.bio} `;
- const palette = KID_PALETTES[i % KID_PALETTES.length];
  return (
  <motion.div
  key={member.key}
  data-card
  dir="auto"
- initial={{ opacity: 0, y: 30, scale: 0.9 }}
- whileInView={{ opacity: 1, y: 0, scale: 1 }}
+ initial={{ opacity: 0, y: 20 }}
+ whileInView={{ opacity: 1, y: 0 }}
  viewport={{ once: true }}
- transition={{ delay: i * 0.08, type: "spring", stiffness: 120, damping: 14 }}
- whileHover={{ y: -10, rotate: i % 2 === 0 ? -1.5 : 1.5 }}
+ transition={{ delay: i * 0.06, duration: 0.45, ease: "easeOut" }}
  className="snap-start shrink-0 w-[300px] sm:w-[330px] max-w-[330px] self-start"
  >
- <div
- className="rounded-[2rem] overflow-hidden relative transition-all duration-300 hover:shadow-2xl cursor-pointer"
+ <article
+ className="bg-surface rounded-2xl p-6 sm:p-7 transition-transform duration-200 hover:-translate-y-1"
  style={{
- minHeight: 460,
- background: palette.bg,
- border: `3px solid ${palette.header}`,
- boxShadow: `0 8px 0 0 ${palette.header}, 0 12px 24px rgba(0,0,0,0.08)`,
+ minHeight: 440,
+ borderStyle: "solid",
+ borderColor: "#a78bfa",
+ borderTopWidth: 0,
+ borderLeftWidth: 0,
+ borderRightWidth: "2px",
+ borderBottomWidth: "2px",
+ borderTopWidth: "1px",
+ borderLeftWidth: "1px",
+ boxShadow: "-3px -3px 10px rgba(0, 0, 0, 0.025)",
  }}
  >
- {/* Wavy colored header */}
- <div className="relative" style={{ background: palette.header, paddingTop: 28, paddingBottom: 56 }}>
- {/* Wavy bottom edge */}
- <svg
- viewBox="0 0 330 30"
- preserveAspectRatio="none"
- className="absolute bottom-0 left-0 w-full"
- style={{ height: 24, display: "block" }}
- aria-hidden
- >
- <path
- d="M0,0 Q30,30 60,15 T120,15 T180,15 T240,15 T300,15 T360,15 L360,30 L0,30 Z"
- fill={palette.bg}
- />
- </svg>
- </div>
-
- {/* Photo - overlapping the wavy header */}
- <div className="flex justify-center -mt-16 relative z-10">
+ {/* Photo */}
+ <div className="flex justify-center mb-5">
  {member.photoUrl ? (
- <motion.div
- className="relative"
- whileHover={{ rotate: [0, -5, 5, -5, 0] }}
- transition={{ duration: 0.5 }}
- >
- <div
- className="absolute inset-0 rounded-full blur-xl scale-110"
- style={{ background: palette.soft, opacity: 0.6 }}
- />
+ <div className="relative">
+ <div className="absolute inset-0 rounded-full bg-primary/10 blur-xl scale-110" />
  <Image
  src={member.photoUrl}
  alt={member.name}
- width={120}
- height={120}
- className="relative z-10 h-28 w-28 rounded-full object-cover shadow-lg"
- style={{ border: `5px solid white`, boxShadow: `0 0 0 3px ${palette.header}` }}
+ width={112}
+ height={112}
+ className="relative z-10 h-28 w-28 rounded-full object-cover ring-4 ring-primary/15"
  unoptimized
  />
- </motion.div>
+ </div>
  ) : (
- <div
- className="h-28 w-28 rounded-full flex items-center justify-center text-4xl font-extrabold relative z-10"
- style={{
- background: "white",
- color: palette.accent,
- border: `5px solid white`,
- boxShadow: `0 0 0 3px ${palette.header}`,
- }}
- >
+ <div className="relative">
+ <div className="absolute inset-0 rounded-full bg-primary/10 blur-xl scale-110" />
+ <div className="relative z-10 h-28 w-28 rounded-full flex items-center justify-center text-4xl font-extrabold bg-primary/10 text-primary ring-4 ring-primary/15">
  {member.name.charAt(0).toUpperCase()}
+ </div>
  </div>
  )}
  </div>
 
- <div className="px-6 pt-4 pb-3 text-center">
- <h3 className="text-2xl font-extrabold mb-1.5" style={{ color: palette.accent }}>
+ {/* Name + role */}
+ <div className="text-center mb-4">
+ <h3 className="text-xl font-bold text-foreground mb-1.5">
  {member.name}
  </h3>
  {member.role && (
- <p
- className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide px-3 py-1.5 rounded-full mb-2.5"
- style={{ background: palette.chip, color: palette.accent, border: `2px dashed ${palette.header}` }}
- >
+ <span className="inline-flex items-center text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-primary/10 text-primary border-2 border-dashed border-primary/50">
  {member.role}
- </p>
+ </span>
  )}
+ </div>
+
+ {/* Stars */}
  {(member.rating > 0 || member.reviews > 0) && (
- <div className="flex items-center justify-center gap-1.5 mb-3">
+ <div className="flex items-center justify-center gap-1 mb-4">
  {Array.from({ length: 5 }).map((_, idx) => (
  <Star
  key={idx}
- className="w-4 h-4"
+ className="w-3.5 h-3.5"
  style={{
- fill: idx < Math.round(member.rating) ? "#FFB627" : "transparent",
- color: "#FFB627",
+ fill: idx < Math.round(member.rating) ? "#FBBF24" : "transparent",
+ color: "#FBBF24",
  }}
  />
  ))}
  {member.reviews > 0 && (
- <span className="text-xs font-semibold ms-1" style={{ color: palette.accent }}>
+ <span className="text-xs text-muted ms-1">
  ({t("starsRatingsCount", { count: member.reviews })})
  </span>
  )}
  </div>
  )}
- </div>
 
- <div className="px-6 pb-6">
+ {/* Inline stats row — icon + text, no chip blocks */}
+ <ul className="space-y-2 text-sm text-muted mb-4">
  {member.experience > 0 ? (
- <div
- className="flex items-center gap-2 text-sm font-semibold mb-2.5 px-3 py-2 rounded-2xl"
- style={{ background: palette.chip, color: palette.accent }}
- >
- <Briefcase className="w-4 h-4 shrink-0" />
+ <li className="flex items-center gap-2.5">
+ <Briefcase className="w-4 h-4 text-primary/70 shrink-0" />
  <span>{t("starsExperience", { years: member.experience })}</span>
- </div>
+ </li>
  ) : null}
-
  {member.skills.length > 0 ? (
- <div
- className="flex items-start gap-2 text-xs font-semibold mb-2.5 px-3 py-2 rounded-2xl"
- style={{ background: palette.chip, color: palette.accent }}
- >
- <Code2 className="w-4 h-4 shrink-0 mt-0.5" />
- <span className="uppercase tracking-wide">{member.skills.join(", ")}</span>
- </div>
+ <li className="flex items-start gap-2.5">
+ <Code2 className="w-4 h-4 text-primary/70 shrink-0 mt-0.5" />
+ <span className="leading-relaxed">{member.skills.join(" · ")}</span>
+ </li>
  ) : null}
-
- {member.location || member.flag ? (
- <div
- className="flex items-center gap-2 text-sm font-semibold mb-3 px-3 py-2 rounded-2xl"
- style={{ background: palette.chip, color: palette.accent }}
- >
- {member.flag ? <span className="text-lg">{member.flag}</span> : null}
+ {(member.location || member.flag) ? (
+ <li className="flex items-center gap-2.5">
+ {member.flag ? <span className="text-base shrink-0">{member.flag}</span> : null}
  {member.location ? (
- <span className="text-xs">
- {t("starsLocatedIn", { place: member.location })}
- </span>
+ <span>{t("starsLocatedIn", { place: member.location })}</span>
  ) : null}
- </div>
+ </li>
  ) : null}
+ </ul>
 
+ {/* Bio */}
  {member.bio ? (
- <p className="text-sm leading-relaxed text-foreground/75">
+ <p className="text-sm leading-relaxed text-muted">
  {isExpanded ? member.bio : bioSnippet}
- {member.bio.length > 90 ? (
+ {member.bio.length > 120 ? (
  <button
  type="button"
  onClick={() =>
  setExpandedBio(isExpanded ? null : member.key)
  }
- className="font-bold cursor-pointer inline ms-1"
- style={{ color: palette.accent }}
+ className="font-semibold text-primary hover:underline cursor-pointer inline ms-1"
  >
  {isExpanded ? t("starsShowLess") : t("starsReadMore")}
  </button>
  ) : null}
  </p>
  ) : null}
- </div>
- </div>
+ </article>
  </motion.div>
  );
  })}
