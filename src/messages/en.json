@@ -46,6 +46,26 @@
     "card3Title": "Safe & Caring Space",
     "card3Desc": "A gentle, kid-friendly world with trusted teachers — so parents feel at ease and children feel at home"
   },
+  "learningJourney": {
+    "title": "How Kids Actually Learn at StemTechLab",
+    "subtitle": "Five steps that turn curiosity into real skills.",
+    "step1Label": "Ask",
+    "step1Desc": "Start with\ncuriosity.",
+    "step2Label": "Break Down",
+    "step2Desc": "Make sense\nof the parts.",
+    "step3Label": "Test",
+    "step3Desc": "Try ideas.\nLearn fast.",
+    "step4Label": "Build",
+    "step4Desc": "Create solutions\nthat work.",
+    "step5Label": "Improve",
+    "step5Desc": "Make it better.\nMake it yours.",
+    "flow1": "Curiosity",
+    "flow2": "Thinking",
+    "flow3": "Creation",
+    "flow4": "Impact",
+    "closingLead": "Today's problems.",
+    "closingHighlight": "Tomorrow's possibilities."
+  },
   "whyProgramming": {
     "title": "Why Coding Is a Beautiful Gift for Your Child",
     "subtitle": "It's not just about computers — it's about helping your child believe in themselves",

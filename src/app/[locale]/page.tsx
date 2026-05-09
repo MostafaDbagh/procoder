@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { Hero } from "@/components/Hero";
 import { ParentQuestions } from "@/components/ParentQuestions";
-import { LearnByFun } from "@/components/LearnByFun";
+import { LearningJourney } from "@/components/LearningJourney";
 import { CategorySection } from "@/components/CategorySection";
 import { HowItWorks } from "@/components/HowItWorks";
 import { CTABanner } from "@/components/CTABanner";
@@ -70,8 +70,8 @@ export default async function HomePage({
  return (
  <>
  <Hero />
+ <LearningJourney />
  <ParentQuestions />
- <LearnByFun />
  {/* <WhyProgramming /> */}
  <CategorySection categories={cmsCategories} />
  <HowItWorks />

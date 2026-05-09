@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import { LocalizedLink } from "@/components/LocalizedLink";
+import { BrainPattern } from "@/components/BrainPatterns";
 import {
   Compass,
   Baby,
@@ -59,14 +60,15 @@ export function ParentQuestions() {
 
   return (
     <section
-      className="relative py-16 sm:py-20 lg:py-24"
-      style={{ backgroundColor: SECTION_BG }}
+      className="relative isolate overflow-hidden py-16 sm:py-20 lg:py-24"
+      style={{ backgroundColor: 'white' }}
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <BrainPattern variant="rubik" />
+      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section heading */}
         <div className="text-center mb-10 sm:mb-14">
           <h2
-            className="font-display font-extrabold leading-tight tracking-tight text-[64px] mb-4"
+            className="font-display font-extrabold leading-tight tracking-tight text-[28px] sm:text-[28px] md:text-[36px] lg:text-[36px] mb-4"
             style={{ color: NAVY }}
           >
             {t("sectionTitle")}
@@ -76,8 +78,8 @@ export function ParentQuestions() {
             style={{ backgroundColor: LAVENDER }}
           />
           <p
-            className="max-w-2xl mx-auto text-[16px] md:text-[18px] lg:text-[20px] leading-relaxed"
-            style={{ color: SLATE }}
+            className="text-muted text-lg max-w-2xl mx-auto"
+          
           >
             {t("sectionSubtitle")}
           </p>

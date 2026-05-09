@@ -22,7 +22,7 @@ export function Hero() {
  const t = useTranslations("hero");
 
  return (
- <section className="relative py-16 sm:py-0 overflow-hidden min-h-[90vh] sm:min-h-0 flex items-center sm:block">
+ <section className="relative py-16 sm:py-0  min-h-[100vh] sm:min-h-[640px] md:min-h-[720px] lg:min-h-[820px] xl:min-h-[920px] flex items-center sm:block">
  {/* Mobile-only decorative bg — soft lavender wash + floating glows + tiny tech glyphs, echoing the desktop poster's vibe */}
  <div className="sm:hidden absolute inset-0 -z-10">
  <div className="absolute inset-0 bg-gradient-to-br from-purple/10 via-primary/5 to-background" />
@@ -56,16 +56,17 @@ export function Hero() {
  </svg>
  </div>
 
- {/* Image — hidden on mobile, full width on sm+ */}
+ {/* Image — hidden on mobile, full-width absolute bg on sm+ so it never clips the text */}
+ <div className="hidden sm:block absolute inset-0 -z-10 overflow-hidden">
  <Image
- src="/images/hero-bg.png"
+ src="/images/heor-bg.png"
  alt=""
- width={922}
- height={1152}
+ fill
  priority
  sizes="100vw"
- className="hidden sm:block w-full h-auto"
+ className="object-cover object-center"
  />
+ </div>
 
  {/* Text — normal flow on mobile, absolute overlay on sm+ */}
  <motion.div
@@ -75,7 +76,7 @@ export function Hero() {
  className="px-4 sm:px-0 sm:absolute sm:top-[4%] sm:left-[6%] lg:left-[7%] sm:w-[40%] lg:w-[36%] xl:w-[34%]"
  >
  <h1
- className="font-display font-extrabold leading-[1.1] tracking-tight text-[42px] md:text-[56px] lg:text-[64px] xl:text-[74px] max-w-[90%] md:max-w-none"
+ className="font-display font-extrabold leading-[1.1] tracking-tight text-[42px] md:text-[56px] lg:text-[64px] xl:text-[64px] max-w-[90%] md:max-w-none"
  style={{ color: "#16234F" }}
  >
  <span className="block">{t("titleLead")}</span>
