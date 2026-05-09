@@ -95,7 +95,7 @@ export default function ParentsContent() {
  fill
  priority
  sizes="100vw"
- className="hidden sm:block object-cover object-center -z-10"
+ className="hidden sm:block object-cover object-center -z-10 sm:scale-[1.08] sm:translate-x-[3.5%]"
  />
 
  <div className="relative sm:absolute sm:inset-0 sm:flex sm:items-start">
@@ -111,18 +111,31 @@ export default function ParentsContent() {
  {t("badge")}
  </div>
 
- <h1 className="text-2xl sm:text-4xl lg:text-[48px] font-bold leading-tight mb-3 sm:mb-5">
+ <h1
+ className="font-display font-extrabold leading-[1.1] tracking-tight text-[38px] md:text-[42px] lg:text-[48px] xl:text-[54px]"
+ style={{ color: "#16234F" }}
+ >
  <span className="block">{t("heroTitleLead")}</span>
- <span className="block bg-gradient-to-r from-primary to-purple bg-clip-text text-transparent">
+ <span className="block" style={{ color: "#8B6CFF" }}>
  {t("heroTitleHighlight")}
  </span>
  </h1>
 
- <p className="text-sm sm:text-base lg:text-lg text-muted leading-relaxed mb-4 sm:mb-6">
- {t("heroSubtitle")}
+ {/* Purple divider line per spec */}
+ <div className="h-1 w-16 rounded-full mt-3 mb-3 sm:my-3" style={{ backgroundColor: "#8B6CFF" }} />
+
+ <p
+ className="leading-relaxed mb-2 sm:mb-4 text-[18px] md:text-[20px] lg:text-[24px] xl:text-[24px]"
+ style={{ color: "#3F4868" }}
+ >
+ {t.rich("heroSubtitle", {
+ em: (chunks) => (
+ <span style={{ color: "#8B6CFF", fontWeight: 600 }}>{chunks}</span>
+ ),
+ })}
  </p>
 
- <div className="flex flex-col gap-2 sm:gap-3 max-w-md">
+ <div className="flex flex-col gap-2 sm:gap-3 max-w-xs">
  <button
  type="button"
  onClick={() => setAuthOpen(true)}

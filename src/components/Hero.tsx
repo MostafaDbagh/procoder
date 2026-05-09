@@ -72,39 +72,48 @@ export function Hero() {
  initial={{ opacity: 1, x: 0 }}
  animate={{ opacity: 1, x: 0 }}
  transition={{ duration: 0.7, ease: "easeOut" }}
- className="px-4 sm:px-0 sm:absolute sm:top-[4%] sm:left-[6%] lg:left-[7%] sm:w-[40%] lg:w-[35%] xl:w-[32%]"
+ className="px-4 sm:px-0 sm:absolute sm:top-[4%] sm:left-[6%] lg:left-[7%] sm:w-[40%] lg:w-[36%] xl:w-[34%]"
  >
  <h1
- className="font-bold leading-tight mb-4 sm:mb-[4%] text-2xl sm:text-[clamp(2rem,4vw,3.5rem)] max-w-[90%] md:max-w-none"
+ className="font-display font-extrabold leading-[1.1] tracking-tight text-[42px] md:text-[56px] lg:text-[64px] xl:text-[74px] max-w-[90%] md:max-w-none"
+ style={{ color: "#16234F" }}
  >
  <span className="block">{t("titleLead")}</span>
- <span className="block bg-gradient-to-r from-primary to-purple bg-clip-text text-transparent">
+ <span className="block" style={{ color: "#8B6CFF" }}>
  {t("titleHighlight")}
  </span>
  </h1>
 
+ {/* Purple divider line between headline and paragraph */}
+ <div className="h-1 w-16 rounded-full mt-4 mb-5 sm:my-[5%]" style={{ backgroundColor: "#8B6CFF" }} />
+
  <p
- className="text-muted leading-relaxed mb-6 sm:mb-[5%] text-base sm:text-[clamp(1rem,1.25vw,1.25rem)] max-w-[90%] md:max-w-none"
+ className="leading-relaxed mb-6 sm:mb-[5%] text-[18px] md:text-[22px] lg:text-[26px] xl:text-[28px] max-w-[90%] md:max-w-none"
+ style={{ color: "#3F4868" }}
  >
- {t("subtitle")}
+ {t.rich("subtitle", {
+ em: (chunks) => (
+ <span style={{ color: "#7D63F6", fontWeight: 600 }}>{chunks}</span>
+ ),
+ })}
  </p>
 
- <div className="flex flex-wrap gap-[2%]">
+ <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto max-w-[420px] sm:max-w-none">
  <LocalizedLink
  href="/courses"
- className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 lg:px-6 py-1.5 sm:py-2.5 lg:py-3 rounded-2xl bg-primary text-white font-semibold shadow-lg shadow-primary/10 hover:shadow-xl hover:shadow-primary/15 transition-all duration-300 hover:scale-[1.02]"
- style={{ fontSize: "clamp(0.65rem, 1vw, 1rem)" }}
+ className="inline-flex items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto min-h-[56px] sm:min-h-0 px-6 sm:px-7 lg:px-9 py-3 sm:py-4 lg:py-5 rounded-2xl bg-primary text-white font-semibold shadow-lg shadow-primary/10 hover:shadow-xl hover:shadow-primary/15 transition-all duration-300 hover:scale-[1.02] whitespace-nowrap"
+ style={{ fontSize: "clamp(0.875rem, 1.4vw, 1.25rem)" }}
  >
  {t("cta")}
- <KidArrowRightIcon className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5" />
+ <KidArrowRightIcon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7" />
  </LocalizedLink>
  <LocalizedLink
  href="/recommend"
- className="group inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 lg:px-6 py-1.5 sm:py-2.5 lg:py-3 rounded-2xl bg-surface text-foreground font-semibold shadow-lg shadow-black/[0.04] hover:bg-primary/10 hover:text-primary hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
- style={{ fontSize: "clamp(0.65rem, 1vw, 1rem)" }}
+ className="group inline-flex items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto min-h-[56px] sm:min-h-0 px-6 sm:px-7 lg:px-9 py-3 sm:py-4 lg:py-5 rounded-2xl bg-surface text-foreground font-semibold shadow-lg shadow-black/[0.04] hover:bg-primary/10 hover:text-primary hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap"
+ style={{ fontSize: "clamp(0.875rem, 1.4vw, 1.25rem)" }}
  >
  {t("secondaryCta")}
- <TargetArrowIcon className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" />
+ <TargetArrowIcon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" />
  </LocalizedLink>
  </div>
  </motion.div>

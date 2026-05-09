@@ -2,9 +2,23 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { headers } from "next/headers";
 import Script from "next/script";
-import { Geist, Nunito } from "next/font/google";
+import { Sora, Inter, Geist, Nunito } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
+
+const sora = Sora({
+ variable: "--font-sora",
+ subsets: ["latin"],
+ weight: ["400", "600", "700", "800"],
+ display: "swap",
+});
+
+const inter = Inter({
+ variable: "--font-inter",
+ subsets: ["latin"],
+ weight: ["400", "500", "600", "700"],
+ display: "swap",
+});
 
 const geistSans = Geist({
  variable: "--font-geist-sans",
@@ -141,7 +155,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
  const dir = locale === "ar" ? "rtl" : "ltr";
 
  return (
- <html lang={locale} dir={dir} className={`${geistSans.variable} ${nunito.variable} h-full antialiased`} suppressHydrationWarning>
+ <html lang={locale} dir={dir} className={`${sora.variable} ${inter.variable} ${geistSans.variable} ${nunito.variable} h-full antialiased`} suppressHydrationWarning>
  <head>
  <link rel="icon" href="/favicon.ico" sizes="any" />
  <link rel="icon" href="/icon.png" type="image/png" />

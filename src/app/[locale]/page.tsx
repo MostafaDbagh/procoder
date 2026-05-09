@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { Hero } from "@/components/Hero";
+import { ParentQuestions } from "@/components/ParentQuestions";
 import { LearnByFun } from "@/components/LearnByFun";
 import { CategorySection } from "@/components/CategorySection";
 import { HowItWorks } from "@/components/HowItWorks";
@@ -69,6 +70,7 @@ export default async function HomePage({
  return (
  <>
  <Hero />
+ <ParentQuestions />
  <LearnByFun />
  {/* <WhyProgramming /> */}
  <CategorySection categories={cmsCategories} />

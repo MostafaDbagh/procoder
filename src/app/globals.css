@@ -21,7 +21,20 @@
   --color-pink: #C88DA8;
   --color-pink-light: #D9ADBF;
 
-  --font-sans: var(--font-geist-sans);
+  /* Brand palette per developer handoff PDF */
+  --color-navy: #16234F;
+  --color-lavender: #8B6CFF;
+  --color-lavender-soft: #B8A7FF;
+  --color-slate: #3F4868;
+  --color-purple-emphasis: #7D63F6;
+  --color-mint-accent: #54C7A6;
+  --color-peach: #F6A646;
+  --color-soft-blue: #5D8CFF;
+  --color-pink-accent: #F08AC8;
+  --color-section-bg: #FAF8FF;
+
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-sora), var(--font-inter), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
 
   --radius-soft: 1rem;
@@ -50,8 +63,13 @@
 body {
   background: var(--bg);
   color: var(--fg);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Display headings — use Sora per design spec */
+.font-display, h1, h2, h3 {
+  font-family: var(--font-sora), var(--font-inter), system-ui, sans-serif;
 }
 
 /* Smooth scroll */

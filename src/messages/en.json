@@ -29,7 +29,7 @@
     "title": "Before children learn a tool, they learn how to think through problems.",
     "titleLead": "Before children learn a tool,",
     "titleHighlight": "they learn how to think through problems.",
-    "subtitle": "We help them build their own problem-solving algorithm: ask, break down, test, build, and improve — across coding, robotics, AI, and whatever comes next.",
+    "subtitle": "We help them build their own <em>problem-solving algorithm</em>: ask, break down, test, build, and improve — across coding, robotics, AI, and whatever comes next.",
     "intro": "StemTechLab is a warm, bilingual learning home for children ages 6–18 in the UAE, Netherlands, and Germany. Our caring, certified teachers guide your child through hands-on adventures in coding, robotics, algorithms, and Arabic — in small, live classes where every child is seen, heard, and celebrated.",
     "cta": "Explore Courses",
     "secondaryCta": "Find the Right Fit",
@@ -625,7 +625,7 @@
     "heroTitle": "Every parent has a different question. Every child needs a different start.",
     "heroTitleLead": "Every parent has a different question.",
     "heroTitleHighlight": "Every child needs a different start.",
-    "heroSubtitle": "Explore the questions that matter most, and we'll help you find the learning path that's right for your child.",
+    "heroSubtitle": "Choose what matters most to you. We'll guide you toward a learning path that fits your child's age, readiness, curiosity, <em>and way of thinking.</em>",
     "heroCta": "Create Parent Account",
     "heroLogin": "Already have an account? Log in",
     "openDashboard": "Open parent dashboard",
@@ -894,5 +894,62 @@
     "freeTrialDescription": "Our AI analyses your child's learning behaviour and matches them to the perfect trial class. 60-minute live session, certified teacher, max 3 students. No credit card. No commitment. UAE, Netherlands & Germany.",
     "aiFeatureTitle": "How AI Course Matching Works | StemTechLab",
     "aiFeatureDescription": "StemTechLab built the first AI that analyses a child's learning behaviour — not a simple quiz, but real analysis of age, interests, experience signals, and learning pace — to recommend the right STEM, coding, or Arabic course. Parents then track every session via the real-time dashboard."
+  },
+  "parentQuestions": {
+    "sectionTitle": "Choose the question that matters most to you.",
+    "sectionSubtitle": "We'll guide you toward a starting point that fits your child's age, readiness, curiosity, and way of thinking.",
+    "anotherConcern": "I have another concern",
+    "resultTitle": "A Helpful First Direction",
+    "suggestedDirection": "Suggested direction",
+    "startingPointCheck": "Starting Point Check",
+    "ctaStartCheck": "Start the Path Check",
+    "q1": {
+      "question": "Where should my child start?",
+      "answer": "You do not need to choose a course alone. The right starting point depends on your child's age, readiness, interests, previous exposure to technology, and way of thinking.\n\nWe begin by understanding how your child approaches learning, then guide you toward a starting point that feels suitable, clear, and not overwhelming."
+    },
+    "q2": {
+      "question": "Is this right for my child's age and readiness?",
+      "answer": "The right start depends on more than age. It also depends on your child's readiness, attention span, confidence, previous experience, and way of thinking.\n\nWe help guide your child toward a starting point that feels suitable — not too easy, not too advanced, and not overwhelming."
+    },
+    "q3": {
+      "question": "Is this meaningful learning, or just more screen time?",
+      "answer": "This is not meant to be passive screen time. The goal is to turn screen use into active learning: thinking, building, testing, and explaining.\n\nChildren are guided to use technology as a space for creating and problem-solving, not just watching, clicking, or consuming content."
+    },
+    "q4": {
+      "question": "Will my child build and explain something real?",
+      "answer": "Yes. Learning should become visible. Your child should not only watch lessons or repeat steps; they should build, test, improve, and explain real projects.\n\nThe type of project depends on your child's age, readiness, and way of thinking. For one child, it may start as a simple interactive story. For another, it may be a game, a robot action, a logic challenge, or a small app idea."
+    },
+    "q5": {
+      "question": "Will this build thinking, not dependence on tools or AI?",
+      "answer": "Yes. Tools and AI are used as learning supports, not as replacements for thinking. We focus on how your child asks questions, breaks ideas into smaller parts, tests solutions, finds mistakes, and improves their work.\n\nThe goal is not to memorize a tool or depend on ready-made answers. The goal is to help your child build a way of thinking they can use across coding, robotics, AI, and future technologies."
+    },
+    "q6": {
+      "question": "How will I see my child's progress?",
+      "answer": "Progress should be visible, not hidden inside lessons. We help parents see how their child is growing through completed projects, developed skills, trainer feedback, and clear next steps.\n\nParents can receive periodic learning summaries through WhatsApp or email, based on their preference. These summaries may include what the child worked on, what skill was practiced, what was improved, and what the next recommended step is.\n\nYour child's progress is not measured only by attendance. It is shown in what they can build, explain, improve, and apply in new challenges."
+    },
+    "q7": {
+      "question": "Who will guide my child?",
+      "answer": "Your child is guided by trained educators who support learning step by step. They help children ask questions, understand mistakes, build projects, and improve their work.\n\nThe teacher's role is not only to explain, but to guide the child's thinking."
+    },
+    "q8": {
+      "question": "What if the course is too easy or too difficult?",
+      "answer": "The right level should feel challenging, but not overwhelming. We consider your child's age, readiness, confidence, previous experience, and way of thinking before recommending a starting point.\n\nIf the course feels too easy or too advanced, the learning path can be adjusted."
+    },
+    "q9": {
+      "question": "Will my child receive feedback?",
+      "answer": "Yes. Feedback is part of the learning process. Children are encouraged to review their work, understand what can be improved, and try again.\n\nThe goal is not only to finish an activity, but to help the child understand how to make it better."
+    },
+    "q10": {
+      "question": "How much parent involvement is expected?",
+      "answer": "Parents do not need to teach the content. Your role is to support consistency, encourage your child, and stay aware of their learning progress.\n\nWe guide the learning experience, while keeping parents informed in a simple and clear way."
+    },
+    "q11": {
+      "question": "What happens if my child misses a class?",
+      "answer": "Missing a class should not make the child feel lost. Depending on the course format, we help the child stay on track through follow-up, guidance, and clear next steps.\n\nThe goal is to make the learning path feel continuous and manageable."
+    },
+    "q12": {
+      "question": "How do you protect my child's privacy?",
+      "answer": "Child safety and privacy are treated seriously. Children are not asked to share unnecessary personal information during learning activities.\n\nAny use of photos, videos, or public learning evidence should follow clear parent or guardian consent."
+    }
   }
 }
