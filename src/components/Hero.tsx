@@ -22,8 +22,41 @@ export function Hero() {
  const t = useTranslations("hero");
 
  return (
- <section className="relative">
- {/* Image at natural aspect, full width — no cropping, no fixed height */}
+ <section className="relative py-16 sm:py-0 overflow-hidden min-h-[90vh] sm:min-h-0 flex items-center sm:block">
+ {/* Mobile-only decorative bg — soft lavender wash + floating glows + tiny tech glyphs, echoing the desktop poster's vibe */}
+ <div className="sm:hidden absolute inset-0 -z-10">
+ <div className="absolute inset-0 bg-gradient-to-br from-purple/10 via-primary/5 to-background" />
+ <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-purple/20 blur-3xl" />
+ <div className="absolute -bottom-24 -left-16 w-72 h-72 rounded-full bg-primary/15 blur-3xl" />
+ <div className="absolute top-1/3 right-1/4 w-40 h-40 rounded-full bg-pink/10 blur-3xl" />
+
+ {/* Subtle dot grid */}
+ <div
+ className="absolute inset-0 opacity-[0.18]"
+ style={{
+ backgroundImage:
+ "radial-gradient(circle, rgba(124,58,237,0.4) 1px, transparent 1px)",
+ backgroundSize: "22px 22px",
+ }}
+ />
+
+ {/* Floating glyphs */}
+ <svg className="absolute top-8 right-8 w-10 h-10 text-purple/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+ <path strokeLinecap="round" strokeLinejoin="round" d="M8 10l-4 4 4 4M16 10l4 4-4 4M14 4l-4 16" />
+ </svg>
+ <svg className="absolute bottom-12 right-10 w-9 h-9 text-primary/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+ <rect x="4" y="4" width="6" height="6" rx="1" />
+ <rect x="14" y="4" width="6" height="6" rx="1" />
+ <rect x="4" y="14" width="6" height="6" rx="1" />
+ <rect x="14" y="14" width="6" height="6" rx="1" />
+ </svg>
+ <svg className="absolute bottom-32 left-6 w-8 h-8 text-pink/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+ <circle cx="12" cy="12" r="3" />
+ <path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3" strokeLinecap="round" />
+ </svg>
+ </div>
+
+ {/* Image — hidden on mobile, full width on sm+ */}
  <Image
  src="/images/hero-bg.png"
  alt=""
@@ -31,21 +64,18 @@ export function Hero() {
  height={1152}
  priority
  sizes="100vw"
- className="w-full h-auto block"
+ className="hidden sm:block w-full h-auto"
  />
 
- {/* Text overlay sits in the image's upper-left whitespace.
-   Positions and font sizes use percentages / clamp() so they scale with the image
-   at every viewport instead of fighting Tailwind breakpoints. */}
+ {/* Text — normal flow on mobile, absolute overlay on sm+ */}
  <motion.div
  initial={{ opacity: 1, x: 0 }}
  animate={{ opacity: 1, x: 0 }}
  transition={{ duration: 0.7, ease: "easeOut" }}
- className="absolute top-[4%] left-[4%] sm:left-[6%] lg:left-[7%] w-[60%] sm:w-[48%] lg:w-[42%] xl:w-[38%]"
+ className="px-4 sm:px-0 sm:absolute sm:top-[4%] sm:left-[6%] lg:left-[7%] sm:w-[40%] lg:w-[35%] xl:w-[32%]"
  >
  <h1
- className="font-bold leading-tight mb-[4%]"
- style={{ fontSize: "clamp(0.95rem, 4.2vw, 4.25rem)" }}
+ className="font-bold leading-tight mb-4 sm:mb-[4%] text-2xl sm:text-[clamp(2rem,4vw,3.5rem)] max-w-[90%] md:max-w-none"
  >
  <span className="block">{t("titleLead")}</span>
  <span className="block bg-gradient-to-r from-primary to-purple bg-clip-text text-transparent">
@@ -54,8 +84,7 @@ export function Hero() {
  </h1>
 
  <p
- className="text-muted leading-relaxed mb-[5%]"
- style={{ fontSize: "clamp(0.7rem, 1.25vw, 1.25rem)" }}
+ className="text-muted leading-relaxed mb-6 sm:mb-[5%] text-base sm:text-[clamp(1rem,1.25vw,1.25rem)] max-w-[90%] md:max-w-none"
  >
  {t("subtitle")}
  </p>

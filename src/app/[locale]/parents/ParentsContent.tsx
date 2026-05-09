@@ -11,17 +11,7 @@ import { BrainPattern } from "@/components/BrainPatterns";
 import { motion } from "framer-motion";
 import {
  Heart,
- BarChart3,
- Bell,
- FileText,
- ShieldCheck,
- Calendar,
- MessageCircle,
  CheckCircle2,
- Eye,
- Award,
- Clock,
- Video,
  UserPlus,
  Star,
  LayoutDashboard,
@@ -68,27 +58,53 @@ export default function ParentsContent() {
  return (
  <div>
  {/* ═══ HERO ═══ */}
- <section
- className="relative overflow-hidden w-full"
- style={{ aspectRatio: "1448 / 1086" }}
- >
- {/* Full-bleed cover — section aspect matches image aspect, so image fits perfectly with no crop and no whitespace */}
+ <section className="relative overflow-hidden w-full py-12 sm:py-0 sm:aspect-[1448/1086]">
+ {/* Mobile-only decorative bg — same vibe as the home hero */}
+ <div className="sm:hidden absolute inset-0 -z-10">
+ <div className="absolute inset-0 bg-gradient-to-br from-purple/10 via-primary/5 to-background" />
+ <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-purple/20 blur-3xl" />
+ <div className="absolute -bottom-24 -left-16 w-72 h-72 rounded-full bg-primary/15 blur-3xl" />
+ <div className="absolute top-1/3 right-1/4 w-40 h-40 rounded-full bg-pink/10 blur-3xl" />
+ <div
+ className="absolute inset-0 opacity-[0.18]"
+ style={{
+ backgroundImage:
+ "radial-gradient(circle, rgba(124,58,237,0.4) 1px, transparent 1px)",
+ backgroundSize: "22px 22px",
+ }}
+ />
+ <svg className="absolute top-8 right-8 w-10 h-10 text-purple/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+ <path strokeLinecap="round" strokeLinejoin="round" d="M8 10l-4 4 4 4M16 10l4 4-4 4M14 4l-4 16" />
+ </svg>
+ <svg className="absolute bottom-12 right-10 w-9 h-9 text-primary/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+ <rect x="4" y="4" width="6" height="6" rx="1" />
+ <rect x="14" y="4" width="6" height="6" rx="1" />
+ <rect x="4" y="14" width="6" height="6" rx="1" />
+ <rect x="14" y="14" width="6" height="6" rx="1" />
+ </svg>
+ <svg className="absolute bottom-32 left-6 w-8 h-8 text-pink/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+ <circle cx="12" cy="12" r="3" />
+ <path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3" strokeLinecap="round" />
+ </svg>
+ </div>
+
+ {/* Image — hidden on mobile, full bg on sm+ */}
  <Image
  src="/images/parent-bg.jpeg"
  alt=""
  fill
  priority
  sizes="100vw"
- className="object-cover object-center -z-10"
+ className="hidden sm:block object-cover object-center -z-10"
  />
 
- <div className="absolute inset-0">
- <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+ <div className="relative sm:absolute sm:inset-0 sm:flex sm:items-start">
+ <div className="max-w-7xl mx-auto sm:h-full w-full">
  <motion.div
  initial={{ opacity: 0, x: -20 }}
  animate={{ opacity: 1, x: 0 }}
  transition={{ duration: 0.6 }}
- className="pt-6 sm:pt-10 lg:pt-16 max-w-[88%] sm:max-w-[55%] lg:max-w-[42%]"
+ className="px-4 sm:px-0 sm:pt-10 lg:pt-16 max-w-full sm:max-w-[45%] lg:max-w-[36%]"
  >
  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-3 sm:mb-5">
  <Heart className="w-4 h-4" />
