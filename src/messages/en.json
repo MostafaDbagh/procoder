@@ -26,8 +26,10 @@
     "courses": "Explore courses"
   },
   "hero": {
-    "title": "Not Just Teaching. We're Building Tomorrow's Leaders.",
-    "subtitle": "Nurturing young minds through creativity, critical thinking, mastering AI tools, and building real things.",
+    "title": "Before children learn a tool, they learn how to think through problems.",
+    "titleLead": "Before children learn a tool,",
+    "titleHighlight": "they learn how to think through problems.",
+    "subtitle": "We help them build their own problem-solving algorithm: ask, break down, test, build, and improve — across coding, robotics, AI, and whatever comes next.",
     "intro": "StemTechLab is a warm, bilingual learning home for children ages 6–18 in the UAE, Netherlands, and Germany. Our caring, certified teachers guide your child through hands-on adventures in coding, robotics, algorithms, and Arabic — in small, live classes where every child is seen, heard, and celebrated.",
     "cta": "Explore Courses",
     "secondaryCta": "Find the Right Fit",
@@ -620,8 +622,10 @@
   },
   "parents": {
     "badge": "For Parents",
-    "heroTitle": "Because Your Child Deserves the Very Best",
-    "heroSubtitle": "We care for every child like our own. With progress updates, personal teacher notes, and a safe learning space — you'll always know your child is in loving hands.",
+    "heroTitle": "Every parent has a different question. Every child needs a different start.",
+    "heroTitleLead": "Every parent has a different question.",
+    "heroTitleHighlight": "Every child needs a different start.",
+    "heroSubtitle": "Explore the questions that matter most, and we'll help you find the learning path that's right for your child.",
     "heroCta": "Create Parent Account",
     "heroLogin": "Already have an account? Log in",
     "openDashboard": "Open parent dashboard",

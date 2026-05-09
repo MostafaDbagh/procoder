@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { AnimatedSection, AnimatedCard } from "@/components/AnimatedSection";
 import { AuthModal } from "@/components/AuthModal";
@@ -67,83 +68,60 @@ export default function ParentsContent() {
  return (
  <div>
  {/* ═══ HERO ═══ */}
- <section className="relative overflow-hidden py-20 sm:py-28">
- <div className="absolute inset-0 -z-10">
- <div className="absolute top-20 left-[10%] w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
- <div className="absolute bottom-10 right-[10%] w-80 h-80 bg-purple/5 rounded-full blur-3xl" />
- </div>
+ <section
+ className="relative overflow-hidden w-full"
+ style={{ aspectRatio: "1448 / 1086" }}
+ >
+ {/* Full-bleed cover — section aspect matches image aspect, so image fits perfectly with no crop and no whitespace */}
+ <Image
+ src="/images/parent-bg.jpeg"
+ alt=""
+ fill
+ priority
+ sizes="100vw"
+ className="object-cover object-center -z-10"
+ />
 
- <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
- <div className="grid lg:grid-cols-2 gap-12 items-center">
- <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}>
- <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
+ <div className="absolute inset-0">
+ <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+ <motion.div
+ initial={{ opacity: 0, x: -20 }}
+ animate={{ opacity: 1, x: 0 }}
+ transition={{ duration: 0.6 }}
+ className="pt-6 sm:pt-10 lg:pt-16 max-w-[88%] sm:max-w-[55%] lg:max-w-[42%]"
+ >
+ <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-3 sm:mb-5">
  <Heart className="w-4 h-4" />
  {t("badge")}
  </div>
 
- <h1 className="text-4xl sm:text-5xl lg:text-[52px] font-bold leading-tight mb-6">
- {t("heroTitle")}
+ <h1 className="text-2xl sm:text-4xl lg:text-[48px] font-bold leading-tight mb-3 sm:mb-5">
+ <span className="block">{t("heroTitleLead")}</span>
+ <span className="block bg-gradient-to-r from-primary to-purple bg-clip-text text-transparent">
+ {t("heroTitleHighlight")}
+ </span>
  </h1>
 
- <p className="text-lg text-muted leading-relaxed mb-8 max-w-lg">
+ <p className="text-sm sm:text-base lg:text-lg text-muted leading-relaxed mb-4 sm:mb-6">
  {t("heroSubtitle")}
  </p>
 
- <div className="flex flex-col gap-3 max-w-lg">
+ <div className="flex flex-col gap-2 sm:gap-3 max-w-md">
  <button
  type="button"
  onClick={() => setAuthOpen(true)}
- className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-primary text-white font-semibold shadow-md shadow-primary/10 hover:shadow-lg hover:scale-[1.02] transition-all"
+ className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:py-3 rounded-2xl bg-primary text-white font-semibold text-sm sm:text-base shadow-md shadow-primary/10 hover:shadow-lg hover:scale-[1.02] transition-all"
  >
- <UserPlus className="w-5 h-5 shrink-0" />
+ <UserPlus className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
  {t("heroCta")} / {t("loginLink")}
  </button>
  <LocalizedLink
  href="/parent/login"
- className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl border-2 border-border bg-surface text-foreground font-semibold shadow-sm transition-all hover:border-primary/45 hover:bg-primary/[0.06] hover:text-primary hover:shadow-md hover:scale-[1.02] dark:hover:bg-primary/10"
+ className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:py-3 rounded-2xl border-2 border-border bg-surface text-foreground font-semibold text-sm sm:text-base shadow-sm transition-all hover:border-primary/45 hover:bg-primary/[0.06] hover:text-primary hover:shadow-md hover:scale-[1.02] dark:hover:bg-primary/10"
  >
- <LayoutDashboard className="w-5 h-5 shrink-0" aria-hidden />
+ <LayoutDashboard className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" aria-hidden />
  <span>{t("openDashboard")}</span>
  </LocalizedLink>
- </div>
- </motion.div>
-
- {/* Illustration — dashboard mockup */}
- <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="hidden lg:block">
- <div className="bg-surface rounded-3xl border border-border p-6 shadow-xl">
- <div className="flex items-center gap-2 mb-4">
- <div className="w-3 h-3 rounded-full bg-red-400/60" />
- <div className="w-3 h-3 rounded-full bg-amber-400/60" />
- <div className="w-3 h-3 rounded-full bg-emerald-400/60" />
- <span className="text-xs text-muted ml-2">Parent Dashboard</span>
- </div>
- <div className="grid grid-cols-2 gap-3 mb-4">
- {[
- { label: "Courses", value: "3", color: "text-primary" },
- { label: "Hours", value: "24", color: "text-amber-500" },
- { label: "Badges", value: "7", color: "text-purple" },
- { label: "Streak", value: "12d", color: "text-emerald-500" },
- ].map((s) => (
- <div key={s.label} className="bg-background rounded-xl p-3 text-center">
- <p className={`text-xl font-bold ${s.color}`}>{s.value}</p>
- <p className="text-xs text-muted">{s.label}</p>
- </div>
- ))}
- </div>
- <div className="space-y-2">
- <div className="flex items-center gap-2 p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/20">
- <CheckCircle2 className="w-4 h-4 text-emerald-500" />
- <span className="text-xs">Python Lesson 12 — Completed</span>
- </div>
- <div className="flex items-center gap-2 p-2 rounded-lg bg-blue-50 dark:bg-blue-950/20">
- <Eye className="w-4 h-4 text-blue-500" />
- <span className="text-xs">Instructor: &quot;Great progress on loops!&quot;</span>
- </div>
- <div className="flex items-center gap-2 p-2 rounded-lg bg-amber-50 dark:bg-amber-950/20">
- <Bell className="w-4 h-4 text-amber-500" />
- <span className="text-xs">Next class: Wednesday 4PM</span>
- </div>
- </div>
  </div>
  </motion.div>
  </div>
