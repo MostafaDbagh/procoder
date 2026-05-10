@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import AboutContent from "./AboutContent";
 import { BreadcrumbSchema } from "@/components/StructuredData";
+import { MeetOurStars } from "@/components/MeetOurStars";
+import { getTeamPublicISR } from "@/lib/server-api";
 import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
 
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
@@ -57,6 +59,7 @@ export default async function AboutPage({
 }) {
  const { locale } = await params;
  setRequestLocale(locale);
+ const cmsTeam = await getTeamPublicISR();
  return (
  <>
  <BreadcrumbSchema
@@ -66,6 +69,7 @@ export default async function AboutPage({
  ]}
  />
  <AboutContent />
+ <MeetOurStars cmsTeam={cmsTeam} />
  </>
  );
 }

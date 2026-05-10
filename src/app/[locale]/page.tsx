@@ -6,8 +6,7 @@ import { LearningJourney } from "@/components/LearningJourney";
 import { CategorySection } from "@/components/CategorySection";
 import { HowItWorks } from "@/components/HowItWorks";
 import { CTABanner } from "@/components/CTABanner";
-import { MeetOurStars } from "@/components/MeetOurStars";
-import { getTeamPublicISR, getCategoriesPublicISR } from "@/lib/server-api";
+import { getCategoriesPublicISR } from "@/lib/server-api";
 import { buildAlternates, siteUrl } from "@/lib/seo";
 
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
@@ -62,10 +61,7 @@ export default async function HomePage({
 }) {
  const { locale } = await params;
  setRequestLocale(locale);
- const [cmsTeam, cmsCategories] = await Promise.all([
- getTeamPublicISR(),
- getCategoriesPublicISR(),
- ]);
+ const cmsCategories = await getCategoriesPublicISR();
 
  return (
  <>
@@ -75,7 +71,6 @@ export default async function HomePage({
  {/* <WhyProgramming /> */}
  <CategorySection categories={cmsCategories} />
  <HowItWorks />
- <MeetOurStars cmsTeam={cmsTeam} />
  <CTABanner />
  </>
  );
