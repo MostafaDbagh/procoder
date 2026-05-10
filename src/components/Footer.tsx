@@ -24,14 +24,14 @@ export function Footer() {
  {t("description")}
  </p>
  <div className="flex items-center gap-3">
-  <a href="https://facebook.com/stemtechlab" target="_blank" rel="noopener noreferrer"
+  <a href="https://www.facebook.com/share/1D3FrzK2N9/" target="_blank" rel="noopener noreferrer"
    className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform hover:scale-110"
    style={{ background: "#1877F2" }}>
    <svg viewBox="0 0 24 24" fill="white" className="w-4 h-4">
     <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
    </svg>
   </a>
-  <a href="https://instagram.com/stemtechlab" target="_blank" rel="noopener noreferrer"
+  <a href="https://www.instagram.com/stemtechlab" target="_blank" rel="noopener noreferrer"
    className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform hover:scale-110"
    style={{ background: "linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)" }}>
    <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">

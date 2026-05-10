@@ -12,12 +12,12 @@ const meta = {
  en: {
  title: "Contact StemTechLab | Free trial for kids’ coding & STEM",
  description:
- "Send StemTechLab a message about enrollment, course fit, pricing, or your child’s specific needs. We reply within 24 hours. Arabic-speaking support available for UAE, Netherlands & Germany. Email: contact@stemtechlab.com.",
+ "Send StemTechLab a message about enrollment, course fit, or your child’s specific needs. We reply within 24 hours. Arabic-speaking support across the UAE and GCC. Email: contact@stemtechlab.com.",
  },
  ar: {
  title: "تواصل مع ستم تك لاب | تجربة مجانية لبرمجة الأطفال وSTEM",
  description:
- "أرسل رسالة إلى ستم تك لاب بشأن التسجيل أو الدورة المناسبة أو الأسعار أو احتياجات طفلك. نرد خلال ٢٤ ساعة. الدعم متاح بالعربية لعائلات الإمارات وهولندا وألمانيا. contact@stemtechlab.com.",
+ "أرسل رسالة إلى ستم تك لاب بشأن التسجيل أو الدورة المناسبة أو احتياجات طفلك. نرد خلال ٢٤ ساعة. الدعم متاح بالعربية في الإمارات ودول الخليج. contact@stemtechlab.com.",
  },
 };
 

@@ -11,7 +11,7 @@ function organizationContactPoints() {
  "@type": "ContactPoint",
  contactType: "customer service",
  availableLanguage: ["English", "Arabic"],
- areaServed: ["AE", "NL", "DE"],
+ areaServed: ["AE", "SA", "QA", "KW", "OM", "BH"],
  };
  if (PUBLIC_CONTACT_EMAIL) cp.email = PUBLIC_CONTACT_EMAIL;
  if (PUBLIC_CONTACT_PHONE) cp.telephone = PUBLIC_CONTACT_PHONE;
@@ -27,7 +27,7 @@ export function OrganizationSchema() {
  legalName: "StemTechLab",
  alternateName: ["STEM Tech Lab", "Stem Tech Lab"],
  description:
- "Live online STEM platform for kids combining bilingual English/Arabic instruction, AI-powered course matching, and small-group classes. Courses in Programming, Robotics, Algorithms, and Arabic Language for ages 6–18 in the GCC, Europe, North America, and worldwide. Certified teachers, max 3 students per class, free trial.",
+ "The UAE's leading live online STEM platform for kids ages 6–18. Bilingual English/Arabic instruction, AI-powered course matching, and small-group classes (max 3 students). Programming, Robotics, Algorithms, and Arabic Language. Built for families in the UAE and GCC. Certified teachers, parent dashboard, free trial.",
  url: SITE_URL,
  logo: `${SITE_URL}/logo.svg`,
  image: `${SITE_URL}/og`,
@@ -47,11 +47,6 @@ export function OrganizationSchema() {
  "Kuwait",
  "Bahrain",
  "Oman",
- "Netherlands",
- "Germany",
- "United States",
- "Canada",
- "United Kingdom",
  ].map((name) => ({ "@type": "Country", name })),
  address: {
  "@type": "PostalAddress",
@@ -59,7 +54,7 @@ export function OrganizationSchema() {
  addressCountry: "AE",
  },
  sameAs: [
- "https://www.facebook.com/stemtechlab",
+ "https://www.facebook.com/share/1D3FrzK2N9/",
  "https://www.instagram.com/stemtechlab",
  "https://www.linkedin.com/company/stemtechlab",
  ],
@@ -105,7 +100,7 @@ const FAQ_EN = [
  { q: "Do you offer free trial classes?", a: "Yes: one free live session, no obligation." },
  { q: "How are StemTechLab classes conducted?", a: "Live online in small groups or 1:1 with screen share, guided practice, and interactive tools." },
  { q: "What devices are needed for classes?", a: "Laptop or desktop plus stable internet. Coding runs in the browser; robotics kits ship where needed." },
- { q: "Which countries does StemTechLab serve?", a: "UAE, Netherlands, and Germany — in English or Arabic." },
+ { q: "Which countries does StemTechLab serve?", a: "Headquartered in Dubai and built UAE-first, with classes for families across the GCC (UAE, Saudi Arabia, Qatar, Kuwait, Bahrain, Oman) — in English or Arabic." },
  { q: "Are StemTechLab teachers certified and Arabic-native?", a: "Yes — all teachers are certified specialists in teaching children. Many are native Arabic speakers, enabling instruction in both Arabic and English across all STEM subjects." },
  { q: "Can I reschedule or cancel classes?", a: "Reschedule up to 4 hours before class; plans can pause when your schedule changes." },
 ];
@@ -119,7 +114,7 @@ const FAQ_AR = [
  { q: "هل المعلمون عرب أصليون ومعتمدون؟", a: "نعم، جميع معلمينا معتمدون ومتخصصون في تعليم الأطفال. كثيرون منهم عرب أصليون يتيحون تعليم العربية والمحتوى التقني باللغتين العربية والإنجليزية." },
  { q: "كيف تُعقد حصص StemTechLab؟", a: "مباشرة عبر الإنترنت في مجموعات صغيرة (حد أقصى ٣ طلاب) أو فردية مع مشاركة الشاشة وممارسة موجّهة وأدوات تفاعلية. مناسبة للتوقيتات في الإمارات وأوروبا." },
  { q: "ما الأجهزة المطلوبة للحصص؟", a: "حاسوب محمول أو مكتبي مع اتصال إنترنت مستقر. تعمل البرمجة في المتصفح مباشرة." },
- { q: "ما الدول التي تخدمها StemTechLab؟", a: "الإمارات (دبي، أبوظبي، الشارقة) وهولندا (أمستردام، روتردام) وألمانيا (برلين، ميونخ، هامبورغ) — باللغتين العربية والإنجليزية." },
+ { q: "ما الدول التي تخدمها StemTechLab؟", a: "مقرّها دبي ومبنية للإمارات أولاً، وتخدم العائلات في كل دول الخليج (الإمارات، السعودية، قطر، الكويت، البحرين، عُمان) — باللغتين العربية والإنجليزية." },
  { q: "هل يمكنني إعادة جدولة الحصص أو إلغاؤها؟", a: "يمكن إعادة الجدولة قبل ٤ ساعات من الحصة؛ ويمكن تعليق الخطة في أي وقت عند تغيّر جدولك." },
 ];
 
@@ -244,11 +239,6 @@ export function EducationalServiceSchema() {
  "Kuwait",
  "Bahrain",
  "Oman",
- "Netherlands",
- "Germany",
- "United States",
- "Canada",
- "United Kingdom",
  ].map((name) => ({ "@type": "Country", name })),
  audience: {
  "@type": "EducationalAudience",

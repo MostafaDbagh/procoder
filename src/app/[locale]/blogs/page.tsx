@@ -14,11 +14,11 @@ const meta = {
  en: {
  title: "Blog — Tips, Guides & News for Parents",
  description:
- "Practical guides for parents on how to choose the right coding course for your child, when to start robotics, how to support Arabic learning at home, and what STEM skills matter most by age. Written for families in UAE, Netherlands, and Germany.",
+ "Practical guides for parents on how to choose the right coding course for your child, when to start robotics, how to support Arabic learning at home, and what STEM skills matter most by age. Written for families across the UAE and GCC.",
  },
  ar: {
  title: "المدونة — نصائح وأدلة وأخبار للوالدين",
- description: "أدلة عملية لأولياء الأمور حول اختيار دورة البرمجة المناسبة لطفلك، متى تبدأ بالروبوتات، كيف تدعم تعلم العربية في المنزل، ومهارات STEM الأهم حسب العمر. موجّهة للعائلات في الإمارات وهولندا وألمانيا.",
+ description: "أدلة عملية لأولياء الأمور حول اختيار دورة البرمجة المناسبة لطفلك، متى تبدأ بالروبوتات، كيف تدعم تعلم العربية في المنزل، ومهارات STEM الأهم حسب العمر. موجّهة للعائلات في الإمارات ودول الخليج.",
  },
 };
 

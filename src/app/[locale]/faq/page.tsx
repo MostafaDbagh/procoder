@@ -10,7 +10,7 @@ const meta = {
   en: {
     title: "FAQ — Frequently Asked Questions | StemTechLab",
     description:
-      "Got questions? Find answers about StemTechLab classes, scheduling, teachers, pricing, and more. Live coding, robotics & Arabic courses for kids 6–18 in UAE, Netherlands & Germany.",
+      "Got questions? Find answers about StemTechLab classes, scheduling, teachers, and more. The UAE's leading live coding, robotics & Arabic courses for kids 6–18 across the UAE and GCC.",
   },
   ar: {
     title: "الأسئلة الشائعة | ستم تك لاب",
