@@ -46,14 +46,14 @@ export function Navbar() {
  }, [pathname, locale]);
 
  const links = useMemo(() => [
- { href: "/", label: t("home") },
- { href: "/courses", label: t("courses") },
- { href: "/recommend", label: t("recommend") },
- { href: "/free-trial", label: t("freeTrial") },
- { href: "/parents", label: t("parents") },
- { href: "/blogs", label: t("blog") },
- { href: "/faq", label: t("faq") },
- { href: "/contact", label: t("contact") },
+ { href: "/", label: t("home"), wideOnly: false },
+ { href: "/courses", label: t("courses"), wideOnly: false },
+ { href: "/recommend", label: t("recommend"), wideOnly: false },
+ { href: "/free-trial", label: t("freeTrial"), wideOnly: false },
+ { href: "/parents", label: t("parents"), wideOnly: false },
+ { href: "/blogs", label: t("blog"), wideOnly: true },
+ { href: "/faq", label: t("faq"), wideOnly: true },
+ { href: "/contact", label: t("contact"), wideOnly: true },
  ], [t]);
 
  // localePrefix:"always" — swap /en ↔ /ar prefix directly
@@ -80,6 +80,8 @@ export function Navbar() {
  key={link.href}
  href={link.href}
  className={`relative px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
+ link.wideOnly ? "hidden min-[1350px]:inline-flex" : ""
+ } ${
  active
  ? "bg-primary/15 text-primary"
  : "text-muted hover:text-foreground hover:bg-surface-hover"

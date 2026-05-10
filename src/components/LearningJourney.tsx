@@ -29,7 +29,7 @@ export function LearningJourney() {
 
  return (
  <section
- className="hidden min-[786px]:block relative overflow-hidden pt-0 pb-0"
+ className="hidden min-[786px]:block relative overflow-hidden pt-0 pb-0 font-display"
  aria-labelledby="learning-journey-title"
  >
  {/* Desktop: full-width bg image + absolutely-positioned text labels under each icon */}

@@ -22,7 +22,7 @@ export function Hero() {
  const t = useTranslations("hero");
 
  return (
- <section className="relative py-16 sm:py-0  min-h-[100vh] sm:min-h-[640px] md:min-h-[720px] lg:min-h-[820px] xl:min-h-[920px] flex items-center sm:block">
+ <section className="relative overflow-hidden py-16 sm:py-12 lg:py-16 min-h-[90vh] sm:min-h-[640px] md:min-h-[720px] lg:min-h-[820px] xl:min-h-[920px] flex items-center sm:block">
  {/* Mobile-only decorative bg — soft lavender wash + floating glows + tiny tech glyphs, echoing the desktop poster's vibe */}
  <div className="sm:hidden absolute inset-0 -z-10">
  <div className="absolute inset-0 bg-gradient-to-br from-purple/10 via-primary/5 to-background" />
@@ -68,15 +68,15 @@ export function Hero() {
  />
  </div>
 
- {/* Text — normal flow on mobile, absolute overlay on sm+ */}
+ {/* Text — normal flow at all widths so the section always grows to fit (no clipping) */}
  <motion.div
  initial={{ opacity: 1, x: 0 }}
  animate={{ opacity: 1, x: 0 }}
  transition={{ duration: 0.7, ease: "easeOut" }}
- className="px-4 sm:px-0 sm:absolute sm:top-[4%] sm:left-[6%] lg:left-[7%] sm:w-[40%] lg:w-[36%] xl:w-[34%]"
+ className="relative px-4 sm:ps-[6%] lg:ps-[7%] sm:pe-4 sm:w-[50%] lg:w-[46%] xl:w-[50%]"
  >
  <h1
- className="font-display font-extrabold leading-[1.1] tracking-tight text-[42px] md:text-[56px] lg:text-[64px] xl:text-[64px] max-w-[90%] md:max-w-none"
+ className="font-display font-extrabold leading-[1.1] tracking-tight text-[42px] md:text-[56px] lg:text-[64px] xl:text-[64px] max-w-[450px]"
  style={{ color: "#16234F" }}
  >
  <span className="block">{t("titleLead")}</span>
@@ -89,7 +89,7 @@ export function Hero() {
  <div className="h-1 w-16 rounded-full mt-4 mb-5 sm:my-[5%]" style={{ backgroundColor: "#8B6CFF" }} />
 
  <p
- className="leading-relaxed mb-6 sm:mb-[5%] text-[18px] md:text-[22px] lg:text-[26px] xl:text-[28px] max-w-[90%] md:max-w-none"
+ className="leading-relaxed mb-6 sm:mb-[5%] text-[18px] md:text-[22px] lg:text-[26px] xl:text-[28px] max-w-[680px]"
  style={{ color: "#3F4868" }}
  >
  {t.rich("subtitle", {
@@ -99,7 +99,7 @@ export function Hero() {
  })}
  </p>
 
- <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto max-w-[420px] sm:max-w-none">
+ <div className="flex flex-col xl:flex-row items-stretch xl:items-center gap-3 sm:gap-4 w-full xl:w-auto max-w-[420px] xl:max-w-none">
  <LocalizedLink
  href="/courses"
  className="inline-flex items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto min-h-[56px] sm:min-h-0 px-6 sm:px-7 lg:px-9 py-3 sm:py-4 lg:py-5 rounded-2xl bg-primary text-white font-semibold shadow-lg shadow-primary/10 hover:shadow-xl hover:shadow-primary/15 transition-all duration-300 hover:scale-[1.02] whitespace-nowrap"

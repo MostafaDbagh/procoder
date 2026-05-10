@@ -290,6 +290,34 @@ export function ParentQuestions() {
             )}
           </AnimatePresence>
         </div>
+
+        {/* FAQ link CTA */}
+        <div className="mt-12 sm:mt-16 text-center">
+          <h3
+            className="font-display font-bold text-[22px] sm:text-[26px] lg:text-[30px] mb-2"
+            style={{ color: NAVY }}
+          >
+            {t("faqLinkTitle")}
+          </h3>
+          <p
+            className="text-[15px] sm:text-[16px] lg:text-[17px] mb-5 max-w-md mx-auto leading-relaxed"
+            style={{ color: SLATE }}
+          >
+            {t("faqLinkSubtitle")}
+          </p>
+          <LocalizedLink
+            href="/faq"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white font-semibold transition-all duration-200 hover:-translate-y-0.5"
+            style={{
+              color: LAVENDER,
+              border: `1.5px solid ${LAVENDER}`,
+              boxShadow: `0 8px 20px -8px ${LAVENDER}55`,
+            }}
+          >
+            {t("faqLinkCta")}
+            <ChevronRight className="w-4 h-4" />
+          </LocalizedLink>
+        </div>
       </div>
     </section>
   );
