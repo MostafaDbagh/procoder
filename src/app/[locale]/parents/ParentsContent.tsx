@@ -91,7 +91,7 @@ export default function ParentsContent() {
  {/* Image — hidden on mobile, full bg on sm+ */}
  <Image
  src="/images/parent-bg.jpeg"
- alt=""
+ alt="StemTechLab for parents — AI course matching and parent dashboard for tracking your child's learning"
  fill
  priority
  sizes="100vw"

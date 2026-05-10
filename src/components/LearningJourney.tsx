@@ -36,7 +36,7 @@ export function LearningJourney() {
  <div className="hidden md:block relative w-full aspect-[1280/737]">
  <Image
  src="/images/ladder.jpeg"
- alt=""
+ alt="StemTechLab learning journey: Ask, Break Down, Test, Build, Improve — five steps that turn curiosity into real skills"
  fill
  sizes="100vw"
  className="object-cover"
@@ -115,7 +115,7 @@ export function LearningJourney() {
  <div className="relative w-full aspect-[1280/737]">
  <Image
  src="/images/ladder.jpeg"
- alt=""
+ alt="StemTechLab learning journey: Ask, Break Down, Test, Build, Improve — five steps that turn curiosity into real skills"
  fill
  sizes="100vw"
  className="object-cover"
