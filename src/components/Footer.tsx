@@ -40,7 +40,7 @@ export function Footer() {
     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" strokeWidth="2.5"/>
    </svg>
   </a>
-  <a href="https://linkedin.com/company/stemtechlab" target="_blank" rel="noopener noreferrer"
+  <a href="https://www.linkedin.com/company/stem-tech-lab/" target="_blank" rel="noopener noreferrer"
    className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform hover:scale-110"
    style={{ background: "#0A66C2" }}>
    <svg viewBox="0 0 24 24" fill="white" className="w-4 h-4">

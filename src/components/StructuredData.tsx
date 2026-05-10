@@ -56,7 +56,7 @@ export function OrganizationSchema() {
  sameAs: [
  "https://www.facebook.com/share/1D3FrzK2N9/",
  "https://www.instagram.com/stemtechlab",
- "https://www.linkedin.com/company/stemtechlab",
+ "https://www.linkedin.com/company/stem-tech-lab/",
  ],
  };
  const cps = organizationContactPoints();
