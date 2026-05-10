@@ -73,10 +73,10 @@ export function Hero() {
  initial={{ opacity: 1, x: 0 }}
  animate={{ opacity: 1, x: 0 }}
  transition={{ duration: 0.7, ease: "easeOut" }}
- className="relative px-4 sm:ps-[6%] lg:ps-[7%] sm:pe-4 sm:w-[50%] lg:w-[46%] xl:w-[50%]"
+ className="relative px-4 sm:ps-[6%] lg:ps-[7%] sm:pe-4 sm:w-[50%] lg:w-[46%] xl:w-[44%]"
  >
  <h1
- className="font-display font-extrabold leading-[1.1] tracking-tight text-[42px] md:text-[56px] lg:text-[64px] xl:text-[64px] max-w-[450px]"
+ className="font-display font-extrabold leading-[1.1] tracking-tight text-[42px] md:text-[56px] lg:text-[64px] xl:text-[64px] "
  style={{ color: "#16234F" }}
  >
  <span className="block">{t("titleLead")}</span>
