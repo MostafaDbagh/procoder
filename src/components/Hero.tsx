@@ -76,7 +76,7 @@ export function Hero() {
  className="relative px-4 sm:ps-[6%] lg:ps-[7%] sm:pe-4 sm:w-[50%] lg:w-[46%] xl:w-[44%]"
  >
  <h1
- className="font-display font-extrabold leading-[1.1] tracking-tight text-[42px] md:text-[56px] lg:text-[64px] xl:text-[64px] "
+ className="font-display font-extrabold leading-[1.1] tracking-tight text-[42px] md:text-[58px] "
  style={{ color: "#16234F" }}
  >
  <span className="block">{t("titleLead")}</span>
@@ -89,7 +89,7 @@ export function Hero() {
  <div className="h-1 w-16 rounded-full mt-4 mb-5 sm:my-[5%]" style={{ backgroundColor: "#8B6CFF" }} />
 
  <p
- className="leading-relaxed mb-6 sm:mb-[5%] text-[18px] md:text-[22px] lg:text-[26px] xl:text-[28px] max-w-[680px]"
+ className="leading-relaxed mb-6 sm:mb-[5%] text-[18px] md:text-[24px] max-w-[680px]"
  style={{ color: "#3F4868" }}
  >
  {t.rich("subtitle", {
