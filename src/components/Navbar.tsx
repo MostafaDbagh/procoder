@@ -51,8 +51,6 @@ export function Navbar() {
  { href: "/recommend", label: t("recommend"), wideOnly: false },
  { href: "/free-trial", label: t("freeTrial"), wideOnly: false },
  { href: "/parents", label: t("parents"), wideOnly: false },
- { href: "/blogs", label: t("blog"), wideOnly: true },
- { href: "/faq", label: t("faq"), wideOnly: true },
  { href: "/contact", label: t("contact"), wideOnly: true },
  ], [t]);
 
