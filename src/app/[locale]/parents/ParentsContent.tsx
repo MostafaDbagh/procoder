@@ -59,7 +59,7 @@ export default function ParentsContent() {
  return (
  <div>
  {/* ═══ HERO ═══ */}
- <section dir="ltr" className="relative overflow-hidden w-full py-12 sm:py-0 sm:aspect-[1448/1086]">
+ <section dir="ltr" className="relative overflow-hidden w-full min-h-screen sm:min-h-0 py-12 sm:py-0 sm:aspect-[1448/1086]">
  {/* Mobile-only decorative bg — same vibe as the home hero */}
  <div className="sm:hidden absolute inset-0 -z-10">
  <div className="absolute inset-0 bg-gradient-to-br from-purple/10 via-primary/5 to-background" />
@@ -105,7 +105,7 @@ export default function ParentsContent() {
  initial={{ opacity: 0, x: -20 }}
  animate={{ opacity: 1, x: 0 }}
  transition={{ duration: 0.6 }}
- className="px-4 sm:px-0 sm:pt-10 lg:pt-16 max-w-full sm:max-w-[45%] lg:max-w-[36%]"
+ className="px-4 sm:px-0 mt-8 sm:mt-0 sm:pt-10 lg:pt-16 max-w-full sm:max-w-[45%] lg:max-w-[36%]"
  >
  <h1
  dir="auto"
@@ -123,7 +123,7 @@ export default function ParentsContent() {
 
  <p
  dir="auto"
- className="leading-relaxed mb-2 sm:mb-4 text-[18px] md:text-[20px] lg:text-[24px] xl:text-[24px]"
+ className="leading-relaxed mb-6 sm:mb-4 text-[18px] md:text-[20px] lg:text-[24px] xl:text-[24px]"
  style={{ color: "#3F4868" }}
  >
  {t.rich("heroSubtitle", {
