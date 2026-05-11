@@ -100,6 +100,23 @@
     "emptyCatalog": "New learning paths are on the way. Please check back soon!",
     "explore": "Explore"
   },
+  "whyUs": {
+    "title": "Why Parents Choose StemTechLab",
+    "subtitle": "Six reasons families trust us with their child's STEM journey",
+    "r1Title": "AI matches the right course",
+    "r1Desc": "Our AI analyses your child's age, interests, pace, and goals — then suggests the course that fits, instead of leaving you to guess.",
+    "r2Title": "Tiny live classes (max 3 students)",
+    "r2Desc": "Every child gets real attention. Three students per class means questions get answered and no one is invisible.",
+    "r3Title": "Caring, certified teachers",
+    "r3Desc": "Every instructor is vetted, certified, and chosen for warmth as much as skill. STEM should feel encouraging, not intimidating.",
+    "r4Title": "A parent dashboard that actually shows progress",
+    "r4Desc": "Track lessons, get notifications, read reports, and see exactly what your child is building. You're never in the dark.",
+    "r5Title": "Fully bilingual — Arabic & English",
+    "r5Desc": "Your child learns in the language they're most comfortable in. Switch any time — same quality, same teachers.",
+    "r6Title": "Free trial, per-course pricing",
+    "r6Desc": "Start with a free class to see the fit. Pay only for what your child takes — no monthly subscription locking you in.",
+    "cta": "See what we built for parents"
+  },
   "howItWorks": {
     "title": "How Your Child's Journey Begins",
     "subtitle": "Four simple steps to a learning experience your family will love",

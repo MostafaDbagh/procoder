@@ -63,7 +63,7 @@ export function ParentQuestions() {
       className="relative isolate overflow-hidden py-16 sm:py-20 lg:py-24"
       style={{ backgroundColor: 'white' }}
     >
-      <BrainPattern variant="rubik" />
+      <BrainPattern variant="question" />
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section heading */}
         <div className="text-center mb-10 sm:mb-14">

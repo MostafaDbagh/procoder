@@ -5,6 +5,7 @@ import { ParentQuestions } from "@/components/ParentQuestions";
 import { LearningJourney } from "@/components/LearningJourney";
 import { CategorySection } from "@/components/CategorySection";
 import { HowItWorks } from "@/components/HowItWorks";
+import { WhyUs } from "@/components/WhyUs";
 import { CTABanner } from "@/components/CTABanner";
 import { getCategoriesPublicISR } from "@/lib/server-api";
 import { buildAlternates, siteUrl } from "@/lib/seo";
@@ -68,7 +69,7 @@ export default async function HomePage({
  <Hero />
  <LearningJourney />
  <ParentQuestions />
- {/* <WhyProgramming /> */}
+ <WhyUs />
  <CategorySection categories={cmsCategories} />
  <HowItWorks />
  <CTABanner />

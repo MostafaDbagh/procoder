@@ -2,7 +2,7 @@
 
 import { Brain, Puzzle, Send, Lightbulb } from "lucide-react";
 
-type Variant = "rubik" | "lego" | "brain" | "legoStack" | "tips";
+type Variant = "rubik" | "lego" | "brain" | "legoStack" | "tips" | "question";
 
 const STROKE = "#0F172A";
 
@@ -209,6 +209,38 @@ export function BrainPattern({ variant, className = "" }: { variant: Variant; cl
  <div className={`pointer-events-none absolute inset-0 -z-10 overflow-hidden text-foreground/30 ${className}`}>
  <div className="absolute bottom-6 left-[6%] hidden sm:block" style={{ transform: "rotate(-4deg)" }}>
  <LegoTower height={280} opacity={0.13} />
+ </div>
+ </div>
+ );
+ }
+
+ if (variant === "question") {
+ // Floating "?" marks — fits the "why us / parent questions" theme.
+ const QMark = ({ size, color }: { size: number; color: string }) => (
+ <svg width={size} height={size} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+ <text
+ x="50"
+ y="78"
+ textAnchor="middle"
+ fontFamily="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
+ fontWeight={900}
+ fontSize={96}
+ fill={color}
+ >
+ ?
+ </text>
+ </svg>
+ );
+ return (
+ <div className={`pointer-events-none absolute inset-0 -z-10 overflow-hidden ${className}`}>
+ <div className="absolute top-6 right-[6%] hidden sm:block" style={{ transform: "rotate(14deg)", opacity: 0.14 }}>
+ <QMark size={180} color="#8B6CFF" />
+ </div>
+ <div className="absolute bottom-10 left-[6%] hidden md:block" style={{ transform: "rotate(-18deg)", opacity: 0.12 }}>
+ <QMark size={140} color="#F59E0B" />
+ </div>
+ <div className="absolute top-[40%] left-[42%] hidden lg:block" style={{ transform: "rotate(8deg)", opacity: 0.08 }}>
+ <QMark size={100} color="#10B981" />
  </div>
  </div>
  );
