@@ -9,8 +9,9 @@ import { getCourseISR, getCourseSlugsISR } from "@/lib/server-api";
 import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
 import { resolveArabicSlug, isArabicSlug } from "@/lib/arabicSlugs";
 
-// Force SSR — admin price/status changes reflect immediately
-export const dynamic = "force-dynamic";
+// ISR: 60s window from getCourseISR/getCoursesISR. Admin POSTs to
+// /api/revalidate with the localized course paths after edits to purge instantly.
+export const revalidate = 60;
 
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 

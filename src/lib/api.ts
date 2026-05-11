@@ -110,6 +110,9 @@ export interface APICourse {
  imagePublicId?: string;
  /** Lower number = appears first in the catalog. Default 0. */
  sortOrder?: number;
+ /** Mongoose timestamps — used for sitemap lastModified. */
+ createdAt?: string;
+ updatedAt?: string;
 }
 
 export function fetchCourses(params?: {

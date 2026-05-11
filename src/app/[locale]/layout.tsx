@@ -13,7 +13,6 @@ import { CookieBanner } from "@/components/CookieBanner";
 import {
  OrganizationSchema,
  WebsiteSchema,
- FAQSchema,
  EducationalServiceSchema,
  CourseFinderApplicationSchema,
 } from "@/components/StructuredData";
@@ -46,7 +45,6 @@ export default async function LocaleLayout({
  <LocaleHtmlAttrs />
  <OrganizationSchema />
  <WebsiteSchema />
- <FAQSchema locale={locale} />
  <CourseFinderApplicationSchema />
  <EducationalServiceSchema />
  <Navbar />

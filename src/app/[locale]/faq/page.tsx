@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { FAQ } from "@/components/FAQ";
-import { BreadcrumbSchema } from "@/components/StructuredData";
+import { BreadcrumbSchema, FAQSchema } from "@/components/StructuredData";
 import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
 
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
@@ -66,6 +66,7 @@ export default async function FAQPage({
   return (
     <>
       <BreadcrumbSchema items={breadcrumbs} />
+      <FAQSchema locale={lang} />
       <FAQ />
     </>
   );

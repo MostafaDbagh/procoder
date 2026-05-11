@@ -7,6 +7,7 @@ import { CategorySection } from "@/components/CategorySection";
 import { HowItWorks } from "@/components/HowItWorks";
 import { WhyUs } from "@/components/WhyUs";
 import { CTABanner } from "@/components/CTABanner";
+import { FAQSchema } from "@/components/StructuredData";
 import { getCategoriesPublicISR } from "@/lib/server-api";
 import { buildAlternates, siteUrl } from "@/lib/seo";
 
@@ -66,6 +67,7 @@ export default async function HomePage({
 
  return (
  <>
+ <FAQSchema locale={locale} />
  <Hero />
  <LearningJourney />
  <ParentQuestions />

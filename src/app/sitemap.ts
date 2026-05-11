@@ -8,17 +8,19 @@ const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 // Revalidate sitemap every 6 hours instead of on every request
 export const revalidate = 21600;
 
-async function getBlogSlugsForSitemap(): Promise<{ slug: string; publishedAt?: string }[]> {
+async function getBlogSlugsForSitemap(): Promise<{ slug: string; lastModified?: string }[]> {
  try {
   const res = await fetch(`${serverApiRoot()}/blog?limit=500`, {
    next: { revalidate: 21600 },
   });
   if (!res.ok) return [];
   const data = await res.json();
-  return (data?.items ?? []).map((p: { slug: string; publishedAt?: string }) => ({
-   slug: p.slug,
-   publishedAt: p.publishedAt,
-  }));
+  return (data?.items ?? []).map(
+   (p: { slug: string; publishedAt?: string; updatedAt?: string }) => ({
+    slug: p.slug,
+    lastModified: p.updatedAt ?? p.publishedAt,
+   })
+  );
  } catch {
   return [];
  }
@@ -30,6 +32,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
  ...(apiCourses?.map((c) => c.slug) ?? []),
  ...staticCourses.map((c) => c.id),
  ]);
+ // slug → updatedAt (Mongoose timestamp). Falls back to `now` for static-only slugs.
+ const courseUpdatedAt = new Map<string, Date>();
+ for (const c of apiCourses ?? []) {
+ if (c.updatedAt) courseUpdatedAt.set(c.slug, new Date(c.updatedAt));
+ }
  const now = new Date();
 
  const entries: MetadataRoute.Sitemap = [];
@@ -96,7 +103,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
  for (const slug of slugSet) {
  entries.push({
  url: siteUrl(locale, `/courses/${slug}`),
- lastModified: now,
+ lastModified: courseUpdatedAt.get(slug) ?? now,
  changeFrequency: "monthly",
  priority: 0.8,
  alternates: {
@@ -117,7 +124,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
  for (const post of blogPosts) {
  entries.push({
  url: siteUrl(locale, `/blogs/${post.slug}`),
- lastModified: post.publishedAt ? new Date(post.publishedAt) : now,
+ lastModified: post.lastModified ? new Date(post.lastModified) : now,
  changeFrequency: "monthly",
  priority: 0.7,
  alternates: {
