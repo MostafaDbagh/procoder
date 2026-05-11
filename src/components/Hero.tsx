@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { motion } from "framer-motion";
@@ -20,9 +20,11 @@ function TargetArrowIcon({ className = "" }: { className?: string }) {
 }
 export function Hero() {
  const t = useTranslations("hero");
+ const locale = useLocale();
+ const isArabic = locale === "ar";
 
  return (
- <section className="relative overflow-hidden py-16 sm:py-12 lg:py-16 min-h-[90vh] sm:min-h-[640px] md:min-h-[720px] lg:min-h-[820px] xl:min-h-[920px] flex items-center sm:block">
+ <section dir="ltr" className="relative overflow-hidden py-16 sm:py-12 lg:py-16 min-h-[90vh] sm:min-h-[640px] md:min-h-[720px] lg:min-h-[820px] xl:min-h-[920px] flex items-center sm:block">
  {/* Mobile-only decorative bg — soft lavender wash + floating glows + tiny tech glyphs, echoing the desktop poster's vibe */}
  <div className="sm:hidden absolute inset-0 -z-10">
  <div className="absolute inset-0 bg-gradient-to-br from-purple/10 via-primary/5 to-background" />
@@ -76,7 +78,8 @@ export function Hero() {
  className="relative px-4 sm:ps-[6%] lg:ps-[7%] sm:pe-4 sm:w-[50%] lg:w-[46%] xl:w-[44%]"
  >
  <h1
- className="font-display font-extrabold leading-[1.1] tracking-tight text-[42px] md:text-[58px] "
+ dir="auto"
+ className={`font-display font-extrabold leading-[1.1] tracking-tight text-[42px] md:text-[58px] ${isArabic ? "mt-16" : ""}`}
  style={{ color: "#16234F" }}
  >
  <span className="block">{t("titleLead")}</span>
@@ -86,9 +89,10 @@ export function Hero() {
  </h1>
 
  {/* Purple divider line between headline and paragraph */}
- <div className="h-1 w-16 rounded-full mt-4 mb-5 sm:my-[5%]" style={{ backgroundColor: "#8B6CFF" }} />
+ <div className={`h-1 w-16 rounded-full mt-4 mb-5 sm:my-[5%] ${isArabic ? "ml-auto" : ""}`} style={{ backgroundColor: "#8B6CFF" }} />
 
  <p
+ dir="auto"
  className="leading-relaxed mb-6 sm:mb-[5%] text-[18px] md:text-[24px] max-w-[680px]"
  style={{ color: "#3F4868" }}
  >
@@ -99,18 +103,18 @@ export function Hero() {
  })}
  </p>
 
- <div className="flex flex-col xl:flex-row items-stretch xl:items-center gap-3 sm:gap-4 w-full xl:w-auto max-w-[420px] xl:max-w-none">
+ <div className={`flex flex-col xl:flex-row items-stretch xl:items-center gap-3 sm:gap-4 w-full xl:w-auto max-w-[420px] xl:max-w-none ${isArabic ? "ml-auto xl:justify-end" : ""}`}>
  <LocalizedLink
  href="/courses"
- className="inline-flex items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto min-h-[56px] sm:min-h-0 px-6 sm:px-7 lg:px-9 py-3 sm:py-4 lg:py-5 rounded-2xl bg-primary text-white font-semibold shadow-lg shadow-primary/10 hover:shadow-xl hover:shadow-primary/15 transition-all duration-300 hover:scale-[1.02] whitespace-nowrap"
+ className={`inline-flex items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto min-h-[56px] sm:min-h-0 px-6 sm:px-7 lg:px-9 py-3 sm:py-4 lg:py-5 rounded-2xl bg-primary text-white font-semibold shadow-lg shadow-primary/10 hover:shadow-xl hover:shadow-primary/15 transition-all duration-300 hover:scale-[1.02] whitespace-nowrap ${isArabic ? "flex-row-reverse" : ""}`}
  style={{ fontSize: "clamp(0.875rem, 1.4vw, 1.25rem)" }}
  >
  {t("cta")}
- <KidArrowRightIcon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7" />
+ <KidArrowRightIcon className={`w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 ${isArabic ? "rotate-180" : ""}`} />
  </LocalizedLink>
  <LocalizedLink
  href="/recommend"
- className="group inline-flex items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto min-h-[56px] sm:min-h-0 px-6 sm:px-7 lg:px-9 py-3 sm:py-4 lg:py-5 rounded-2xl bg-surface text-foreground font-semibold shadow-lg shadow-black/[0.04] hover:bg-primary/10 hover:text-primary hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap"
+ className={`group inline-flex items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto min-h-[56px] sm:min-h-0 px-6 sm:px-7 lg:px-9 py-3 sm:py-4 lg:py-5 rounded-2xl bg-surface text-foreground font-semibold shadow-lg shadow-black/[0.04] hover:bg-primary/10 hover:text-primary hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap ${isArabic ? "flex-row-reverse" : ""}`}
  style={{ fontSize: "clamp(0.875rem, 1.4vw, 1.25rem)" }}
  >
  {t("secondaryCta")}

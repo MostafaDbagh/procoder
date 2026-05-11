@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { AnimatedSection, AnimatedCard } from "@/components/AnimatedSection";
 import { AuthModal } from "@/components/AuthModal";
 import { LocalizedLink } from "@/components/LocalizedLink";
@@ -10,7 +10,6 @@ import { FutureThinkersSection } from "@/components/FutureThinkersSection";
 import { BrainPattern } from "@/components/BrainPatterns";
 import { motion } from "framer-motion";
 import {
- Heart,
  CheckCircle2,
  UserPlus,
  Star,
@@ -29,6 +28,8 @@ import {
 
 export default function ParentsContent() {
  const t = useTranslations("parents");
+ const locale = useLocale();
+ const isArabic = locale === "ar";
  const [authOpen, setAuthOpen] = useState(false);
  const [authTab] = useState<"signup" | "login">("login");
 
@@ -58,7 +59,7 @@ export default function ParentsContent() {
  return (
  <div>
  {/* ═══ HERO ═══ */}
- <section className="relative overflow-hidden w-full py-12 sm:py-0 sm:aspect-[1448/1086]">
+ <section dir="ltr" className="relative overflow-hidden w-full py-12 sm:py-0 sm:aspect-[1448/1086]">
  {/* Mobile-only decorative bg — same vibe as the home hero */}
  <div className="sm:hidden absolute inset-0 -z-10">
  <div className="absolute inset-0 bg-gradient-to-br from-purple/10 via-primary/5 to-background" />
@@ -106,13 +107,9 @@ export default function ParentsContent() {
  transition={{ duration: 0.6 }}
  className="px-4 sm:px-0 sm:pt-10 lg:pt-16 max-w-full sm:max-w-[45%] lg:max-w-[36%]"
  >
- <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-3 sm:mb-5">
- <Heart className="w-4 h-4" />
- {t("badge")}
- </div>
-
  <h1
- className="font-display font-extrabold leading-[1.1] tracking-tight text-[38px] md:text-[42px] lg:text-[48px] xl:text-[54px]"
+ dir="auto"
+ className={`font-display font-extrabold leading-[1.1] tracking-tight text-[38px] md:text-[42px] lg:text-[48px] xl:text-[54px] ${isArabic ? "sm:mt-28" : ""}`}
  style={{ color: "#16234F" }}
  >
  <span className="block">{t("heroTitleLead")}</span>
@@ -122,9 +119,10 @@ export default function ParentsContent() {
  </h1>
 
  {/* Purple divider line per spec */}
- <div className="h-1 w-16 rounded-full mt-3 mb-3 sm:my-3" style={{ backgroundColor: "#8B6CFF" }} />
+ <div className={`h-1 w-16 rounded-full mt-3 mb-3 sm:my-3 ${isArabic ? "ml-auto" : ""}`} style={{ backgroundColor: "#8B6CFF" }} />
 
  <p
+ dir="auto"
  className="leading-relaxed mb-2 sm:mb-4 text-[18px] md:text-[20px] lg:text-[24px] xl:text-[24px]"
  style={{ color: "#3F4868" }}
  >
@@ -135,7 +133,7 @@ export default function ParentsContent() {
  })}
  </p>
 
- <div className="flex flex-col gap-2 sm:gap-3 max-w-xs">
+ <div className={`flex flex-col gap-2 sm:gap-3 max-w-xs ${isArabic ? "sm:ml-auto" : ""}`}>
  <button
  type="button"
  onClick={() => setAuthOpen(true)}

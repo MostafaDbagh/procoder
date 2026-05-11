@@ -29,6 +29,7 @@ export function LearningJourney() {
 
  return (
  <section
+ dir="ltr"
  className="hidden min-[786px]:block relative overflow-hidden pt-0 pb-0 font-display"
  aria-labelledby="learning-journey-title"
  >
@@ -69,6 +70,7 @@ export function LearningJourney() {
  style={{ backgroundColor: step.color, opacity: 0.6 }}
  />
  <p
+ dir="auto"
  className="text-[14px] lg:text-[17px] leading-snug font-medium whitespace-pre-line"
  style={{ color: "#3F4868" }}
  >
