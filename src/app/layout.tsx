@@ -76,7 +76,7 @@ export const metadata: Metadata = {
  ],
  url: SITE_URL,
  locale: "en_US",
- alternateLocale: "ar_SA",
+ alternateLocale: "ar_AE",
  },
  twitter: {
  card: "summary_large_image",

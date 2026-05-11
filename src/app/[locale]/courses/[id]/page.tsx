@@ -90,8 +90,8 @@ export async function generateMetadata({
  url: siteUrl(lang, `/courses/${id}`),
  type: "website",
  siteName: "StemTechLab",
- locale: lang === "ar" ? "ar_SA" : "en_US",
- alternateLocale: lang === "ar" ? "en_US" : "ar_SA",
+ locale: lang === "ar" ? "ar_AE" : "en_US",
+ alternateLocale: lang === "ar" ? "en_US" : "ar_AE",
  images: [{ url: `${SITE_URL}/og?locale=${lang}&title=${encodeURIComponent(title)}&cat=${encodeURIComponent(apiCourse?.category ?? staticCourse?.category ?? "")}`, width: 1200, height: 630, alt: title }],
  },
  twitter: {

@@ -15,7 +15,7 @@ const meta = {
   ar: {
     title: "الأسئلة الشائعة | ستم تك لاب",
     description:
-      "أجوبة على أسئلتك حول حصص ستم تك لاب، المواعيد، المعلمين، الأسعار وأكثر. دورات برمجة وروبوتات وعربية للأطفال ٦–١٨ في الإمارات وهولندا وألمانيا.",
+      "أجوبة على أسئلتك حول حصص ستم تك لاب، المواعيد، المعلمين، الأسعار وأكثر. دورات برمجة وروبوتات وعربية للأطفال ٦–١٨ في الإمارات ودول الخليج العربي.",
   },
 };
 
@@ -37,8 +37,8 @@ export async function generateMetadata({
       url: siteUrl(lang, "/faq"),
       siteName: "StemTechLab",
       type: "website",
-      locale: lang === "ar" ? "ar_SA" : "en_US",
-      alternateLocale: lang === "ar" ? "en_US" : "ar_SA",
+      locale: lang === "ar" ? "ar_AE" : "en_US",
+      alternateLocale: lang === "ar" ? "en_US" : "ar_AE",
       images: [{ url: `${SITE_URL}/og?locale=${lang}`, width: 1200, height: 630, alt: "StemTechLab FAQ" }],
     },
     twitter: {
