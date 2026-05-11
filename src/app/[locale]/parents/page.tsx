@@ -14,9 +14,9 @@ const meta = {
  "Everything parents need to know about StemTechLab: use the AI course finder to match your child to the right course, then track attendance, progress, and instructor notes from the parent dashboard. Certified teachers, max 3 students per class, child-privacy-aware practices.",
  },
  ar: {
- title: "لأولياء الأمور | ذكاء اصطناعي يحلّل سلوك طفلك ويبني مستقبله",
+ title: "لأولياء الأمور | ذكاء اصطناعي يختار لطفلك",
  description:
- "كل ما يحتاجه ولي الأمر في ستم تك لاب: استخدم منتقي الدورات بالذكاء الاصطناعي لاختيار الدورة المناسبة لطفلك، ثم تابع الحضور والتقدم وملاحظات المعلم من لوحة التحكم الخاصة بك. معلمون معتمدون، حد أقصى ٣ طلاب في الفصل، متوافق مع COPPA.",
+ "منتقي دورات بالذكاء الاصطناعي يختار الأنسب لطفلك. تابع الحضور والتقدم وملاحظات المعلم من لوحة التحكم. معلمون معتمدون، حد أقصى ٣ طلاب، وتجربة مجانية.",
  },
 };
 
@@ -28,12 +28,17 @@ export async function generateMetadata({
  const { locale } = await params;
  const lang = locale === "ar" ? "ar" : "en";
 
+ const title = lang === "ar"
+ ? { absolute: `${meta.ar.title} | ستم تك لاب` }
+ : meta.en.title;
+ const ogTitle = lang === "ar" ? `${meta.ar.title} | ستم تك لاب` : meta.en.title;
+
  return {
- title: meta[lang].title,
+ title,
  description: meta[lang].description,
  alternates: buildAlternates(lang, "/parents"),
  openGraph: {
- title: meta[lang].title,
+ title: ogTitle,
  description: meta[lang].description,
  url: siteUrl(lang, "/parents"),
  type: "website",
@@ -44,7 +49,7 @@ export async function generateMetadata({
  },
  twitter: {
  card: "summary_large_image",
- title: meta[lang].title,
+ title: ogTitle,
  description: meta[lang].description,
  },
  };

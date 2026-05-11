@@ -20,9 +20,9 @@ const meta = {
  "AI course matching analyses your child’s age, interests, pace, and goals to suggest the right STEM, coding, or Arabic course. Live classes, max 3 students, certified teachers, parent dashboard, and free trial.",
  },
  ar: {
- title: "ذكاء اصطناعي يختار الدورة الأنسب لطفلك | ستم تك لاب",
+ title: "ذكاء اصطناعي يختار الدورة الأنسب لطفلك",
  description:
- "ذكاء اصطناعي يحلّل عمر طفلك واهتماماته وسرعته وأهدافه ليقترح الدورة الأنسب في STEM أو البرمجة أو العربية. دروس مباشرة، حد أقصى ٣ طلاب، معلمون معتمدون، لوحة ولي الأمر، وتجربة مجانية.",
+ "ذكاء اصطناعي يحلّل عمر طفلك واهتماماته ليقترح الدورة الأنسب في STEM أو البرمجة أو العربية. دروس مباشرة، حد أقصى ٣ طلاب، معلمون معتمدون، وتجربة مجانية.",
  },
 };
 
@@ -34,12 +34,17 @@ export async function generateMetadata({
  const { locale } = await params;
  const lang = locale === "ar" ? "ar" : "en";
 
+ const title = lang === "ar"
+ ? { absolute: `${meta.ar.title} | ستم تك لاب` }
+ : meta.en.title;
+ const ogTitle = lang === "ar" ? `${meta.ar.title} | ستم تك لاب` : meta.en.title;
+
  return {
- title: meta[lang].title,
+ title,
  description: meta[lang].description,
  alternates: buildAlternates(lang, ""),
  openGraph: {
- title: meta[lang].title,
+ title: ogTitle,
  description: meta[lang].description,
  url: siteUrl(lang, ""),
  type: "website",
@@ -50,7 +55,7 @@ export async function generateMetadata({
  },
  twitter: {
  card: "summary_large_image",
- title: meta[lang].title,
+ title: ogTitle,
  description: meta[lang].description,
  },
  };

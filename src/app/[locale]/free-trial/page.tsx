@@ -15,9 +15,9 @@ const meta = {
       "Book your child's free 60-minute live class — a real certified instructor, a real small group, no credit card and no commitment. Available for Coding, Robotics, and Arabic courses for ages 6–18. Spots are limited per session.",
   },
   ar: {
-    title: "حصة تجريبية مجانية للأطفال | برمجة وروبوتات وعربية — ستم تك لاب",
+    title: "حصة مجانية للأطفال | برمجة وروبوتات وعربية",
     description:
-      "احجز حصة مباشرة مجانية لطفلك لمدة ٦٠ دقيقة — معلم معتمد حقيقي، مجموعة صغيرة، بدون بطاقة ائتمان أو أي التزام. متاحة لدورات البرمجة والروبوتات والعربية للأعمار ٦–١٨. الأماكن محدودة لكل جلسة.",
+      "احجز حصة مجانية ٦٠ دقيقة لطفلك — معلم معتمد، مجموعة صغيرة، بدون بطاقة ائتمان. برمجة وروبوتات وعربية للأعمار ٦–١٨. الأماكن محدودة.",
   },
 };
 
@@ -29,12 +29,17 @@ export async function generateMetadata({
   const { locale } = await params;
   const lang = locale === "ar" ? "ar" : "en";
 
+  const title = lang === "ar"
+    ? { absolute: `${meta.ar.title} | ستم تك لاب` }
+    : meta.en.title;
+  const ogTitle = lang === "ar" ? `${meta.ar.title} | ستم تك لاب` : meta.en.title;
+
   return {
-    title: meta[lang].title,
+    title,
     description: meta[lang].description,
     alternates: buildAlternates(lang, "/free-trial"),
     openGraph: {
-      title: meta[lang].title,
+      title: ogTitle,
       description: meta[lang].description,
       url: siteUrl(lang, "/free-trial"),
       type: "website",
@@ -45,7 +50,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: meta[lang].title,
+      title: ogTitle,
       description: meta[lang].description,
     },
   };

@@ -20,7 +20,7 @@ const meta = {
  "Live coding & STEM courses for kids 6–18: Python, Scratch, Robotics, Algorithms, Game Dev & Arabic. Certified teachers, small groups. Free trial.",
  },
  ar: {
- title: "دورات برمجة وSTEM للأطفال | مباشرة أونلاين ٦–١٨",
+ title: "دورات برمجة وSTEM للأطفال أونلاين ٦–١٨",
  description:
  "١٢ دورة مباشرة للأطفال ٦–١٨: بايثون، سكراتش، روبوتات، خوارزميات، تطوير الألعاب، عربية. معلمون معتمدون، مجموعات صغيرة. تجربة مجانية.",
  },
@@ -34,12 +34,17 @@ export async function generateMetadata({
  const { locale } = await params;
  const lang = locale === "ar" ? "ar" : "en";
 
+ const title = lang === "ar"
+ ? { absolute: `${meta.ar.title} | ستم تك لاب` }
+ : meta.en.title;
+ const ogTitle = lang === "ar" ? `${meta.ar.title} | ستم تك لاب` : meta.en.title;
+
  return {
- title: meta[lang].title,
+ title,
  description: meta[lang].description,
  alternates: buildAlternates(lang, "/courses"),
  openGraph: {
- title: meta[lang].title,
+ title: ogTitle,
  description: meta[lang].description,
  url: siteUrl(lang, "/courses"),
  type: "website",
@@ -50,7 +55,7 @@ export async function generateMetadata({
  },
  twitter: {
  card: "summary_large_image",
- title: meta[lang].title,
+ title: ogTitle,
  description: meta[lang].description,
  },
  };

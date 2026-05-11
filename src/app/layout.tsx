@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { headers } from "next/headers";
 import Script from "next/script";
-import { Sora, Inter, Geist, Nunito } from "next/font/google";
+import { Sora, Inter, Geist, Nunito, Cairo } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
@@ -32,6 +32,13 @@ const nunito = Nunito({
  display: "swap",
 });
 
+const cairo = Cairo({
+ variable: "--font-cairo",
+ subsets: ["arabic", "latin"],
+ weight: ["400", "600", "700"],
+ display: "swap",
+});
+
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 /** stem-Be origin for preconnect only (no secrets). Set NEXT_PUBLIC_API_ORIGIN in production; omit in git. */
@@ -44,7 +51,7 @@ export const metadata: Metadata = {
  template: "%s | StemTechLab",
  },
  description:
- "StemTechLab matches kids ages 6–18 with live STEM, coding & Arabic classes. Certified instructors, small groups, GCC & worldwide. Free trial.",
+ "StemTechLab matches kids ages 6–18 with live STEM, coding & Arabic classes. Certified instructors, small groups, UAE & GCC. Free trial.",
  authors: [{ name: "StemTechLab", url: SITE_URL }],
  creator: "StemTechLab",
  publisher: "StemTechLab",
@@ -93,7 +100,7 @@ export const metadata: Metadata = {
  icons: {
   icon: [
    { url: "/favicon.ico", sizes: "any" },
-   { url: "/icon.png", type: "image/png", sizes: "512x301" },
+   { url: "/icon.png", type: "image/png", sizes: "512x512" },
   ],
   shortcut: "/favicon.ico",
   apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
@@ -105,8 +112,6 @@ export const metadata: Metadata = {
  other: {
  "geo.region": "AE",
  "geo.placename": "Dubai, United Arab Emirates",
- "distribution": "global",
- "rating": "general",
  "target": "United Arab Emirates, Saudi Arabia, Qatar, Kuwait, Oman, Bahrain",
  "audience": "parents, children ages 6-18, educators in the UAE and GCC",
  "ai:description":
@@ -130,11 +135,8 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
  const dir = locale === "ar" ? "rtl" : "ltr";
 
  return (
- <html lang={locale} dir={dir} className={`${sora.variable} ${inter.variable} ${geistSans.variable} ${nunito.variable} h-full antialiased`} suppressHydrationWarning>
+ <html lang={locale} dir={dir} className={`${sora.variable} ${inter.variable} ${geistSans.variable} ${nunito.variable} ${cairo.variable} h-full antialiased`} suppressHydrationWarning>
  <head>
- <link rel="icon" href="/favicon.ico" sizes="any" />
- <link rel="icon" href="/icon.png" type="image/png" />
- <link rel="apple-touch-icon" href="/apple-icon.png" />
  {/* Performance: preconnect to stem-Be when NEXT_PUBLIC_API_ORIGIN is set (never hardcode deploy URLs) */}
  {API_PRECONNECT ? (
  <>

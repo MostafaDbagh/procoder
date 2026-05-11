@@ -60,7 +60,7 @@ export function ParentQuestions() {
 
   return (
     <section
-      className="relative isolate overflow-hidden py-16 sm:py-20 lg:py-24"
+      className="relative isolate overflow-hidden py-28 sm:py-20 lg:py-28"
       style={{ backgroundColor: 'white' }}
     >
       <BrainPattern variant="question" />
