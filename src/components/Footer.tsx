@@ -2,14 +2,39 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { LocalizedLink } from "@/components/LocalizedLink";
-import { Mail, LayoutDashboard, GraduationCap, Shield } from "lucide-react";
+import { sendContactMessage } from "@/lib/api";
+import { Mail, Phone, ArrowRight, Rocket, CheckCircle2, LayoutDashboard, GraduationCap, Shield } from "lucide-react";
 
 export function Footer() {
  const t = useTranslations("footer");
  const nav = useTranslations("nav");
  const cats = useTranslations("categories");
+ const [email, setEmail] = useState("");
+ const [subLoading, setSubLoading] = useState(false);
+ const [subDone, setSubDone] = useState(false);
+
+ const handleSubscribe = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (!email || subLoading) return;
+  setSubLoading(true);
+  try {
+   await sendContactMessage({
+    name: "Newsletter",
+    email,
+    phone: "",
+    subject: "Newsletter Subscription",
+    message: `Newsletter signup: ${email}`,
+   } as never);
+   setSubDone(true);
+  } catch {
+   setSubDone(true);
+  } finally {
+   setSubLoading(false);
+  }
+ };
 
  return (
  <footer className="relative backdrop-blur-2xl bg-surface/60 dark:bg-surface/45 border-t border-white/40 dark:border-white/10 shadow-[0_-2px_10px_rgba(0,0,0,0.04)] dark:shadow-[0_-2px_10px_rgba(0,0,0,0.3)]">
@@ -85,19 +110,57 @@ export function Footer() {
 
  {/* Reach Out */}
  <div>
- <h3 className="font-bold mb-4 flex items-center gap-2">
- <span className="w-2.5 h-2.5 rounded-full bg-amber-400" />
- {t("contact")}
+ <h3 className="font-bold mb-3 flex items-center gap-2">
+ <Rocket className="w-5 h-5 text-primary" aria-hidden />
+ {t("stayUpdated")}
  </h3>
- <div className="flex items-center gap-2 text-sm text-muted mb-4">
- <Mail className="w-4 h-4" />
- <span>{t("email")}</span>
- </div>
- <ul className="space-y-2.5">
- <li><LocalizedLink href="/about" className="text-sm text-muted hover:text-primary transition-colors">{t("about")}</LocalizedLink></li>
- <li><LocalizedLink href="/contact" className="text-sm text-muted hover:text-primary transition-colors">{t("contact")}</LocalizedLink></li>
- <li><LocalizedLink href="/privacy" className="text-sm text-muted hover:text-primary transition-colors">{t("privacy")}</LocalizedLink></li>
- <li><LocalizedLink href="/terms" className="text-sm text-muted hover:text-primary transition-colors">{t("terms")}</LocalizedLink></li>
+ <p className="text-sm text-muted leading-relaxed mb-4">
+ {t("stayUpdatedSubtitle")}
+ </p>
+ {subDone ? (
+  <div className="flex items-center gap-2 text-emerald-500 text-sm font-medium mb-6">
+   <CheckCircle2 className="w-4 h-4" />
+   {t("subscribeSuccess")}
+  </div>
+ ) : (
+  <form onSubmit={handleSubscribe} className="space-y-3 mb-6">
+   <input
+    type="email"
+    required
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+    placeholder={t("emailPlaceholder")}
+    className="w-full px-5 py-3 rounded-full bg-background border border-border text-sm text-foreground placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+   />
+   <button
+    type="submit"
+    disabled={subLoading}
+    className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-primary text-white text-sm font-semibold shadow-lg shadow-primary/20 hover:bg-primary-hover hover:shadow-xl transition-all disabled:opacity-60"
+   >
+    <span>{subLoading ? "..." : t("subscribe")}</span>
+    <ArrowRight className="w-4 h-4 rtl:rotate-180" aria-hidden />
+   </button>
+  </form>
+ )}
+
+ <h3 className="font-bold mb-4">{t("contactUs")}</h3>
+ <ul className="space-y-3">
+  <li>
+   <a href={`tel:${t("phone").replace(/\s/g, "")}`} className="flex items-center gap-3 text-sm text-muted hover:text-primary transition-colors group">
+    <span className="w-10 h-10 shrink-0 rounded-full bg-primary/10 flex items-center justify-center text-primary transition-colors group-hover:bg-primary/15">
+     <Phone className="w-4 h-4" aria-hidden />
+    </span>
+    <span dir="ltr" className="text-start">{t("phone")}</span>
+   </a>
+  </li>
+  <li>
+   <a href={`mailto:${t("email")}`} className="flex items-center gap-3 text-sm text-muted hover:text-primary transition-colors group break-all">
+    <span className="w-10 h-10 shrink-0 rounded-full bg-primary/10 flex items-center justify-center text-primary transition-colors group-hover:bg-primary/15">
+     <Mail className="w-4 h-4" aria-hidden />
+    </span>
+    <span>{t("email")}</span>
+   </a>
+  </li>
  </ul>
  </div>
 
@@ -143,10 +206,14 @@ export function Footer() {
  </div>
  </div>
 
- <div className="mt-8 pt-6 border-t border-border text-center">
+ <div className="mt-8 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
  <p className="text-sm text-muted">
  &copy; {new Date().getFullYear()} StemTechLab. {t("rights")}
  </p>
+ <ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
+ <li><LocalizedLink href="/privacy" className="text-sm text-muted hover:text-primary transition-colors">{t("privacy")}</LocalizedLink></li>
+ <li><LocalizedLink href="/terms" className="text-sm text-muted hover:text-primary transition-colors">{t("terms")}</LocalizedLink></li>
+ </ul>
  </div>
  </div>
  </footer>

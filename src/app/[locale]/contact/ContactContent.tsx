@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { AnimatedSection, AnimatedCard } from "@/components/AnimatedSection";
+import { AnimatedSection } from "@/components/AnimatedSection";
+import { LocalizedLink } from "@/components/LocalizedLink";
 import { motion } from "framer-motion";
 import { sendContactMessage } from "@/lib/api";
 import {
@@ -16,12 +17,6 @@ import {
 } from "lucide-react";
 import { KidSendIcon } from "@/components/icons/KidIcons";
 import { ChatHeartIcon } from "@/components/icons/PillarIcons";
-import {
- MailEnvelopeIcon,
- PhoneCallIcon,
- MapPinIcon as KidMapPinIcon,
- ClockTimeIcon,
-} from "@/components/icons/KidIcons";
 
 export default function ContactContent() {
  const t = useTranslations("contact");
@@ -37,7 +32,6 @@ export default function ContactContent() {
 
  const subjectParam = searchParams.get("subject");
 
- // Pre-fill subject from URL (sanitized). `window.location` covers cases where the hook is briefly empty after client navigation.
  useEffect(() => {
  const raw =
  subjectParam ??
@@ -50,9 +44,7 @@ export default function ContactContent() {
  const [sending, setSending] = useState(false);
  const [sent, setSent] = useState(false);
  const [cooldown, setCooldown] = useState(false);
- // Anti-bot: track when the form was first rendered
  const [formLoadedAt] = useState(() => Date.now());
- // Honeypot — invisible field that bots fill
  const [hp, setHp] = useState("");
 
  const handleSubmit = async (e: React.FormEvent) => {
@@ -62,7 +54,6 @@ export default function ContactContent() {
  try {
  await sendContactMessage({ ...form, _hp: hp, _t: formLoadedAt } as never);
  setSent(true);
- // Cooldown: prevent re-submit for 60 s even if user navigates back
  setCooldown(true);
  setTimeout(() => setCooldown(false), 60_000);
  } catch {
@@ -73,21 +64,25 @@ export default function ContactContent() {
  };
 
  const whatsappNumber = t("whatsappInfo").replace(/[^0-9+]/g, "").replace("+", "");
- const WhatsAppIcon = ({ className }: { className?: string }) => (
- <svg viewBox="0 0 24 24" className={className} fill="currentColor">
- <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
- </svg>
- );
- const contactInfo = [
- { icon: MailEnvelopeIcon, label: t("emailInfo"), bubble: "bg-cyan-400/10 border-cyan-400/30", href: `mailto:${t("emailInfo")}`, isPlayful: true },
- { icon: PhoneCallIcon, label: t("phoneInfo"), bubble: "bg-emerald-400/10 border-emerald-400/30", href: `tel:${t("phoneInfo").replace(/\s/g, "")}`, isPlayful: true },
- { icon: WhatsAppIcon, label: t("whatsappInfo"), bubble: "bg-[#25D366]/15 border-[#25D366]/30", href: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hi StemTechLab! I'd like to learn more about your kids' classes.")}`, external: true, isPlayful: false },
- { icon: KidMapPinIcon, label: t("locationInfo"), bubble: "bg-violet-400/10 border-violet-400/30", isPlayful: true },
- { icon: ClockTimeIcon, label: t("hoursInfo"), bubble: "bg-amber-400/10 border-amber-400/30", isPlayful: true },
- ];
 
  return (
- <div className="py-12 sm:py-20">
+ <div className="relative overflow-hidden py-12 sm:py-20">
+ {/* ═══ Decorative background shapes ═══ */}
+ <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+ <div className="absolute inset-0 bg-gradient-to-br from-blue-50/60 via-background to-amber-50/40 dark:from-blue-950/20 dark:via-background dark:to-amber-950/10" />
+ <div className="absolute -top-32 -right-32 w-[480px] h-[480px] rounded-full bg-blue-300/20 dark:bg-blue-500/10 blur-3xl" />
+ <div className="absolute top-1/3 -left-40 w-[460px] h-[460px] rounded-full bg-amber-300/20 dark:bg-amber-500/10 blur-3xl" />
+ <div className="absolute -bottom-40 right-1/4 w-[420px] h-[420px] rounded-full bg-violet-300/15 dark:bg-violet-500/10 blur-3xl" />
+ <div
+ className="absolute inset-0 opacity-[0.08]"
+ style={{
+ backgroundImage:
+ "radial-gradient(circle, rgba(124,58,237,0.45) 1px, transparent 1px)",
+ backgroundSize: "26px 26px",
+ }}
+ />
+ </div>
+
  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
  <AnimatedSection className="text-center mb-14">
  <div className="flex justify-center mb-5">
@@ -101,10 +96,21 @@ export default function ContactContent() {
  </p>
  </AnimatedSection>
 
- <div className="grid lg:grid-cols-5 gap-8">
- {/* Form */}
- <AnimatedSection delay={0.1} className="lg:col-span-3">
- <div className="bg-surface rounded-2xl border border-border p-7 sm:p-9">
+ <div className="grid lg:grid-cols-2 gap-8 items-stretch">
+ {/* ═══ Form ═══ */}
+ <AnimatedSection delay={0.1} className="h-full">
+ <div className="bg-surface/95 backdrop-blur rounded-2xl border border-border p-7 sm:p-9 shadow-sm h-full flex flex-col">
+ <div className="flex items-start gap-4 mb-6">
+ <div className="w-11 h-11 rounded-full bg-blue-100 dark:bg-blue-950/40 flex items-center justify-center shrink-0">
+ <MessageCircle className="w-5 h-5 text-blue-500" />
+ </div>
+ <div>
+ <h2 className="text-xl sm:text-2xl font-extrabold text-foreground">
+ {t("formTitle")}
+ </h2>
+ <p className="text-sm text-muted mt-1">{t("formSubtitle")}</p>
+ </div>
+ </div>
  {sent ? (
  <motion.div
  initial={{ opacity: 0, scale: 0.9 }}
@@ -117,12 +123,13 @@ export default function ContactContent() {
  <p className="text-lg font-semibold mb-2">{t("success")}</p>
  </motion.div>
  ) : (
- <form onSubmit={handleSubmit} className="space-y-5">
- {/* Honeypot — hidden from humans, bots auto-fill it */}
+ <form onSubmit={handleSubmit} className="space-y-5 flex-1 flex flex-col">
+ {/* Honeypot */}
  <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "-9999px", opacity: 0, height: 0, overflow: "hidden" }}>
  <label htmlFor="contact-hp">Leave this empty</label>
  <input id="contact-hp" type="text" name="_hp" tabIndex={-1} autoComplete="off" value={hp} onChange={(e) => setHp(e.target.value)} />
  </div>
+ {/* Row 1: Name + Email (email is required) */}
  <div className="grid sm:grid-cols-2 gap-5">
  <div>
  <label className="block text-sm font-medium mb-2">
@@ -132,39 +139,35 @@ export default function ContactContent() {
  type="text"
  required
  value={form.name}
- onChange={(e) =>
- setForm({ ...form, name: e.target.value })
- }
+ onChange={(e) => setForm({ ...form, name: e.target.value })}
  placeholder={t("namePlaceholder")}
  className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted outline-none"
  />
  </div>
  <div>
  <label className="block text-sm font-medium mb-2">
- {t("emailLabel")}
+ {t("emailLabel")} <span className="text-red-500">*</span>
  </label>
  <input
  type="email"
+ required
  value={form.email}
- onChange={(e) =>
- setForm({ ...form, email: e.target.value })
- }
+ onChange={(e) => setForm({ ...form, email: e.target.value })}
  placeholder={t("emailPlaceholder")}
  className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted outline-none"
  />
  </div>
  </div>
+ {/* Row 2: Phone (optional) + Subject — one row on sm+ */}
+ <div className="grid sm:grid-cols-2 gap-5">
  <div>
  <label className="block text-sm font-medium mb-2">
- {t("phoneLabel")} <span className="text-red-500">*</span>
+ {t("phoneLabel")}
  </label>
  <input
  type="tel"
- required
  value={form.phone}
- onChange={(e) =>
- setForm({ ...form, phone: e.target.value })
- }
+ onChange={(e) => setForm({ ...form, phone: e.target.value })}
  placeholder={t("phonePlaceholder")}
  className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted outline-none"
  />
@@ -176,14 +179,13 @@ export default function ContactContent() {
  <input
  type="text"
  value={form.subject}
- onChange={(e) =>
- setForm({ ...form, subject: e.target.value })
- }
+ onChange={(e) => setForm({ ...form, subject: e.target.value })}
  placeholder={t("subjectPlaceholder")}
  className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted outline-none"
  />
  </div>
- <div>
+ </div>
+ <div className="flex-1 flex flex-col min-h-[140px]">
  <label className="block text-sm font-medium mb-2">
  {t("messageLabel")} <span className="text-red-500">*</span>
  </label>
@@ -191,11 +193,9 @@ export default function ContactContent() {
  required
  rows={5}
  value={form.message}
- onChange={(e) =>
- setForm({ ...form, message: e.target.value })
- }
+ onChange={(e) => setForm({ ...form, message: e.target.value })}
  placeholder={t("messagePlaceholder")}
- className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted outline-none resize-none"
+ className="w-full flex-1 min-h-[120px] px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted outline-none resize-none"
  />
  </div>
  <button
@@ -211,35 +211,100 @@ export default function ContactContent() {
  </div>
  </AnimatedSection>
 
- {/* Sidebar */}
- <AnimatedSection delay={0.2} className="lg:col-span-2">
- <div className="space-y-4">
- <h2 className="text-xl font-bold mb-5">{t("infoTitle")}</h2>
- {contactInfo.map((info, i) => {
- const inner = (
- <div className={`flex items-center gap-4 p-5 bg-surface rounded-2xl border border-border${info.href ? " hover:border-primary/40 hover:shadow-md transition-all cursor-pointer" : ""}`}>
- <div
- className={`w-14 h-14 rounded-2xl border-2 ${info.bubble} flex items-center justify-center shrink-0`}
+ {/* ═══ Sidebar ═══ */}
+ <AnimatedSection delay={0.2} className="space-y-5">
+ {/* Contact Information — gradient card with 2x2 grid */}
+ <div className="rounded-3xl border border-border p-7 sm:p-8 bg-gradient-to-br from-blue-50 via-amber-50/50 to-rose-50/30 dark:from-blue-950/30 dark:via-amber-950/15 dark:to-rose-950/15 shadow-sm">
+ <h2 className="text-xl sm:text-2xl font-extrabold mb-6 text-foreground">
+ {t("infoTitle")}
+ </h2>
+ <div className="grid grid-cols-2 gap-x-4 gap-y-6">
+ {/* Email Us */}
+ <a
+ href={`mailto:${t("emailInfo")}`}
+ className="group flex items-start gap-3 min-w-0"
  >
- {info.isPlayful ? (
- <info.icon className="w-9 h-9" />
- ) : (
- <info.icon className="w-6 h-6 text-[#25D366]" />
- )}
+ <div className="w-11 h-11 rounded-full bg-blue-100 dark:bg-blue-950/40 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+ <Mail className="w-5 h-5 text-blue-500" />
  </div>
- <span className="text-sm font-medium" dir="ltr">{info.label}</span>
+ <div className="min-w-0">
+ <div className="text-xs text-muted mb-1">{t("emailUsLabel")}</div>
+ <div className="text-sm font-bold break-all group-hover:text-primary transition-colors" dir="ltr">
+ {t("emailInfo")}
  </div>
- );
- return (
- <AnimatedCard key={i} delay={0.3 + i * 0.08}>
- {info.href ? (
- <a href={info.href} target={info.external ? "_blank" : undefined} rel={info.external ? "noopener noreferrer" : undefined}>
- {inner}
+ </div>
  </a>
- ) : inner}
- </AnimatedCard>
- );
- })}
+
+ {/* Call Us */}
+ <a
+ href={`tel:${t("phoneInfo").replace(/\s/g, "")}`}
+ className="group flex items-start gap-3 min-w-0"
+ >
+ <div className="w-11 h-11 rounded-full bg-amber-100 dark:bg-amber-950/40 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+ <Phone className="w-5 h-5 text-amber-600" />
+ </div>
+ <div className="min-w-0">
+ <div className="text-xs text-muted mb-1">{t("callUsLabel")}:</div>
+ <div className="text-sm font-bold group-hover:text-primary transition-colors" dir="ltr">
+ {t("phoneInfo")}
+ </div>
+ </div>
+ </a>
+
+ {/* Location */}
+ <div className="flex items-start gap-3 min-w-0">
+ <div className="w-11 h-11 rounded-full bg-violet-100 dark:bg-violet-950/40 flex items-center justify-center shrink-0">
+ <MapPin className="w-5 h-5 text-violet-500" />
+ </div>
+ <div className="min-w-0">
+ <div className="text-xs text-muted mb-1">{t("locationLabel")}</div>
+ <div className="text-sm font-bold">{t("locationInfo")}</div>
+ </div>
+ </div>
+
+ {/* Hours */}
+ <div className="flex items-start gap-3 min-w-0">
+ <div className="w-11 h-11 rounded-full bg-rose-100 dark:bg-rose-950/40 flex items-center justify-center shrink-0">
+ <Clock className="w-5 h-5 text-rose-500" />
+ </div>
+ <div className="min-w-0">
+ <div className="text-xs text-muted mb-1">{t("hoursLabel")}</div>
+ <div className="text-sm font-bold">{t("hoursInfo")}</div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ {/* Common Questions + Chat With Us — 2 cards */}
+ <div className="grid sm:grid-cols-2 gap-4">
+ <div className="bg-surface rounded-2xl border border-border p-6 flex flex-col">
+ <h3 className="text-lg font-extrabold mb-2">{t("commonQTitle")}</h3>
+ <p className="text-sm text-muted leading-relaxed mb-5 flex-1">
+ {t("commonQDesc")}
+ </p>
+ <LocalizedLink
+ href="/faq"
+ className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full border border-blue-400/60 text-blue-500 text-sm font-semibold hover:bg-blue-500/10 transition-colors self-start"
+ >
+ {t("viewFaqsBtn")}
+ </LocalizedLink>
+ </div>
+
+ <div className="bg-surface rounded-2xl border border-border p-6 flex flex-col">
+ <h3 className="text-lg font-extrabold mb-2">{t("chatTitle")}</h3>
+ <p className="text-sm text-muted leading-relaxed mb-5 flex-1">
+ {t("chatDesc")}
+ </p>
+ <a
+ href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hi StemTechLab! I'd like to learn more about your kids' classes.")}`}
+ target="_blank"
+ rel="noopener noreferrer"
+ className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full border border-blue-400/60 text-blue-500 text-sm font-semibold hover:bg-blue-500/10 transition-colors self-start"
+ >
+ {t("whatsappBtn")}
+ <MessageCircle className="w-4 h-4" />
+ </a>
+ </div>
  </div>
  </AnimatedSection>
  </div>

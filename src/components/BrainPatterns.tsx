@@ -1,6 +1,6 @@
 "use client";
 
-import { Brain, Puzzle, Send, Lightbulb } from "lucide-react";
+import { Brain, Puzzle, Lightbulb } from "lucide-react";
 
 type Variant = "rubik" | "lego" | "brain" | "legoStack" | "tips" | "question";
 
@@ -247,13 +247,9 @@ export function BrainPattern({ variant, className = "" }: { variant: Variant; cl
  }
 
  if (variant === "tips") {
- // Newsletter / tips theme — paper-airplane (delivered) + lightbulb (ideas).
- // Pushed far into the outer corners so the central CTA card breathes.
+ // CTA theme — only the lightbulb (ideas). Paper-airplane removed.
  return (
  <div className={`pointer-events-none absolute inset-0 -z-10 overflow-hidden ${className}`}>
- <div className="absolute top-8 left-[3%] text-primary/30 dark:text-primary/25 hidden lg:block" style={{ transform: "rotate(-22deg)" }}>
- <Send className="w-32 h-32 xl:w-40 xl:h-40" strokeWidth={1.3} />
- </div>
  <div className="absolute bottom-10 right-[3%] text-amber-400/35 dark:text-amber-300/25 hidden lg:block" style={{ transform: "rotate(14deg)" }}>
  <Lightbulb className="w-28 h-28 xl:w-36 xl:h-36" strokeWidth={1.3} />
  </div>
