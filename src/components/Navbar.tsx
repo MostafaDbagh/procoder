@@ -111,9 +111,10 @@ export function Navbar() {
  <LangToggle locale={locale} switchHref={switchHref} />
  </div>
 
+{/* TODO: re-enable when dark mode is ready for prod */}
 <button
  onClick={toggleTheme}
-className="hidden md:inline-flex p-2 rounded-full text-muted hover:text-foreground hover:bg-surface-hover transition-colors"
+className="hidden p-2 rounded-full text-muted hover:text-foreground hover:bg-surface-hover transition-colors"
  aria-label={theme === "dark" ? t("lightMode") : t("darkMode")}
  >
  <AnimatePresence mode="wait" initial={false}>
@@ -177,9 +178,10 @@ className="hidden md:inline-flex p-2 rounded-full text-muted hover:text-foregrou
  );
  })}
 <div className="mx-4 mt-1 flex gap-2">
+ {/* TODO: re-enable when dark mode is ready for prod */}
  <button
   onClick={toggleTheme}
-  className="flex flex-1 items-center justify-center h-12 rounded-xl border border-border text-foreground bg-surface hover:bg-surface-hover transition-colors"
+  className="hidden flex-1 items-center justify-center h-12 rounded-xl border border-border text-foreground bg-surface hover:bg-surface-hover transition-colors"
   aria-label={theme === "dark" ? t("lightMode") : t("darkMode")}
  >
   {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
