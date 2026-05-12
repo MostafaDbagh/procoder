@@ -23,7 +23,7 @@ const FEATURES = [
  { icon: MapPin, key: "feature4" },
 ] as const;
 
-const TAG_KEYS = ["tag1", "tag2", "tag3", "tag4", "tag5", "tag6"] as const;
+const TAG_KEYS = ["tag1", "tag2", "tag4", "tag5", "tag6"] as const;
 
 export function CTABanner() {
  const t = useTranslations("homeCta");
