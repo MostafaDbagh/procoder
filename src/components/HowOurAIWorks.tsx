@@ -55,15 +55,6 @@ export function HowOurAIWorks() {
           </motion.li>
         ))}
       </ol>
-
-      <div className="mt-6 max-w-3xl mx-auto rounded-2xl border border-border bg-surface px-5 py-4 sm:px-6 sm:py-5">
-        <p className="text-sm font-bold text-foreground mb-1">
-          {t("howAiClarifierTitle")}
-        </p>
-        <p className="text-muted text-sm leading-relaxed">
-          {t("howAiClarifierBody")}
-        </p>
-      </div>
     </section>
   );
 }
