@@ -48,12 +48,12 @@ export function FAQ() {
  <HelpCircle className="w-5 h-5 text-orange/40 absolute bottom-0 -right-5" />
  </div>
  </div>
- <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+ <h1 className="text-3xl sm:text-4xl font-bold mb-4">
  {t("title")}{" "}
  <span className="bg-primary/10 text-primary px-3 py-1 rounded-lg">
  {t("titleHighlight")}
  </span>
- </h2>
+ </h1>
  <p className="text-muted text-lg max-w-2xl mx-auto">
  {t("subtitle")}
  </p>
