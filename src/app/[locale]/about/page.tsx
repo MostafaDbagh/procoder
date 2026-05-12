@@ -31,7 +31,7 @@ export async function generateMetadata({
  const lang = locale === "ar" ? "ar" : "en";
 
  return {
- title: meta[lang].title,
+ title: { absolute: meta[lang].title },
  description: meta[lang].description,
  alternates: buildAlternates(lang, "/about"),
  openGraph: {

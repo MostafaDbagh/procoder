@@ -22,13 +22,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
  const title = post.metaTitle?.[lang] || post.title[lang];
  const description = post.metaDescription?.[lang] || post.excerpt[lang];
+ const brandedTitle = lang === "ar" ? `${title} | ستم تك لاب` : `${title} | StemTechLab`;
 
  return {
- title,
+ title: { absolute: brandedTitle },
  description,
  alternates: buildAlternates(lang, `/blogs/${slug}`),
  openGraph: {
- title,
+ title: brandedTitle,
  description,
  url: siteUrl(lang, `/blogs/${slug}`),
  type: "article",
@@ -36,13 +37,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
  locale: lang === "ar" ? "ar_AE" : "en_US",
  alternateLocale: lang === "ar" ? "en_US" : "ar_AE",
  publishedTime: post.publishedAt,
+ modifiedTime: post.updatedAt ?? post.publishedAt,
  authors: [post.author.name],
  tags: post.tags,
  images: post.coverImage ? [{ url: post.coverImage }] : [{ url: `${SITE_URL}/og?locale=${lang}`, width: 1200, height: 630, alt: "StemTechLab" }],
  },
  twitter: {
  card: "summary_large_image",
- title,
+ title: brandedTitle,
  description,
  images: post.coverImage ? [post.coverImage] : [`${SITE_URL}/og`],
  },
@@ -80,7 +82,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ loc
  description: post.excerpt[lang],
  author: { "@type": "Person", name: post.author.name },
  datePublished: post.publishedAt,
- dateModified: post.publishedAt,
+ dateModified: post.updatedAt ?? post.publishedAt,
  publisher: { "@type": "Organization", name: "StemTechLab", url: SITE_URL },
  mainEntityOfPage: siteUrl(lang, `/blogs/${slug}`),
  ...(post.coverImage ? { image: post.coverImage } : {}),

@@ -29,10 +29,9 @@ export async function generateMetadata({
   const { locale } = await params;
   const lang = locale === "ar" ? "ar" : "en";
 
-  const title = lang === "ar"
-    ? { absolute: `${meta.ar.title} | ستم تك لاب` }
-    : meta.en.title;
-  const ogTitle = lang === "ar" ? `${meta.ar.title} | ستم تك لاب` : meta.en.title;
+  const fullTitle = lang === "ar" ? `${meta.ar.title} | ستم تك لاب` : meta.en.title;
+  const title = { absolute: fullTitle };
+  const ogTitle = fullTitle;
 
   return {
     title,

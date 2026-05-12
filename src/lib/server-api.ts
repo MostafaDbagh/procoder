@@ -216,6 +216,7 @@ export interface APIBlogPost {
  author: { name: string; avatar?: string; role?: string };
  isPublished: boolean;
  publishedAt?: string;
+ updatedAt?: string;
  viewCount: number;
  readTimeMinutes: number;
  relatedCourses: string[];

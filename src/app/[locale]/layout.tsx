@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { Metadata } from "next";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -19,6 +20,18 @@ import {
 
 export function generateStaticParams() {
  return routing.locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({
+ params,
+}: {
+ params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+ const { locale } = await params;
+ const lang = locale === "ar" ? "ar" : "en";
+ return {
+ manifest: `/${lang}/manifest.webmanifest`,
+ };
 }
 
 export default async function LocaleLayout({
@@ -44,9 +57,9 @@ export default async function LocaleLayout({
  <ThemeProvider>
  <LocaleHtmlAttrs />
  <OrganizationSchema />
- <WebsiteSchema />
- <CourseFinderApplicationSchema />
- <EducationalServiceSchema />
+ <WebsiteSchema locale={locale} />
+ <CourseFinderApplicationSchema locale={locale} />
+ <EducationalServiceSchema locale={locale} />
  <Navbar />
  <main className="flex-1">{children}</main>
  <Footer />

@@ -52,7 +52,6 @@ function publicCrawlerRule(userAgent: string): RobotRule {
  "/ai-plugin.json",
  "/.well-known/llms.txt",
  "/.well-known/llms-full.txt",
- "/.well-known/ai.txt",
  "/.well-known/ai-plugin.json",
  ],
  disallow: [...PRIVATE_CRAWL_PATHS],

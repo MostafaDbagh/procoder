@@ -65,7 +65,7 @@ export const metadata: Metadata = {
  siteName: "StemTechLab",
  title: "StemTechLab — AI course finder | Kids STEM, Coding & Arabic",
  description:
- "StemTechLab’s AI course finder suggests the perfect live classes for each child. Programming, Robotics, Algorithms, Arabic ages 6–18. Certified instructors, small groups, free trial. GCC & worldwide.",
+ "StemTechLab’s AI course finder suggests the perfect live classes for each child. Programming, Robotics, Algorithms, Arabic ages 6–18. Certified instructors, small groups, free trial. UAE & GCC.",
  images: [
  {
  url: `${SITE_URL}/og`,
@@ -82,7 +82,7 @@ export const metadata: Metadata = {
  card: "summary_large_image",
  title: "StemTechLab — AI course finder | Kids STEM, Coding & Arabic",
  description:
- "AI-powered course finder for live STEM, coding & Arabic classes for kids 6–18. Certified instructors, small groups. GCC & worldwide.",
+ "AI-powered course finder for live STEM, coding & Arabic classes for kids 6–18. Certified instructors, small groups. UAE & GCC.",
  creator: "@stemtechlab",
  site: "@stemtechlab",
  },

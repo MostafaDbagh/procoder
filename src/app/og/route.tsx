@@ -38,12 +38,16 @@ const AR_CATS = ["البرمجة", "الروبوتات", "الخوارزميات
 export async function GET(request: Request) {
   const { origin, searchParams } = new URL(request.url);
 
-  const locale = searchParams.get("locale") || "en";
+  // Validate locale against the allowed list; any other value falls back to "en"
+  // so a crafted `?locale=...` can't produce arbitrary content variants.
+  const rawLocale = searchParams.get("locale") || "en";
+  const locale = rawLocale === "ar" ? "ar" : "en";
   const isAr = locale === "ar";
 
   // Optional per-page overrides passed by metadata builders
-  const customTitle = searchParams.get("title") || "";
-  const customCat = searchParams.get("cat") || "";
+  // Trim aggressively — we don't want crawlers caching weirdly long titles.
+  const customTitle = (searchParams.get("title") || "").slice(0, 120);
+  const customCat = (searchParams.get("cat") || "").slice(0, 40);
 
   const tagline = isAr ? AR_TAGLINE : EN_TAGLINE;
   const cats = isAr ? AR_CATS : EN_CATS;
@@ -151,6 +155,10 @@ export async function GET(request: Request) {
       width: 1200,
       height: 630,
       fonts,
+      headers: {
+        "Cache-Control":
+          "public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800",
+      },
     }
   );
 }

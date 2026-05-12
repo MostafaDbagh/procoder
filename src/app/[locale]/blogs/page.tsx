@@ -25,8 +25,11 @@ const meta = {
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
  const { locale } = await params;
  const lang = locale === "ar" ? "ar" : "en";
+ const fullTitle = lang === "ar"
+ ? `${meta.ar.title} | ستم تك لاب`
+ : `${meta.en.title} | StemTechLab`;
  return {
- title: meta[lang].title,
+ title: { absolute: fullTitle },
  description: meta[lang].description,
  alternates: buildAlternates(lang, "/blogs"),
  openGraph: { title: meta[lang].title, description: meta[lang].description, url: siteUrl(lang, "/blogs"), type: "website", siteName: "StemTechLab", locale: lang === "ar" ? "ar_AE" : "en_US", alternateLocale: lang === "ar" ? "en_US" : "ar_AE", images: [{ url: `${SITE_URL}/og?locale=${lang}`, width: 1200, height: 630, alt: "StemTechLab" }] },

@@ -1,7 +1,17 @@
+import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Home, BookOpen } from "lucide-react";
 import { Mascot } from "@/components/Mascot";
+
+export const metadata: Metadata = {
+ title: { absolute: "Page Not Found | StemTechLab" },
+ robots: {
+ index: false,
+ follow: true,
+ googleBot: { index: false, follow: true },
+ },
+};
 
 export default async function LocaleNotFound() {
  const t = await getTranslations("notFound");

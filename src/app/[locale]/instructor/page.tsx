@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import InstructorDashboard from "./InstructorDashboard";
-import { PRIVATE_APP_ROBOTS } from "@/lib/seo";
-
-const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
+import { PRIVATE_APP_ROBOTS, buildAlternates } from "@/lib/seo";
 
 export async function generateMetadata({
  params,
@@ -14,15 +12,12 @@ export async function generateMetadata({
  const lang = locale === "ar" ? "ar" : "en";
  return {
  title: lang === "ar" ? "لوحة المدرّس" : "Instructor dashboard",
+ description:
+ lang === "ar"
+ ? "لوحة تحكم المعلم في ستم تك لاب: إدارة الحصص والطلاب والملاحظات."
+ : "StemTechLab instructor dashboard: manage classes, students, and notes.",
  robots: PRIVATE_APP_ROBOTS,
- alternates: {
- canonical: `${SITE_URL}/${lang}/instructor`,
- languages: {
- en: `${SITE_URL}/en/instructor`,
- ar: `${SITE_URL}/ar/instructor`,
- "x-default": `${SITE_URL}/en/instructor`,
- },
- },
+ alternates: buildAlternates(lang, "/instructor"),
  };
 }
 

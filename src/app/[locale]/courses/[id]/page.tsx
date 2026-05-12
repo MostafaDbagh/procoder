@@ -80,24 +80,32 @@ export async function generateMetadata({
  seoDescription = description + suffix;
  }
 
+ const brandedTitle = lang === "ar" ? `${title} | ستم تك لاب` : `${title} | StemTechLab`;
+ const coverImage = apiCourse?.imageUrl;
+ const fallbackOg = `${SITE_URL}/og?locale=${lang}&title=${encodeURIComponent(title)}&cat=${encodeURIComponent(apiCourse?.category ?? staticCourse?.category ?? "")}`;
+ const ogImages = coverImage
+ ? [{ url: coverImage, alt: title }, { url: fallbackOg, width: 1200, height: 630, alt: title }]
+ : [{ url: fallbackOg, width: 1200, height: 630, alt: title }];
+
  return {
- title,
+ title: { absolute: brandedTitle },
  description: seoDescription,
  alternates: buildAlternates(lang, `/courses/${id}`),
  openGraph: {
- title: `${title} | StemTechLab`,
+ title: brandedTitle,
  description: seoDescription,
  url: siteUrl(lang, `/courses/${id}`),
  type: "website",
  siteName: "StemTechLab",
  locale: lang === "ar" ? "ar_AE" : "en_US",
  alternateLocale: lang === "ar" ? "en_US" : "ar_AE",
- images: [{ url: `${SITE_URL}/og?locale=${lang}&title=${encodeURIComponent(title)}&cat=${encodeURIComponent(apiCourse?.category ?? staticCourse?.category ?? "")}`, width: 1200, height: 630, alt: title }],
+ images: ogImages,
  },
  twitter: {
  card: "summary_large_image",
- title: `${title} | StemTechLab`,
+ title: brandedTitle,
  description: seoDescription,
+ images: coverImage ? [coverImage] : [fallbackOg],
  },
  };
 }

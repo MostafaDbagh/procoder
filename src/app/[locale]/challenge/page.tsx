@@ -30,7 +30,7 @@ export async function generateMetadata({
  const lang = locale === "ar" ? "ar" : "en";
 
  const ch = await getChallengePublicLatestISR();
- const title = ch
+ const baseTitle = ch
  ? lang === "ar"
  ? ch.titleAr
  : ch.titleEn
@@ -38,13 +38,16 @@ export async function generateMetadata({
  const description = ch
  ? (lang === "ar" ? ch.subtitleAr : ch.subtitleEn) || meta[lang].description
  : meta[lang].description;
+ const fullTitle = lang === "ar"
+ ? `${baseTitle} | ستم تك لاب`
+ : `${baseTitle} | StemTechLab`;
 
  return {
- title,
+ title: { absolute: fullTitle },
  description,
  alternates: buildAlternates(lang, "/challenge"),
  openGraph: {
- title,
+ title: fullTitle,
  description,
  url: siteUrl(lang, "/challenge"),
  type: "website",
@@ -55,7 +58,7 @@ export async function generateMetadata({
  },
  twitter: {
  card: "summary_large_image",
- title,
+ title: fullTitle,
  description,
  },
  };

@@ -2,12 +2,17 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
  return {
- name: "StemTechLab — Kids Learning Platform",
+ name: "StemTechLab — Kids Coding, STEM & Arabic | منصة ستم تك لاب",
  short_name: "StemTechLab",
  description:
- "Fun, interactive courses in Programming, Robotics, Algorithms, Arabic for ages 6–18",
+ "Live online classes for kids 6–18 in coding, robotics, algorithms & Arabic. حصص مباشرة للأطفال في البرمجة والروبوتات والعربية.",
+ lang: "en",
+ dir: "ltr",
+ scope: "/",
  start_url: "/",
  display: "standalone",
+ orientation: "portrait",
+ categories: ["education", "kids"],
  background_color: "#ffffff",
  theme_color: "#6C5CE7",
  icons: [

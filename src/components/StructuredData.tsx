@@ -110,9 +110,9 @@ const FAQ_AR = [
  { q: "كيف تقترح StemTechLab أفضل دورة لطفلي؟", a: "يستخدم محدد الدورات لدينا تقنية الذكاء الاصطناعي لاقتراح الدورات المباشرة التي تناسب عمر طفلك واهتماماته ومستواه. يختار الوالدان الدورة التي يرغبون في التسجيل بها." },
  { q: "كيف تُحمى بيانات طفلي وخصوصيته؟", a: "نعتمد التشفير الكامل ومعايير حماية بيانات الأطفال، ولا نبيع بيانات الأطفال إطلاقًا. يتحكم الوالدان في حسابات الطلاب، والمنصة آمنة تمامًا للأطفال." },
  { q: "هل يحتاج طفلي إلى خبرة مسبقة؟", a: "لا—يبدأ المبتدئون بالأساسيات، وتتوفر مسارات متقدمة أيضًا. يساعد محدد الدورات بالذكاء الاصطناعي على اختيار المستوى المناسب لعمر طفلك." },
- { q: "هل تقدمون حصصًا تجريبية مجانية؟", a: "نعم: حصة مباشرة مجانية ٦٠ دقيقة — بدون بطاقة بنكية ولا أي التزام. متاح لعائلات دبي وأبوظبي وأمستردام وبرلين وغيرها." },
+ { q: "هل تقدمون حصصًا تجريبية مجانية؟", a: "نعم: حصة مباشرة مجانية ٦٠ دقيقة — بدون بطاقة بنكية ولا أي التزام. متاح لعائلات دبي وأبوظبي والشارقة وعجمان وكل دول الخليج." },
  { q: "هل المعلمون عرب أصليون ومعتمدون؟", a: "نعم، جميع معلمينا معتمدون ومتخصصون في تعليم الأطفال. كثيرون منهم عرب أصليون يتيحون تعليم العربية والمحتوى التقني باللغتين العربية والإنجليزية." },
- { q: "كيف تُعقد حصص StemTechLab؟", a: "مباشرة عبر الإنترنت في مجموعات صغيرة (حد أقصى ٣ طلاب) أو فردية مع مشاركة الشاشة وممارسة موجّهة وأدوات تفاعلية. مناسبة للتوقيتات في الإمارات وأوروبا." },
+ { q: "كيف تُعقد حصص StemTechLab؟", a: "مباشرة عبر الإنترنت في مجموعات صغيرة (حد أقصى ٣ طلاب) أو فردية مع مشاركة الشاشة وممارسة موجّهة وأدوات تفاعلية. مواعيد تناسب التوقيت في الإمارات ودول الخليج." },
  { q: "ما الأجهزة المطلوبة للحصص؟", a: "حاسوب محمول أو مكتبي مع اتصال إنترنت مستقر. تعمل البرمجة في المتصفح مباشرة." },
  { q: "ما الدول التي تخدمها StemTechLab؟", a: "مقرّها دبي ومبنية للإمارات أولاً، وتخدم العائلات في كل دول الخليج (الإمارات، السعودية، قطر، الكويت، البحرين، عُمان) — باللغتين العربية والإنجليزية." },
  { q: "هل يمكنني إعادة جدولة الحصص أو إلغاؤها؟", a: "يمكن إعادة الجدولة قبل ٤ ساعات من الحصة؛ ويمكن تعليق الخطة في أي وقت عند تغيّر جدولك." },
@@ -134,7 +134,8 @@ export function FAQSchema({ locale = "en" }: { locale?: string }) {
  return <JsonLd data={data} />;
 }
 
-export function WebsiteSchema() {
+export function WebsiteSchema({ locale = "en" }: { locale?: string } = {}) {
+ const lang = locale === "ar" ? "ar" : "en";
  const data = {
  "@context": "https://schema.org",
  "@type": "WebSite",
@@ -142,12 +143,17 @@ export function WebsiteSchema() {
  name: "StemTechLab",
  url: SITE_URL,
  description:
- "Live kids’ classes in programming, robotics, algorithms & Arabic (ages 6–18). English & Arabic. GCC, Europe, North America & worldwide.",
+ lang === "ar"
+ ? "حصص مباشرة للأطفال في البرمجة والروبوتات والخوارزميات والعربية (٦–١٨). إنجليزي وعربي. الإمارات ودول الخليج."
+ : "Live kids’ classes in programming, robotics, algorithms & Arabic (ages 6–18). English & Arabic. UAE & GCC.",
  inLanguage: ["en", "ar"],
  publisher: { "@id": ORG_ID },
  potentialAction: {
  "@type": "SearchAction",
- target: `${SITE_URL}/en/courses?q={search_term_string}`,
+ target: {
+ "@type": "EntryPoint",
+ urlTemplate: `${SITE_URL}/${lang}/courses?q={search_term_string}`,
+ },
  "query-input": "required name=search_term_string",
  },
  };
@@ -200,12 +206,13 @@ export function CourseCatalogSchema({
 }
 
 /** Machine-readable: Course finder is a WebApplication that uses third-party AI APIs. */
-export function CourseFinderApplicationSchema() {
+export function CourseFinderApplicationSchema({ locale = "en" }: { locale?: string } = {}) {
+ const lang = locale === "ar" ? "ar" : "en";
  const data: Record<string, unknown> = {
  "@context": "https://schema.org",
  "@type": "WebApplication",
  name: "StemTechLab Course Finder",
- url: `${SITE_URL}/en/recommend`,
+ url: `${SITE_URL}/${lang}/recommend`,
  applicationCategory: "EducationalApplication",
  operatingSystem: "Any (web browser)",
  inLanguage: ["en", "ar"],
@@ -224,7 +231,8 @@ export function CourseFinderApplicationSchema() {
  return <JsonLd data={data} />;
 }
 
-export function EducationalServiceSchema() {
+export function EducationalServiceSchema({ locale = "en" }: { locale?: string } = {}) {
+ const lang = locale === "ar" ? "ar" : "en";
  const data = {
  "@context": "https://schema.org",
  "@type": "Service",
@@ -248,12 +256,12 @@ export function EducationalServiceSchema() {
  },
  availableChannel: {
  "@type": "ServiceChannel",
- serviceUrl: `${SITE_URL}/en/free-trial`,
+ serviceUrl: `${SITE_URL}/${lang}/free-trial`,
  availableLanguage: ["English", "Arabic"],
  },
  offers: {
  "@type": "Offer",
- url: `${SITE_URL}/en/free-trial`,
+ url: `${SITE_URL}/${lang}/free-trial`,
  availability: "https://schema.org/InStock",
  category: "Live online education",
  },
@@ -282,11 +290,12 @@ export function LocalBusinessSchema() {
  { city: "Dubai", country: "AE", lat: 25.2048, lng: 55.2708 },
  { city: "Abu Dhabi", country: "AE", lat: 24.4539, lng: 54.3773 },
  { city: "Sharjah", country: "AE", lat: 25.3463, lng: 55.4209 },
- { city: "Amsterdam", country: "NL", lat: 52.3676, lng: 4.9041 },
- { city: "Rotterdam", country: "NL", lat: 51.9244, lng: 4.4777 },
- { city: "Berlin", country: "DE", lat: 52.52, lng: 13.405 },
- { city: "Munich", country: "DE", lat: 48.1351, lng: 11.582 },
- { city: "Hamburg", country: "DE", lat: 53.5753, lng: 10.0153 },
+ { city: "Ajman", country: "AE", lat: 25.4052, lng: 55.5136 },
+ { city: "Ras Al Khaimah", country: "AE", lat: 25.7895, lng: 55.9432 },
+ { city: "Fujairah", country: "AE", lat: 25.1288, lng: 56.3265 },
+ { city: "Riyadh", country: "SA", lat: 24.7136, lng: 46.6753 },
+ { city: "Doha", country: "QA", lat: 25.2854, lng: 51.5310 },
+ { city: "Kuwait City", country: "KW", lat: 29.3759, lng: 47.9774 },
  ];
 
  return (

@@ -28,8 +28,12 @@ export async function generateMetadata({
  const { locale } = await params;
  const lang = locale === "ar" ? "ar" : "en";
 
+ const fullTitle = lang === "ar"
+ ? `${meta.ar.title} | ستم تك لاب`
+ : `${meta.en.title} | StemTechLab`;
+
  return {
- title: meta[lang].title,
+ title: { absolute: fullTitle },
  description: meta[lang].description,
  alternates: buildAlternates(lang, "/terms"),
  openGraph: {
