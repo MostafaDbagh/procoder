@@ -5,7 +5,6 @@ import { useTranslations } from "next-intl";
 import { AnimatedSection } from "./AnimatedSection";
 import {
  CheckCircle2,
- Zap,
  Atom,
  Video,
  FileText,
@@ -15,6 +14,7 @@ import {
 import { sendContactMessage } from "@/lib/api";
 import { BrainPattern } from "./BrainPatterns";
 import { Mascot } from "./Mascot";
+import { KidSendIcon } from "./icons/KidIcons";
 
 const FEATURES = [
  { icon: Video, key: "feature1" },
@@ -57,9 +57,9 @@ export function CTABanner() {
  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
  <AnimatedSection>
  <div className="relative">
- {/* Peeking Bobo — top-right corner, half above the card. Outside overflow-hidden so head isn't clipped. */}
- <div className="hidden md:block absolute right-2 sm:right-6 -top-2 -translate-y-1/3 pointer-events-none rotate-[8deg] z-20">
- <Mascot pose="happy" size={110} />
+ {/* Peeking Bobo — top-right corner, only on lg+ where the 2-col layout gives him room next to the form */}
+ <div className="hidden lg:block absolute right-4 -top-2 -translate-y-1/3 pointer-events-none rotate-[8deg] z-20">
+ <Mascot pose="wave" size={110} />
  </div>
  <div className="relative overflow-hidden rounded-3xl border-0 border-t-4 border-l-4 border-r-4 border-b-8 border-t-border border-l-border border-r-border border-b-primary/50 bg-surface p-6 sm:p-10 lg:p-14">
  {/* Decorative blobs */}
@@ -67,9 +67,6 @@ export function CTABanner() {
  <div className="absolute -bottom-16 -left-16 w-56 h-56 rounded-full bg-purple/8 blur-3xl" />
 
  {/* Corner icons */}
- <div className="absolute bottom-5 left-5 w-10 h-10 rounded-2xl bg-orange/10 flex items-center justify-center rotate-[10deg] z-10">
- <Zap className="w-5 h-5 text-orange-400" />
- </div>
  <div className="absolute bottom-5 right-5 w-10 h-10 rounded-2xl bg-mint/10 flex items-center justify-center rotate-[-10deg] z-10">
  <Atom className="w-5 h-5 text-mint" />
  </div>
@@ -83,13 +80,13 @@ export function CTABanner() {
  hl1: (chunks) => (
  <span className="relative inline-block">
  <span className="relative z-10">{chunks}</span>
- <span className="absolute left-0 right-0 bottom-0 h-2.5 bg-amber-300/70 rounded-sm" />
+ <span className="absolute left-0 right-0 bottom-0 h-1.5 sm:h-2 lg:h-2.5 bg-amber-300/70 rounded-sm" />
  </span>
  ),
  hl2: (chunks) => (
  <span className="relative inline-block text-purple">
  <span className="relative z-10">{chunks}</span>
- <span className="absolute left-0 right-0 bottom-0 h-2.5 bg-amber-300/70 rounded-sm" />
+ <span className="absolute left-0 right-0 bottom-0 h-1.5 sm:h-2 lg:h-2.5 bg-amber-300/70 rounded-sm" />
  </span>
  ),
  })}
@@ -198,6 +195,11 @@ export function CTABanner() {
  disabled={loading}
  className="w-full inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-primary text-white font-bold text-base shadow-lg shadow-primary/30 hover:opacity-90 hover:shadow-xl active:scale-[0.99] transition-all disabled:opacity-60"
  >
+ {loading ? (
+ <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+ ) : (
+ <KidSendIcon className="w-4 h-4" />
+ )}
  {loading ? t("formSending") : t("formSubmit")}
  </button>
  </form>

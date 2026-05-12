@@ -130,6 +130,11 @@ const STATIC_FALLBACK: StaticCat[] = [
  ...SLUG_STYLE["web-development"],
  },
  {
+ key: "mobile-development",
+ descKey: "mobileDevelopmentDesc",
+ ...SLUG_STYLE["mobile-development"],
+ },
+ {
  key: "artificial-intelligence",
  descKey: "artificialIntelligenceDesc",
  ...SLUG_STYLE["artificial-intelligence"],
@@ -147,6 +152,7 @@ const LEGACY_DESC_SLUGS = new Set([
  "algorithms",
  "arabic",
  "web-development",
+ "mobile-development",
  "artificial-intelligence",
  "scratch",
 ]);
@@ -307,6 +313,7 @@ function categoryDescription(
  | "algorithmsDesc"
  | "arabicDesc"
  | "webDevelopmentDesc"
+ | "mobileDevelopmentDesc"
  | "artificialIntelligenceDesc"
  | "scratchDesc";
  return t(key);

@@ -71,7 +71,6 @@ export default function ContactContent() {
  <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
  <div className="absolute inset-0 bg-gradient-to-br from-blue-50/60 via-background to-amber-50/40 dark:from-blue-950/20 dark:via-background dark:to-amber-950/10" />
  <div className="absolute -top-32 -right-32 w-[480px] h-[480px] rounded-full bg-blue-300/20 dark:bg-blue-500/10 blur-3xl" />
- <div className="absolute top-1/3 -left-40 w-[460px] h-[460px] rounded-full bg-amber-300/20 dark:bg-amber-500/10 blur-3xl" />
  <div className="absolute -bottom-40 right-1/4 w-[420px] h-[420px] rounded-full bg-violet-300/15 dark:bg-violet-500/10 blur-3xl" />
  <div
  className="absolute inset-0 opacity-[0.08]"
