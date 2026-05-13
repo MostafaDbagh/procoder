@@ -184,7 +184,7 @@ export function CoursesClient({ initialCourses }: Props) {
  dir="auto"
  onChange={(e) => setSearch(e.target.value)}
  placeholder={`${t("all")}...`}
- className="w-full ps-12 pe-4 py-3.5 rounded-2xl bg-surface border border-border text-foreground placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none shadow-sm"
+ className="w-full ps-12 pe-4 py-3.5 rounded-2xl bg-surface border border-border text-foreground placeholder:text-muted focus:border-primary transition-all outline-none shadow-sm"
  />
  {search && (
  <button onClick={() => setSearch("")} className="absolute end-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-muted hover:text-foreground hover:bg-surface-hover transition-colors">

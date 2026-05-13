@@ -34,7 +34,7 @@ interface SignupMatchedChild {
 }
 
 const inputCls =
- "w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all";
+ "w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary outline-none transition-all";
 
 export function AuthModal({
  open,
@@ -771,7 +771,7 @@ export function AuthModal({
  document.getElementById(`otp-${idx - 1}`)?.focus();
  }
  }}
- className="h-12 w-9 rounded-xl border-2 border-border bg-surface text-center text-lg font-bold text-foreground outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-50 sm:h-14 sm:w-11 sm:text-xl"
+ className="h-12 w-9 rounded-xl border-2 border-border bg-surface text-center text-lg font-bold text-foreground outline-none transition-all focus:border-primary disabled:opacity-50 sm:h-14 sm:w-11 sm:text-xl"
  />
  ))}
  </div>

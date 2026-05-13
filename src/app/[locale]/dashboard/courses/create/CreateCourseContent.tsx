@@ -252,9 +252,9 @@ export default function CreateCourseContent() {
 
  // --- Input classes ---
  const inputClass =
- "w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none";
+ "w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary transition-all outline-none";
  const selectClass =
- "w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none";
+ "w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground focus:border-primary transition-all outline-none appearance-none";
  const labelClass = "block text-sm font-semibold mb-2";
 
  // ============ LOGIN SCREEN ============

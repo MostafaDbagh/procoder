@@ -32,11 +32,11 @@ interface EnrollModalProps {
 const STEPS = 4;
 
 const inputCls =
- "w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none";
+ "w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary transition-all outline-none";
 const inputErrCls =
  "w-full px-4 py-3 rounded-xl bg-background border border-red-400 text-foreground placeholder:text-muted focus:border-red-400 focus:ring-2 focus:ring-red-400/20 transition-all outline-none";
 const selectCls =
- "w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none";
+ "w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground focus:border-primary transition-all outline-none";
 const selectErrCls =
  "w-full px-4 py-3 rounded-xl bg-background border border-red-400 text-foreground focus:border-red-400 focus:ring-2 focus:ring-red-400/20 transition-all outline-none";
 const labelCls = "block text-sm font-medium mb-2";

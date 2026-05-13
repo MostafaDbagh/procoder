@@ -8,7 +8,7 @@ import { Shield } from "lucide-react";
 import { PasswordInput } from "@/components/PasswordInput";
 
 const inputCls =
- "w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all";
+ "w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary outline-none transition-all";
 
 export default function AdminLoginClient({ idleSignOut = false }: { idleSignOut?: boolean }) {
  const router = useRouter();

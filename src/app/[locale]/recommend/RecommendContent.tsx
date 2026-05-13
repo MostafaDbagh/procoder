@@ -561,7 +561,7 @@ export default function RecommendContent({ initialCourses }: Props) {
           onKeyDown={handleKeyDown}
           placeholder={t("aiPlaceholder")}
           rows={3}
-          className="w-full px-5 py-4 pe-14 rounded-2xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none resize-none"
+          className="w-full px-5 py-4 pe-14 rounded-2xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary transition-all outline-none resize-none"
          />
          <button
           type="button"
@@ -724,7 +724,7 @@ export default function RecommendContent({ initialCourses }: Props) {
              : "Add more details or ask a follow-up..."
            }
            rows={2}
-           className="w-full px-5 py-3 pe-14 rounded-2xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none resize-none text-sm"
+           className="w-full px-5 py-3 pe-14 rounded-2xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary transition-all outline-none resize-none text-sm"
           />
           <button
            type="button"

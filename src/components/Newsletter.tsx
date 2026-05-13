@@ -54,7 +54,7 @@ export function Newsletter({ variant = "banner" }: NewsletterProps) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={t("placeholder")}
-              className="flex-1 min-w-0 px-3 py-2 rounded-xl bg-background border border-border text-sm text-foreground placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+              className="flex-1 min-w-0 px-3 py-2 rounded-xl bg-background border border-border text-sm text-foreground placeholder:text-muted focus:border-primary outline-none transition-all"
             />
             <button
               type="submit"
@@ -96,7 +96,7 @@ export function Newsletter({ variant = "banner" }: NewsletterProps) {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder={t("placeholder")}
-                    className="flex-1 px-5 py-3.5 rounded-2xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                    className="flex-1 px-5 py-3.5 rounded-2xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary outline-none transition-all"
                   />
                   <button
                     type="submit"

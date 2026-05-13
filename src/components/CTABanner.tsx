@@ -149,7 +149,7 @@ export function CTABanner() {
  value={form.name}
  onChange={(e) => setForm({ ...form, name: e.target.value })}
  placeholder={t("formNamePlaceholder")}
- className="w-full px-4 py-3 rounded-xl bg-background border border-border placeholder:text-muted outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+ className="w-full px-4 py-3 rounded-xl bg-background border border-border placeholder:text-muted outline-none focus:border-primary transition-all"
  />
  </div>
  <div>
@@ -162,7 +162,7 @@ export function CTABanner() {
  value={form.email}
  onChange={(e) => setForm({ ...form, email: e.target.value })}
  placeholder={t("formEmailPlaceholder")}
- className="w-full px-4 py-3 rounded-xl bg-background border border-border placeholder:text-muted outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+ className="w-full px-4 py-3 rounded-xl bg-background border border-border placeholder:text-muted outline-none focus:border-primary transition-all"
  />
  </div>
  <div>
@@ -174,7 +174,7 @@ export function CTABanner() {
  value={form.child}
  onChange={(e) => setForm({ ...form, child: e.target.value })}
  placeholder={t("formChildPlaceholder")}
- className="w-full px-4 py-3 rounded-xl bg-background border border-border placeholder:text-muted outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+ className="w-full px-4 py-3 rounded-xl bg-background border border-border placeholder:text-muted outline-none focus:border-primary transition-all"
  />
  </div>
  <div>
@@ -186,7 +186,7 @@ export function CTABanner() {
  value={form.phone}
  onChange={(e) => setForm({ ...form, phone: e.target.value })}
  placeholder={t("formPhonePlaceholder")}
- className="w-full px-4 py-3 rounded-xl bg-background border border-border placeholder:text-muted outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+ className="w-full px-4 py-3 rounded-xl bg-background border border-border placeholder:text-muted outline-none focus:border-primary transition-all"
  dir="ltr"
  />
  </div>

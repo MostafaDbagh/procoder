@@ -7,23 +7,17 @@ import { motion } from "framer-motion";
 import { sendContactMessage } from "@/lib/api";
 import {
   CheckCircle2,
-  Rocket,
   Users,
   GraduationCap,
-  Clock,
-  Video,
-  MessageCircle,
-  Gift,
 } from "lucide-react";
 import { ChatHeartIcon } from "@/components/icons/PillarIcons";
 import { VideoCameraIcon, GiftBoxIcon, SmileIcon } from "@/components/icons/KidIcons";
 
-const AGES = Array.from({ length: 13 }, (_, i) => i + 6);
-
 export default function FreeTrialContent() {
   const t = useTranslations("freeTrial");
+  const tc = useTranslations("homeCta");
 
-  const [form, setForm] = useState({ name: "", phone: "", age: "", interest: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", child: "", phone: "" });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
 
@@ -51,10 +45,10 @@ export default function FreeTrialContent() {
     try {
       await sendContactMessage({
         name: form.name,
+        email: form.email,
         phone: form.phone,
-        subject: `Free Trial Request — Age ${form.age} — ${form.interest}`,
-        message: `Child age: ${form.age}\nInterest: ${form.interest}\n\n${form.message}`,
-        email: "",
+        subject: "Free Trial Request",
+        message: `Child: ${form.child || "N/A"}\nMobile: ${form.phone || "N/A"}`,
         _hp: hp,
         _t: formLoadedAt,
       } as never);
@@ -81,14 +75,6 @@ export default function FreeTrialContent() {
     { icon: Users, label: t("trustBadge1") },
     { icon: Users, label: t("trustBadge2") },
     { icon: GraduationCap, label: t("trustBadge3") },
-  ];
-
-  const interests = [
-    { value: "programming", label: t("interestProgramming") },
-    { value: "robotics", label: t("interestRobotics") },
-    { value: "algorithms", label: t("interestAlgorithms") },
-    { value: "arabic", label: t("interestArabic") },
-    { value: "gamedev", label: t("interestGameDev") },
   ];
 
   return (
@@ -134,84 +120,61 @@ export default function FreeTrialContent() {
                   <p className="text-muted text-sm max-w-sm mx-auto">{t("successDesc")}</p>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form onSubmit={handleSubmit} className="space-y-4">
                   {/* Honeypot */}
                   <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, overflow: "hidden" }}>
                     <input type="text" name="_hp" tabIndex={-1} autoComplete="off" value={hp} onChange={(e) => setHp(e.target.value)} />
                   </div>
 
-                  <div className="grid sm:grid-cols-2 gap-5">
-                    <div>
-                      <label className="block text-sm font-medium mb-2">
-                        {t("nameLabel")} <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={form.name}
-                        onChange={(e) => setForm({ ...form, name: e.target.value })}
-                        placeholder={t("namePlaceholder")}
-                        className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium mb-2">
-                        {t("phoneLabel")} <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="tel"
-                        required
-                        value={form.phone}
-                        onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                        placeholder={t("phonePlaceholder")}
-                        className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted outline-none"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid sm:grid-cols-2 gap-5">
-                    <div>
-                      <label className="block text-sm font-medium mb-2">
-                        {t("childAgeLabel")} <span className="text-red-500">*</span>
-                      </label>
-                      <select
-                        required
-                        value={form.age}
-                        onChange={(e) => setForm({ ...form, age: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground outline-none"
-                      >
-                        <option value="">{t("selectAge")}</option>
-                        {AGES.map((a) => (
-                          <option key={a} value={a}>{a}</option>
-                        ))}
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium mb-2">
-                        {t("interestLabel")} <span className="text-red-500">*</span>
-                      </label>
-                      <select
-                        required
-                        value={form.interest}
-                        onChange={(e) => setForm({ ...form, interest: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground outline-none"
-                      >
-                        <option value="">{t("selectInterest")}</option>
-                        {interests.map((opt) => (
-                          <option key={opt.value} value={opt.value}>{opt.label}</option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-
                   <div>
-                    <label className="block text-sm font-medium mb-2">{t("messageLabel")}</label>
-                    <textarea
-                      rows={4}
-                      value={form.message}
-                      onChange={(e) => setForm({ ...form, message: e.target.value })}
-                      placeholder={t("messagePlaceholder")}
-                      className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted outline-none resize-y min-h-[120px]"
+                    <label className="block text-sm font-semibold mb-2">
+                      {tc("formNameLabel")} <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={form.name}
+                      onChange={(e) => setForm({ ...form, name: e.target.value })}
+                      placeholder={tc("formNamePlaceholder")}
+                      className="w-full px-4 py-3 rounded-xl bg-background border border-border placeholder:text-muted outline-none focus:border-primary transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold mb-2">
+                      {tc("formEmailLabel")} <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={form.email}
+                      onChange={(e) => setForm({ ...form, email: e.target.value })}
+                      placeholder={tc("formEmailPlaceholder")}
+                      className="w-full px-4 py-3 rounded-xl bg-background border border-border placeholder:text-muted outline-none focus:border-primary transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold mb-2">
+                      {tc("formChildLabel")}
+                    </label>
+                    <input
+                      type="text"
+                      value={form.child}
+                      onChange={(e) => setForm({ ...form, child: e.target.value })}
+                      placeholder={tc("formChildPlaceholder")}
+                      className="w-full px-4 py-3 rounded-xl bg-background border border-border placeholder:text-muted outline-none focus:border-primary transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold mb-2">
+                      {tc("formPhoneLabel")}
+                    </label>
+                    <input
+                      type="tel"
+                      value={form.phone}
+                      onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                      placeholder={tc("formPhonePlaceholder")}
+                      className="w-full px-4 py-3 rounded-xl bg-background border border-border placeholder:text-muted outline-none focus:border-primary transition-all"
+                      dir="ltr"
                     />
                   </div>
 

@@ -106,11 +106,21 @@ html {
   background: var(--muted);
 }
 
-/* Focus visible */
+/* Focus visible — keep on buttons/links for a11y, but form fields get a colored
+   border on focus instead, so the outline is redundant and visually noisy there. */
 *:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
   border-radius: 4px;
+}
+input:focus,
+input:focus-visible,
+textarea:focus,
+textarea:focus-visible,
+select:focus,
+select:focus-visible {
+  outline: none !important;
+  outline-offset: 0 !important;
 }
 
 /* Selection */
