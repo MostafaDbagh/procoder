@@ -78,10 +78,10 @@ export function WhyUs() {
               <motion.article
                 whileHover={{ y: -4 }}
                 transition={{ type: "spring", stiffness: 260, damping: 22 }}
-                className="bg-surface rounded-2xl border border-border p-7 h-full"
+                className="bg-surface rounded-2xl border border-border p-7 h-full text-center sm:text-start"
               >
                 <div
-                  className={`w-16 h-16 rounded-2xl border-2 ${r.bubble} flex items-center justify-center mb-5`}
+                  className={`w-16 h-16 rounded-2xl border-2 ${r.bubble} flex items-center justify-center mb-5 mx-auto sm:mx-0`}
                 >
                   <r.icon className="w-10 h-10" />
                 </div>

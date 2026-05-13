@@ -73,7 +73,7 @@ export function CTABanner() {
 
  <div className="relative grid lg:grid-cols-2 gap-10 lg:gap-14 items-center pt-12 sm:pt-10">
  {/* ─── LEFT: pitch ─── */}
- <div>
+ <div className="order-2 lg:order-1">
  {/* Title with highlighted words */}
  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-5 leading-[1.15]">
  {t.rich("title", {
@@ -129,7 +129,7 @@ export function CTABanner() {
  </div>
 
  {/* ─── RIGHT: form ─── */}
- <div className="relative z-10 bg-background/85 backdrop-blur rounded-2xl border border-border p-6 sm:p-8 shadow-xl shadow-primary/5">
+ <div className="relative z-10 order-1 lg:order-2 bg-background/85 backdrop-blur rounded-2xl border border-border p-6 sm:p-8 shadow-xl shadow-primary/5">
  {done ? (
  <div className="text-center py-12">
  <div className="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950/30 flex items-center justify-center mx-auto mb-5">
