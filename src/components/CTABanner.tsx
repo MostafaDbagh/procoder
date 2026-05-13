@@ -81,9 +81,9 @@ export function CTABanner() {
  <Atom className="w-5 h-5 text-mint" />
  </div>
 
- <div className="relative grid lg:grid-cols-2 gap-10 lg:gap-14 items-center pt-12 sm:pt-10">
- {/* ─── LEFT: pitch ─── */}
- <div className="order-2 lg:order-1">
+ <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-y-8 lg:gap-y-6 lg:gap-x-14 items-center pt-12 sm:pt-10">
+ {/* ─── TEXT (mobile #1, desktop col 1 / row 1) ─── */}
+ <div className="order-1 lg:order-none lg:col-start-1 lg:row-start-1">
  {/* Title with highlighted words */}
  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-5 leading-[1.15]">
  {t.rich("title", {
@@ -107,7 +107,7 @@ export function CTABanner() {
  </p>
 
  {/* Tags */}
- <div className="flex flex-wrap gap-2 mb-6 pb-6 border-b border-border">
+ <div className="flex flex-wrap gap-2">
  {TAG_KEYS.map((k) => (
  <span
  key={k}
@@ -117,9 +117,10 @@ export function CTABanner() {
  </span>
  ))}
  </div>
+ </div>
 
- {/* Feature cards 2x2 */}
- <div className="grid sm:grid-cols-2 gap-3 mb-6">
+ {/* ─── FEATURES — 4 boxes (mobile #3, desktop col 1 / row 2) ─── */}
+ <div className="order-3 lg:order-none lg:col-start-1 lg:row-start-2 grid sm:grid-cols-2 gap-3 lg:pt-6 lg:border-t lg:border-border">
  {FEATURES.map(({ icon: Icon, key }) => (
  <div
  key={key}
@@ -136,10 +137,8 @@ export function CTABanner() {
  ))}
  </div>
 
- </div>
-
- {/* ─── RIGHT: form ─── */}
- <div className="relative z-10 order-1 lg:order-2 bg-background/85 backdrop-blur rounded-2xl border border-border p-6 sm:p-8 shadow-xl shadow-primary/5">
+ {/* ─── FORM (mobile #2, desktop col 2 spans rows 1-2) ─── */}
+ <div className="relative z-10 order-2 lg:order-none lg:col-start-2 lg:row-start-1 lg:row-span-2 bg-background/85 backdrop-blur rounded-2xl border border-border p-6 sm:p-8 shadow-xl shadow-primary/5">
  {done ? (
  <div className="text-center py-12">
  <div className="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950/30 flex items-center justify-center mx-auto mb-5">

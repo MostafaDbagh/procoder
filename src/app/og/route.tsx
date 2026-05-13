@@ -73,7 +73,7 @@ export async function GET(request: Request) {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+          background: "linear-gradient(135deg, #ffffff 0%, #ede9fe 100%)",
           fontFamily,
           direction: isAr ? "rtl" : "ltr",
           padding: "40px",
@@ -96,7 +96,7 @@ export async function GET(request: Request) {
           <p
             style={{
               fontSize: "38px",
-              color: "#e2e8f0",
+              color: "#16234F",
               textAlign: "center",
               maxWidth: "960px",
               lineHeight: 1.25,
@@ -112,7 +112,7 @@ export async function GET(request: Request) {
         <p
           style={{
             fontSize: customTitle ? "22px" : "28px",
-            color: "#94a3b8",
+            color: "#475569",
             textAlign: "center",
             maxWidth: "820px",
             lineHeight: 1.45,
@@ -138,9 +138,9 @@ export async function GET(request: Request) {
               style={{
                 padding: "8px 22px",
                 borderRadius: "999px",
-                background: "rgba(99, 102, 241, 0.22)",
-                border: "1px solid rgba(165, 180, 252, 0.25)",
-                color: "#a5b4fc",
+                background: "rgba(124, 58, 237, 0.10)",
+                border: "1px solid rgba(124, 58, 237, 0.30)",
+                color: "#6d28d9",
                 fontSize: "18px",
                 fontWeight: 600,
               }}
