@@ -91,13 +91,71 @@ export default function ParentsContent() {
 
  {/* Image — hidden on mobile, full bg on sm+ */}
  <Image
- src="/images/parent-bg.jpeg"
+ src="/images/parent-bg.png"
  alt="StemTechLab for parents — AI course matching and parent dashboard for tracking your child's learning"
  fill
  priority
  sizes="100vw"
- className="hidden sm:block object-cover object-center -z-10 sm:scale-[1.08] sm:translate-x-[3.5%]"
+ className="hidden sm:block object-contain object-center -z-10"
  />
+
+ {/* Decision Map text overlays — desktop only, positioned on the empty boxes in the image */}
+ <div className="hidden sm:block absolute inset-0 pointer-events-none">
+ <div
+ className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-display font-extrabold whitespace-nowrap text-[32px]"
+ style={{ top: "14%", left: "68%", color: "#16234F" }}
+ >
+ {t("dmTitle")}
+ </div>
+ <div
+ className="absolute -translate-x-1/2 -translate-y-1/2 text-center whitespace-nowrap"
+ style={{ top: "18%", left: "68%", color: "rgb(63, 72, 104)" }}
+ >
+ {t("dmSubtitle")}
+ </div>
+ <div
+ className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold leading-tight text-[16px] max-w-[16%] whitespace-pre-line"
+ style={{ top: "27%", left: "55%", color: "#16234F" }}
+ >
+ {t("dm1")}
+ </div>
+ <div
+ className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold leading-tight text-[16px] max-w-[16%] whitespace-pre-line"
+ style={{ top: "27%", left: "85%", color: "#16234F" }}
+ >
+ {t("dm2")}
+ </div>
+ <div
+ className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold leading-tight text-[16px] max-w-[16%] whitespace-pre-line"
+ style={{ top: "43%", left: "50%", color: "#16234F" }}
+ >
+ {t("dm3")}
+ </div>
+ <div
+ className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold leading-tight text-[16px] max-w-[16%] whitespace-pre-line"
+ style={{ top: "44%", left: "88%", color: "#16234F" }}
+ >
+ {t("dm4")}
+ </div>
+ <div
+ className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold leading-tight text-[16px] max-w-[16%] whitespace-pre-line"
+ style={{ top: "60%", left: "53%", color: "#16234F" }}
+ >
+ {t("dm5")}
+ </div>
+ <div
+ className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold leading-tight text-[16px] max-w-[16%] whitespace-pre-line"
+ style={{ top: "61%", left: "87%", color: "#16234F" }}
+ >
+ {t("dm6")}
+ </div>
+ <div
+ className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold whitespace-pre-line text-[16px]"
+ style={{ top: "73%", left: "67%", color: "#16234F" }}
+ >
+ {t("dmAnotherConcern")}
+ </div>
+ </div>
 
  <div className="relative sm:absolute sm:inset-0 sm:flex sm:items-start">
  <div className="max-w-7xl mx-auto sm:h-full w-full">
@@ -133,7 +191,7 @@ export default function ParentsContent() {
  })}
  </p>
 
- <div className={`flex flex-col gap-2 sm:gap-3 max-w-xs ${isArabic ? "sm:ml-auto" : ""}`}>
+ <div className="flex flex-col gap-2 sm:gap-3 max-w-xs">
  <button
  type="button"
  onClick={() => setAuthOpen(true)}
