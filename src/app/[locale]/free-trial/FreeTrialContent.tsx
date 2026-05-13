@@ -198,7 +198,7 @@ export default function FreeTrialContent() {
                       onBlur={(e) => setErrors({ ...errors, phone: phoneError(e.target.value, lang) })}
                       placeholder={tc("formPhonePlaceholder")}
                       aria-invalid={!!errors.phone}
-                      className={`w-full px-4 py-3 rounded-xl bg-background border placeholder:text-muted outline-none transition-all ${errors.phone ? "border-red-500 focus:border-red-500" : "border-border focus:border-primary"}`}
+                      className={`w-full px-4 py-3 rounded-xl bg-background border placeholder:text-muted outline-none transition-all ${lang === "ar" ? "text-right" : ""} ${errors.phone ? "border-red-500 focus:border-red-500" : "border-border focus:border-primary"}`}
                       dir="ltr"
                     />
                     {errors.phone && (

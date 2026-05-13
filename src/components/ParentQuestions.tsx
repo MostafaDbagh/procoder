@@ -96,7 +96,7 @@ export function ParentQuestions() {
                 onClick={() => setSelected(isSelected ? null : id)}
                 aria-pressed={isSelected}
                 aria-label={t(`${id}.question`)}
-                className="group relative flex items-center gap-3 sm:gap-4 w-full text-left rounded-full px-4 sm:px-5 py-3 sm:py-4 bg-white transition-all duration-200 hover:-translate-y-0.5"
+                className="group relative flex items-center gap-3 sm:gap-4 w-full text-start rounded-full px-4 sm:px-5 py-3 sm:py-4 bg-white transition-all duration-200 hover:-translate-y-0.5"
                 style={{
                   border: `1.5px solid ${isSelected ? LAVENDER : LAVENDER_SOFT + "55"}`,
                   boxShadow: isSelected
@@ -130,7 +130,7 @@ export function ParentQuestions() {
                   </span>
                 ) : (
                   <ChevronRight
-                    className="shrink-0 w-5 h-5 transition-transform duration-200 group-hover:translate-x-1"
+                    className="shrink-0 w-5 h-5 transition-transform duration-200 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1"
                     style={{ color: LAVENDER }}
                   />
                 )}
@@ -193,7 +193,7 @@ export function ParentQuestions() {
                 }}
               >
                 {t("ctaStartCheck")}
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight className="w-4 h-4 rtl:rotate-180" />
               </LocalizedLink>
             </motion.div>
           )}
@@ -315,7 +315,7 @@ export function ParentQuestions() {
             }}
           >
             {t("faqLinkCta")}
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-4 h-4 rtl:rotate-180" />
           </LocalizedLink>
         </div>
       </div>
