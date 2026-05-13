@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { AnimatedSection, AnimatedCard } from "@/components/AnimatedSection";
 import { motion } from "framer-motion";
 import { sendContactMessage } from "@/lib/api";
@@ -12,12 +12,16 @@ import {
 } from "lucide-react";
 import { ChatHeartIcon } from "@/components/icons/PillarIcons";
 import { VideoCameraIcon, GiftBoxIcon, SmileIcon } from "@/components/icons/KidIcons";
+import { emailError, phoneError, isValidEmail, isValidUAEPhone } from "@/lib/validation";
 
 export default function FreeTrialContent() {
   const t = useTranslations("freeTrial");
   const tc = useTranslations("homeCta");
+  const locale = useLocale();
+  const lang: "en" | "ar" = locale === "ar" ? "ar" : "en";
 
   const [form, setForm] = useState({ name: "", email: "", child: "", phone: "" });
+  const [errors, setErrors] = useState({ email: "", phone: "" });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
 
@@ -41,6 +45,13 @@ export default function FreeTrialContent() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // Validate before submit — email is required, phone is optional but must be valid if filled
+    const emailErr = isValidEmail(form.email) ? "" : emailError(form.email || "_", lang);
+    const phoneErr = form.phone && !isValidUAEPhone(form.phone) ? phoneError(form.phone, lang) : "";
+    if (emailErr || phoneErr) {
+      setErrors({ email: emailErr, phone: phoneErr });
+      return;
+    }
     setSending(true);
     try {
       await sendContactMessage({
@@ -147,10 +158,18 @@ export default function FreeTrialContent() {
                       type="email"
                       required
                       value={form.email}
-                      onChange={(e) => setForm({ ...form, email: e.target.value })}
+                      onChange={(e) => {
+                        setForm({ ...form, email: e.target.value });
+                        if (errors.email) setErrors({ ...errors, email: "" });
+                      }}
+                      onBlur={(e) => setErrors({ ...errors, email: emailError(e.target.value, lang) })}
                       placeholder={tc("formEmailPlaceholder")}
-                      className="w-full px-4 py-3 rounded-xl bg-background border border-border placeholder:text-muted outline-none focus:border-primary transition-all"
+                      aria-invalid={!!errors.email}
+                      className={`w-full px-4 py-3 rounded-xl bg-background border placeholder:text-muted outline-none transition-all ${errors.email ? "border-red-500 focus:border-red-500" : "border-border focus:border-primary"}`}
                     />
+                    {errors.email && (
+                      <p className="mt-1.5 text-xs text-red-500">{errors.email}</p>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-semibold mb-2">
@@ -170,12 +189,21 @@ export default function FreeTrialContent() {
                     </label>
                     <input
                       type="tel"
+                      inputMode="tel"
                       value={form.phone}
-                      onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                      onChange={(e) => {
+                        setForm({ ...form, phone: e.target.value });
+                        if (errors.phone) setErrors({ ...errors, phone: "" });
+                      }}
+                      onBlur={(e) => setErrors({ ...errors, phone: phoneError(e.target.value, lang) })}
                       placeholder={tc("formPhonePlaceholder")}
-                      className="w-full px-4 py-3 rounded-xl bg-background border border-border placeholder:text-muted outline-none focus:border-primary transition-all"
+                      aria-invalid={!!errors.phone}
+                      className={`w-full px-4 py-3 rounded-xl bg-background border placeholder:text-muted outline-none transition-all ${errors.phone ? "border-red-500 focus:border-red-500" : "border-border focus:border-primary"}`}
                       dir="ltr"
                     />
+                    {errors.phone && (
+                      <p className="mt-1.5 text-xs text-red-500">{errors.phone}</p>
+                    )}
                   </div>
 
                   <button

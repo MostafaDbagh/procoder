@@ -13,7 +13,11 @@ import {
  Baby,
  Clock,
  FileText,
+ Sparkles,
+ Star,
+ PartyPopper,
 } from "lucide-react";
+import { Mascot } from "./Mascot";
 
 import {
  createEnrollment,
@@ -21,6 +25,7 @@ import {
  type PromoQuoteResponse,
 } from "@/lib/api";
 import { formatCoursePrice } from "@/lib/formatCoursePrice";
+import { emailError, phoneError, isValidEmail, isValidUAEPhone } from "@/lib/validation";
 
 interface EnrollModalProps {
  open: boolean;
@@ -45,6 +50,8 @@ const errSpan = <span className="mt-1 text-xs text-red-500 font-medium">This fie
 export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModalProps) {
  const t = useTranslations("enroll");
  const locale = useLocale();
+ const valLang: "en" | "ar" = locale === "ar" ? "ar" : "en";
+ const [fieldErrors, setFieldErrors] = useState({ email: "", phone: "" });
  const [step, setStep] = useState(1);
  const [submitting, setSubmitting] = useState(false);
  const [success, setSuccess] = useState(false);
@@ -103,19 +110,31 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  void refreshQuote();
  }, [open, step, refreshQuote]);
 
- // Celebrate when enrollment completes — two angled bursts in brand colors.
+ // Celebrate when enrollment completes — multiple confetti bursts in brand colors.
  useEffect(() => {
  if (!success) return;
  let cancelled = false;
+ const timers: ReturnType<typeof setTimeout>[] = [];
  (async () => {
  const { default: confetti } = await import("canvas-confetti");
  if (cancelled) return;
  const colors = ["#A78BFA", "#FBBF24", "#10B981", "#F472B6", "#67E8F9"];
- confetti({ particleCount: 110, spread: 75, startVelocity: 48, origin: { x: 0.2, y: 0.5 }, colors });
- confetti({ particleCount: 110, spread: 75, startVelocity: 48, origin: { x: 0.8, y: 0.5 }, colors });
+ const burst = (x: number, particles = 110) =>
+ confetti({ particleCount: particles, spread: 80, startVelocity: 50, origin: { x, y: 0.5 }, colors, scalar: 1.1 });
+ // Opening double burst
+ burst(0.2);
+ burst(0.8);
+ // Second wave — keeps the energy going
+ timers.push(setTimeout(() => { if (!cancelled) { burst(0.3, 70); burst(0.7, 70); } }, 700));
+ // Final overhead shower
+ timers.push(setTimeout(() => {
+ if (cancelled) return;
+ confetti({ particleCount: 120, spread: 160, startVelocity: 35, origin: { x: 0.5, y: 0.2 }, colors, scalar: 0.9, ticks: 220 });
+ }, 1400));
  })();
  return () => {
  cancelled = true;
+ timers.forEach(clearTimeout);
  };
  }, [success]);
 
@@ -230,7 +249,14 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  const canNext = () => {
  switch (step) {
  case 1:
- return form.parentName && form.email && form.phone && form.relationship;
+ return (
+ form.parentName &&
+ form.email &&
+ isValidEmail(form.email) &&
+ form.phone &&
+ isValidUAEPhone(form.phone) &&
+ form.relationship
+ );
  case 2:
  return form.childName && form.childAge && form.gradeLevel;
  case 3:
@@ -333,21 +359,101 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  <div className="p-5 sm:p-6">
  {success ? (
  <motion.div
+ initial={{ opacity: 0, scale: 0.92 }}
+ animate={{ opacity: 1, scale: 1 }}
+ transition={{ duration: 0.4 }}
+ className="relative text-center py-8 sm:py-10 overflow-hidden"
+ >
+ {/* Soft animated gradient backdrop */}
+ <motion.div
+ aria-hidden
+ className="pointer-events-none absolute inset-0 -z-10"
+ initial={{ opacity: 0 }}
+ animate={{ opacity: 1 }}
+ transition={{ duration: 0.6 }}
+ >
+ <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-72 h-72 rounded-full bg-gradient-to-br from-primary/25 via-pink-400/15 to-emerald-300/25 blur-3xl" />
+ </motion.div>
+
+ {/* Floating sparkles */}
+ {[
+ { Icon: Sparkles, top: "12%", left: "10%", delay: 0.2, size: 22, color: "text-amber-400" },
+ { Icon: Star, top: "8%", left: "82%", delay: 0.35, size: 18, color: "text-pink-400" },
+ { Icon: Sparkles, top: "62%", left: "6%", delay: 0.5, size: 16, color: "text-emerald-400" },
+ { Icon: Star, top: "70%", left: "88%", delay: 0.65, size: 20, color: "text-violet-400" },
+ ].map(({ Icon, top, left, delay, size, color }, i) => (
+ <motion.div
+ key={i}
+ className={`pointer-events-none absolute ${color}`}
+ style={{ top, left }}
+ initial={{ opacity: 0, scale: 0, rotate: -45 }}
+ animate={{ opacity: [0, 1, 0.85, 1], scale: [0, 1.2, 0.9, 1], rotate: [0, 12, -8, 0] }}
+ transition={{ delay, duration: 1.8, repeat: Infinity, repeatDelay: 0.6 }}
+ >
+ <Icon style={{ width: size, height: size }} fill="currentColor" />
+ </motion.div>
+ ))}
+
+ {/* Mascot — bouncy entrance */}
+ <motion.div
+ className="mx-auto mb-3 w-fit"
+ initial={{ y: -30, opacity: 0, rotate: -8 }}
+ animate={{ y: 0, opacity: 1, rotate: 0 }}
+ transition={{ type: "spring", stiffness: 320, damping: 14, delay: 0.1 }}
+ >
+ <Mascot pose="wave" size={120} />
+ </motion.div>
+
+ {/* Checkmark with concentric pulse rings */}
+ <div className="relative mx-auto mb-5 w-20 h-20">
+ {[0, 1].map((i) => (
+ <motion.span
+ key={i}
+ aria-hidden
+ className="absolute inset-0 rounded-full bg-emerald-400/30"
+ initial={{ scale: 1, opacity: 0.55 }}
+ animate={{ scale: 2.1, opacity: 0 }}
+ transition={{ duration: 1.6, repeat: Infinity, delay: i * 0.7, ease: "easeOut" }}
+ />
+ ))}
+ <motion.div
+ className="relative w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-950/40 flex items-center justify-center"
+ initial={{ scale: 0 }}
+ animate={{ scale: 1 }}
+ transition={{ type: "spring", stiffness: 380, damping: 14, delay: 0.25 }}
+ >
+ <CheckCircle2 className="w-10 h-10 text-emerald-500" strokeWidth={2.4} />
+ </motion.div>
+ </div>
+
+ <motion.h3
+ initial={{ opacity: 0, y: 12 }}
+ animate={{ opacity: 1, y: 0 }}
+ transition={{ delay: 0.45, duration: 0.4 }}
+ className="text-2xl sm:text-3xl font-extrabold mb-3 text-violet-700 dark:text-violet-300"
+ >
+ {t("successTitle")}
+ </motion.h3>
+ <motion.p
+ initial={{ opacity: 0, y: 8 }}
+ animate={{ opacity: 1, y: 0 }}
+ transition={{ delay: 0.6, duration: 0.4 }}
+ className="text-muted mb-7 max-w-sm mx-auto leading-relaxed"
+ >
+ {t("successDesc")}
+ </motion.p>
+ <motion.button
  initial={{ opacity: 0, scale: 0.9 }}
  animate={{ opacity: 1, scale: 1 }}
- className="text-center py-10"
- >
- <div className="w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-950/30 flex items-center justify-center mx-auto mb-5">
- <CheckCircle2 className="w-10 h-10 text-emerald-500" />
- </div>
- <h3 className="text-xl font-bold mb-2">{t("successTitle")}</h3>
- <p className="text-muted mb-6 max-w-sm mx-auto">{t("successDesc")}</p>
- <button
+ transition={{ delay: 0.75, type: "spring", stiffness: 280, damping: 16 }}
+ whileHover={{ scale: 1.05, rotate: [-1, 1, 0] }}
+ whileTap={{ scale: 0.97 }}
  onClick={handleClose}
- className="px-8 py-3 rounded-xl bg-primary text-white font-semibold hover:scale-[1.02] transition-transform"
+ className="inline-flex items-center gap-2 px-9 py-3 rounded-2xl bg-gradient-to-r from-primary via-violet-500 to-pink-500 text-white font-bold shadow-lg shadow-primary/30 hover:shadow-xl transition-shadow"
  >
+ <PartyPopper className="w-4 h-4" />
  {t("close")}
- </button>
+ </motion.button>
  </motion.div>
  ) : (
  <form onSubmit={handleSubmit}>
@@ -406,13 +512,43 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  </div>
  <div>
  <label className={labelCls}>{t("parentEmail")} *</label>
- <input type="email" required value={form.email} onChange={(e) => set("email", e.target.value)} placeholder={t("emailPlaceholder")} className={stepAttempted && !form.email ? inputErrCls : inputCls} />
- {stepAttempted && !form.email && errSpan}
+ <input
+ type="email"
+ required
+ value={form.email}
+ onChange={(e) => {
+ set("email", e.target.value);
+ if (fieldErrors.email) setFieldErrors((p) => ({ ...p, email: "" }));
+ }}
+ onBlur={(e) => setFieldErrors((p) => ({ ...p, email: emailError(e.target.value, valLang) }))}
+ placeholder={t("emailPlaceholder")}
+ aria-invalid={!!fieldErrors.email || (stepAttempted && !form.email)}
+ className={(stepAttempted && !form.email) || fieldErrors.email ? inputErrCls : inputCls}
+ />
+ {fieldErrors.email ? (
+ <span className="mt-1 text-xs text-red-500 font-medium">{fieldErrors.email}</span>
+ ) : (stepAttempted && !form.email && errSpan)}
  </div>
  <div>
  <label className={labelCls}>{t("phone")} *</label>
- <input type="tel" required value={form.phone} onChange={(e) => set("phone", e.target.value)} placeholder={t("phonePlaceholder")} className={stepAttempted && !form.phone ? inputErrCls : inputCls} />
- {stepAttempted && !form.phone && errSpan}
+ <input
+ type="tel"
+ inputMode="tel"
+ required
+ value={form.phone}
+ onChange={(e) => {
+ set("phone", e.target.value);
+ if (fieldErrors.phone) setFieldErrors((p) => ({ ...p, phone: "" }));
+ }}
+ onBlur={(e) => setFieldErrors((p) => ({ ...p, phone: phoneError(e.target.value, valLang) }))}
+ placeholder={t("phonePlaceholder")}
+ aria-invalid={!!fieldErrors.phone || (stepAttempted && !form.phone)}
+ className={(stepAttempted && !form.phone) || fieldErrors.phone ? inputErrCls : inputCls}
+ dir="ltr"
+ />
+ {fieldErrors.phone ? (
+ <span className="mt-1 text-xs text-red-500 font-medium">{fieldErrors.phone}</span>
+ ) : (stepAttempted && !form.phone && errSpan)}
  </div>
  </motion.div>
  )}
@@ -747,7 +883,17 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  {step < STEPS ? (
  <button
  type="button"
- onClick={() => { if (canNext()) { setStepAttempted(false); setStep(step + 1); } else { setStepAttempted(true); } }}
+ onClick={() => {
+ if (canNext()) { setStepAttempted(false); setStep(step + 1); return; }
+ // On step 1, surface inline validation errors so the user can see what's wrong.
+ if (step === 1) {
+ setFieldErrors({
+ email: form.email && !isValidEmail(form.email) ? emailError(form.email, valLang) : "",
+ phone: form.phone && !isValidUAEPhone(form.phone) ? phoneError(form.phone, valLang) : "",
+ });
+ }
+ setStepAttempted(true);
+ }}
  disabled={!canNext()}
  className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all ${
  canNext()

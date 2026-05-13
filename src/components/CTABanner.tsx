@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { AnimatedSection } from "./AnimatedSection";
 import {
  CheckCircle2,
@@ -15,6 +15,7 @@ import { sendContactMessage } from "@/lib/api";
 import { BrainPattern } from "./BrainPatterns";
 import { Mascot } from "./Mascot";
 import { KidSendIcon } from "./icons/KidIcons";
+import { emailError, phoneError, isValidEmail, isValidUAEPhone } from "@/lib/validation";
 
 const FEATURES = [
  { icon: Video, key: "feature1" },
@@ -27,13 +28,22 @@ const TAG_KEYS = ["tag1", "tag2", "tag4", "tag5", "tag6"] as const;
 
 export function CTABanner() {
  const t = useTranslations("homeCta");
+ const locale = useLocale();
+ const lang: "en" | "ar" = locale === "ar" ? "ar" : "en";
  const [form, setForm] = useState({ name: "", email: "", child: "", phone: "" });
+ const [errors, setErrors] = useState({ email: "", phone: "" });
  const [loading, setLoading] = useState(false);
  const [done, setDone] = useState(false);
 
  const handleSubmit = async (e: React.FormEvent) => {
  e.preventDefault();
  if (loading) return;
+ const emailErr = isValidEmail(form.email) ? "" : emailError(form.email || "_", lang);
+ const phoneErr = form.phone && !isValidUAEPhone(form.phone) ? phoneError(form.phone, lang) : "";
+ if (emailErr || phoneErr) {
+ setErrors({ email: emailErr, phone: phoneErr });
+ return;
+ }
  setLoading(true);
  try {
  await sendContactMessage({
@@ -160,10 +170,18 @@ export function CTABanner() {
  type="email"
  required
  value={form.email}
- onChange={(e) => setForm({ ...form, email: e.target.value })}
+ onChange={(e) => {
+ setForm({ ...form, email: e.target.value });
+ if (errors.email) setErrors({ ...errors, email: "" });
+ }}
+ onBlur={(e) => setErrors({ ...errors, email: emailError(e.target.value, lang) })}
  placeholder={t("formEmailPlaceholder")}
- className="w-full px-4 py-3 rounded-xl bg-background border border-border placeholder:text-muted outline-none focus:border-primary transition-all"
+ aria-invalid={!!errors.email}
+ className={`w-full px-4 py-3 rounded-xl bg-background border placeholder:text-muted outline-none transition-all ${errors.email ? "border-red-500 focus:border-red-500" : "border-border focus:border-primary"}`}
  />
+ {errors.email && (
+ <p className="mt-1.5 text-xs text-red-500">{errors.email}</p>
+ )}
  </div>
  <div>
  <label className="block text-sm font-semibold mb-2">
@@ -183,12 +201,21 @@ export function CTABanner() {
  </label>
  <input
  type="tel"
+ inputMode="tel"
  value={form.phone}
- onChange={(e) => setForm({ ...form, phone: e.target.value })}
+ onChange={(e) => {
+ setForm({ ...form, phone: e.target.value });
+ if (errors.phone) setErrors({ ...errors, phone: "" });
+ }}
+ onBlur={(e) => setErrors({ ...errors, phone: phoneError(e.target.value, lang) })}
  placeholder={t("formPhonePlaceholder")}
- className="w-full px-4 py-3 rounded-xl bg-background border border-border placeholder:text-muted outline-none focus:border-primary transition-all"
+ aria-invalid={!!errors.phone}
+ className={`w-full px-4 py-3 rounded-xl bg-background border placeholder:text-muted outline-none transition-all ${errors.phone ? "border-red-500 focus:border-red-500" : "border-border focus:border-primary"}`}
  dir="ltr"
  />
+ {errors.phone && (
+ <p className="mt-1.5 text-xs text-red-500">{errors.phone}</p>
+ )}
  </div>
  <button
  type="submit"

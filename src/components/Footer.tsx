@@ -3,22 +3,30 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { sendContactMessage } from "@/lib/api";
 import { Mail, Phone, ArrowRight, Rocket, CheckCircle2, LayoutDashboard, GraduationCap, Shield } from "lucide-react";
+import { emailError, isValidEmail } from "@/lib/validation";
 
 export function Footer() {
  const t = useTranslations("footer");
  const nav = useTranslations("nav");
  const cats = useTranslations("categories");
+ const locale = useLocale();
+ const lang: "en" | "ar" = locale === "ar" ? "ar" : "en";
  const [email, setEmail] = useState("");
+ const [emailErr, setEmailErr] = useState("");
  const [subLoading, setSubLoading] = useState(false);
  const [subDone, setSubDone] = useState(false);
 
  const handleSubscribe = async (e: React.FormEvent) => {
   e.preventDefault();
   if (!email || subLoading) return;
+  if (!isValidEmail(email)) {
+   setEmailErr(emailError(email, lang));
+   return;
+  }
   setSubLoading(true);
   try {
    await sendContactMessage({
@@ -125,15 +133,18 @@ export function Footer() {
    {t("subscribeSuccess")}
   </div>
  ) : (
-  <form onSubmit={handleSubscribe} className="space-y-3 mb-6">
+  <form onSubmit={handleSubscribe} className="space-y-2 mb-6">
    <input
     type="email"
     required
     value={email}
-    onChange={(e) => setEmail(e.target.value)}
+    onChange={(e) => { setEmail(e.target.value); if (emailErr) setEmailErr(""); }}
+    onBlur={(e) => setEmailErr(emailError(e.target.value, lang))}
     placeholder={t("emailPlaceholder")}
-    className="w-full px-5 py-3 rounded-full bg-background border border-border text-sm text-foreground placeholder:text-muted focus:border-primary outline-none transition-all"
+    aria-invalid={!!emailErr}
+    className={`w-full px-5 py-3 rounded-full bg-background border text-sm text-foreground placeholder:text-muted outline-none transition-all ${emailErr ? "border-red-500 focus:border-red-500" : "border-border focus:border-primary"}`}
    />
+   {emailErr && <p className="text-xs text-red-500 px-2">{emailErr}</p>}
    <button
     type="submit"
     disabled={subLoading}

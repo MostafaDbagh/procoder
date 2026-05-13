@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { AnimatedSection } from "./AnimatedSection";
 import { sendContactMessage } from "@/lib/api";
 import { Mail, CheckCircle2 } from "lucide-react";
+import { emailError, isValidEmail } from "@/lib/validation";
 
 interface NewsletterProps {
   variant?: "banner" | "footer";
@@ -12,13 +13,20 @@ interface NewsletterProps {
 
 export function Newsletter({ variant = "banner" }: NewsletterProps) {
   const t = useTranslations("newsletter");
+  const locale = useLocale();
+  const lang: "en" | "ar" = locale === "ar" ? "ar" : "en";
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || loading) return;
+    if (!isValidEmail(email)) {
+      setError(emailError(email, lang));
+      return;
+    }
     setLoading(true);
     try {
       await sendContactMessage({
@@ -47,22 +55,27 @@ export function Newsletter({ variant = "banner" }: NewsletterProps) {
             {t("success")}
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="flex gap-2">
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder={t("placeholder")}
-              className="flex-1 min-w-0 px-3 py-2 rounded-xl bg-background border border-border text-sm text-foreground placeholder:text-muted focus:border-primary outline-none transition-all"
-            />
-            <button
-              type="submit"
-              disabled={loading}
-              className="px-4 py-2 rounded-xl bg-primary text-white text-sm font-semibold shrink-0 hover:opacity-90 transition-all disabled:opacity-60"
-            >
-              {loading ? "..." : t("subscribe")}
-            </button>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+            <div className="flex gap-2">
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); if (error) setError(""); }}
+                onBlur={(e) => setError(emailError(e.target.value, lang))}
+                placeholder={t("placeholder")}
+                aria-invalid={!!error}
+                className={`flex-1 min-w-0 px-3 py-2 rounded-xl bg-background border text-sm text-foreground placeholder:text-muted outline-none transition-all ${error ? "border-red-500 focus:border-red-500" : "border-border focus:border-primary"}`}
+              />
+              <button
+                type="submit"
+                disabled={loading}
+                className="px-4 py-2 rounded-xl bg-primary text-white text-sm font-semibold shrink-0 hover:opacity-90 transition-all disabled:opacity-60"
+              >
+                {loading ? "..." : t("subscribe")}
+              </button>
+            </div>
+            {error && <p className="text-xs text-red-500">{error}</p>}
           </form>
         )}
         <p className="text-muted text-xs mt-2">{t("privacy")}</p>
@@ -89,22 +102,27 @@ export function Newsletter({ variant = "banner" }: NewsletterProps) {
                   {t("success")}
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-                  <input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder={t("placeholder")}
-                    className="flex-1 px-5 py-3.5 rounded-2xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary outline-none transition-all"
-                  />
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="px-7 py-3.5 rounded-2xl bg-primary text-white font-bold shadow-lg shadow-primary/20 hover:shadow-xl hover:scale-[1.02] transition-all disabled:opacity-60 whitespace-nowrap"
-                  >
-                    {loading ? t("subscribing") : t("subscribe")}
-                  </button>
+                <form onSubmit={handleSubmit} className="flex flex-col gap-2 max-w-md mx-auto">
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <input
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => { setEmail(e.target.value); if (error) setError(""); }}
+                      onBlur={(e) => setError(emailError(e.target.value, lang))}
+                      placeholder={t("placeholder")}
+                      aria-invalid={!!error}
+                      className={`flex-1 px-5 py-3.5 rounded-2xl bg-background border text-foreground placeholder:text-muted outline-none transition-all ${error ? "border-red-500 focus:border-red-500" : "border-border focus:border-primary"}`}
+                    />
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="px-7 py-3.5 rounded-2xl bg-primary text-white font-bold shadow-lg shadow-primary/20 hover:shadow-xl hover:scale-[1.02] transition-all disabled:opacity-60 whitespace-nowrap"
+                    >
+                      {loading ? t("subscribing") : t("subscribe")}
+                    </button>
+                  </div>
+                  {error && <p className="text-sm text-red-500">{error}</p>}
                 </form>
               )}
               <p className="text-muted text-xs mt-4">{t("privacy")}</p>

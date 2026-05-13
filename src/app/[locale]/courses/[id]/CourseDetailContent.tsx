@@ -195,9 +195,9 @@ export default function CourseDetailContent() {
  <p className="text-muted text-xl">{t("notFound")}</p>
  <LocalizedLink
  href="/courses"
- className="inline-flex items-center gap-2 mt-6 text-primary font-medium hover:underline"
+ className="group inline-flex items-center gap-2 mt-6 px-5 py-2.5 rounded-full bg-primary text-white font-bold shadow-sm hover:shadow-lg hover:-translate-y-0.5 active:scale-95 transition-all duration-200 rtl:flex-row-reverse"
  >
- <ArrowLeft className="w-4 h-4" />
+ <ArrowLeft className="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-1 rtl:rotate-180 rtl:group-hover:translate-x-1" />
  {t("backToCourses")}
  </LocalizedLink>
  </div>
@@ -241,9 +241,9 @@ export default function CourseDetailContent() {
  <AnimatedSection>
  <LocalizedLink
  href="/courses"
- className="inline-flex items-center gap-2 text-muted hover:text-primary font-medium mb-8 transition-colors"
+ className="group inline-flex items-center gap-2 mb-8 px-5 py-2.5 rounded-full bg-primary/10 text-primary font-bold text-sm sm:text-base shadow-sm hover:bg-primary hover:text-white hover:shadow-lg hover:-translate-y-0.5 active:scale-95 transition-all duration-200 rtl:flex-row-reverse"
  >
- <ArrowLeft className="w-4 h-4" />
+ <ArrowLeft className="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-1 rtl:rotate-180 rtl:group-hover:translate-x-1" />
  {t("backToCourses")}
  </LocalizedLink>
  </AnimatedSection>

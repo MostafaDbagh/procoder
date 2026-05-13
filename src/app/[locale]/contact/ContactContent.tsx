@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import { emailError, phoneError, isValidEmail, isValidUAEPhone } from "@/lib/validation";
 import { AnimatedSection } from "@/components/AnimatedSection";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { motion } from "framer-motion";
@@ -20,6 +21,8 @@ import { ChatHeartIcon } from "@/components/icons/PillarIcons";
 
 export default function ContactContent() {
  const t = useTranslations("contact");
+ const locale = useLocale();
+ const lang: "en" | "ar" = locale === "ar" ? "ar" : "en";
  const searchParams = useSearchParams();
 
  const [form, setForm] = useState({
@@ -29,6 +32,7 @@ export default function ContactContent() {
  subject: "",
  message: "",
  });
+ const [errors, setErrors] = useState({ email: "", phone: "" });
 
  const subjectParam = searchParams.get("subject");
 
@@ -50,6 +54,12 @@ export default function ContactContent() {
  const handleSubmit = async (e: React.FormEvent) => {
  e.preventDefault();
  if (cooldown) return;
+ const emailErr = isValidEmail(form.email) ? "" : emailError(form.email || "_", lang);
+ const phoneErr = form.phone && !isValidUAEPhone(form.phone) ? phoneError(form.phone, lang) : "";
+ if (emailErr || phoneErr) {
+ setErrors({ email: emailErr, phone: phoneErr });
+ return;
+ }
  setSending(true);
  try {
  await sendContactMessage({ ...form, _hp: hp, _t: formLoadedAt } as never);
@@ -151,10 +161,18 @@ export default function ContactContent() {
  type="email"
  required
  value={form.email}
- onChange={(e) => setForm({ ...form, email: e.target.value })}
+ onChange={(e) => {
+ setForm({ ...form, email: e.target.value });
+ if (errors.email) setErrors({ ...errors, email: "" });
+ }}
+ onBlur={(e) => setErrors({ ...errors, email: emailError(e.target.value, lang) })}
  placeholder={t("emailPlaceholder")}
- className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted outline-none"
+ aria-invalid={!!errors.email}
+ className={`w-full px-4 py-3 rounded-xl bg-background border text-foreground placeholder:text-muted outline-none transition-all ${errors.email ? "border-red-500 focus:border-red-500" : "border-border focus:border-primary"}`}
  />
+ {errors.email && (
+ <p className="mt-1.5 text-xs text-red-500">{errors.email}</p>
+ )}
  </div>
  </div>
  {/* Row 2: Phone (optional) + Subject — one row on sm+ */}
@@ -165,11 +183,21 @@ export default function ContactContent() {
  </label>
  <input
  type="tel"
+ inputMode="tel"
  value={form.phone}
- onChange={(e) => setForm({ ...form, phone: e.target.value })}
+ onChange={(e) => {
+ setForm({ ...form, phone: e.target.value });
+ if (errors.phone) setErrors({ ...errors, phone: "" });
+ }}
+ onBlur={(e) => setErrors({ ...errors, phone: phoneError(e.target.value, lang) })}
  placeholder={t("phonePlaceholder")}
- className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted outline-none"
+ aria-invalid={!!errors.phone}
+ className={`w-full px-4 py-3 rounded-xl bg-background border text-foreground placeholder:text-muted outline-none transition-all ${errors.phone ? "border-red-500 focus:border-red-500" : "border-border focus:border-primary"}`}
+ dir="ltr"
  />
+ {errors.phone && (
+ <p className="mt-1.5 text-xs text-red-500">{errors.phone}</p>
+ )}
  </div>
  <div>
  <label className="block text-sm font-medium mb-2">
