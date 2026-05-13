@@ -97,10 +97,6 @@ export default function FreeTrialContent() {
 
         {/* Hero */}
         <AnimatedSection className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-5">
-            <Rocket className="w-4 h-4" />
-            {t("badgeLabel")}
-          </div>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-5 max-w-3xl mx-auto leading-tight">
             {t("title")}
           </h1>
@@ -112,26 +108,6 @@ export default function FreeTrialContent() {
                 <Icon className="w-4 h-4 text-primary" />
                 {label}
               </div>
-            ))}
-          </div>
-        </AnimatedSection>
-
-        {/* Steps */}
-        <AnimatedSection className="mb-16">
-          <div className="grid sm:grid-cols-3 gap-5">
-            {steps.map((s, i) => (
-              <AnimatedCard key={i} delay={0.07 * i}>
-                <div className="bg-surface border border-border rounded-2xl p-7 text-center">
-                  <div className={`w-20 h-20 rounded-3xl border-2 ${s.bubble} flex items-center justify-center mx-auto mb-4`}>
-                    <s.icon className="w-12 h-12" />
-                  </div>
-                  <div className="w-7 h-7 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center mx-auto mb-3">
-                    {i + 1}
-                  </div>
-                  <h3 className="font-bold text-lg mb-2">{s.title}</h3>
-                  <p className="text-muted text-sm">{s.desc}</p>
-                </div>
-              </AnimatedCard>
             ))}
           </div>
         </AnimatedSection>
@@ -277,6 +253,26 @@ export default function FreeTrialContent() {
             </div>
           </AnimatedSection>
         </div>
+
+        {/* Steps */}
+        <AnimatedSection className="mb-16">
+          <div className="grid sm:grid-cols-3 gap-5">
+            {steps.map((s, i) => (
+              <AnimatedCard key={i} delay={0.07 * i}>
+                <div className="bg-surface border border-border rounded-2xl p-7 text-center">
+                  <div className={`w-20 h-20 rounded-3xl border-2 ${s.bubble} flex items-center justify-center mx-auto mb-4`}>
+                    <s.icon className="w-12 h-12" />
+                  </div>
+                  <div className="w-7 h-7 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center mx-auto mb-3">
+                    {i + 1}
+                  </div>
+                  <h3 className="font-bold text-lg mb-2">{s.title}</h3>
+                  <p className="text-muted text-sm">{s.desc}</p>
+                </div>
+              </AnimatedCard>
+            ))}
+          </div>
+        </AnimatedSection>
 
       </div>
     </div>
