@@ -251,6 +251,9 @@
     "aiExample2": "I'd love my 12-year-old to begin learning Arabic recitation",
     "aiExample3": "My daughter is 14 and dreams of building her own robot",
     "aiPlaceholder": "e.g. My child is around 10, loves games, and wants to try coding for the first time...",
+    "aiPlaceholder2": "e.g. My 7-year-old draws every day and wants to make her own animated stories...",
+    "aiPlaceholder3": "e.g. My 12-year-old dreams of building robots and exploring AI...",
+    "aiPlaceholder4": "e.g. My 9-year-old wants to read Arabic confidently and discover its beauty...",
     "aiSend": "Find the right classes",
     "aiTimeout": "That took a little longer than expected — please try once more!"
   },

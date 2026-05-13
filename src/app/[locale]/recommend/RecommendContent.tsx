@@ -281,6 +281,15 @@ export default function RecommendContent({ initialCourses }: Props) {
   chatBottomRef.current?.scrollIntoView({ behavior: "smooth" });
  }, [conversation]);
 
+ const placeholderKeys = ["aiPlaceholder", "aiPlaceholder2", "aiPlaceholder3", "aiPlaceholder4"];
+ const [placeholderIdx, setPlaceholderIdx] = useState(0);
+ useEffect(() => {
+  const id = setInterval(() => {
+   setPlaceholderIdx((i) => (i + 1) % placeholderKeys.length);
+  }, 3500);
+  return () => clearInterval(id);
+ }, [placeholderKeys.length]);
+
  const toggleInterest = (key: string) => {
   setInterests((prev) =>
    prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
@@ -559,7 +568,7 @@ export default function RecommendContent({ initialCourses }: Props) {
           value={chatInput}
           onChange={(e) => setChatInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder={t("aiPlaceholder")}
+          placeholder={t(placeholderKeys[placeholderIdx])}
           rows={3}
           className="w-full px-5 py-4 pe-14 rounded-2xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary transition-all outline-none resize-none"
          />
