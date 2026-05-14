@@ -91,7 +91,7 @@ export default function ParentsContent() {
 
  {/* Image — hidden on mobile, full bg on sm+ */}
  <Image
- src="/images/parent-bg.png"
+ src="/images/parent-bg.webp"
  alt="StemTechLab for parents — AI course matching and parent dashboard for tracking your child's learning"
  fill
  priority
@@ -101,60 +101,60 @@ export default function ParentsContent() {
 
  {/* Decision Map text overlays — desktop only, positioned on the empty boxes in the image */}
  <div className="hidden sm:block absolute inset-0 pointer-events-none">
- <div
- className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-display font-extrabold whitespace-nowrap text-[32px]"
+ <h2
+ className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-display font-extrabold whitespace-nowrap text-[32px] m-0"
  style={{ top: "14%", left: "68%", color: "#16234F" }}
  >
  {t("dmTitle")}
- </div>
- <div
- className="absolute -translate-x-1/2 -translate-y-1/2 text-center whitespace-nowrap"
+ </h2>
+ <p
+ className="absolute -translate-x-1/2 -translate-y-1/2 text-center whitespace-nowrap m-0"
  style={{ top: "18%", left: "68%", color: "rgb(63, 72, 104)" }}
  >
  {t("dmSubtitle")}
- </div>
- <div
- className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold leading-tight text-[16px] max-w-[16%] whitespace-pre-line"
+ </p>
+ <h3
+ className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold leading-tight text-[16px] max-w-[16%] whitespace-pre-line m-0"
  style={{ top: "27%", left: "55%", color: "#16234F" }}
  >
  {t("dm1")}
- </div>
- <div
- className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold leading-tight text-[16px] max-w-[16%] whitespace-pre-line"
+ </h3>
+ <h3
+ className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold leading-tight text-[16px] max-w-[16%] whitespace-pre-line m-0"
  style={{ top: "27%", left: "85%", color: "#16234F" }}
  >
  {t("dm2")}
- </div>
- <div
- className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold leading-tight text-[16px] max-w-[16%] whitespace-pre-line"
+ </h3>
+ <h3
+ className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold leading-tight text-[16px] max-w-[16%] whitespace-pre-line m-0"
  style={{ top: "43%", left: "50%", color: "#16234F" }}
  >
  {t("dm3")}
- </div>
- <div
- className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold leading-tight text-[16px] max-w-[16%] whitespace-pre-line"
+ </h3>
+ <h3
+ className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold leading-tight text-[16px] max-w-[16%] whitespace-pre-line m-0"
  style={{ top: "44%", left: "88%", color: "#16234F" }}
  >
  {t("dm4")}
- </div>
- <div
- className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold leading-tight text-[16px] max-w-[16%] whitespace-pre-line"
+ </h3>
+ <h3
+ className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold leading-tight text-[16px] max-w-[16%] whitespace-pre-line m-0"
  style={{ top: "60%", left: "53%", color: "#16234F" }}
  >
  {t("dm5")}
- </div>
- <div
- className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold leading-tight text-[16px] max-w-[16%] whitespace-pre-line"
+ </h3>
+ <h3
+ className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold leading-tight text-[16px] max-w-[16%] whitespace-pre-line m-0"
  style={{ top: "61%", left: "87%", color: "#16234F" }}
  >
  {t("dm6")}
- </div>
- <div
- className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold whitespace-pre-line text-[16px]"
+ </h3>
+ <p
+ className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold whitespace-pre-line text-[16px] m-0"
  style={{ top: "73%", left: "67%", color: "#16234F" }}
  >
  {t("dmAnotherConcern")}
- </div>
+ </p>
  </div>
 
  <div className="relative sm:absolute sm:inset-0 sm:flex sm:items-start">
@@ -213,6 +213,33 @@ export default function ParentsContent() {
  </div>
  </section>
 
+ {/* ═══ DECISION MAP — mobile semantic version (desktop sees the absolute overlays above) ═══ */}
+ <section className="sm:hidden px-4 pt-6 pb-12">
+ <div className="bg-surface rounded-2xl border border-border p-6">
+ <h2
+ className="font-display font-extrabold text-center text-[26px] leading-tight mb-2 m-0"
+ style={{ color: "#16234F" }}
+ >
+ {t("dmTitle")}
+ </h2>
+ <p className="text-sm text-center mb-6 m-0" style={{ color: "rgb(63, 72, 104)" }}>
+ {t("dmSubtitle")}
+ </p>
+ <ul className="space-y-3 list-none p-0 m-0">
+ {(["dm1", "dm2", "dm3", "dm4", "dm5", "dm6"] as const).map((k) => (
+ <li key={k} className="flex items-start gap-3">
+ <span className="mt-2 w-1.5 h-1.5 shrink-0 rounded-full bg-primary" aria-hidden />
+ <h3 className="text-base font-bold leading-snug m-0" style={{ color: "#16234F" }}>
+ {t(k).replace(/\n/g, " ")}
+ </h3>
+ </li>
+ ))}
+ </ul>
+ <p className="text-sm text-center mt-6 m-0" style={{ color: "rgb(63, 72, 104)" }}>
+ {t("dmAnotherConcern").replace(/\n/g, " ")}
+ </p>
+ </div>
+ </section>
 
  <FutureThinkersSection />
 

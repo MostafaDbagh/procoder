@@ -61,7 +61,7 @@ export function Hero() {
  {/* Image — hidden on mobile, full-width absolute bg on sm+ so it never clips the text */}
  <div className="hidden sm:block absolute inset-0 -z-10 overflow-hidden">
  <Image
- src="/images/heor-bg.png"
+ src="/images/hero-bg.webp"
  alt="StemTechLab — kids learning coding, robotics and AI through hands-on STEM classes"
  fill
  priority

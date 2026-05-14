@@ -36,7 +36,7 @@ export function LearningJourney() {
  {/* Desktop: full-width bg image + absolutely-positioned text labels under each icon */}
  <div className="hidden md:block relative w-full aspect-[1280/737]">
  <Image
- src="/images/ladder.jpeg"
+ src="/images/ladder.webp"
  alt="StemTechLab learning journey: Ask, Break Down, Test, Build, Improve — five steps that turn curiosity into real skills"
  fill
  sizes="100vw"
@@ -116,7 +116,7 @@ export function LearningJourney() {
  <div className="md:hidden">
  <div className="relative w-full aspect-[1280/737]">
  <Image
- src="/images/ladder.jpeg"
+ src="/images/ladder.webp"
  alt="StemTechLab learning journey: Ask, Break Down, Test, Build, Improve — five steps that turn curiosity into real skills"
  fill
  sizes="100vw"
