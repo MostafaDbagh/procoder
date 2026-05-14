@@ -56,6 +56,9 @@ export default function ParentsContent() {
  t("promise4"), t("promise5"), t("promise6"),
  ];
 
+ const dmHref = (key: "dm1" | "dm2" | "dm3" | "dm4" | "dm5" | "dm6") =>
+ `/recommend?q=${encodeURIComponent(t(key).replace(/\n/g, " "))}`;
+
  return (
  <div>
  {/* ═══ HERO ═══ */}
@@ -113,48 +116,27 @@ export default function ParentsContent() {
  >
  {t("dmSubtitle")}
  </p>
- <h3
- className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold leading-tight text-[16px] max-w-[16%] whitespace-pre-line m-0"
- style={{ top: "27%", left: "55%", color: "#16234F" }}
- >
- {t("dm1")}
- </h3>
- <h3
- className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold leading-tight text-[16px] max-w-[16%] whitespace-pre-line m-0"
- style={{ top: "27%", left: "85%", color: "#16234F" }}
- >
- {t("dm2")}
- </h3>
- <h3
- className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold leading-tight text-[16px] max-w-[16%] whitespace-pre-line m-0"
- style={{ top: "43%", left: "50%", color: "#16234F" }}
- >
- {t("dm3")}
- </h3>
- <h3
- className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold leading-tight text-[16px] max-w-[16%] whitespace-pre-line m-0"
- style={{ top: "44%", left: "88%", color: "#16234F" }}
- >
- {t("dm4")}
- </h3>
- <h3
- className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold leading-tight text-[16px] max-w-[16%] whitespace-pre-line m-0"
- style={{ top: "60%", left: "53%", color: "#16234F" }}
- >
- {t("dm5")}
- </h3>
- <h3
- className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold leading-tight text-[16px] max-w-[16%] whitespace-pre-line m-0"
- style={{ top: "61%", left: "87%", color: "#16234F" }}
- >
- {t("dm6")}
- </h3>
- <p
- className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-bold whitespace-pre-line text-[16px] m-0"
- style={{ top: "73%", left: "67%", color: "#16234F" }}
- >
- {t("dmAnotherConcern")}
- </p>
+ <LocalizedLink href={dmHref("dm1")} className="absolute -translate-x-1/2 -translate-y-1/2 max-w-[16%] pointer-events-auto" style={{ top: "27%", left: "55%" }}>
+ <h3 className="text-center font-bold leading-tight text-[16px] whitespace-pre-line m-0" style={{ color: "#16234F" }}>{t("dm1")}</h3>
+ </LocalizedLink>
+ <LocalizedLink href={dmHref("dm2")} className="absolute -translate-x-1/2 -translate-y-1/2 max-w-[16%] pointer-events-auto" style={{ top: "27%", left: "85%" }}>
+ <h3 className="text-center font-bold leading-tight text-[16px] whitespace-pre-line m-0" style={{ color: "#16234F" }}>{t("dm2")}</h3>
+ </LocalizedLink>
+ <LocalizedLink href={dmHref("dm3")} className="absolute -translate-x-1/2 -translate-y-1/2 max-w-[16%] pointer-events-auto" style={{ top: "43%", left: "50%" }}>
+ <h3 className="text-center font-bold leading-tight text-[16px] whitespace-pre-line m-0" style={{ color: "#16234F" }}>{t("dm3")}</h3>
+ </LocalizedLink>
+ <LocalizedLink href={dmHref("dm4")} className="absolute -translate-x-1/2 -translate-y-1/2 max-w-[16%] pointer-events-auto" style={{ top: "44%", left: "88%" }}>
+ <h3 className="text-center font-bold leading-tight text-[16px] whitespace-pre-line m-0" style={{ color: "#16234F" }}>{t("dm4")}</h3>
+ </LocalizedLink>
+ <LocalizedLink href={dmHref("dm5")} className="absolute -translate-x-1/2 -translate-y-1/2 max-w-[16%] pointer-events-auto" style={{ top: "60%", left: "53%" }}>
+ <h3 className="text-center font-bold leading-tight text-[16px] whitespace-pre-line m-0" style={{ color: "#16234F" }}>{t("dm5")}</h3>
+ </LocalizedLink>
+ <LocalizedLink href={dmHref("dm6")} className="absolute -translate-x-1/2 -translate-y-1/2 max-w-[16%] pointer-events-auto" style={{ top: "61%", left: "87%" }}>
+ <h3 className="text-center font-bold leading-tight text-[16px] whitespace-pre-line m-0" style={{ color: "#16234F" }}>{t("dm6")}</h3>
+ </LocalizedLink>
+ <LocalizedLink href="/recommend" className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto" style={{ top: "73%", left: "67%" }}>
+ <p className="text-center font-bold whitespace-pre-line text-[16px] m-0" style={{ color: "#16234F" }}>{t("dmAnotherConcern")}</p>
+ </LocalizedLink>
  </div>
 
  <div className="relative sm:absolute sm:inset-0 sm:flex sm:items-start">
@@ -227,17 +209,19 @@ export default function ParentsContent() {
  </p>
  <ul className="space-y-3 list-none p-0 m-0">
  {(["dm1", "dm2", "dm3", "dm4", "dm5", "dm6"] as const).map((k) => (
- <li key={k} className="flex items-start gap-3">
+ <li key={k}>
+ <LocalizedLink href={dmHref(k)} className="flex items-start gap-3 hover:opacity-80 transition-opacity">
  <span className="mt-2 w-1.5 h-1.5 shrink-0 rounded-full bg-primary" aria-hidden />
  <h3 className="text-base font-bold leading-snug m-0" style={{ color: "#16234F" }}>
  {t(k).replace(/\n/g, " ")}
  </h3>
+ </LocalizedLink>
  </li>
  ))}
  </ul>
- <p className="text-sm text-center mt-6 m-0" style={{ color: "rgb(63, 72, 104)" }}>
+ <LocalizedLink href="/recommend" className="block text-sm text-center mt-6 hover:opacity-80 transition-opacity" style={{ color: "rgb(63, 72, 104)" }}>
  {t("dmAnotherConcern").replace(/\n/g, " ")}
- </p>
+ </LocalizedLink>
  </div>
  </section>
 
