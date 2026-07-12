@@ -7,6 +7,7 @@ import { courses as staticCourses, type Category, type Level } from "@/data/cour
 import { useCourses } from "@/hooks/useCourses";
 import type { APICourse } from "@/lib/api";
 import { CourseCard } from "@/components/CourseCard";
+import { ExplorerFeaturedCard } from "@/components/ExplorerFeaturedCard";
 import { motion, AnimatePresence } from "framer-motion";
 import {
  Search,
@@ -221,6 +222,8 @@ export function CoursesClient({ initialCourses }: Props) {
  {/* Filters + Results */}
  <section className="py-10 sm:py-14">
  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+ {/* Explorer — foundational guided journey (own window at /explorer) */}
+ <ExplorerFeaturedCard />
  {/* Filter row */}
  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="flex flex-col gap-4 mb-8 bg-surface rounded-2xl border border-border p-5">
  <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">

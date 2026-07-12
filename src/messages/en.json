@@ -1065,5 +1065,454 @@
       "question": "How do you protect my child's privacy?",
       "answer": "Child safety and privacy are treated seriously. Children are not asked to share unnecessary personal information during learning activities.\n\nAny use of photos, videos, or public learning evidence should follow clear parent or guardian consent."
     }
+  },
+  "explorer": {
+    "meta": {
+      "badge": "Ages 5–7 · Foundational journey",
+      "name": "Explorer",
+      "tagline": "From Playful Instinct to Structured Thinking",
+      "desc": "A foundational journey that turns your child's curiosity into clearer thinking: sequencing, noticing, trying, and improving — through story and guided play.",
+      "cta": "Explore the journey",
+      "sessions": "12 sessions",
+      "duration": "60 minutes",
+      "ages": "Ages 5–7",
+      "pageTitle": "Explorer — From Playful Instinct to Structured Thinking (Ages 5–7) | StemTechLab",
+      "pageDesc": "Explorer is a foundational journey for children ages 5–7: a visual, story-based, playful path that grows sequencing, noticing, trying, and improving. Start with a quick fit check."
+    },
+    "window": {
+      "title": "Explorer",
+      "subtitle": "From Playful Instinct to Structured Thinking",
+      "ages": "Ages 5–7",
+      "chooseHint": "Choose a button to see the details.",
+      "backToWindow": "Back to the window"
+    },
+    "buttons": {
+      "parentMessage": "Parent message",
+      "overview": "Journey overview",
+      "practice": "What your child practices",
+      "start": "Start the journey"
+    },
+    "parentMessage": {
+      "sectionLabel": "A message to parents",
+      "title": "Explorer",
+      "subtitle": "From Playful Instinct to Structured Thinking",
+      "ages": "Ages 5–7",
+      "p1": "Children are natural explorers. Long before they use technology, they are already noticing patterns, connecting causes to effects, predicting outcomes, and organizing their world through play.",
+      "p2": "In the Explorer journey, we do not begin by asking children to memorize abstract terms or use tools before they are ready. We start from the world they already know: stories, images, pathways, questions, curiosity, mistakes, and second attempts.",
+      "p3": "Through guided play and visible projects, children begin to turn their natural curiosity into clearer, more organized thinking.",
+      "p4": "Here, mistakes are not failures. They are valuable moments of discovery. A child learns to pause, notice what happened, rethink the path, and try a better way.",
+      "growthTitle": "The growth you may see in your child",
+      "growthIntro": "During Explorer, your child gradually moves from instinctive trying toward more structured thinking by practicing:",
+      "habits": [
+        {
+          "title": "Breaking ideas into steps",
+          "body": "Children learn that a big idea can become clearer when it is divided into small, ordered steps."
+        },
+        {
+          "title": "Searching in a smarter way",
+          "body": "Children discover that reaching a goal does not always require random trying. It can become clearer when they observe, compare, and choose a path with care."
+        },
+        {
+          "title": "Noticing and fixing mistakes",
+          "body": "Children learn to look at mistakes calmly, identify where the path needs adjustment, and try to repair it instead of stopping."
+        },
+        {
+          "title": "Improving after trying",
+          "body": "Children begin to compare a first attempt with a better one, understanding that learning grows through review and improvement."
+        }
+      ],
+      "milestoneTitle": "The milestone of each session",
+      "milestoneP1": "Each session ends with a small, visible creation that your child can see and explain in their own words.",
+      "milestoneP2": "It may be a story they sequenced, a pathway they repaired, or a small adventure they designed with guidance, reflection, and growing independence.",
+      "milestoneP3": "In Explorer, the project is not just a finished activity. It is evidence that thinking is becoming visible."
+    },
+    "overview": {
+      "sectionLabel": "Journey overview",
+      "intro1": "Explorer is a foundational journey for children ages 5–7, designed to guide their natural curiosity toward clearer organization, observation, and mindful trying.",
+      "intro2": "The journey draws on experiences that feel close to the child's world: stories, images, pathways, small challenges, and projects they can see and explain.",
+      "rows": [
+        {
+          "label": "Stage",
+          "value": "Explorer"
+        },
+        {
+          "label": "Age range",
+          "value": "5–7"
+        },
+        {
+          "label": "Number of sessions",
+          "value": "12 sessions"
+        },
+        {
+          "label": "Session duration",
+          "value": "60 minutes"
+        },
+        {
+          "label": "Delivery model",
+          "value": "Online-first"
+        },
+        {
+          "label": "Nature of the experience",
+          "value": "Visual, spatial, story-based, playful, and guided"
+        },
+        {
+          "label": "Learning language",
+          "value": "Playful Algorithmic Thinking"
+        },
+        {
+          "label": "Growth focus",
+          "value": "Sequencing, noticing, trying, repairing, and improving"
+        },
+        {
+          "label": "Role of technology",
+          "value": "A supportive environment for making thinking visible and building projects, not the center of the experience"
+        }
+      ],
+      "closing": "This journey gives children a safe space to try, notice the effect of their choices, and turn small attempts into clear projects that carry traces of their thinking."
+    },
+    "practice": {
+      "sectionLabel": "What your child practices",
+      "intro1": "Explorer focuses on building four early thinking habits.",
+      "intro2": "Children are not expected to memorize the names of these habits. We observe them as they gradually appear in the child's choices, explanations, and way of approaching small challenges.",
+      "habits": [
+        {
+          "name": "Logical Sequencing",
+          "tag": "I arrange my steps",
+          "body": "Children begin to notice that some things need a clear order. What comes first affects what comes next, and changing one step can change the path of a story or the result of a task.\n\nHere, children practice organizing their thoughts before acting, instead of rushing directly into trying."
+        },
+        {
+          "name": "Smart Inquiry",
+          "tag": "I search in a smarter way",
+          "body": "Children gradually move from guessing and random trying toward more attentive searching. They begin to ask: Where should I start? What have I already tried? Which path seems clearer now?\n\nIn this way, they learn that searching is not only about trying many times. It is also about noticing, comparing, and choosing a calmer path forward."
+        },
+        {
+          "name": "Cognitive Flexibility",
+          "tag": "I notice and fix mistakes",
+          "body": "The meaning of a mistake begins to change in the child's experience. A mistake is no longer the end of the attempt. It becomes a signal that helps the child pause, notice, and understand where something needs adjustment.\n\nInstead of leaving the task at the first difficulty, children practice adjusting the path and trying another solution."
+        },
+        {
+          "name": "Iterative Improvement",
+          "tag": "I improve after trying",
+          "body": "Children understand that the first attempt is not always the final form. They can look at what they created, notice what needs improvement, and try a clearer, better-organized version.\n\nHere, an important habit begins to grow: learning is not completed in the first attempt; it develops through review and improvement."
+        }
+      ]
+    },
+    "start": {
+      "sectionLabel": "Start the journey",
+      "leadTitle": "A calm path, not a checkout",
+      "lead": "The Start button does not take you straight to payment, and it is not a final enrolment. It opens a calm path that helps you check whether Explorer is a good fit — then you choose one of: continue to registration, request a short call with the team, or go back.",
+      "fitTitle": "First: Is Explorer right for my child?",
+      "fitIntro": "These questions help us suggest an initial starting point for your child. Choose the answer closest to what you most often notice. We are not looking for a perfect or 100% precise answer — just simple signals that help us choose a suitable step. The result is a preliminary automated recommendation based on your choices, not a human assessment or a diagnosis of the child.",
+      "beginCta": "Begin the quick check",
+      "questionProgress": "Question {n} of {total}",
+      "next": "Next",
+      "back": "Back",
+      "seeResult": "See recommendation",
+      "chooseOne": "Please choose one answer to continue.",
+      "optionalHint": "This question is optional.",
+      "notesPlaceholder": "You can share a short note that helps us understand how your child engages with learning — such as what they enjoy, what worries them, or something you hope they get a chance to grow.",
+      "privacyReminder": "Please do not share sensitive personal information about your child at this stage. We will only ask for the necessary information later, during registration or direct contact.",
+      "questions": [
+        {
+          "id": "age",
+          "question": "How old is your child?",
+          "options": [
+            {
+              "value": "less_than_5",
+              "label": "Under 5"
+            },
+            {
+              "value": "5",
+              "label": "5 years"
+            },
+            {
+              "value": "6",
+              "label": "6 years"
+            },
+            {
+              "value": "7",
+              "label": "7 years"
+            },
+            {
+              "value": "8_or_more",
+              "label": "8 years or older"
+            }
+          ]
+        },
+        {
+          "id": "story_visual_response",
+          "question": "How does your child usually respond to stories, images, and pathways?",
+          "options": [
+            {
+              "value": "loves",
+              "label": "Loves them and engages easily"
+            },
+            {
+              "value": "short_fun",
+              "label": "Engages when they are short and fun"
+            },
+            {
+              "value": "hands_on",
+              "label": "Prefers hands-on or movement-based activities"
+            },
+            {
+              "value": "needs_prompt",
+              "label": "Sometimes needs a little encouragement or a simple question to start"
+            }
+          ]
+        },
+        {
+          "id": "new_task_behavior",
+          "question": "When your child faces a new task, what do they usually do?",
+          "options": [
+            {
+              "value": "tries_first",
+              "label": "Tries right away before ordering their steps"
+            },
+            {
+              "value": "asks_waits",
+              "label": "Asks or waits for guidance before starting"
+            },
+            {
+              "value": "orders_first",
+              "label": "Tries to organize what to do before starting"
+            },
+            {
+              "value": "needs_encouragement",
+              "label": "Needs encouragement at the start if it feels unfamiliar"
+            },
+            {
+              "value": "wants_example",
+              "label": "Prefers to see a simple example before trying alone"
+            }
+          ]
+        },
+        {
+          "id": "support_after_unsuccessful_attempt",
+          "question": "What kind of support usually helps your child when a first attempt does not work?",
+          "options": [
+            {
+              "value": "encouragement",
+              "label": "Needs a little encouragement to try again"
+            },
+            {
+              "value": "attention_question",
+              "label": "Benefits from a question that draws attention to what happened"
+            },
+            {
+              "value": "redo_calmly",
+              "label": "Prefers that we calmly redo the step together"
+            },
+            {
+              "value": "independent_cause",
+              "label": "Usually tries to find the reason on their own"
+            },
+            {
+              "value": "short_break",
+              "label": "Benefits from a short break before trying again"
+            }
+          ]
+        },
+        {
+          "id": "expression_support",
+          "question": "What usually helps your child talk about what they made after an activity or game?",
+          "options": [
+            {
+              "value": "expresses_easily",
+              "label": "Explains easily when we ask what they did"
+            },
+            {
+              "value": "ordering_questions",
+              "label": "Benefits from simple questions that help order their words"
+            },
+            {
+              "value": "show_then_explain",
+              "label": "Prefers to show what they made, then explain part of it"
+            },
+            {
+              "value": "needs_time",
+              "label": "Needs a short moment before talking about it"
+            },
+            {
+              "value": "specific_question",
+              "label": "Expresses better when we start with a specific, gentle question"
+            }
+          ]
+        },
+        {
+          "id": "previous_learning_experience",
+          "question": "What is closest to your child's previous experience with structured learning?",
+          "options": [
+            {
+              "value": "first_time",
+              "label": "This will be one of their first structured learning experiences"
+            },
+            {
+              "value": "short_workshop",
+              "label": "Took part in a short activity or a simple workshop before"
+            },
+            {
+              "value": "organized_course",
+              "label": "Is used to attending organized sessions or a structured course"
+            },
+            {
+              "value": "light_digital",
+              "label": "Tried digital or tech activities lightly"
+            },
+            {
+              "value": "scattered",
+              "label": "Has scattered experiences; we now want a clearer, more organized start"
+            }
+          ]
+        },
+        {
+          "id": "online_session_interaction",
+          "question": "How do you expect your child to engage with a 60-minute online session?",
+          "options": [
+            {
+              "value": "follow_interactive",
+              "label": "Can usually follow along if the session is interactive"
+            },
+            {
+              "value": "short_breaks",
+              "label": "Does well with short breaks between activities"
+            },
+            {
+              "value": "needs_reminders",
+              "label": "Sometimes needs a gentle reminder or help refocusing"
+            },
+            {
+              "value": "variety_movement",
+              "label": "Benefits from varied activities or light movement during the session"
+            },
+            {
+              "value": "first_time_sessions",
+              "label": "This will be almost their first experience with this kind of session"
+            }
+          ]
+        },
+        {
+          "id": "entry_style_new_activity",
+          "question": "Which description best fits how your child steps into a new activity?",
+          "options": [
+            {
+              "value": "rapid_start",
+              "label": "Jumps in quickly; their steps become clearer as they work"
+            },
+            {
+              "value": "watches_then_joins",
+              "label": "Watches for a bit, then joins once the idea is clearer"
+            },
+            {
+              "value": "asks_before",
+              "label": "Asks before starting, to be sure of what is expected"
+            },
+            {
+              "value": "idea_switching",
+              "label": "Moves between several ideas; benefits from a clear goal in front of them"
+            },
+            {
+              "value": "calm_stepwise",
+              "label": "Engages calmly when the activity feels right and they can try without pressure"
+            }
+          ]
+        },
+        {
+          "id": "additional_notes",
+          "question": "Is there anything else you'd like to share before we suggest a starting point?",
+          "options": [],
+          "optional": true
+        }
+      ],
+      "result": {
+        "kicker": "Preliminary automated recommendation",
+        "thanks": "Thank you for sharing your answers.",
+        "disclaimer": "This is a preliminary automated recommendation, not a human assessment or a diagnosis of the child.",
+        "privacyNote": "We noticed your note may contain personal details. To protect your child's privacy, we won't use these details in this instant response; anything needed can be discussed during direct contact.",
+        "outcomes": {
+          "EXPLORER_LIKELY_FIT": {
+            "title": "Explorer looks like a good place to start",
+            "body": "Based on what you shared, Explorer looks like it could be a good place to start for your child.\n\nFrom your answers, your child is at a suitable age for this journey and can benefit from a visual, story-based, playful experience that helps them order their steps, notice mistakes, and practice improving in a calm, guided way.\n\nYou can continue to registration now, or request a short call with the team if you'd like to be more sure."
+          },
+          "EXPLORER_WITH_REVIEW": {
+            "title": "Explorer may fit — a short call is preferable",
+            "body": "Explorer may be a good fit for your child, but we'd prefer a short review before confirming the starting point.\n\nSome answers suggest your child may need the level of guidance, the way of engaging, or the session length adjusted to suit their attention and learning style.\n\nThis does not mean Explorer is not right — it means we want to choose the start that gives your child more comfort and clarity. We suggest a short call with the team before registration."
+          },
+          "CHECK_HIGHER_STAGE": {
+            "title": "Your child may be ready for a higher path",
+            "body": "From what you shared, your child may be ready for a path more advanced than Explorer.\n\nSome signals — such as previous experience, the ability to explain, or handling challenges well — make us prefer a short review before choosing the starting point.\n\nExplorer may be suitable, or Builder or another path may be closer to your child's current readiness. We suggest a short call with the team before registration."
+          },
+          "PRE_START_REVIEW": {
+            "title": "Let's have a short chat before deciding",
+            "body": "At this stage, we'd rather not make a direct decision before a short chat with you.\n\nThe goal is not to rush your child into a path, but to understand their readiness to engage with a guided, visual, story-based experience in a comfortable, safe way.\n\nWe suggest contacting the team to choose the most suitable start for your child."
+          }
+        },
+        "register": "Continue to registration",
+        "contact": "Request a short call with the team",
+        "back": "Back",
+        "retake": "Retake the check"
+      },
+      "method": {
+        "label": "Preferred method",
+        "whatsapp": "WhatsApp",
+        "call": "Short call",
+        "email": "Email"
+      },
+      "time": {
+        "label": "Best time",
+        "morning": "Morning",
+        "afternoon": "Afternoon",
+        "evening": "Evening"
+      },
+      "contactForm": {
+        "title": "Request a short call with the team",
+        "intro": "If you'd like to be more sure before registering, the StemTechLab team can reach out to help you choose the most suitable starting point for your child. This contact is not a test for the child — it's a chance to better understand how they engage and their current needs.",
+        "parentName": "Parent's name",
+        "email": "Email",
+        "handle": "Phone or WhatsApp number",
+        "note": "Optional note",
+        "notePlaceholder": "Anything brief you'd like the team to know.",
+        "submit": "Send request",
+        "submitting": "Sending…",
+        "successTitle": "Your request has been received",
+        "successBody": "The StemTechLab team will reach out through the method you chose to help you pick the most suitable starting point for your child."
+      },
+      "registerForm": {
+        "title": "Register for Explorer",
+        "functionNote": "Registration does not re-check fit. It collects basic details to organize the join request and follow-up.",
+        "intro": "Complete the basic details to request joining the Explorer journey. The team will use this information to contact you and organize the next step.",
+        "parentSection": "Parent details",
+        "fullName": "Parent's full name",
+        "phone": "Phone or WhatsApp number",
+        "email": "Email",
+        "childSection": "Child details",
+        "childName": "Child's first name",
+        "childAge": "Child's age",
+        "language": "Preferred language for contact or learning",
+        "langArabic": "Arabic",
+        "langEnglish": "English",
+        "langBoth": "Both",
+        "followSection": "Preferred follow-up",
+        "note": "Optional note",
+        "notePlaceholder": "Anything brief you'd like the team to know before we contact you?",
+        "consent": "I agree that this information will be used only to contact us about the Explorer journey and to organize the registration step, respecting my child's privacy and not sharing their data beyond this purpose.",
+        "submit": "Send registration request",
+        "submitting": "Sending…",
+        "successTitle": "Your Explorer registration request has been received",
+        "successBody": "Thank you. The StemTechLab team will review your request and contact you through the method you chose to confirm the next step.\n\nThis step does not mean sessions start right away — it secures your join request and organizes the right follow-up before we begin."
+      },
+      "payment": {
+        "title": "About payment",
+        "text": "You are not asked to pay before the program details are explained and the step is confirmed as suitable for your child.\n\nWhen your enrolment is confirmed, you'll receive an official payment link or clear payment instructions, with a receipt and confirmation after completion."
+      },
+      "errors": {
+        "required": "This field is required",
+        "email": "Please enter a valid email",
+        "consent": "Please accept to continue",
+        "submit": "Something went wrong. Please try again."
+      },
+      "close": "Close",
+      "done": "Done"
+    }
   }
 }
