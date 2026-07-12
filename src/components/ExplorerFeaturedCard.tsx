@@ -29,7 +29,7 @@ export function ExplorerFeaturedCard() {
       className="mb-8"
     >
       <LocalizedLink href="/explorer" className="group block">
-        <div className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-sky-500 via-indigo-500 to-violet-600 p-6 text-white transition-all duration-300 hover:shadow-xl hover:shadow-primary/20 sm:p-8">
+        <div className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-indigo-600 via-violet-600 to-purple-700 p-6 text-white transition-all duration-300 hover:shadow-xl hover:shadow-primary/20 sm:p-8">
           <div className="pointer-events-none absolute -top-10 -end-10 h-40 w-40 rounded-full bg-white/10" />
           <div className="pointer-events-none absolute -bottom-12 -start-8 h-48 w-48 rounded-full bg-white/10" />
 
