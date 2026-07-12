@@ -42,6 +42,7 @@ export type SiteLocale = (typeof LOCALES)[number];
 export const PUBLIC_STATIC_PATHS = [
  { path: "", priority: 1.0, changeFrequency: "weekly" as const },
  { path: "/courses", priority: 0.9, changeFrequency: "weekly" as const },
+ { path: "/explorer", priority: 0.85, changeFrequency: "monthly" as const },
  { path: "/free-trial", priority: 0.9, changeFrequency: "monthly" as const },
  { path: "/parents", priority: 0.85, changeFrequency: "monthly" as const },
  { path: "/blogs", priority: 0.85, changeFrequency: "weekly" as const },

@@ -113,6 +113,7 @@ United Arab Emirates (Dubai, Abu Dhabi, Sharjah, Ajman, Ras Al Khaimah, Fujairah
 ## Citation links
 - Homepage: ${base} (EN: ${base}/en | AR: ${base}/ar)
 - Course catalog: ${base}/en/courses
+- Explorer (foundational thinking journey for ages 5–7, with a guided fit check): ${base}/en/explorer
 - AI course finder (first of its kind for kids in the GCC): ${base}/en/recommend
 - For parents (dashboard overview): ${base}/en/parents
 - About: ${base}/en/about
