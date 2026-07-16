@@ -10,14 +10,14 @@ const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 const meta = {
   en: {
-    title: "Free Trial Class for Kids | Coding, Robotics & Arabic — StemTechLab",
+    title: "Free Trial Class for Kids — Coding & Robotics | StemTechLab",
     description:
-      "Book your child's free 60-minute live class — a real certified instructor, a real small group, no credit card and no commitment. Available for Coding, Robotics, and Arabic courses for ages 6–18. Spots are limited per session.",
+      "Book your child's free 60-minute live class with a certified instructor — no credit card, no commitment. Coding and robotics for ages 6–18.",
   },
   ar: {
-    title: "حصة مجانية للأطفال | برمجة وروبوتات وعربية",
+    title: "حصة مجانية للأطفال | برمجة وروبوتات",
     description:
-      "احجز حصة مجانية ٦٠ دقيقة لطفلك — معلم معتمد، مجموعة صغيرة، بدون بطاقة ائتمان. برمجة وروبوتات وعربية للأعمار ٦–١٨. الأماكن محدودة.",
+      "احجز حصة مجانية ٦٠ دقيقة لطفلك — معلم معتمد، مجموعة صغيرة، بدون بطاقة ائتمان. برمجة وروبوتات للأعمار ٦–١٨. الأماكن محدودة.",
   },
 };
 

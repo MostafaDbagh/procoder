@@ -10,12 +10,12 @@ const meta = {
   en: {
     title: "FAQ — Frequently Asked Questions | StemTechLab",
     description:
-      "Got questions? Find answers about StemTechLab classes, scheduling, teachers, and more. The UAE's leading live coding, robotics & Arabic courses for kids 6–18 across the UAE and GCC.",
+      "Answers about StemTechLab classes, scheduling, teachers, and more — live coding & robotics courses for kids 6–18 across the UAE and GCC.",
   },
   ar: {
     title: "الأسئلة الشائعة | ستم تك لاب",
     description:
-      "أجوبة على أسئلتك حول حصص ستم تك لاب، المواعيد، المعلمين، الأسعار وأكثر. دورات برمجة وروبوتات وعربية للأطفال ٦–١٨ في الإمارات ودول الخليج العربي.",
+      "أجوبة على أسئلتك حول حصص ستم تك لاب، المواعيد، المعلمين، الأسعار وأكثر. دورات برمجة وروبوتات للأطفال ٦–١٨ في الإمارات ودول الخليج العربي.",
   },
 };
 

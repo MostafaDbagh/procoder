@@ -9,12 +9,12 @@ const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 const meta = {
  en: {
- title: "For Parents | AI analyses your child’s behaviour & builds their future",
+ title: "For Parents — Track Your Child’s Progress",
  description:
- "Everything parents need to know about StemTechLab: use the AI course finder to match your child to the right course, then track attendance, progress, and instructor notes from the parent dashboard. Certified teachers, max 3 students per class, child-privacy-aware practices.",
+ "Match your child to the right course with the AI course finder, then follow attendance, progress, and instructor notes from the parent dashboard.",
  },
  ar: {
- title: "لأولياء الأمور | ذكاء اصطناعي يختار لطفلك",
+ title: "لأولياء الأمور — تابع تقدم طفلك",
  description:
  "منتقي دورات بالذكاء الاصطناعي يختار الأنسب لطفلك. تابع الحضور والتقدم وملاحظات المعلم من لوحة التحكم. معلمون معتمدون، حد أقصى ٣ طلاب، وتجربة مجانية.",
  },

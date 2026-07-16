@@ -198,7 +198,7 @@ export default async function CourseDetailPage({
  dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
  />
  )}
- <CourseDetailContent />
+ <CourseDetailContent initialCourse={apiCourse ?? undefined} />
  </>
  );
 }

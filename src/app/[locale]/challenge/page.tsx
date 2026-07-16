@@ -10,7 +10,7 @@ const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 const meta = {
  en: {
- title: "Free Kids STEM Challenge — Project of the Month",
+ title: "Free Kids STEM Challenge of the Month",
  description:
  "Try a free paper “pixel letter” mini-challenge for kids. No login. Sign up with email for next month’s project and STEM tips from StemTechLab.",
  },

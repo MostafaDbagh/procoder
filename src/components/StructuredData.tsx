@@ -1,3 +1,6 @@
+import { getTranslations } from "next-intl/server";
+import { ALL_FAQ_KEYS } from "@/data/faqKeys";
+
 const SITE_URL = (process.env.SITE_URL || "https://www.stemtechlab.com").replace(/\/$/, "");
 const ORG_ID = `${SITE_URL}/#organization`;
 const WEBSITE_ID = `${SITE_URL}/#website`;
@@ -92,42 +95,21 @@ export function OrganizationSchema() {
  return <JsonLd data={data} />;
 }
 
-const FAQ_EN = [
- { q: "What age group are StemTechLab courses designed for?", a: "Ages 6–18 with paths by level. Most students take about two 1-hour live sessions per week." },
- { q: "How does StemTechLab suggest the best course for my child?", a: "Our Course Finder uses AI-powered matching to propose live courses that fit your child’s age, interests, and level. Parents choose what to enroll in." },
- { q: "How is my child’s data and privacy protected?", a: "Encryption, COPPA-aware practices, and no selling of child data. Parents control student accounts." },
- { q: "Does my child need prior experience?", a: "No—beginners start with fundamentals; advanced tracks exist too. Our AI course finder and form help pick a level." },
- { q: "Do you offer free trial classes?", a: "Yes: one free live session, no obligation." },
- { q: "How are StemTechLab classes conducted?", a: "Live online in small groups or 1:1 with screen share, guided practice, and interactive tools." },
- { q: "What devices are needed for classes?", a: "Laptop or desktop plus stable internet. Coding runs in the browser; robotics kits ship where needed." },
- { q: "Which countries does StemTechLab serve?", a: "Headquartered in Dubai and built UAE-first, with classes for families across the GCC (UAE, Saudi Arabia, Qatar, Kuwait, Bahrain, Oman) — in English or Arabic." },
- { q: "Are StemTechLab teachers certified and Arabic-native?", a: "Yes — all teachers are certified specialists in teaching children. Many are native Arabic speakers, enabling instruction in both Arabic and English across all STEM subjects." },
- { q: "Can I reschedule or cancel classes?", a: "Reschedule up to 4 hours before class; plans can pause when your schedule changes." },
-];
-
-const FAQ_AR = [
- { q: "ما الفئة العمرية التي تستهدفها دورات StemTechLab؟", a: "الأعمار من ٦ إلى ١٨ عامًا مع مسارات حسب المستوى. يأخذ معظم الطلاب جلستين مباشرتين مدة كل منهما ساعة أسبوعيًا." },
- { q: "كيف تقترح StemTechLab أفضل دورة لطفلي؟", a: "يستخدم محدد الدورات لدينا تقنية الذكاء الاصطناعي لاقتراح الدورات المباشرة التي تناسب عمر طفلك واهتماماته ومستواه. يختار الوالدان الدورة التي يرغبون في التسجيل بها." },
- { q: "كيف تُحمى بيانات طفلي وخصوصيته؟", a: "نعتمد التشفير الكامل ومعايير حماية بيانات الأطفال، ولا نبيع بيانات الأطفال إطلاقًا. يتحكم الوالدان في حسابات الطلاب، والمنصة آمنة تمامًا للأطفال." },
- { q: "هل يحتاج طفلي إلى خبرة مسبقة؟", a: "لا—يبدأ المبتدئون بالأساسيات، وتتوفر مسارات متقدمة أيضًا. يساعد محدد الدورات بالذكاء الاصطناعي على اختيار المستوى المناسب لعمر طفلك." },
- { q: "هل تقدمون حصصًا تجريبية مجانية؟", a: "نعم: حصة مباشرة مجانية ٦٠ دقيقة — بدون بطاقة بنكية ولا أي التزام. متاح لعائلات دبي وأبوظبي والشارقة وعجمان وكل دول الخليج." },
- { q: "هل المعلمون عرب أصليون ومعتمدون؟", a: "نعم، جميع معلمينا معتمدون ومتخصصون في تعليم الأطفال. كثيرون منهم عرب أصليون يتيحون تعليم العربية والمحتوى التقني باللغتين العربية والإنجليزية." },
- { q: "كيف تُعقد حصص StemTechLab؟", a: "مباشرة عبر الإنترنت في مجموعات صغيرة (حد أقصى ٣ طلاب) أو فردية مع مشاركة الشاشة وممارسة موجّهة وأدوات تفاعلية. مواعيد تناسب التوقيت في الإمارات ودول الخليج." },
- { q: "ما الأجهزة المطلوبة للحصص؟", a: "حاسوب محمول أو مكتبي مع اتصال إنترنت مستقر. تعمل البرمجة في المتصفح مباشرة." },
- { q: "ما الدول التي تخدمها StemTechLab؟", a: "مقرّها دبي ومبنية للإمارات أولاً، وتخدم العائلات في كل دول الخليج (الإمارات، السعودية، قطر، الكويت، البحرين، عُمان) — باللغتين العربية والإنجليزية." },
- { q: "هل يمكنني إعادة جدولة الحصص أو إلغاؤها؟", a: "يمكن إعادة الجدولة قبل ٤ ساعات من الحصة؛ ويمكن تعليق الخطة في أي وقت عند تغيّر جدولك." },
-];
-
-export function FAQSchema({ locale = "en" }: { locale?: string }) {
- const faqs = locale === "ar" ? FAQ_AR : FAQ_EN;
+/**
+ * FAQPage JSON-LD built from the same `faq` translation namespace the visible
+ * FAQ accordion renders — Google requires the schema to match on-page content,
+ * so this must only be emitted on pages that render <FAQ />.
+ */
+export async function FAQSchema({ locale = "en" }: { locale?: string }) {
+ const t = await getTranslations({ locale, namespace: "faq" });
 
  const data = {
  "@context": "https://schema.org",
  "@type": "FAQPage",
- mainEntity: faqs.map((f) => ({
+ mainEntity: ALL_FAQ_KEYS.map((id) => ({
  "@type": "Question",
- name: f.q,
- acceptedAnswer: { "@type": "Answer", text: f.a },
+ name: t(`${id}_q`),
+ acceptedAnswer: { "@type": "Answer", text: t(`${id}_a`) },
  })),
  };
 

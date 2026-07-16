@@ -1,10 +1,10 @@
 "use client";
 
-import { useMemo, useState, type ElementType } from "react";
-import { useTranslations } from "next-intl";
+import { useEffect, useMemo, useState, type ElementType } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import { LocalizedLink } from "@/components/LocalizedLink";
-import { sendContactMessage } from "@/lib/api";
+import { createExplorerRequest, type ExplorerAnswerDetail } from "@/lib/api";
 import { isValidEmail } from "@/lib/validation";
 import {
   runExplorerFit,
@@ -166,12 +166,12 @@ export default function ExplorerContent() {
 function ExplorerHero() {
   const t = useTranslations("explorer");
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-indigo-600 via-violet-600 to-purple-700 p-7 sm:p-10 text-white">
-      <div className="pointer-events-none absolute -top-10 -end-10 h-40 w-40 rounded-full bg-white/10" />
-      <div className="pointer-events-none absolute -bottom-12 -start-8 h-48 w-48 rounded-full bg-white/10" />
+    <div className="relative overflow-hidden rounded-3xl border border-primary/15 bg-gradient-to-br from-violet-50 via-sky-50 to-emerald-50 p-7 dark:border-primary/20 dark:from-violet-950/40 dark:via-slate-900 dark:to-slate-900 sm:p-10">
+      <div className="pointer-events-none absolute -top-10 -end-10 h-40 w-40 rounded-full bg-primary/5" />
+      <div className="pointer-events-none absolute -bottom-12 -start-8 h-48 w-48 rounded-full bg-primary/5" />
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute end-6 top-6 text-white/40"
+        className="pointer-events-none absolute end-6 top-6 text-primary/30"
         animate={{ rotate: [0, 12, -8, 0], scale: [1, 1.08, 1] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       >
@@ -179,17 +179,17 @@ function ExplorerHero() {
       </motion.div>
 
       <div className="relative flex items-center gap-4">
-        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-white/15 backdrop-blur-sm">
+        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
           <Compass className="h-9 w-9" />
         </div>
         <div className="min-w-0">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
             <Star className="h-3.5 w-3.5" /> {t("window.ages")}
           </span>
-          <h1 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl">
+          <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
             {t("window.title")}
           </h1>
-          <p className="mt-1 text-sm font-medium text-white/90 sm:text-base">
+          <p className="mt-1 text-sm font-medium text-muted sm:text-base">
             {t("window.subtitle")}
           </p>
         </div>
@@ -332,16 +332,115 @@ function PracticePanel() {
 // ── Button 4 — Start the journey ─────────────────────────────
 type StartStage = "intro" | "quiz" | "result" | "contact" | "register";
 
+/** Quiz progress survives tab switches, stray taps, and reloads. */
+const FIT_STORAGE_KEY = "explorer-fit-state-v1";
+
+interface PersistedFitState {
+  answers: Record<string, string>;
+  notes: string;
+  qIndex: number;
+  stage: StartStage;
+}
+
+/**
+ * Read saved quiz progress. Safe to call in state initializers: StartJourney
+ * only mounts on user interaction (the window's default tab is Parent message),
+ * so it never takes part in SSR hydration.
+ */
+function loadFitState(): PersistedFitState | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(FIT_STORAGE_KEY);
+    if (!raw) return null;
+    const p = JSON.parse(raw) as {
+      v?: number;
+      answers?: Record<string, string>;
+      notes?: string;
+      qIndex?: number;
+      stage?: StartStage;
+    };
+    if (p?.v !== 1) return null;
+    // Form inputs aren't persisted — land back on the result screen instead.
+    const rawStage =
+      p.stage === "contact" || p.stage === "register" ? "result" : p.stage;
+    return {
+      answers:
+        p.answers && typeof p.answers === "object" ? p.answers : {},
+      notes: typeof p.notes === "string" ? p.notes : "",
+      qIndex: typeof p.qIndex === "number" ? p.qIndex : 0,
+      stage: rawStage === "quiz" || rawStage === "result" ? rawStage : "intro",
+    };
+  } catch {
+    return null; // corrupted state — start fresh
+  }
+}
+
 function StartJourney({ onExit }: { onExit: () => void }) {
   const t = useTranslations("explorer");
   const questions = t.raw("start.questions") as FitQuestion[];
   const total = questions.length;
 
-  const [stage, setStage] = useState<StartStage>("intro");
-  const [qIndex, setQIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [notes, setNotes] = useState("");
+  // Restore saved progress once, via lazy initializers (see loadFitState note).
+  const [persisted] = useState(loadFitState);
+  const [stage, setStage] = useState<StartStage>(persisted?.stage ?? "intro");
+  const [qIndex, setQIndex] = useState(() =>
+    Math.min(Math.max(persisted?.qIndex ?? 0, 0), total - 1)
+  );
+  const [answers, setAnswers] = useState<Record<string, string>>(
+    persisted?.answers ?? {}
+  );
+  const [notes, setNotes] = useState(persisted?.notes ?? "");
   const [attempted, setAttempted] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  // Keep progress saved so a stray tap or reload never wipes the answers.
+  useEffect(() => {
+    if (submitted) return;
+    try {
+      window.localStorage.setItem(
+        FIT_STORAGE_KEY,
+        JSON.stringify({ v: 1, answers, notes, qIndex, stage })
+      );
+    } catch {
+      // storage unavailable (e.g. private mode) — non-fatal
+    }
+  }, [submitted, answers, notes, qIndex, stage]);
+
+  /** Called by the forms after a successful submission. */
+  const markSubmitted = () => {
+    setSubmitted(true);
+    try {
+      window.localStorage.removeItem(FIT_STORAGE_KEY);
+    } catch {
+      // ignore
+    }
+  };
+
+  // All 9 answers with question text + chosen label — sent with both request types.
+  const answersDetail = useMemo<ExplorerAnswerDetail[]>(() => {
+    const detail = questions
+      .filter((q) => q.id !== "additional_notes")
+      .map((q) => {
+        const value = answers[q.id as string] || "";
+        return {
+          id: q.id as string,
+          question: q.question,
+          value,
+          label: q.options.find((o) => o.value === value)?.label || "",
+        };
+      });
+    const notesQ = questions.find((q) => q.id === "additional_notes");
+    const trimmed = notes.trim();
+    if (notesQ && trimmed) {
+      detail.push({
+        id: "additional_notes",
+        question: notesQ.question,
+        value: "",
+        label: trimmed.slice(0, 300),
+      });
+    }
+    return detail;
+  }, [questions, answers, notes]);
 
   const engineInput: ExplorerAnswers = useMemo(
     () => ({
@@ -396,6 +495,7 @@ function StartJourney({ onExit }: { onExit: () => void }) {
     setNotes("");
     setQIndex(0);
     setAttempted(false);
+    setSubmitted(false);
     setStage("quiz");
   }
 
@@ -546,8 +646,9 @@ function StartJourney({ onExit }: { onExit: () => void }) {
     return (
       <ContactForm
         outcome={result.outcome}
-        ageAnswer={answers.age}
+        answers={answersDetail}
         onBack={() => setStage("result")}
+        onSubmitted={markSubmitted}
       />
     );
   }
@@ -556,8 +657,9 @@ function StartJourney({ onExit }: { onExit: () => void }) {
   return (
     <RegisterForm
       outcome={result.outcome}
-      ageAnswer={answers.age}
+      answers={answersDetail}
       onBack={() => setStage("result")}
+      onSubmitted={markSubmitted}
     />
   );
 }
@@ -695,10 +797,6 @@ function Segmented({
   );
 }
 
-function outcomeLabel(outcome: ExplorerOutcome): string {
-  return outcome; // machine code — the team maps this internally
-}
-
 function FormSuccess({
   title,
   body,
@@ -741,14 +839,17 @@ function FormSuccess({
 // ── Contact form (short call request) ────────────────────────
 function ContactForm({
   outcome,
-  ageAnswer,
+  answers,
   onBack,
+  onSubmitted,
 }: {
   outcome: ExplorerOutcome;
-  ageAnswer?: string;
+  answers: ExplorerAnswerDetail[];
   onBack: () => void;
+  onSubmitted: () => void;
 }) {
   const t = useTranslations("explorer");
+  const locale = useLocale();
   const [loadedAt] = useState(() => Date.now());
   const [hp, setHp] = useState("");
   const [form, setForm] = useState({
@@ -790,24 +891,21 @@ function ContactForm({
     setSubmitting(true);
     setError("");
     try {
-      const message = [
-        "Explorer — short call request",
-        `Preferred method: ${form.method}`,
-        `Best time: ${form.time}`,
-        form.handle.trim() ? `Contact: ${form.handle.trim()}` : "",
-        `Fit-check outcome: ${outcomeLabel(outcome)}${ageAnswer ? ` (age: ${ageAnswer})` : ""}`,
-        form.note.trim() ? `Note: ${form.note.trim()}` : "",
-      ]
-        .filter(Boolean)
-        .join("\n");
-      await sendContactMessage({
-        name: form.parentName.trim(),
+      await createExplorerRequest({
+        type: "call_request",
+        locale,
+        parentName: form.parentName.trim(),
         email: form.email.trim(),
-        subject: "Explorer — short call request",
-        message,
+        phone: form.handle.trim() || undefined,
+        preferredMethod: form.method,
+        preferredTime: form.time,
+        note: form.note.trim() || undefined,
+        fitOutcome: outcome,
+        answers,
         _hp: hp,
         _t: loadedAt,
-      } as never);
+      });
+      onSubmitted();
       setDone(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : t("start.errors.submit"));
@@ -925,16 +1023,20 @@ function ContactForm({
 // ── Registration form (join request) ─────────────────────────
 function RegisterForm({
   outcome,
-  ageAnswer,
+  answers,
   onBack,
+  onSubmitted,
 }: {
   outcome: ExplorerOutcome;
-  ageAnswer?: string;
+  answers: ExplorerAnswerDetail[];
   onBack: () => void;
+  onSubmitted: () => void;
 }) {
   const t = useTranslations("explorer");
+  const locale = useLocale();
   const [loadedAt] = useState(() => Date.now());
   const [hp, setHp] = useState("");
+  const ageAnswer = answers.find((a) => a.id === "age")?.value;
   const numericAge = ageAnswer && /^\d+$/.test(ageAnswer) ? ageAnswer : "";
   const [form, setForm] = useState({
     fullName: "",
@@ -988,28 +1090,25 @@ function RegisterForm({
     setSubmitting(true);
     setError("");
     try {
-      const message = [
-        "Explorer — registration request",
-        `Parent: ${form.fullName.trim()}`,
-        `Phone/WhatsApp: ${form.phone.trim()}`,
-        `Child: ${form.childName.trim()} (age ${form.childAge})`,
-        form.language ? `Preferred language: ${form.language}` : "",
-        form.method ? `Preferred contact: ${form.method}` : "",
-        form.time ? `Best time: ${form.time}` : "",
-        `Fit-check outcome: ${outcomeLabel(outcome)}`,
-        form.note.trim() ? `Note: ${form.note.trim()}` : "",
-        "Consent: agreed to use of details for Explorer contact/registration only.",
-      ]
-        .filter(Boolean)
-        .join("\n");
-      await sendContactMessage({
-        name: form.fullName.trim(),
+      await createExplorerRequest({
+        type: "registration",
+        locale,
+        parentName: form.fullName.trim(),
         email: form.email.trim(),
-        subject: "Explorer — registration request",
-        message,
+        phone: form.phone.trim(),
+        childName: form.childName.trim(),
+        childAge: form.childAge,
+        childLanguage: form.language || undefined,
+        preferredMethod: form.method || undefined,
+        preferredTime: form.time || undefined,
+        note: form.note.trim() || undefined,
+        fitOutcome: outcome,
+        answers,
+        consent: form.consent,
         _hp: hp,
         _t: loadedAt,
-      } as never);
+      });
+      onSubmitted();
       setDone(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : t("start.errors.submit"));

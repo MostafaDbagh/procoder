@@ -7,7 +7,7 @@ import { CategorySection } from "@/components/CategorySection";
 import { HowItWorks } from "@/components/HowItWorks";
 import { WhyUs } from "@/components/WhyUs";
 import { CTABanner } from "@/components/CTABanner";
-import { FAQSchema } from "@/components/StructuredData";
+import { ExplorerFloatBubble } from "@/components/ExplorerFloatBubble";
 import { getCategoriesPublicISR } from "@/lib/server-api";
 import { buildAlternates, siteUrl } from "@/lib/seo";
 
@@ -17,12 +17,12 @@ const meta = {
  en: {
  title: "AI Course Matching for Kids (6–18) | StemTechLab",
  description:
- "AI course matching analyses your child’s age, interests, pace, and goals to suggest the right STEM, coding, or Arabic course. Live classes, max 3 students, certified teachers, parent dashboard, and free trial.",
+ "AI course matching finds the right STEM or coding course for your child (6–18). Live classes, max 3 students, certified teachers, and a free trial.",
  },
  ar: {
  title: "ذكاء اصطناعي يختار الدورة الأنسب لطفلك",
  description:
- "ذكاء اصطناعي يحلّل عمر طفلك واهتماماته ليقترح الدورة الأنسب في STEM أو البرمجة أو العربية. دروس مباشرة، حد أقصى ٣ طلاب، معلمون معتمدون، وتجربة مجانية.",
+ "ذكاء اصطناعي يحلّل عمر طفلك واهتماماته ليقترح الدورة الأنسب في STEM أو البرمجة. دروس مباشرة، حد أقصى ٣ طلاب، معلمون معتمدون، وتجربة مجانية.",
  },
 };
 
@@ -71,7 +71,6 @@ export default async function HomePage({
 
  return (
  <>
- <FAQSchema locale={locale} />
  <Hero />
  <LearningJourney />
  <ParentQuestions />
@@ -79,6 +78,7 @@ export default async function HomePage({
  <CategorySection categories={cmsCategories} />
  <HowItWorks />
  <CTABanner />
+ <ExplorerFloatBubble />
  </>
  );
 }

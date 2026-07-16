@@ -10,12 +10,12 @@ const meta = {
  en: {
  title: "Careers at StemTechLab | Teach Kids Coding & STEM Online",
  description:
- "StemTechLab is hiring certified online instructors for Programming (Scratch, Python, Web Dev, Game Dev), Robotics, Algorithms, and Arabic Language. Fully remote, flexible hours. Requires subject credentials and experience teaching children ages 6–18.",
+ "We’re hiring certified online instructors for coding (Scratch, Python, web & game dev), robotics, and algorithms. Fully remote, flexible hours, ages 6–18.",
  },
  ar: {
  title: "وظائف ستم تك لاب | علّم البرمجة وSTEM للأطفال أونلاين",
  description:
- "ستم تك لاب توظف معلمين أونلاين معتمدين في البرمجة (سكراتش، بايثون، تطوير مواقع، تطوير ألعاب)، الروبوتات، الخوارزميات، واللغة العربية. عمل عن بُعد بالكامل، ساعات مرنة. يُشترط التخصص في المادة وخبرة في تدريس الأطفال من ٦ إلى ١٨ سنة.",
+ "ستم تك لاب توظف معلمين أونلاين معتمدين في البرمجة (سكراتش، بايثون، تطوير مواقع وألعاب)، الروبوتات والخوارزميات. عمل عن بُعد وساعات مرنة. خبرة بتدريس الأطفال ٦–١٨.",
  },
 };
 

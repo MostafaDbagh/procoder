@@ -15,14 +15,14 @@ export const revalidate = 300;
 
 const meta = {
  en: {
- title: "Kids’ coding & STEM courses | Live online (6–18)",
+ title: "Kids’ Coding & STEM Courses Online (6–18)",
  description:
- "Live coding & STEM courses for kids 6–18: Python, Scratch, Robotics, Algorithms, Game Dev & Arabic. Certified teachers, small groups. Free trial.",
+ "Live coding & STEM courses for kids 6–18: Python, Scratch, Robotics, Algorithms & Game Dev. Certified teachers, small groups. Free trial.",
  },
  ar: {
  title: "دورات برمجة وSTEM للأطفال أونلاين ٦–١٨",
  description:
- "١٢ دورة مباشرة للأطفال ٦–١٨: بايثون، سكراتش، روبوتات، خوارزميات، تطوير الألعاب، عربية. معلمون معتمدون، مجموعات صغيرة. تجربة مجانية.",
+ "دورات مباشرة للأطفال ٦–١٨: بايثون، سكراتش، روبوتات، خوارزميات وتطوير الألعاب. معلمون معتمدون، مجموعات صغيرة. تجربة مجانية.",
  },
 };
 

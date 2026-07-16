@@ -36,6 +36,7 @@ type Tab =
  | "courses"
  | "categories"
  | "enrollments"
+ | "explorer"
  | "contacts"
  | "challenges"
  | "team"
@@ -314,6 +315,7 @@ const TABS: { id: Tab; label: string }[] = [
  { id: "courses", label: "Courses" },
  { id: "categories", label: "Categories" },
  { id: "enrollments", label: "Enrollments" },
+ { id: "explorer", label: "Explorer" },
  { id: "users", label: "Users" },
  { id: "payments", label: "Payments" },
  { id: "promos", label: "Promos" },
@@ -372,6 +374,17 @@ export default function AdminDashboard() {
  q: "",
  challengeOnly: false,
  });
+
+ // ── Explorer journey requests (registration / call request) ──
+ const [explorerReqs, setExplorerReqs] = useState<Record<string, unknown>[]>([]);
+ const [explorerMeta, setExplorerMeta] = useState<ListMeta>(emptyMeta);
+ const [explorerPage, setExplorerPage] = useState(1);
+ const [explorerFilter, setExplorerFilter] = useState({
+ type: "",
+ status: "",
+ q: "",
+ });
+ const [explorerExpanded, setExplorerExpanded] = useState<string | null>(null);
 
  const [parentFeedback, setParentFeedback] = useState<Record<string, unknown>[]>([]);
  const [parentFeedbackMeta, setParentFeedbackMeta] = useState<ListMeta>(emptyMeta);
@@ -555,6 +568,22 @@ export default function AdminDashboard() {
  setContactsMeta(meta);
  }, [conFilter, contactsPage]);
 
+ const loadExplorer = useCallback(async () => {
+ const q = new URLSearchParams();
+ if (explorerFilter.type) q.set("type", explorerFilter.type);
+ if (explorerFilter.status) q.set("status", explorerFilter.status);
+ if (explorerFilter.q) q.set("q", explorerFilter.q);
+ q.set("page", String(explorerPage));
+ q.set("limit", String(PAGE_SIZE));
+ const raw = await adminFetch<unknown>(`/explorer-requests?${q}`);
+ const { items, meta } = normalizePagedResponse<Record<string, unknown>>(
+ raw,
+ PAGE_SIZE
+ );
+ setExplorerReqs(items);
+ setExplorerMeta(meta);
+ }, [explorerFilter, explorerPage]);
+
  const loadParentFeedback = useCallback(async () => {
  const q = new URLSearchParams();
  if (parentFeedbackFilter.status) q.set("status", parentFeedbackFilter.status);
@@ -690,6 +719,7 @@ export default function AdminDashboard() {
  if (tab === "payments") await loadPayments();
  if (tab === "promos") await loadPromos();
  if (tab === "contacts" || tab === "free_trial" || tab === "subscribers") await loadContacts();
+ if (tab === "explorer") await loadExplorer();
  if (tab === "parent_feedback") await loadParentFeedback();
  if (tab === "challenges") await loadChallenges();
  if (tab === "team") await loadTeam();
@@ -713,6 +743,7 @@ export default function AdminDashboard() {
  loadCategoriesPage,
  loadEnrollments,
  loadContacts,
+ loadExplorer,
  loadChallenges,
  loadTeam,
  loadUsers,
@@ -815,6 +846,28 @@ export default function AdminDashboard() {
  await adminFetch(`/contact/${id}`, { method: "DELETE" });
  await loadContacts();
  await loadOverview();
+ } catch (e) {
+ setErr(e instanceof Error ? e.message : "Failed");
+ }
+ };
+
+ const patchExplorerStatus = async (id: string, status: string) => {
+ try {
+ await adminFetch(`/explorer-requests/${id}`, {
+ method: "PATCH",
+ body: JSON.stringify({ status }),
+ });
+ await loadExplorer();
+ } catch (e) {
+ setErr(e instanceof Error ? e.message : "Update failed");
+ }
+ };
+
+ const deleteExplorerRequest = async (id: string) => {
+ if (!confirm("Delete this Explorer request permanently?")) return;
+ try {
+ await adminFetch(`/explorer-requests/${id}`, { method: "DELETE" });
+ await loadExplorer();
  } catch (e) {
  setErr(e instanceof Error ? e.message : "Failed");
  }
@@ -2216,6 +2269,231 @@ export default function AdminDashboard() {
  </div>
  )}
 
+ {tab === "explorer" && (
+ <div className="space-y-4">
+ <div className="flex flex-wrap items-end gap-3">
+ <FilterSelect
+ label="Type"
+ value={explorerFilter.type}
+ onChange={(v) => {
+ setExplorerPage(1);
+ setExplorerFilter((f) => ({ ...f, type: v }));
+ }}
+ options={[
+ { value: "", label: "All types" },
+ { value: "registration", label: "Registration" },
+ { value: "call_request", label: "Call request" },
+ ]}
+ />
+ <FilterSelect
+ label="Status"
+ value={explorerFilter.status}
+ onChange={(v) => {
+ setExplorerPage(1);
+ setExplorerFilter((f) => ({ ...f, status: v }));
+ }}
+ options={[
+ { value: "", label: "All statuses" },
+ { value: "new", label: "New" },
+ { value: "contacted", label: "Contacted" },
+ { value: "closed", label: "Closed" },
+ ]}
+ />
+ <input
+ placeholder="search parent / email / child"
+ value={explorerFilter.q}
+ onChange={(e) => {
+ setExplorerPage(1);
+ setExplorerFilter((f) => ({ ...f, q: e.target.value }));
+ }}
+ className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm"
+ />
+ </div>
+ <div className="overflow-x-auto rounded-xl border border-slate-800">
+ <table className="w-full min-w-[860px] text-left text-sm">
+ <thead className="border-b border-slate-800 text-slate-500">
+ <tr>
+ <th className="p-2">Date</th>
+ <th className="p-2">Type</th>
+ <th className="p-2">Parent</th>
+ <th className="p-2">Email</th>
+ <th className="p-2">Child</th>
+ <th className="p-2">Fit outcome</th>
+ <th className="p-2">Status</th>
+ <th className="p-2 w-36">Actions</th>
+ </tr>
+ </thead>
+ <tbody>
+ {explorerReqs.length === 0 && (
+ <tr>
+ <td colSpan={8} className="p-6 text-center text-slate-500">
+ No Explorer requests yet.
+ </td>
+ </tr>
+ )}
+ {explorerReqs.map((r) => {
+ const id = String(r._id);
+ const expanded = explorerExpanded === id;
+ const answers = Array.isArray(r.answers)
+ ? (r.answers as {
+ id?: string;
+ question?: string;
+ value?: string;
+ label?: string;
+ }[])
+ : [];
+ const isReg = String(r.type) === "registration";
+ return (
+ <FragmentRow key={id}>
+ <tr className="border-t border-slate-800/80 align-top">
+ <td className="p-2 text-xs text-slate-400">
+ {String(r.createdAt ?? "").slice(0, 10)}
+ </td>
+ <td className="p-2">
+ <span
+ className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${
+ isReg
+ ? "bg-emerald-950/60 text-emerald-300"
+ : "bg-sky-950/60 text-sky-300"
+ }`}
+ >
+ {isReg ? "Registration" : "Call request"}
+ </span>
+ </td>
+ <td className="p-2">{String(r.parentName ?? "—")}</td>
+ <td className="p-2 text-xs">{String(r.email ?? "—")}</td>
+ <td className="p-2 text-xs">
+ {r.childName
+ ? `${String(r.childName)}${r.childAge ? ` (${String(r.childAge)})` : ""}`
+ : "—"}
+ </td>
+ <td className="p-2 text-[11px] text-slate-400">
+ {String(r.fitOutcome || "—")}
+ </td>
+ <td className="p-2">
+ <select
+ value={String(r.status ?? "new")}
+ onChange={(e) =>
+ patchExplorerStatus(id, e.target.value)
+ }
+ className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-xs"
+ >
+ {["new", "contacted", "closed"].map((s) => (
+ <option key={s} value={s}>
+ {s}
+ </option>
+ ))}
+ </select>
+ </td>
+ <td className="p-2">
+ <div className="flex gap-1.5">
+ <button
+ type="button"
+ onClick={() =>
+ setExplorerExpanded(expanded ? null : id)
+ }
+ className="rounded border border-slate-700 bg-slate-900 px-2 py-1 text-xs text-slate-200 hover:bg-slate-800"
+ >
+ {expanded ? "Hide" : "Details"}
+ </button>
+ <button
+ type="button"
+ onClick={() => deleteExplorerRequest(id)}
+ className="rounded border border-red-900/60 bg-red-950/40 px-2 py-1 text-xs text-red-200 hover:bg-red-950/70"
+ >
+ Delete
+ </button>
+ </div>
+ </td>
+ </tr>
+ {expanded && (
+ <tr className="border-t border-slate-800/50 bg-slate-900/40">
+ <td colSpan={8} className="p-4">
+ <div className="grid gap-4 lg:grid-cols-2">
+ <div className="space-y-2 text-xs">
+ <p className="text-sm font-semibold text-slate-200">
+ Request details
+ </p>
+ <DetailRow k="Parent" v={String(r.parentName ?? "—")} />
+ <DetailRow k="Email" v={String(r.email ?? "—")} />
+ <DetailRow k="Phone / WhatsApp" v={String(r.phone || "—")} />
+ {isReg && (
+ <>
+ <DetailRow k="Child name" v={String(r.childName || "—")} />
+ <DetailRow k="Child age" v={String(r.childAge || "—")} />
+ <DetailRow
+ k="Child language"
+ v={String(r.childLanguage || "—")}
+ />
+ <DetailRow
+ k="Consent"
+ v={r.consent ? "Agreed" : "—"}
+ />
+ </>
+ )}
+ <DetailRow
+ k="Preferred method"
+ v={String(r.preferredMethod || "—")}
+ />
+ <DetailRow
+ k="Best time"
+ v={String(r.preferredTime || "—")}
+ />
+ <DetailRow k="Locale" v={String(r.locale || "en")} />
+ <DetailRow
+ k="Fit outcome"
+ v={String(r.fitOutcome || "—")}
+ />
+ {r.note ? (
+ <div>
+ <p className="font-semibold text-slate-400">Note</p>
+ <p className="mt-0.5 whitespace-pre-wrap text-slate-300">
+ {String(r.note)}
+ </p>
+ </div>
+ ) : null}
+ </div>
+ <div className="space-y-2 text-xs">
+ <p className="text-sm font-semibold text-slate-200">
+ Fit-check answers ({answers.length})
+ </p>
+ {answers.length === 0 && (
+ <p className="text-slate-500">No answers recorded.</p>
+ )}
+ <ol className="space-y-2">
+ {answers.map((a, i) => (
+ <li
+ key={`${a.id || i}`}
+ className="rounded-lg border border-slate-800 bg-slate-950/60 p-2"
+ >
+ <p className="text-slate-400" dir="auto">
+ {i + 1}. {a.question || a.id}
+ </p>
+ <p className="mt-0.5 font-medium text-slate-100" dir="auto">
+ {a.label || a.value || "—"}
+ </p>
+ </li>
+ ))}
+ </ol>
+ </div>
+ </div>
+ </td>
+ </tr>
+ )}
+ </FragmentRow>
+ );
+ })}
+ </tbody>
+ </table>
+ </div>
+ <PaginationBar
+ meta={explorerMeta}
+ noun="requests"
+ onPageChange={setExplorerPage}
+ />
+ </div>
+ )}
+
  {tab === "contacts" && (
  <div className="space-y-4">
  <div className="flex flex-wrap items-center gap-3">
@@ -3188,6 +3466,22 @@ function StatCard({
  {hint ? (
  <div className="mt-1 text-xs text-slate-600">{hint}</div>
  ) : null}
+ </div>
+ );
+}
+
+/** Keyed fragment for table rows that expand into a second <tr>. */
+function FragmentRow({ children }: { children: ReactNode }) {
+ return <>{children}</>;
+}
+
+function DetailRow({ k, v }: { k: string; v: string }) {
+ return (
+ <div className="flex gap-2">
+ <span className="w-36 shrink-0 font-semibold text-slate-400">{k}</span>
+ <span className="text-slate-200" dir="auto">
+ {v}
+ </span>
  </div>
  );
 }

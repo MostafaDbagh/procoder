@@ -252,6 +252,44 @@ export function sendContactMessage(
  });
 }
 
+// --- Explorer journey requests ---
+
+export interface ExplorerAnswerDetail {
+ id: string;
+ question: string;
+ value: string;
+ label: string;
+}
+
+export interface ExplorerRequestData {
+ type: "registration" | "call_request";
+ locale: string;
+ parentName: string;
+ email: string;
+ phone?: string;
+ childName?: string;
+ childAge?: string;
+ childLanguage?: string;
+ preferredMethod?: string;
+ preferredTime?: string;
+ note?: string;
+ fitOutcome?: string;
+ answers?: ExplorerAnswerDetail[];
+ consent?: boolean;
+ /** Antispam fields (honeypot + form-load timestamp). */
+ _hp?: string;
+ _t?: number;
+}
+
+export function createExplorerRequest(
+ data: ExplorerRequestData
+): Promise<{ message: string; id: string }> {
+ return request("/explorer-requests", {
+ method: "POST",
+ body: JSON.stringify(data),
+ });
+}
+
 // --- Admin Auth ---
 
 export interface LoginResponse {

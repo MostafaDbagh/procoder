@@ -10,11 +10,12 @@ export function useCourses(initialData?: APICourse[]) {
  });
 }
 
-export function useCourse(slug: string) {
+export function useCourse(slug: string, initialData?: APICourse) {
  return useQuery<APICourse>({
  queryKey: ["course", slug],
  queryFn: () => fetchCourse(slug),
  enabled: !!slug,
+ initialData,
  staleTime: 5 * 60 * 1000,
  });
 }

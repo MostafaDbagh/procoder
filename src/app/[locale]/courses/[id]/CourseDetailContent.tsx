@@ -6,6 +6,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { courses as staticCourses } from "@/data/courses";
 import { useCourse } from "@/hooks/useCourses";
+import type { APICourse } from "@/lib/api";
 import { AnimatedSection } from "@/components/AnimatedSection";
 import { EnrollModal } from "@/components/EnrollModal";
 import { formatCoursePrice, priceAfterCourseDiscount } from "@/lib/formatCoursePrice";
@@ -116,7 +117,11 @@ function resolveCategoryHero(category: string): HeroStyle {
  return CATEGORY_HERO.programming;
 }
 
-export default function CourseDetailContent() {
+export default function CourseDetailContent({
+ initialCourse,
+}: {
+ initialCourse?: APICourse;
+}) {
  const { id: slug } = useParams<{ id: string }>();
  const locale = useLocale();
  const t = useTranslations("courseDetail");
@@ -125,7 +130,7 @@ export default function CourseDetailContent() {
  const [enrollOpen, setEnrollOpen] = useState(false);
  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
- const { data: apiCourse, isLoading, isError } = useCourse(slug);
+ const { data: apiCourse, isLoading, isError } = useCourse(slug, initialCourse);
 
  const staticCourse = staticCourses.find((c) => c.id === slug);
  const lang = locale === "ar" ? "ar" : "en";
