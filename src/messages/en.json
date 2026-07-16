@@ -1068,21 +1068,21 @@
   },
   "explorer": {
     "meta": {
-      "badge": "Ages 5–7 · Foundational journey",
+      "badge": "Ages 5–8 · Foundational journey",
       "name": "Explorer",
       "tagline": "From Playful Instinct to Structured Thinking",
       "desc": "A foundational journey that turns your child's curiosity into clearer thinking: sequencing, noticing, trying, and improving — through story and guided play.",
       "cta": "Explore the journey",
       "sessions": "12 sessions",
       "duration": "60 minutes",
-      "ages": "Ages 5–7",
-      "pageTitle": "Explorer — Coding Foundations for Kids 5–7 | StemTechLab",
-      "pageDesc": "Explorer: a foundational journey for kids 5–7 — a visual, story-based, playful path that builds sequencing, noticing, trying, and improving. Free fit check."
+      "ages": "Ages 5–8",
+      "pageTitle": "Explorer — Coding Foundations for Kids 5–8 | StemTechLab",
+      "pageDesc": "Explorer: a foundational journey for kids 5–8 — a visual, story-based, playful path that builds sequencing, noticing, trying, and improving. Free fit check."
     },
     "window": {
       "title": "Explorer",
       "subtitle": "From Playful Instinct to Structured Thinking",
-      "ages": "Ages 5–7",
+      "ages": "Ages 5–8",
       "chooseHint": "Choose a button to see the details.",
       "backToWindow": "Back to the window"
     },
@@ -1096,7 +1096,7 @@
       "sectionLabel": "A message to parents",
       "title": "Explorer",
       "subtitle": "From Playful Instinct to Structured Thinking",
-      "ages": "Ages 5–7",
+      "ages": "Ages 5–8",
       "p1": "Children are natural explorers. Long before they use technology, they are already noticing patterns, connecting causes to effects, predicting outcomes, and organizing their world through play.",
       "p2": "In the Explorer journey, we do not begin by asking children to memorize abstract terms or use tools before they are ready. We start from the world they already know: stories, images, pathways, questions, curiosity, mistakes, and second attempts.",
       "p3": "Through guided play and visible projects, children begin to turn their natural curiosity into clearer, more organized thinking.",
@@ -1128,7 +1128,7 @@
     },
     "overview": {
       "sectionLabel": "Journey overview",
-      "intro1": "Explorer is a foundational journey for children ages 5–7, designed to guide their natural curiosity toward clearer organization, observation, and mindful trying.",
+      "intro1": "Explorer is a foundational journey for children ages 5–8, designed to guide their natural curiosity toward clearer organization, observation, and mindful trying.",
       "intro2": "The journey draws on experiences that feel close to the child's world: stories, images, pathways, small challenges, and projects they can see and explain.",
       "rows": [
         {
@@ -1137,7 +1137,7 @@
         },
         {
           "label": "Age range",
-          "value": "5–7"
+          "value": "5–8"
         },
         {
           "label": "Number of sessions",
@@ -1234,8 +1234,12 @@
               "label": "7 years"
             },
             {
-              "value": "8_or_more",
-              "label": "8 years or older"
+              "value": "8",
+              "label": "8 years"
+            },
+            {
+              "value": "9_or_more",
+              "label": "9 years or older"
             }
           ]
         },

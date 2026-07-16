@@ -31,7 +31,7 @@ export interface ExplorerAnswers {
   additional_notes?: string;
 }
 
-export type AgeValue = "less_than_5" | "5" | "6" | "7" | "8_or_more";
+export type AgeValue = "less_than_5" | "5" | "6" | "7" | "8" | "9_or_more";
 
 /** Question ids in display order. Q9 (`additional_notes`) is an optional textarea. */
 export const EXPLORER_QUESTION_IDS = [
@@ -142,11 +142,16 @@ export function runExplorerFit(answers: ExplorerAnswers): ExplorerResult {
     };
   }
 
-  // Age fit
-  if (answers.age === "5" || answers.age === "6" || answers.age === "7") {
+  // Age fit — Explorer covers ages 5–8
+  if (
+    answers.age === "5" ||
+    answers.age === "6" ||
+    answers.age === "7" ||
+    answers.age === "8"
+  ) {
     explorerFit += 2;
   }
-  if (answers.age === "8_or_more") {
+  if (answers.age === "9_or_more") {
     higherReadiness += 2;
   }
 
@@ -193,7 +198,7 @@ export function runExplorerFit(answers: ExplorerAnswers): ExplorerResult {
   }
 
   let outcome: ExplorerOutcome;
-  if (answers.age === "8_or_more" && higherReadiness >= 3) {
+  if (answers.age === "9_or_more" && higherReadiness >= 3) {
     outcome = "CHECK_HIGHER_STAGE";
   } else if (supportNeed >= 3) {
     outcome = "EXPLORER_WITH_REVIEW";

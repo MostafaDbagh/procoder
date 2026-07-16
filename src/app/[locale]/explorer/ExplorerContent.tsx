@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState, type ElementType } from "react";
+import { useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import { LocalizedLink } from "@/components/LocalizedLink";
@@ -91,10 +92,17 @@ function Paragraphs({ text, className = "" }: { text: string; className?: string
 }
 
 // ── main window ──────────────────────────────────────────────
+const TAB_KEYS: Tab[] = ["parentMessage", "overview", "practice", "start"];
+
 export default function ExplorerContent() {
   const t = useTranslations("explorer");
   const nav = useTranslations("nav");
-  const [tab, setTab] = useState<Tab>("parentMessage");
+  const searchParams = useSearchParams();
+  // Deep-linkable tabs (e.g. the home-page bubble links to /explorer?tab=start).
+  const [tab, setTab] = useState<Tab>(() => {
+    const requested = searchParams.get("tab") as Tab | null;
+    return requested && TAB_KEYS.includes(requested) ? requested : "parentMessage";
+  });
 
   return (
     <div className="py-10 sm:py-16">
@@ -1215,7 +1223,7 @@ function RegisterForm({
                 className={`${attempted && !form.childAge ? inputErrCls : inputCls} appearance-none`}
               >
                 <option value="">—</option>
-                {["4", "5", "6", "7", "8"].map((a) => (
+                {["4", "5", "6", "7", "8", "9"].map((a) => (
                   <option key={a} value={a}>
                     {a}
                   </option>

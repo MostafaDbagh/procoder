@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import ExplorerContent from "./ExplorerContent";
@@ -37,7 +38,7 @@ export async function generateMetadata({
         ? [
             "Explorer",
             "تفكير حسابي للأطفال",
-            "برمجة للأطفال 5-7",
+            "برمجة للأطفال 5-8",
             "تفكير منطقي للأطفال",
             "رحلة تأسيسية",
             "ستم تك لاب",
@@ -45,7 +46,7 @@ export async function generateMetadata({
         : [
             "Explorer course",
             "computational thinking for kids",
-            "coding for kids ages 5-7",
+            "coding for kids ages 5-8",
             "algorithmic thinking for children",
             "foundational STEM journey",
             "StemTechLab",
@@ -85,7 +86,7 @@ export default async function ExplorerPage({
   const habits = t.raw("practice.habits") as { name: string }[];
 
   // schema.org/Course — helps Google surface Explorer as a structured course.
-  // Ages 5–7, 12 sessions, online, bilingual; payment deferred (no public price).
+  // Ages 5–8, 12 sessions, online, bilingual; payment deferred (no public price).
   const courseSchema = {
     "@context": "https://schema.org",
     ...buildCourseSchema(
@@ -94,7 +95,7 @@ export default async function ExplorerPage({
         description: t("meta.pageDesc"),
         url,
         ageMin: 5,
-        ageMax: 7,
+        ageMax: 8,
         level: "beginner",
         lessons: 12,
         durationWeeks: 12,
@@ -118,7 +119,14 @@ export default async function ExplorerPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
       />
-      <ExplorerContent />
+      {/* Suspense: ExplorerContent reads useSearchParams (deep-linkable ?tab=). */}
+      <Suspense
+        fallback={
+          <div className="py-24 text-center text-muted text-sm">Loading…</div>
+        }
+      >
+        <ExplorerContent />
+      </Suspense>
     </>
   );
 }

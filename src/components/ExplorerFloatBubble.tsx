@@ -22,7 +22,7 @@ export function ExplorerFloatBubble() {
       className="fixed bottom-6 end-6 z-50"
     >
       <LocalizedLink
-        href="/explorer"
+        href="/explorer?tab=start"
         aria-label={`${t("name")} — ${t("tagline")}`}
         className="group relative flex items-center"
       >
@@ -53,7 +53,7 @@ export function ExplorerFloatBubble() {
 
           {/* Ages chip */}
           <span className="absolute -top-1.5 -start-1.5 rounded-full border border-primary/20 bg-surface px-1.5 py-0.5 text-[10px] font-extrabold leading-none text-primary shadow-sm">
-            5–7
+            5–8
           </span>
         </motion.span>
       </LocalizedLink>
