@@ -1478,8 +1478,8 @@
         "notePlaceholder": "Anything brief you'd like the team to know.",
         "submit": "Send request",
         "submitting": "Sending…",
-        "successTitle": "Your request has been received",
-        "successBody": "The StemTechLab team will reach out through the method you chose to help you pick the most suitable starting point for your child."
+        "successTitle": "Thank you for submitting your application!",
+        "successBody": "Your application is under review. Our expert will review it and contact you through the channel you chose."
       },
       "registerForm": {
         "title": "Register for Explorer",
@@ -1502,8 +1502,8 @@
         "consent": "I agree that this information will be used only to contact us about the Explorer journey and to organize the registration step, respecting my child's privacy and not sharing their data beyond this purpose.",
         "submit": "Send registration request",
         "submitting": "Sending…",
-        "successTitle": "Your Explorer registration request has been received",
-        "successBody": "Thank you. The StemTechLab team will review your request and contact you through the method you chose to confirm the next step.\n\nThis step does not mean sessions start right away — it secures your join request and organizes the right follow-up before we begin."
+        "successTitle": "Thank you for submitting your application!",
+        "successBody": "Your application is under review. Our expert will review it and contact you through the channel you chose.\n\nThis step does not mean sessions start right away — it secures your join request and organizes the right follow-up before we begin."
       },
       "payment": {
         "title": "About payment",
