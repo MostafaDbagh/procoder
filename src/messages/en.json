@@ -1431,7 +1431,7 @@
       "result": {
         "kicker": "Preliminary automated recommendation",
         "thanks": "Thank you for sharing your answers.",
-        "disclaimer": "This is a preliminary automated recommendation, not a human assessment or a diagnosis of the child.",
+        "disclaimer": "We will review and study your application, then our team or expert will reach out to you.",
         "privacyNote": "We noticed your note may contain personal details. To protect your child's privacy, we won't use these details in this instant response; anything needed can be discussed during direct contact.",
         "outcomes": {
           "EXPLORER_LIKELY_FIT": {
@@ -1448,7 +1448,7 @@
           },
           "PRE_START_REVIEW": {
             "title": "Let's have a short chat before deciding",
-            "body": "At this stage, we'd rather not make a direct decision before a short chat with you.\n\nThe goal is not to rush your child into a path, but to understand their readiness to engage with a guided, visual, story-based experience in a comfortable, safe way.\n\nWe suggest contacting the team to choose the most suitable start for your child."
+            "body": "At this stage, we'd rather not make a direct decision before a short chat with you.\n\nThe goal is not to rush your child into a path, but to understand their readiness to engage with a guided, visual, story-based experience in a comfortable, safe way.\n\nWe will review and study your application, then our team or expert will reach out to you."
           }
         },
         "register": "Continue to registration",
