@@ -1431,7 +1431,7 @@
       "result": {
         "kicker": "Preliminary automated recommendation",
         "thanks": "Thank you for sharing your answers.",
-        "disclaimer": "We will review and study your application, then our team or expert will reach out to you.",
+        "disclaimer": "We will review and study your request, then a specialized team will contact you through the communication channel you choose.",
         "privacyNote": "We noticed your note may contain personal details. To protect your child's privacy, we won't use these details in this instant response; anything needed can be discussed during direct contact.",
         "outcomes": {
           "EXPLORER_LIKELY_FIT": {
