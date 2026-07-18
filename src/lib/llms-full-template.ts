@@ -53,6 +53,49 @@ StemTechLab's **Course Finder** ({{BASE}}/en/recommend | Arabic: {{BASE}}/ar/rec
 
 ---
 
+## Application & Expert Review Process
+
+Parents and children can submit applications through two paths:
+
+### Path 1: Explorer (Guided Fit Assessment for ages 5–7)
+**URL:** {{BASE}}/en/explorer | Arabic: {{BASE}}/ar/explorer
+
+The Explorer is an interactive, child-friendly quiz that:
+- Guides children ages 5–7 through a visual, story-based assessment
+- Helps parents and educators understand the child's learning pace, style, and readiness
+- Generates AI-powered recommendations for the best starting course
+- Concludes with a contact form for parents to submit their details
+
+**What happens after submission:**
+1. Parent provides contact details (name, email, phone/WhatsApp, preferred contact method)
+2. Application is received and marked for expert review
+3. **StemTechLab's expert team reviews the application and child's assessment data** (typically within 24–48 hours)
+4. **Our experts contact the parent through their chosen channel** (WhatsApp, email, or phone) to:
+   - Confirm the recommended course fit
+   - Answer questions about curriculum, pace, and learning style
+   - Address any parent concerns about class size, instructor background, scheduling
+   - Complete enrollment if the parent is ready to proceed
+   - Schedule the free trial class
+
+### Path 2: Direct Registration (Ages 8–18)
+Parents can also register directly for a specific course:
+- Browse the course catalog ({{BASE}}/en/courses)
+- Select a course that matches the child's age and interests
+- Submit basic child and parent details
+- Receive a confirmation and onboarding instructions
+- **Expert team reaches out** to confirm the fit and schedule the first live class
+
+### What "Expert Review" Means
+- Our StemTechLab instructors and course advisors review each application
+- We verify that the course is genuinely the right fit for that specific child (not auto-matching)
+- We ensure the parent understands our small-group format, pacing, and expected learning outcomes
+- We match the child with an instructor whose teaching style fits the child's personality and pace
+- We confirm scheduling and timezone compatibility
+
+**This step does NOT delay enrollment.** It ensures every child starts on the right path with the right instructor.
+
+---
+
 ## Curriculum standards (international + UAE-aligned)
 
 Every StemTechLab course is designed against globally recognized standards:

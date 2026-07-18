@@ -87,9 +87,29 @@ export async function generateMetadata({
  ? [{ url: coverImage, alt: title }, { url: fallbackOg, width: 1200, height: 630, alt: title }]
  : [{ url: fallbackOg, width: 1200, height: 630, alt: title }];
 
+ const courseKeywords = () => {
+ const course = apiCourse || staticCourse;
+ if (!course) return "";
+ const ageRange = `${course.ageMin}-${course.ageMax}`;
+ if (lang === "ar") {
+ const categoryMap: Record<string, string> = {
+ programming: "تعليم البرمجة",
+ robotics: "دروس الروبوتات",
+ algorithms: "تعليم الخوارزميات",
+ arabic: "دروس اللغة العربية",
+ };
+ const cat = categoryMap[course.category] || course.category;
+ return `${cat}, دورات أونلاين للأطفال, تعليم STEM الإمارات, دروس مباشرة ${ageRange} سنة`;
+ } else {
+ const cat = course.category;
+ return `${cat} for kids, ${cat} ages ${ageRange}, learn ${cat.toLowerCase()} kids, online ${cat.toLowerCase()} courses, kids coding UAE, STEM classes, live coding lessons`;
+ }
+ };
+
  return {
  title: { absolute: brandedTitle },
  description: seoDescription,
+ keywords: courseKeywords(),
  alternates: buildAlternates(lang, `/courses/${id}`),
  openGraph: {
  title: brandedTitle,

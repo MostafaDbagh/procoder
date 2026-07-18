@@ -41,6 +41,9 @@ export async function generateMetadata({
  return {
  title,
  description: meta[lang].description,
+ keywords: lang === "ar"
+ ? "تعليم البرمجة للأطفال, دروس البرمجة أونلاين الإمارات, تعليم STEM للأطفال, دورات الروبوتات, تعليم الخوارزميات, دروس لغة عربية أونلاين, منصة تعليم الاطفال"
+ : "kids coding courses online, STEM education UAE, online coding classes for kids, robotics for children, programming for kids 6-18, algorithm courses kids, free trial coding, UAE STEM academy, GCC coding platform",
  alternates: buildAlternates(lang, ""),
  openGraph: {
  title: ogTitle,

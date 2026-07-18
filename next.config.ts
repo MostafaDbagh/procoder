@@ -105,6 +105,27 @@ const nextConfig: NextConfig = {
       ],
     },
     {
+      source: "/admin/:path*",
+      headers: [
+        { key: "X-Robots-Tag", value: "noindex, nofollow, noai" },
+        { key: "X-Content-Type-Options", value: "nosniff" },
+      ],
+    },
+    {
+      source: "/dashboard/:path*",
+      headers: [
+        { key: "X-Robots-Tag", value: "noindex, nofollow, noai" },
+        { key: "X-Content-Type-Options", value: "nosniff" },
+      ],
+    },
+    {
+      source: "/instructor/:path*",
+      headers: [
+        { key: "X-Robots-Tag", value: "noindex, nofollow, noai" },
+        { key: "X-Content-Type-Options", value: "nosniff" },
+      ],
+    },
+    {
       source: "/(.*)",
       headers: [
         {

@@ -27,6 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
  return {
  title: { absolute: brandedTitle },
  description,
+ keywords: post.tags.join(", "),
  alternates: buildAlternates(lang, `/blogs/${slug}`),
  openGraph: {
  title: brandedTitle,
