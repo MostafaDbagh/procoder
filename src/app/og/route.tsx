@@ -66,6 +66,10 @@ export async function GET(request: Request) {
   return new ImageResponse(
     (
       <div
+        // `dir` attribute (not just CSS `direction`) is what makes Satori apply
+        // bidi reordering — without it Arabic words render mis-ordered/spaced.
+        dir={isAr ? "rtl" : "ltr"}
+        lang={locale}
         style={{
           width: "100%",
           height: "100%",
@@ -94,12 +98,13 @@ export async function GET(request: Request) {
         {/* Course title (when coming from a course detail page) */}
         {customTitle ? (
           <p
+            dir={isAr ? "rtl" : "ltr"}
             style={{
               fontSize: "38px",
               color: "#16234F",
               textAlign: "center",
-              maxWidth: "960px",
-              lineHeight: 1.25,
+              maxWidth: "1040px",
+              lineHeight: 1.3,
               marginBottom: "14px",
               fontWeight: 700,
             }}
@@ -110,11 +115,12 @@ export async function GET(request: Request) {
 
         {/* Tagline */}
         <p
+          dir={isAr ? "rtl" : "ltr"}
           style={{
             fontSize: customTitle ? "22px" : "28px",
             color: "#475569",
             textAlign: "center",
-            maxWidth: "820px",
+            maxWidth: "1040px",
             lineHeight: 1.45,
             marginBottom: "0px",
           }}
@@ -135,7 +141,9 @@ export async function GET(request: Request) {
           {displayCats.map((cat) => (
             <span
               key={cat}
+              dir={isAr ? "rtl" : "ltr"}
               style={{
+                display: "flex",
                 padding: "8px 22px",
                 borderRadius: "999px",
                 background: "rgba(124, 58, 237, 0.10)",
