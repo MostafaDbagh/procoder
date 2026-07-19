@@ -404,6 +404,11 @@ function catalogSection(name: string, items: Record<string, unknown>[]) {
  };
 }
 
+// Catalog entry for the Organization's site-wide hasOfferCatalog. Emitted as an
+// Offer→Service (NOT a Course): these are hard-coded, priceless catalog stubs
+// shown on every page, so a `Course` here would be an invalid rich-result entity
+// (no hasCourseInstance / no priced offer). The accurate, valid Course schema
+// lives on /courses and each course detail page (see buildCourseSchema).
 function courseOffer(
  name: string,
  ageRange: string,
@@ -412,25 +417,15 @@ function courseOffer(
  weeks: number
 ) {
  return {
- "@type": "Course",
- name,
- description: `${name} for children ages ${ageRange}. ${level} level. ${lessons} lessons over ${weeks} weeks.`,
- provider: { "@type": "Organization", name: "StemTechLab", url: SITE_URL },
- educationalLevel: level,
- numberOfCredits: lessons,
- timeRequired: `P${weeks}W`,
- audience: {
- "@type": "EducationalAudience",
- educationalRole: "student",
- suggestedMinAge: parseInt(ageRange.split("-")[0]),
- suggestedMaxAge: parseInt(ageRange.split("-")[1]),
- },
- availableLanguage: ["English", "Arabic"],
- courseMode: "online",
- offers: {
  "@type": "Offer",
+ name,
  availability: "https://schema.org/InStock",
- category: "Paid",
+ category: `${level} · ages ${ageRange} · ${lessons} lessons over ${weeks} weeks`,
+ itemOffered: {
+ "@type": "Service",
+ name,
+ serviceType: "Live online course for children",
+ provider: { "@id": ORG_ID },
  },
  };
 }

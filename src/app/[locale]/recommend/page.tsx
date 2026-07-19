@@ -3,7 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import RecommendContent from "./RecommendContent";
 import { getCoursesISR } from "@/lib/server-api";
 import { BreadcrumbSchema } from "@/components/StructuredData";
-import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
+import { siteUrl, bcLabel, metaForMaybeVariant } from "@/lib/seo";
 
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
@@ -23,16 +23,22 @@ const meta = {
 
 export async function generateMetadata({
  params,
+ searchParams,
 }: {
  params: Promise<{ locale: string }>;
+ searchParams: Promise<Record<string, string | string[] | undefined>>;
 }): Promise<Metadata> {
  const { locale } = await params;
+ const sp = await searchParams;
+ // `?q=` (shared/pre-filled finder queries) are variants of the clean /recommend
+ // URL — consolidate & drop hreflang so crawled query URLs don't conflict.
+ const isVariant = Object.keys(sp || {}).length > 0;
  const lang = locale === "ar" ? "ar" : "en";
 
  return {
  title: { absolute: meta[lang].title },
  description: meta[lang].description,
- alternates: buildAlternates(lang, "/recommend"),
+ ...metaForMaybeVariant(lang, "/recommend", isVariant),
  openGraph: {
  title: meta[lang].title,
  description: meta[lang].description,

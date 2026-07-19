@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import ExplorerContent from "./ExplorerContent";
 import { BreadcrumbSchema, buildCourseSchema } from "@/components/StructuredData";
-import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
+import { siteUrl, bcLabel, metaForMaybeVariant } from "@/lib/seo";
 
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
@@ -19,10 +19,16 @@ function ogImageUrl(lang: string, headline: string): string {
 
 export async function generateMetadata({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }): Promise<Metadata> {
   const { locale } = await params;
+  const sp = await searchParams;
+  // `?tab=` (and any other query) is client-side UI state — same content as the
+  // clean /explorer URL. Consolidate & drop hreflang on those crawled variants.
+  const isVariant = Object.keys(sp || {}).length > 0;
   const lang = locale === "ar" ? "ar" : "en";
   const t = await getTranslations({ locale, namespace: "explorer" });
   const title = t("meta.pageTitle");
@@ -33,6 +39,7 @@ export async function generateMetadata({
   return {
     title: { absolute: title },
     description,
+    ...metaForMaybeVariant(lang, "/explorer", isVariant),
     keywords:
       lang === "ar"
         ? [
@@ -51,7 +58,6 @@ export async function generateMetadata({
             "foundational STEM journey",
             "StemTechLab",
           ],
-    alternates: buildAlternates(lang, "/explorer"),
     openGraph: {
       title,
       description,

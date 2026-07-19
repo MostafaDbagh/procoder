@@ -91,6 +91,27 @@ export function siteUrl(lang: string, path: string = ""): string {
 }
 
 /**
+ * Metadata (alternates + robots) for a page that may be crawled with query-param
+ * variants that serve the same content (client-side UI state like `?tab=`, `?q=`,
+ * `?category=`). Variants consolidate to the clean base URL via canonical, are
+ * noindexed, and carry NO hreflang (hreflang belongs only on the canonical page)
+ * — this removes "no self-referencing hreflang" conflicts on those URLs.
+ */
+export function metaForMaybeVariant(
+  lang: string,
+  path: string,
+  isVariant: boolean
+): Pick<Metadata, "alternates" | "robots"> {
+  if (isVariant) {
+    return {
+      alternates: { canonical: siteUrl(lang, path) },
+      robots: { index: false, follow: true },
+    };
+  }
+  return { alternates: buildAlternates(lang, path) };
+}
+
+/**
  * Builds the alternates block (canonical + hreflang) for a page.
  * path should start with "/" e.g. "/about" or "" for home.
  */

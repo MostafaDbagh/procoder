@@ -8,7 +8,8 @@ export async function GET() {
 
 const SITE = (process.env.SITE_URL || "https://www.stemtechlab.com").replace(/\/$/, "");
 const HOST = new URL(SITE).hostname;
-const KEY = "dccf1b07a60e4356883d6c6788540d35";
+// Generated in Bing Webmaster Tools — must match the key file hosted at /<KEY>.txt
+const KEY = "86d963b1569d44d5bbd3e189c6fa2157";
 const KEY_LOCATION = `${SITE}/${KEY}.txt`;
 
 const STATIC_PATHS = PUBLIC_STATIC_PATHS.map((page) => page.path);
