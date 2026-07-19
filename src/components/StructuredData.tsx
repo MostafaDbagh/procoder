@@ -328,13 +328,34 @@ function JsonLd({ data }: { data: Record<string, unknown> }) {
 }
 
 export function buildCourseSchema(course: CourseListSchemaItem, locale = "en") {
+ const hasPrice = typeof course.price === "number" && course.price > 0;
+ // Only advertise an Offer when there is a real price — never claim a course is
+ // free (e.g. Explorer defers payment). Offers need price + priceCurrency to be valid.
+ const offer = hasPrice
+ ? {
+ "@type": "Offer",
+ url: course.url,
+ availability: "https://schema.org/InStock",
+ price: String(course.price),
+ priceCurrency: (course.currency || "USD").toUpperCase(),
+ category: "Paid",
+ }
+ : null;
+
  return {
  "@type": "Course",
  "@id": `${course.url}#course`,
  name: course.name,
  description: course.description,
  url: course.url,
- provider: { "@id": ORG_ID },
+ // Inline the provider (name + url) so each Course validates on its own —
+ // an `@id`-only reference can't be resolved across blocks by validators.
+ provider: {
+ "@type": "Organization",
+ "@id": ORG_ID,
+ name: "StemTechLab",
+ url: SITE_URL,
+ },
  educationalLevel: course.level,
  numberOfCredits: course.lessons,
  timeRequired: `P${course.durationWeeks}W`,
@@ -349,27 +370,27 @@ export function buildCourseSchema(course: CourseListSchemaItem, locale = "en") {
  courseMode: "online",
  ...(course.imageUrl ? { image: course.imageUrl } : {}),
  ...(course.skills?.length ? { teaches: course.skills } : {}),
- offers: {
- "@type": "Offer",
- url: course.url,
- availability: "https://schema.org/InStock",
- category: "Paid",
- ...(course.price && course.price > 0
- ? {
- price: String(course.price),
- priceCurrency: (course.currency || "USD").toUpperCase(),
- }
- : {}),
- },
+ ...(offer ? { offers: offer } : {}),
  hasCourseInstance: [
  {
  "@type": "CourseInstance",
+ name: course.name,
  courseMode: "online",
+ // Google requires a schedule/workload on the instance; live online, weekly.
+ courseWorkload: "PT1H",
+ courseSchedule: {
+ "@type": "Schedule",
+ duration: "PT1H",
+ repeatFrequency: "Weekly",
+ repeatCount: course.durationWeeks,
+ },
+ location: { "@type": "VirtualLocation", url: course.url },
  instructor: {
  "@type": "Person",
  name: "StemTechLab Instructor",
  affiliation: { "@id": ORG_ID },
  },
+ ...(offer ? { offers: offer } : {}),
  },
  ],
  };

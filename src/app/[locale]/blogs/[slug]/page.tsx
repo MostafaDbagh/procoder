@@ -5,6 +5,8 @@ import { getBlogPostISR, getBlogPostsISR, getCoursesISR } from "@/lib/server-api
 import { BreadcrumbSchema } from "@/components/StructuredData";
 import BlogDetailClient from "./BlogDetailClient";
 import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
+import { renderBlogBody } from "@/lib/blogBody";
+import { safeCoverImage } from "@/lib/mediaUrls";
 
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
@@ -23,6 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
  const title = post.metaTitle?.[lang] || post.title[lang];
  const description = post.metaDescription?.[lang] || post.excerpt[lang];
  const brandedTitle = lang === "ar" ? `${title} | ستم تك لاب` : `${title} | StemTechLab`;
+ const cover = safeCoverImage(post.coverImage);
 
  return {
  title: { absolute: brandedTitle },
@@ -41,13 +44,13 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
  modifiedTime: post.updatedAt ?? post.publishedAt,
  authors: [post.author.name],
  tags: post.tags,
- images: post.coverImage ? [{ url: post.coverImage }] : [{ url: `${SITE_URL}/og?locale=${lang}`, width: 1200, height: 630, alt: "StemTechLab" }],
+ images: cover ? [{ url: cover }] : [{ url: `${SITE_URL}/og?locale=${lang}`, width: 1200, height: 630, alt: "StemTechLab" }],
  },
  twitter: {
  card: "summary_large_image",
  title: brandedTitle,
  description,
- images: post.coverImage ? [post.coverImage] : [`${SITE_URL}/og`],
+ images: cover ? [cover] : [`${SITE_URL}/og?locale=${lang}`],
  },
  };
 }
@@ -65,6 +68,8 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ loc
  if (!post) notFound();
 
  const relatedCourses = (courses || []).filter((c) => post.relatedCourses.includes(c.slug));
+ // Render Markdown → safe HTML on the server (avoids DOMPurify SSR crash).
+ const bodyHtml = renderBlogBody(post.body[lang] || "");
 
  return (
  <>
@@ -86,13 +91,13 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ loc
  dateModified: post.updatedAt ?? post.publishedAt,
  publisher: { "@type": "Organization", name: "StemTechLab", url: SITE_URL },
  mainEntityOfPage: siteUrl(lang, `/blogs/${slug}`),
- ...(post.coverImage ? { image: post.coverImage } : {}),
+ ...(safeCoverImage(post.coverImage) ? { image: safeCoverImage(post.coverImage) } : {}),
  inLanguage: locale,
  keywords: post.tags.join(", "),
  }),
  }}
  />
- <BlogDetailClient post={post} relatedCourses={relatedCourses} />
+ <BlogDetailClient post={post} relatedCourses={relatedCourses} bodyHtml={bodyHtml} />
  </>
  );
 }

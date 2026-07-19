@@ -1,13 +1,13 @@
 "use client";
 
-import { useMemo, useEffect } from "react";
+import { useEffect } from "react";
 import { useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { APIBlogPost } from "@/lib/server-api";
 import type { APICourse } from "@/lib/api";
 import { CourseCard } from "@/components/CourseCard";
+import { safeCoverImage } from "@/lib/mediaUrls";
 import { motion } from "framer-motion";
-import DOMPurify from "dompurify";
 import {
  ArrowLeft,
  Clock,
@@ -22,9 +22,11 @@ import {
 interface Props {
  post: APIBlogPost;
  relatedCourses: APICourse[];
+ /** Markdown pre-rendered to safe HTML on the server (see lib/blogBody). */
+ bodyHtml: string;
 }
 
-export default function BlogDetailClient({ post, relatedCourses }: Props) {
+export default function BlogDetailClient({ post, relatedCourses, bodyHtml }: Props) {
  const locale = useLocale();
  const lang = locale === "ar" ? "ar" : "en";
 
@@ -39,27 +41,6 @@ export default function BlogDetailClient({ post, relatedCourses }: Props) {
  day: "numeric",
  })
  : "";
-
- const sanitizedBody = useMemo(() => {
- const raw = (post.body[lang] || "")
-   .replace(/^## (.*$)/gm, '<h2>$1</h2>')
-   .replace(/^### (.*$)/gm, '<h3>$1</h3>')
-   .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-   .replace(/\n- (.*)/g, '\n<li>$1</li>')
-   .replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
-   .replace(/\n{2,}/g, '</p><p>')
-   .replace(/^/, '<p>')
-   .replace(/$/, '</p>')
-   .replace(/<p><h/g, '<h')
-   .replace(/<\/h([23])><\/p>/g, '</h$1>')
-   .replace(/<p><ul>/g, '<ul>')
-   .replace(/<\/ul><\/p>/g, '</ul>')
-   .replace(/<p>\s*<\/p>/g, '');
- return DOMPurify.sanitize(raw, {
-   ALLOWED_TAGS: ['h2', 'h3', 'p', 'strong', 'em', 'ul', 'ol', 'li', 'a', 'br', 'blockquote', 'code', 'pre'],
-   ALLOWED_ATTR: ['href', 'target', 'rel'],
- });
- }, [post.body, lang]);
 
  const handleShare = async () => {
  const url = window.location.href;
@@ -135,10 +116,11 @@ export default function BlogDetailClient({ post, relatedCourses }: Props) {
  </motion.header>
 
  {/* Cover image */}
- {post.coverImage && (
+ {safeCoverImage(post.coverImage) && (
  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="mb-10">
+ {/* eslint-disable-next-line @next/next/no-img-element */}
  <img
- src={post.coverImage}
+ src={safeCoverImage(post.coverImage)}
  alt={post.title[lang] ?? ""}
  loading="lazy"
  className="w-full rounded-2xl border border-border"
@@ -159,7 +141,7 @@ export default function BlogDetailClient({ post, relatedCourses }: Props) {
  prose-li:text-muted
  prose-strong:text-foreground
  prose-a:text-primary prose-a:no-underline hover:prose-a:underline"
- dangerouslySetInnerHTML={{ __html: sanitizedBody }}
+ dangerouslySetInnerHTML={{ __html: bodyHtml }}
  />
 
  {/* Region targeting (SEO text) */}

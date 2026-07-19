@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import type { BlogListResponse, APIBlogPost } from "@/lib/server-api";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { safeCoverImage } from "@/lib/mediaUrls";
 import {
  BookOpen,
  Clock,
@@ -122,9 +123,9 @@ function BlogCard({ post, lang, index }: { post: APIBlogPost; lang: "en" | "ar";
  <Link href={`/blogs/${post.slug}`} className="block group h-full">
  <div className="h-full bg-surface rounded-2xl border border-border overflow-hidden hover:shadow-xl hover:shadow-black/5 hover:-translate-y-1 transition-all duration-300">
  {/* Cover */}
- {post.coverImage ? (
+ {safeCoverImage(post.coverImage) ? (
  <div className="h-48 bg-gradient-to-br from-primary/10 to-purple/10 overflow-hidden relative">
- <Image src={post.coverImage} alt={post.title[lang]} fill className="object-cover" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
+ <Image src={safeCoverImage(post.coverImage)!} alt={post.title[lang]} fill className="object-cover" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
  </div>
  ) : (
  <div className="h-48 bg-gradient-to-br from-primary/5 to-purple/5 flex items-center justify-center">

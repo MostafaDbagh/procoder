@@ -28,10 +28,18 @@ const meta = {
 
 export async function generateMetadata({
  params,
+ searchParams,
 }: {
  params: Promise<{ locale: string }>;
+ searchParams: Promise<Record<string, string | string[] | undefined>>;
 }): Promise<Metadata> {
  const { locale } = await params;
+ const sp = await searchParams;
+ // Category filtering happens client-side, so `/courses?category=X` serves the
+ // same HTML as `/courses`. Consolidate those filter views to the clean base URL
+ // and drop hreflang from them (hreflang belongs only on the canonical page) —
+ // this removes the "no self-referencing hreflang" conflicts on filter URLs.
+ const isFiltered = typeof sp?.category === "string" && sp.category.trim() !== "";
  const lang = locale === "ar" ? "ar" : "en";
 
  const fullTitle = lang === "ar"
@@ -43,7 +51,10 @@ export async function generateMetadata({
  return {
  title,
  description: meta[lang].description,
- alternates: buildAlternates(lang, "/courses"),
+ alternates: isFiltered
+ ? { canonical: siteUrl(lang, "/courses") }
+ : buildAlternates(lang, "/courses"),
+ ...(isFiltered ? { robots: { index: false, follow: true } } : {}),
  openGraph: {
  title: ogTitle,
  description: meta[lang].description,
