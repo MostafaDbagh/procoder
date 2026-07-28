@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
-import { getBlogPostsISR } from "@/lib/server-api";
+import { ApiUnavailableError, getBlogPostsISR } from "@/lib/server-api";
 import { BreadcrumbSchema } from "@/components/StructuredData";
 import BlogListClient from "./BlogListClient";
 import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
@@ -40,7 +40,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function BlogPage({ params }: { params: Promise<{ locale: string }> }) {
  const { locale } = await params;
  setRequestLocale(locale);
+ // null means the fetch failed (an empty `items` array is a valid, distinct
+ // result). Rendering the index with zero posts in that case would serve a 200
+ // soft-404; failing makes Google retry and keeps the cached page live.
  const data = await getBlogPostsISR();
+ if (!data) throw new ApiUnavailableError("blog list");
 
  const homeUrl = `${SITE_URL}/${locale}`;
  const blogsUrl = `${SITE_URL}/${locale}/blogs`;

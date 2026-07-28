@@ -1,83 +1,54 @@
 import type { MetadataRoute } from "next";
-import { courses as staticCourses } from "@/data/courses";
-import { getCoursesISR, serverApiRoot } from "@/lib/server-api";
+import { ApiUnavailableError, getCoursesISR, serverApiRoot } from "@/lib/server-api";
 import { LOCALES, PUBLIC_STATIC_PATHS, siteUrl } from "@/lib/seo";
-
-const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 // Revalidate sitemap every 6 hours instead of on every request
 export const revalidate = 21600;
 
+/**
+ * Throws rather than degrading to [] when the API is down: a sitemap that
+ * silently omits every post reads to Google as "these URLs are gone". Failing
+ * the response instead makes Google retry and keep the last known sitemap.
+ */
 async function getBlogSlugsForSitemap(): Promise<{ slug: string; lastModified?: string }[]> {
+ let res: Response;
  try {
-  const res = await fetch(`${serverApiRoot()}/blog?limit=500`, {
+  res = await fetch(`${serverApiRoot()}/blog?limit=500`, {
    next: { revalidate: 21600 },
   });
-  if (!res.ok) return [];
-  const data = await res.json();
-  return (data?.items ?? []).map(
-   (p: { slug: string; publishedAt?: string; updatedAt?: string }) => ({
-    slug: p.slug,
-    lastModified: p.updatedAt ?? p.publishedAt,
-   })
-  );
- } catch {
-  return [];
+ } catch (e) {
+  throw new ApiUnavailableError("blog list for sitemap", e);
  }
+ if (!res.ok) throw new ApiUnavailableError(`blog list for sitemap (HTTP ${res.status})`);
+ const data = await res.json();
+ return (data?.items ?? []).map(
+  (p: { slug: string; publishedAt?: string; updatedAt?: string }) => ({
+   slug: p.slug,
+   lastModified: p.updatedAt ?? p.publishedAt,
+  })
+ );
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
  const apiCourses = await getCoursesISR();
- const slugSet = new Set<string>([
- ...(apiCourses?.map((c) => c.slug) ?? []),
- ...staticCourses.map((c) => c.id),
- ]);
- // slug → updatedAt (Mongoose timestamp). Falls back to `now` for static-only slugs.
+ if (!apiCourses) throw new ApiUnavailableError("course catalog for sitemap");
+
+ // Live catalog only. Slugs that exist solely in the static fallback are not
+ // linked from anywhere in the UI, so submitting them asks Google to spend
+ // crawl budget on orphaned pages for courses that are not on offer.
+ const slugSet = new Set<string>(apiCourses.map((c) => c.slug));
+ // slug → updatedAt (Mongoose timestamp).
  const courseUpdatedAt = new Map<string, Date>();
- for (const c of apiCourses ?? []) {
+ for (const c of apiCourses) {
  if (c.updatedAt) courseUpdatedAt.set(c.slug, new Date(c.updatedAt));
  }
  const now = new Date();
 
  const entries: MetadataRoute.Sitemap = [];
 
- // Machine-readable context for AI / LLM crawlers (not locale-specific)
- entries.push({
- url: `${SITE_URL}/llms.txt`,
- lastModified: now,
- changeFrequency: "monthly",
- priority: 0.4,
- });
- entries.push({
- url: `${SITE_URL}/llms-full.txt`,
- lastModified: now,
- changeFrequency: "monthly",
- priority: 0.35,
- });
- entries.push({
- url: `${SITE_URL}/.well-known/llms.txt`,
- lastModified: now,
- changeFrequency: "monthly",
- priority: 0.35,
- });
- entries.push({
- url: `${SITE_URL}/.well-known/llms-full.txt`,
- lastModified: now,
- changeFrequency: "monthly",
- priority: 0.3,
- });
- entries.push({
- url: `${SITE_URL}/ai.txt`,
- lastModified: now,
- changeFrequency: "monthly",
- priority: 0.25,
- });
- entries.push({
- url: `${SITE_URL}/ai-plugin.json`,
- lastModified: now,
- changeFrequency: "monthly",
- priority: 0.2,
- });
+ // llms.txt / ai.txt / ai-plugin.json are deliberately absent: sitemaps are for
+ // indexable HTML, and Google reports non-HTML entries as unindexable. AI
+ // crawlers find those files via robots.txt and /.well-known.
 
  // Static pages for each locale
  for (const locale of LOCALES) {

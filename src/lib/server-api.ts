@@ -1,5 +1,20 @@
 import type { APICourse } from "./api";
 
+/**
+ * The API was unreachable or returned an error — the resource's existence is
+ * unknown. Callers that render a single entity must let this propagate so the
+ * route responds 5xx ("retry later") instead of calling notFound(), which tells
+ * Google the page is permanently gone and de-indexes it. On an ISR cache hit the
+ * last good page keeps serving, so this only surfaces on a genuine cache miss.
+ */
+export class ApiUnavailableError extends Error {
+ constructor(resource: string, cause?: unknown) {
+  super(`Upstream API unavailable while loading ${resource}`);
+  this.name = "ApiUnavailableError";
+  this.cause = cause;
+ }
+}
+
 /** Server-side base for Express JSON API (not the browser origin). */
 export function serverApiRoot(): string {
  const backend = process.env.BACKEND_URL?.replace(/\/$/, "");
@@ -171,18 +186,26 @@ export async function getCourseSlugsISR(): Promise<string[]> {
  return [];
 }
 
+/**
+ * Returns null only when the course genuinely does not exist (upstream 404).
+ * Throws {@link ApiUnavailableError} when the API is unreachable or errored, so
+ * a sleeping backend can never be mistaken for a deleted course.
+ */
 export async function getCourseISR(slug: string): Promise<APICourse | null> {
+ let res: Response;
  try {
- const res = await fetch(`${serverApiRoot()}/courses/${slug}`, {
+ res = await fetch(`${serverApiRoot()}/courses/${slug}`, {
  next: { revalidate: 60 },
  });
+ } catch (e) {
+ throw new ApiUnavailableError(`course "${slug}"`, e);
+ }
 
- if (!res.ok) return null;
+ if (res.status === 404) return null;
+ if (!res.ok) throw new ApiUnavailableError(`course "${slug}" (HTTP ${res.status})`);
+
  const c = (await res.json()) as APICourse;
  return absolutizeCourseImage(c, apiOriginFromServerApiRoot());
- } catch {
- return null;
- }
 }
 
 export async function getTeamPublicISR(): Promise<APITeamMember[] | null> {
@@ -262,17 +285,25 @@ export async function getBlogPostsISR(params?: { category?: string; region?: str
  }
 }
 
+/**
+ * Returns null only when the post genuinely does not exist (upstream 404).
+ * Throws {@link ApiUnavailableError} on transport/server failure — see the note
+ * on {@link getCourseISR} for why this must not collapse into a 404.
+ */
 export async function getBlogPostISR(slug: string): Promise<APIBlogPost | null> {
+ let res: Response;
  try {
- const res = await fetch(`${serverApiRoot()}/blog/${slug}`, {
+ res = await fetch(`${serverApiRoot()}/blog/${slug}`, {
    next: { revalidate: 300 },
    signal: AbortSignal.timeout(8000),
  });
- if (!res.ok) return null;
- return res.json();
- } catch {
- return null;
+ } catch (e) {
+ throw new ApiUnavailableError(`blog post "${slug}"`, e);
  }
+
+ if (res.status === 404) return null;
+ if (!res.ok) throw new ApiUnavailableError(`blog post "${slug}" (HTTP ${res.status})`);
+ return res.json();
 }
 
 // ── Pricing ───────────────────────────────────────────────────────────────────
