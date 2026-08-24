@@ -1,24 +1,43 @@
 "use client";
 
-import { useEffect, useMemo, useState, type ElementType } from "react";
-import { useSearchParams } from "next/navigation";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ElementType,
+} from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import { LocalizedLink } from "@/components/LocalizedLink";
-import { createExplorerRequest, type ExplorerAnswerDetail } from "@/lib/api";
+import {
+  createExplorerRequest,
+  type APICourse,
+  type ExplorerAnswerDetail,
+} from "@/lib/api";
 import { isValidEmail } from "@/lib/validation";
 import {
   runExplorerFit,
   type ExplorerAnswers,
   type ExplorerOutcome,
   type AgeValue,
+  type LevelAgeBand,
 } from "@/lib/explorerFitEngine";
 import {
+  JOURNEY_LEVEL_META,
+  nextLevel,
+  type JourneyLevel,
+} from "@/data/journeyLevels";
+import { LevelCourseCard } from "@/components/journey/LevelCourseCard";
+import {
   Compass,
+  Blocks,
+  Palette,
+  Lightbulb,
   Rocket,
   Map as MapIcon,
   Brain,
-  Heart,
   Sparkles,
   ArrowLeft,
   ArrowRight,
@@ -29,6 +48,8 @@ import {
   Send,
   Loader2,
   MessagesSquare,
+  Phone,
+  ClipboardList,
   ListOrdered,
   Search,
   Wrench,
@@ -38,10 +59,6 @@ import {
 } from "lucide-react";
 
 // ── raw i18n shapes ──────────────────────────────────────────
-interface HabitParent {
-  title: string;
-  body: string;
-}
 interface HabitPractice {
   name: string;
   tag: string;
@@ -62,13 +79,44 @@ interface FitQuestion {
   optional?: boolean;
 }
 
-type Tab = "parentMessage" | "overview" | "practice" | "start";
+/**
+ * Which level's page this tree is rendering. Supplied once at the root so the
+ * deeply nested forms and panels can read the level (for copy and for tagging
+ * the submitted request) without threading it through every component.
+ */
+interface LevelCtx {
+  level: JourneyLevel;
+  band: LevelAgeBand;
+  /** Display name of the level, e.g. "Builder". */
+  name: string;
+}
+const LevelContext = createContext<LevelCtx | null>(null);
+
+function useLevel(): LevelCtx {
+  const ctx = useContext(LevelContext);
+  if (!ctx) throw new Error("useLevel must be used inside LevelContext");
+  return ctx;
+}
+
+/** Level-scoped copy: `journey.levels.<level>.*`. */
+function useLevelT() {
+  const { level } = useLevel();
+  return useTranslations(`journey.levels.${level}`);
+}
+
+const LEVEL_ICONS: Record<JourneyLevel, ElementType> = {
+  explorer: Compass,
+  builder: Blocks,
+  creator: Palette,
+  innovator: Lightbulb,
+  pro: Rocket,
+};
+
+type Tab = "overview" | "practice";
 
 const TABS: { key: Tab; icon: ElementType }[] = [
-  { key: "parentMessage", icon: Heart },
   { key: "overview", icon: MapIcon },
   { key: "practice", icon: Brain },
-  { key: "start", icon: Rocket },
 ];
 
 const PRACTICE_ICONS: ElementType[] = [ListOrdered, Search, Wrench, RotateCcw];
@@ -92,87 +140,104 @@ function Paragraphs({ text, className = "" }: { text: string; className?: string
 }
 
 // ── main window ──────────────────────────────────────────────
-const TAB_KEYS: Tab[] = ["parentMessage", "overview", "practice", "start"];
 
-export default function ExplorerContent() {
-  const t = useTranslations("explorer");
-  const nav = useTranslations("nav");
-  const searchParams = useSearchParams();
-  // Deep-linkable tabs (e.g. the home-page bubble links to /explorer?tab=start).
-  const [tab, setTab] = useState<Tab>(() => {
-    const requested = searchParams.get("tab") as Tab | null;
-    return requested && TAB_KEYS.includes(requested) ? requested : "parentMessage";
-  });
+/** Which of the three join routes the parent picked, if any. */
+type ApplyMode = null | "call" | "survey" | "register";
+
+export default function LevelContent({
+  level,
+  courses,
+}: {
+  level: JourneyLevel;
+  courses: APICourse[];
+}) {
+  const t = useTranslations("journey");
+  const meta = JOURNEY_LEVEL_META[level];
+  const name = useTranslations(`journey.levels.${level}`)("meta.name");
+  const ctx = useMemo<LevelCtx>(
+    () => ({ level, band: { ageMin: meta.ageMin, ageMax: meta.ageMax }, name }),
+    [level, meta.ageMin, meta.ageMax, name]
+  );
+
+  const [tab, setTab] = useState<Tab>("overview");
+  const [mode, setMode] = useState<ApplyMode>(null);
 
   return (
-    <div className="py-10 sm:py-16">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <LocalizedLink
-          href="/courses"
-          className="group inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-primary/10 text-primary font-semibold text-sm hover:bg-primary hover:text-white transition-all duration-200"
-        >
-          <ArrowLeft className="w-4 h-4 transition-transform duration-200 rtl:rotate-180 group-hover:-translate-x-0.5 rtl:group-hover:translate-x-0.5" />
-          <span>{nav("courses")}</span>
-        </LocalizedLink>
+    <LevelContext.Provider value={ctx}>
+      <div className="py-10 sm:py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <LocalizedLink
+            href="/learning-path"
+            className="group inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-primary/10 text-primary font-semibold text-sm hover:bg-primary hover:text-white transition-all duration-200"
+          >
+            <ArrowLeft className="w-4 h-4 transition-transform duration-200 rtl:rotate-180 group-hover:-translate-x-0.5 rtl:group-hover:translate-x-0.5" />
+            <span>{t("index.levelsHeading")}</span>
+          </LocalizedLink>
 
-        {/* Visual + intro header */}
-        <ExplorerHero />
+          <LevelHero />
 
-        {/* The four buttons */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-8">
-          {TABS.map(({ key, icon: Icon }) => {
-            const active = tab === key;
-            return (
-              <button
-                key={key}
-                type="button"
-                onClick={() => setTab(key)}
-                aria-pressed={active}
-                className={`group flex flex-col items-start gap-2 rounded-2xl border p-4 text-start transition-all ${
-                  active
-                    ? "border-primary bg-primary text-white shadow-lg shadow-primary/20"
-                    : "border-border bg-surface text-foreground hover:border-primary/40 hover:-translate-y-0.5"
-                }`}
-              >
-                <span
-                  className={`flex h-9 w-9 items-center justify-center rounded-xl ${
-                    active ? "bg-white/20" : "bg-primary/10 text-primary"
+          {/* The two content tabs */}
+          <div className="grid grid-cols-2 gap-3 mt-8">
+            {TABS.map(({ key, icon: Icon }) => {
+              const active = tab === key;
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setTab(key)}
+                  aria-pressed={active}
+                  className={`group flex flex-col items-start gap-2 rounded-2xl border p-4 text-start transition-all ${
+                    active
+                      ? "border-primary bg-primary text-white shadow-lg shadow-primary/20"
+                      : "border-border bg-surface text-foreground hover:border-primary/40 hover:-translate-y-0.5"
                   }`}
                 >
-                  <Icon className="h-5 w-5" />
-                </span>
-                <span className="text-sm font-semibold leading-snug">
-                  {t(`buttons.${key}`)}
-                </span>
-              </button>
-            );
-          })}
-        </div>
+                  <span
+                    className={`flex h-9 w-9 items-center justify-center rounded-xl ${
+                      active ? "bg-white/20" : "bg-primary/10 text-primary"
+                    }`}
+                  >
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <span className="text-sm font-semibold leading-snug">
+                    {t(`buttons.${key}`)}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
 
-        {/* Content area — changes with the selected button */}
-        <div className="mt-6">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={tab}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.25 }}
-            >
-              {tab === "parentMessage" && <ParentMessagePanel />}
-              {tab === "overview" && <OverviewPanel />}
-              {tab === "practice" && <PracticePanel />}
-              {tab === "start" && <StartJourney onExit={() => setTab("parentMessage")} />}
-            </motion.div>
-          </AnimatePresence>
+          <div className="mt-6">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={tab}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.25 }}
+              >
+                {tab === "overview" && <OverviewPanel />}
+                {tab === "practice" && <PracticePanel />}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          <LevelCourses courses={courses} />
+
+          <ApplySection mode={mode} setMode={setMode} />
+
+          <NextLevelCard />
         </div>
       </div>
-    </div>
+    </LevelContext.Provider>
   );
 }
 
-function ExplorerHero() {
-  const t = useTranslations("explorer");
+function LevelHero() {
+  const tl = useLevelT();
+  const { level } = useLevel();
+  const meta = JOURNEY_LEVEL_META[level];
+  const Icon = LEVEL_ICONS[level];
   return (
     <div className="relative overflow-hidden rounded-3xl border border-primary/15 bg-gradient-to-br from-violet-50 via-sky-50 to-emerald-50 p-7 dark:border-primary/20 dark:from-violet-950/40 dark:via-slate-900 dark:to-slate-900 sm:p-10">
       <div className="pointer-events-none absolute -top-10 -end-10 h-40 w-40 rounded-full bg-primary/5" />
@@ -187,18 +252,20 @@ function ExplorerHero() {
       </motion.div>
 
       <div className="relative flex items-center gap-4">
-        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-          <Compass className="h-9 w-9" />
+        <div
+          className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${meta.gradient} text-white shadow-lg`}
+        >
+          <Icon className="h-9 w-9" />
         </div>
         <div className="min-w-0">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
-            <Star className="h-3.5 w-3.5" /> {t("window.ages")}
+            <Star className="h-3.5 w-3.5" /> {tl("meta.ages")}
           </span>
           <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
-            {t("window.title")}
+            {tl("meta.name")}
           </h1>
           <p className="mt-1 text-sm font-medium text-muted sm:text-base">
-            {t("window.subtitle")}
+            {tl("meta.tagline")}
           </p>
         </div>
       </div>
@@ -206,73 +273,18 @@ function ExplorerHero() {
   );
 }
 
-// ── Button 1 — Parent message ────────────────────────────────
-function ParentMessagePanel() {
-  const t = useTranslations("explorer");
-  const habits = t.raw("parentMessage.habits") as HabitParent[];
-  return (
-    <div className="space-y-6">
-      <section className="rounded-2xl border border-border bg-surface p-6 sm:p-8">
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary/80">
-          {t("parentMessage.sectionLabel")}
-        </p>
-        <h2 className="mt-2 text-2xl font-extrabold">{t("parentMessage.title")}</h2>
-        <p className="text-lg font-semibold text-primary">
-          {t("parentMessage.subtitle")}
-        </p>
-        <p className="mt-1 text-sm font-medium text-muted">{t("parentMessage.ages")}</p>
-        <div className="mt-5 space-y-4 leading-relaxed text-muted">
-          <Paragraphs text={t("parentMessage.p1")} />
-          <Paragraphs text={t("parentMessage.p2")} />
-          <Paragraphs text={t("parentMessage.p3")} />
-          <Paragraphs text={t("parentMessage.p4")} />
-        </div>
-      </section>
-
-      <section className="rounded-2xl border border-border bg-surface p-6 sm:p-8">
-        <h3 className="text-xl font-bold">{t("parentMessage.growthTitle")}</h3>
-        <p className="mt-2 text-muted leading-relaxed">{t("parentMessage.growthIntro")}</p>
-        <div className="mt-5 grid gap-4 sm:grid-cols-2">
-          {habits.map((h, i) => (
-            <div key={i} className="rounded-xl bg-primary/5 p-4">
-              <div className="flex items-center gap-2">
-                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-xs font-bold text-primary">
-                  {i + 1}
-                </span>
-                <h4 className="font-bold text-sm">{h.title}</h4>
-              </div>
-              <p className="mt-2 text-sm leading-relaxed text-muted">{h.body}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="rounded-2xl border border-border bg-surface p-6 sm:p-8">
-        <h3 className="text-xl font-bold">{t("parentMessage.milestoneTitle")}</h3>
-        <div className="mt-3 space-y-3 leading-relaxed text-muted">
-          <Paragraphs text={t("parentMessage.milestoneP1")} />
-          <Paragraphs text={t("parentMessage.milestoneP2")} />
-          <p className="rounded-xl border-s-4 border-primary bg-primary/5 p-4 font-medium text-foreground">
-            {t("parentMessage.milestoneP3")}
-          </p>
-        </div>
-      </section>
-    </div>
-  );
-}
-
-// ── Button 2 — Journey overview ──────────────────────────────
+// ── Tab 1 — Journey overview ─────────────────────────────────
 function OverviewPanel() {
-  const t = useTranslations("explorer");
-  const rows = t.raw("overview.rows") as OverviewRow[];
+  const tl = useLevelT();
+  const rows = tl.raw("overview.rows") as OverviewRow[];
   return (
     <section className="rounded-2xl border border-border bg-surface p-6 sm:p-8">
       <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary/80">
-        {t("overview.sectionLabel")}
+        {tl("overview.sectionLabel")}
       </p>
       <div className="mt-3 space-y-3 leading-relaxed text-muted">
-        <p>{t("overview.intro1")}</p>
-        <p>{t("overview.intro2")}</p>
+        <p>{tl("overview.intro1")}</p>
+        <p>{tl("overview.intro2")}</p>
       </div>
 
       <dl className="mt-6 overflow-hidden rounded-xl border border-border">
@@ -292,24 +304,24 @@ function OverviewPanel() {
       </dl>
 
       <p className="mt-6 rounded-xl border-s-4 border-primary bg-primary/5 p-4 font-medium leading-relaxed text-foreground">
-        {t("overview.closing")}
+        {tl("overview.closing")}
       </p>
     </section>
   );
 }
 
-// ── Button 3 — What the child practices ──────────────────────
+// ── Tab 2 — What the child practices ─────────────────────────
 function PracticePanel() {
-  const t = useTranslations("explorer");
-  const habits = t.raw("practice.habits") as HabitPractice[];
+  const tl = useLevelT();
+  const habits = tl.raw("practice.habits") as HabitPractice[];
   return (
     <div className="space-y-6">
       <section className="rounded-2xl border border-border bg-surface p-6 sm:p-8">
         <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary/80">
-          {t("practice.sectionLabel")}
+          {tl("practice.sectionLabel")}
         </p>
-        <p className="mt-3 text-lg font-semibold">{t("practice.intro1")}</p>
-        <p className="mt-2 text-muted leading-relaxed">{t("practice.intro2")}</p>
+        <p className="mt-3 text-lg font-semibold">{tl("practice.intro1")}</p>
+        <p className="mt-2 text-muted leading-relaxed">{tl("practice.intro2")}</p>
       </section>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -337,11 +349,157 @@ function PracticePanel() {
   );
 }
 
+// ── Courses that belong to this level ────────────────────────
+function LevelCourses({ courses }: { courses: APICourse[] }) {
+  const t = useTranslations("journey");
+  return (
+    <section className="mt-10">
+      <h2 className="text-xl font-extrabold tracking-tight">
+        {t("apply.coursesHeading")}
+      </h2>
+      {courses.length === 0 ? (
+        <p className="mt-3 rounded-2xl border border-dashed border-border bg-surface p-6 text-sm leading-relaxed text-muted">
+          {t("apply.coursesEmpty")}
+        </p>
+      ) : (
+        <>
+          <p className="mt-2 text-sm leading-relaxed text-muted">
+            {t("apply.coursesIntro")}
+          </p>
+          <div className="mt-5 grid gap-4 sm:grid-cols-2">
+            {courses.map((c) => (
+              <LevelCourseCard key={c.slug} course={c} />
+            ))}
+          </div>
+        </>
+      )}
+    </section>
+  );
+}
+
+// ── The three ways to join this level ────────────────────────
+function ApplySection({
+  mode,
+  setMode,
+}: {
+  mode: ApplyMode;
+  setMode: (m: ApplyMode) => void;
+}) {
+  const t = useTranslations("journey");
+
+  if (mode === "call") {
+    return (
+      <ApplyFrame>
+        <ContactForm outcome="" answers={[]} onBack={() => setMode(null)} onSubmitted={() => {}} />
+      </ApplyFrame>
+    );
+  }
+  if (mode === "register") {
+    return (
+      <ApplyFrame>
+        <RegisterForm outcome="" answers={[]} onBack={() => setMode(null)} onSubmitted={() => {}} />
+      </ApplyFrame>
+    );
+  }
+  if (mode === "survey") {
+    return (
+      <ApplyFrame>
+        <StartJourney onExit={() => setMode(null)} />
+      </ApplyFrame>
+    );
+  }
+
+  const options = [
+    { key: "call" as const, icon: Phone, title: "callTitle", body: "callBody", cta: "callCta" },
+    { key: "survey" as const, icon: ClipboardList, title: "surveyTitle", body: "surveyBody", cta: "surveyCta" },
+    { key: "register" as const, icon: Rocket, title: "registerTitle", body: "registerBody", cta: "registerCta" },
+  ];
+
+  return (
+    <section id="join" className="mt-12 scroll-mt-24">
+      <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary/80">
+        {t("apply.sectionLabel")}
+      </p>
+      <h2 className="mt-2 text-2xl font-extrabold tracking-tight">{t("apply.title")}</h2>
+      <p className="mt-2 leading-relaxed text-muted">{t("apply.intro")}</p>
+
+      <div className="mt-6 grid gap-4 md:grid-cols-3">
+        {options.map(({ key, icon: Icon, title, body, cta }) => (
+          <div
+            key={key}
+            className="flex flex-col rounded-2xl border border-border bg-surface p-6 transition-all hover:border-primary/40 hover:-translate-y-0.5"
+          >
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <Icon className="h-5 w-5" />
+            </span>
+            <h3 className="mt-4 font-bold leading-tight">{t(`apply.${title}`)}</h3>
+            <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">
+              {t(`apply.${body}`)}
+            </p>
+            <button
+              type="button"
+              onClick={() => setMode(key)}
+              className="group mt-5 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-white shadow-sm transition-all duration-200 hover:shadow-lg active:scale-95"
+            >
+              {t(`apply.${cta}`)}
+              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
+            </button>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ApplyFrame({ children }: { children: React.ReactNode }) {
+  return (
+    <section id="join" className="mt-12 scroll-mt-24">
+      {children}
+    </section>
+  );
+}
+
+// ── What comes after this level ──────────────────────────────
+function NextLevelCard() {
+  const t = useTranslations("journey");
+  const { level, name } = useLevel();
+  const next = nextLevel(level);
+  const nextName = useTranslations("journey.levels")(
+    next ? `${next}.meta.name` : `${level}.meta.name`
+  );
+
+  if (!next) {
+    return (
+      <section className="mt-12 rounded-2xl border border-border bg-surface p-6">
+        <h2 className="font-bold">{t("apply.nextHeading")}</h2>
+        <p className="mt-2 text-sm leading-relaxed text-muted">{t("apply.lastLevel")}</p>
+      </section>
+    );
+  }
+
+  return (
+    <section className="mt-12 rounded-2xl border border-border bg-surface p-6">
+      <h2 className="font-bold">{t("apply.nextHeading")}</h2>
+      <p className="mt-2 text-sm leading-relaxed text-muted">
+        {t("apply.nextBody", { level: name, next: nextName })}
+      </p>
+      <LocalizedLink
+        href={`/learning-path/${next}`}
+        className="group mt-4 inline-flex items-center gap-2 rounded-full bg-primary/10 px-5 py-2.5 text-sm font-bold text-primary transition-all hover:bg-primary hover:text-white"
+      >
+        {t("apply.nextCta", { next: nextName })}
+        <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
+      </LocalizedLink>
+    </section>
+  );
+}
+
 // ── Button 4 — Start the journey ─────────────────────────────
 type StartStage = "intro" | "quiz" | "result" | "contact" | "register";
 
-/** Quiz progress survives tab switches, stray taps, and reloads. */
-const FIT_STORAGE_KEY = "explorer-fit-state-v1";
+/** Quiz progress survives tab switches, stray taps, and reloads. Scoped per
+ *  level so answers given for one stage never resurface on another. */
+const fitStorageKey = (level: JourneyLevel) => `journey-fit-${level}-v1`;
 
 interface PersistedFitState {
   answers: Record<string, string>;
@@ -355,10 +513,10 @@ interface PersistedFitState {
  * only mounts on user interaction (the window's default tab is Parent message),
  * so it never takes part in SSR hydration.
  */
-function loadFitState(): PersistedFitState | null {
+function loadFitState(level: JourneyLevel): PersistedFitState | null {
   if (typeof window === "undefined") return null;
   try {
-    const raw = window.localStorage.getItem(FIT_STORAGE_KEY);
+    const raw = window.localStorage.getItem(fitStorageKey(level));
     if (!raw) return null;
     const p = JSON.parse(raw) as {
       v?: number;
@@ -384,12 +542,29 @@ function loadFitState(): PersistedFitState | null {
 }
 
 function StartJourney({ onExit }: { onExit: () => void }) {
-  const t = useTranslations("explorer");
-  const questions = t.raw("start.questions") as FitQuestion[];
+  const { level, band, name: levelName } = useLevel();
+  const t = useTranslations("journey");
+  const rawQuestions = t.raw("start.questions") as FitQuestion[];
+  // The age question's options are generated from this level's own band, so the
+  // same nine questions work for Explorer (5-8) and Pro (13-18) alike.
+  const questions = useMemo<FitQuestion[]>(() => {
+    const years: QuestionOption[] = [];
+    for (let a = band.ageMin; a <= band.ageMax; a++) {
+      years.push({ value: String(a), label: t("start.ageOptions.year", { n: a }) });
+    }
+    const ageOptions: QuestionOption[] = [
+      { value: "below", label: t("start.ageOptions.under", { n: band.ageMin }) },
+      ...years,
+      { value: "above", label: t("start.ageOptions.above", { n: band.ageMax + 1 }) },
+    ];
+    return rawQuestions.map((q) =>
+      q.id === "age" ? { ...q, options: ageOptions } : q
+    );
+  }, [rawQuestions, band.ageMin, band.ageMax, t]);
   const total = questions.length;
 
   // Restore saved progress once, via lazy initializers (see loadFitState note).
-  const [persisted] = useState(loadFitState);
+  const [persisted] = useState(() => loadFitState(level));
   const [stage, setStage] = useState<StartStage>(persisted?.stage ?? "intro");
   const [qIndex, setQIndex] = useState(() =>
     Math.min(Math.max(persisted?.qIndex ?? 0, 0), total - 1)
@@ -406,19 +581,19 @@ function StartJourney({ onExit }: { onExit: () => void }) {
     if (submitted) return;
     try {
       window.localStorage.setItem(
-        FIT_STORAGE_KEY,
+        fitStorageKey(level),
         JSON.stringify({ v: 1, answers, notes, qIndex, stage })
       );
     } catch {
       // storage unavailable (e.g. private mode) — non-fatal
     }
-  }, [submitted, answers, notes, qIndex, stage]);
+  }, [submitted, answers, notes, qIndex, stage, level]);
 
   /** Called by the forms after a successful submission. */
   const markSubmitted = () => {
     setSubmitted(true);
     try {
-      window.localStorage.removeItem(FIT_STORAGE_KEY);
+      window.localStorage.removeItem(fitStorageKey(level));
     } catch {
       // ignore
     }
@@ -465,7 +640,7 @@ function StartJourney({ onExit }: { onExit: () => void }) {
     [answers, notes]
   );
 
-  const result = useMemo(() => runExplorerFit(engineInput), [engineInput]);
+  const result = useMemo(() => runExplorerFit(engineInput, band), [engineInput, band]);
 
   const current = questions[qIndex];
   const isLast = qIndex === total - 1;
@@ -518,7 +693,7 @@ function StartJourney({ onExit }: { onExit: () => void }) {
         <p className="mt-2 leading-relaxed text-muted">{t("start.lead")}</p>
 
         <div className="mt-6 rounded-xl border border-border bg-background/40 p-5">
-          <h3 className="font-bold">{t("start.fitTitle")}</h3>
+          <h3 className="font-bold">{t("start.fitTitle", { level: levelName })}</h3>
           <p className="mt-2 text-sm leading-relaxed text-muted">{t("start.fitIntro")}</p>
         </div>
 
@@ -688,7 +863,8 @@ function ResultPanel({
   onBack: () => void;
   onRetake: () => void;
 }) {
-  const t = useTranslations("explorer");
+  const t = useTranslations("journey");
+  const { name } = useLevel();
   return (
     <section className="rounded-2xl border border-border bg-surface p-6 sm:p-8">
       <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
@@ -698,10 +874,10 @@ function ResultPanel({
       <p className="mt-3 text-sm text-muted">{t("start.result.thanks")}</p>
 
       <h2 className="mt-2 text-2xl font-extrabold leading-snug">
-        {t(`start.result.outcomes.${outcome}.title`)}
+        {t(`start.result.outcomes.${outcome}.title`, { level: name })}
       </h2>
       <div className="mt-3 space-y-3 leading-relaxed text-muted">
-        <Paragraphs text={t(`start.result.outcomes.${outcome}.body`)} />
+        <Paragraphs text={t(`start.result.outcomes.${outcome}.body`, { level: name })} />
       </div>
 
       {privacyFlag && (
@@ -814,7 +990,7 @@ function FormSuccess({
   body: string;
   showPayment?: boolean;
 }) {
-  const t = useTranslations("explorer");
+  const t = useTranslations("journey");
   return (
     <section className="rounded-2xl border border-border bg-surface p-6 text-center sm:p-10">
       <motion.div
@@ -851,12 +1027,14 @@ function ContactForm({
   onBack,
   onSubmitted,
 }: {
-  outcome: ExplorerOutcome;
+  /** "" when the parent skipped the fit check and applied directly. */
+  outcome: ExplorerOutcome | "";
   answers: ExplorerAnswerDetail[];
   onBack: () => void;
   onSubmitted: () => void;
 }) {
-  const t = useTranslations("explorer");
+  const t = useTranslations("journey");
+  const { level } = useLevel();
   const locale = useLocale();
   const [loadedAt] = useState(() => Date.now());
   const [hp, setHp] = useState("");
@@ -901,6 +1079,7 @@ function ContactForm({
     try {
       await createExplorerRequest({
         type: "call_request",
+        level,
         locale,
         parentName: form.parentName.trim(),
         email: form.email.trim(),
@@ -1035,12 +1214,14 @@ function RegisterForm({
   onBack,
   onSubmitted,
 }: {
-  outcome: ExplorerOutcome;
+  /** "" when the parent skipped the fit check and applied directly. */
+  outcome: ExplorerOutcome | "";
   answers: ExplorerAnswerDetail[];
   onBack: () => void;
   onSubmitted: () => void;
 }) {
-  const t = useTranslations("explorer");
+  const t = useTranslations("journey");
+  const { level } = useLevel();
   const locale = useLocale();
   const [loadedAt] = useState(() => Date.now());
   const [hp, setHp] = useState("");
@@ -1100,6 +1281,7 @@ function RegisterForm({
     try {
       await createExplorerRequest({
         type: "registration",
+        level,
         locale,
         parentName: form.fullName.trim(),
         email: form.email.trim(),

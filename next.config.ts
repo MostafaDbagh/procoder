@@ -23,6 +23,18 @@ const nextConfig: NextConfig = {
         destination: "https://www.stemtechlab.com/:path*",
         permanent: true,
       },
+      // /explorer became the Explorer stage of the five-level journey.
+      // 301 so the old URL's ranking transfers to the new one.
+      {
+        source: "/explorer",
+        destination: "/en/learning-path/explorer",
+        permanent: true,
+      },
+      {
+        source: "/:locale(en|ar)/explorer",
+        destination: "/:locale/learning-path/explorer",
+        permanent: true,
+      },
       { source: "/llm.txt", destination: "/llms.txt", permanent: true },
       { source: "/llm-full.txt", destination: "/llms-full.txt", permanent: true },
     ];

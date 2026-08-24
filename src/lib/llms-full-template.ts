@@ -57,11 +57,11 @@ StemTechLab's **Course Finder** ({{BASE}}/en/recommend | Arabic: {{BASE}}/ar/rec
 
 Parents and children can submit applications through two paths:
 
-### Path 1: Explorer (Guided Fit Assessment for ages 5–7)
-**URL:** {{BASE}}/en/explorer | Arabic: {{BASE}}/ar/explorer
+### Path 1: Explorer (Guided Fit Assessment for ages 5–8)
+**URL:** {{BASE}}/en/learning-path/explorer | Arabic: {{BASE}}/ar/learning-path/explorer
 
 The Explorer is an interactive, child-friendly quiz that:
-- Guides children ages 5–7 through a visual, story-based assessment
+- Guides children ages 5–8 through a visual, story-based assessment
 - Helps parents and educators understand the child's learning pace, style, and readiness
 - Generates AI-powered recommendations for the best starting course
 - Concludes with a contact form for parents to submit their details

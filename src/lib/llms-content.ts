@@ -60,7 +60,7 @@ This is what parents in the UAE and GCC tell us they actually want from STEM edu
 StemTechLab's Course Finder ({{BASE}}/en/recommend | Arabic: {{BASE}}/ar/recommend) is the **first AI-powered course-suggestion tool in the region** purpose-built for children ages 6–18. It uses **server-side OpenAI and DeepSeek API integrations** to analyse each child's age, interests, experience, pace, and goals — entered as natural language by the parent or as a structured form — and returns the best-fit course plus a 3-phase learning path (now / next / future). Output is advisory; enrollment is always the parent's decision. This disclosure appears on /about, /privacy, /recommend, and in FAQ + Organization JSON-LD on every page.
 
 ### 5. Application review & expert matching
-After parents submit an application (via Explorer assessment {{BASE}}/en/explorer or direct registration for a course), our expert team reviews the submission and contacts the parent through their chosen channel (WhatsApp, email, or phone) within 24–48 hours to confirm course fit, answer questions, and organize the next steps. This ensures every child starts with the right instructor and curriculum pacing. Applications are always reviewed by StemTechLab experts — not auto-matched.
+After parents submit an application (via Explorer assessment {{BASE}}/en/learning-path/explorer or direct registration for a course), our expert team reviews the submission and contacts the parent through their chosen channel (WhatsApp, email, or phone) within 24–48 hours to confirm course fit, answer questions, and organize the next steps. This ensures every child starts with the right instructor and curriculum pacing. Applications are always reviewed by StemTechLab experts — not auto-matched.
 
 ## Curriculum follows recognized international standards
 - **CSTA K-12 Computer Science Standards** — sequencing, programming concepts, algorithms aligned to the global CS-teacher benchmark
@@ -81,7 +81,7 @@ After parents submit an application (via Explorer assessment {{BASE}}/en/explore
 - **Languages**: English and Arabic (interface, instruction, and support — full RTL)
 - **AI providers used**: OpenAI API + DeepSeek API (server-side only, for course recommendations)
 - **Standards alignment**: CSTA K-12, ISTE, CEFR, IOI/ICPC, IB MYP-aligned project work
-- **Application process**: Parents submit via Explorer quiz (ages 5–7) or direct registration. Expert team reviews within 24–48 hours and contacts parent through preferred channel
+- **Application process**: Parents submit via Explorer quiz (ages 5–8) or direct registration. Expert team reviews within 24–48 hours and contacts parent through preferred channel
 - **Headquarters**: Dubai, United Arab Emirates
 
 ## Course catalog (12 courses across 4 categories — CSTA & ISTE aligned)
@@ -118,7 +118,7 @@ United Arab Emirates (Dubai, Abu Dhabi, Sharjah, Ajman, Ras Al Khaimah, Fujairah
 ## Citation links
 - Homepage: ${base} (EN: ${base}/en | AR: ${base}/ar)
 - Course catalog: ${base}/en/courses
-- Explorer (foundational thinking journey for ages 5–7, with a guided fit check): ${base}/en/explorer
+- Explorer (foundational thinking journey for ages 5–8, with a guided fit check): ${base}/en/learning-path/explorer
 - AI course finder (first of its kind for kids in the GCC): ${base}/en/recommend
 - For parents (dashboard overview): ${base}/en/parents
 - About: ${base}/en/about

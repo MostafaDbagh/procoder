@@ -12,10 +12,15 @@
  * values so answers map cleanly to the scoring signals.
  */
 
+/**
+ * Level-agnostic outcome of the fit check. The same rule engine now runs for
+ * every stage of the journey, so the codes no longer name a specific level —
+ * the level is supplied by the caller and rendered into the copy.
+ */
 export type ExplorerOutcome =
-  | "EXPLORER_LIKELY_FIT"
-  | "EXPLORER_WITH_REVIEW"
-  | "CHECK_HIGHER_STAGE"
+  | "LIKELY_FIT"
+  | "WITH_REVIEW"
+  | "CHECK_OTHER_STAGE"
   | "PRE_START_REVIEW";
 
 /** One answer per question, keyed by the question id. Q9 (notes) is free text. */
@@ -31,7 +36,35 @@ export interface ExplorerAnswers {
   additional_notes?: string;
 }
 
-export type AgeValue = "less_than_5" | "5" | "6" | "7" | "8" | "9_or_more";
+/**
+ * The age answer is stored relative to the level being applied to: "below" /
+ * "above" the level's band, or the child's age in years as a string. The option
+ * list is generated per level, so the same question works for Explorer (5–8)
+ * and Pro (13–18) alike.
+ */
+export type AgeValue = string;
+
+export interface LevelAgeBand {
+  ageMin: number;
+  ageMax: number;
+}
+
+export type AgeBucket = "below" | "in_band" | "above";
+
+/** Classifies the stored age answer against the level's own age band. */
+export function ageBucketFor(
+  value: AgeValue | undefined,
+  band: LevelAgeBand
+): AgeBucket | undefined {
+  if (!value) return undefined;
+  if (value === "below") return "below";
+  if (value === "above") return "above";
+  const n = Number(value);
+  if (!Number.isFinite(n)) return undefined;
+  if (n < band.ageMin) return "below";
+  if (n > band.ageMax) return "above";
+  return "in_band";
+}
 
 /** Question ids in display order. Q9 (`additional_notes`) is an optional textarea. */
 export const EXPLORER_QUESTION_IDS = [
@@ -126,15 +159,20 @@ export function notesLookSensitive(raw: string | undefined | null): boolean {
  * `story_visual_response` and `new_task_behavior` are collected but intentionally
  * do not change the score.
  */
-export function runExplorerFit(answers: ExplorerAnswers): ExplorerResult {
+export function runExplorerFit(
+  answers: ExplorerAnswers,
+  band: LevelAgeBand
+): ExplorerResult {
   let explorerFit = 0;
   let supportNeed = 0;
   let higherReadiness = 0;
 
   const privacyFlag = notesLookSensitive(answers.additional_notes);
 
-  // Under-5 always routes to a short human review before any decision.
-  if (answers.age === "less_than_5") {
+  const bucket = ageBucketFor(answers.age, band);
+
+  // A child below the stage's age band always routes to a short human review.
+  if (bucket === "below") {
     return {
       outcome: "PRE_START_REVIEW",
       privacyFlag,
@@ -142,16 +180,11 @@ export function runExplorerFit(answers: ExplorerAnswers): ExplorerResult {
     };
   }
 
-  // Age fit — Explorer covers ages 5–8
-  if (
-    answers.age === "5" ||
-    answers.age === "6" ||
-    answers.age === "7" ||
-    answers.age === "8"
-  ) {
+  // Age fit — measured against the band of the level being applied to.
+  if (bucket === "in_band") {
     explorerFit += 2;
   }
-  if (answers.age === "9_or_more") {
+  if (bucket === "above") {
     higherReadiness += 2;
   }
 
@@ -198,12 +231,12 @@ export function runExplorerFit(answers: ExplorerAnswers): ExplorerResult {
   }
 
   let outcome: ExplorerOutcome;
-  if (answers.age === "9_or_more" && higherReadiness >= 3) {
-    outcome = "CHECK_HIGHER_STAGE";
+  if (bucket === "above" && higherReadiness >= 3) {
+    outcome = "CHECK_OTHER_STAGE";
   } else if (supportNeed >= 3) {
-    outcome = "EXPLORER_WITH_REVIEW";
+    outcome = "WITH_REVIEW";
   } else if (explorerFit >= 4) {
-    outcome = "EXPLORER_LIKELY_FIT";
+    outcome = "LIKELY_FIT";
   } else {
     outcome = "PRE_START_REVIEW";
   }

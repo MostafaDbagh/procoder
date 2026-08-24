@@ -6,12 +6,12 @@ import { Compass } from "lucide-react";
 import { LocalizedLink } from "@/components/LocalizedLink";
 
 /**
- * Floating circular launcher for the Explorer journey (/explorer), shown on the
- * home page. Sits at the bottom "end" corner (right in LTR, left in RTL) with a
+ * Floating circular launcher for the Explorer stage of the learning journey,
+ * shown on the home page. Deep-links to that stage's join options. Sits at the bottom "end" corner (right in LTR, left in RTL) with a
  * soft halo, a gentle float, an ages chip, and a hover-reveal label.
  */
 export function ExplorerFloatBubble() {
-  const t = useTranslations("explorer.meta");
+  const t = useTranslations("journey.levels.explorer.meta");
   const reduceMotion = useReducedMotion();
 
   return (
@@ -22,7 +22,7 @@ export function ExplorerFloatBubble() {
       className="fixed bottom-6 end-6 z-50"
     >
       <LocalizedLink
-        href="/explorer?tab=start"
+        href="/learning-path/explorer#join"
         aria-label={`${t("name")} — ${t("tagline")}`}
         className="group relative flex items-center"
       >

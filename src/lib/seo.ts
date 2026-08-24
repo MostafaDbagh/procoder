@@ -16,6 +16,7 @@ const BREADCRUMB_AR: Record<string, string> = {
   Parents: "للوالدين",
   "For Parents": "للوالدين",
   "Course finder": "محدد الدورات",
+  "Learning path": "مسار التعلّم",
   Blogs: "المدونة",
 };
 
@@ -42,7 +43,12 @@ export type SiteLocale = (typeof LOCALES)[number];
 export const PUBLIC_STATIC_PATHS = [
  { path: "", priority: 1.0, changeFrequency: "weekly" as const },
  { path: "/courses", priority: 0.9, changeFrequency: "weekly" as const },
- { path: "/explorer", priority: 0.85, changeFrequency: "monthly" as const },
+ { path: "/learning-path", priority: 0.9, changeFrequency: "monthly" as const },
+ { path: "/learning-path/explorer", priority: 0.85, changeFrequency: "monthly" as const },
+ { path: "/learning-path/builder", priority: 0.85, changeFrequency: "monthly" as const },
+ { path: "/learning-path/creator", priority: 0.85, changeFrequency: "monthly" as const },
+ { path: "/learning-path/innovator", priority: 0.85, changeFrequency: "monthly" as const },
+ { path: "/learning-path/pro", priority: 0.85, changeFrequency: "monthly" as const },
  { path: "/free-trial", priority: 0.9, changeFrequency: "monthly" as const },
  { path: "/parents", priority: 0.85, changeFrequency: "monthly" as const },
  { path: "/blogs", priority: 0.85, changeFrequency: "weekly" as const },

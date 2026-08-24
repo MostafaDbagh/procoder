@@ -3930,6 +3930,7 @@ function CourseFormModal({
  imagePublicId: "",
  nextSessionDate: "",
  sortOrder: 0,
+ stlLevel: "",
  });
  const [uploadingCourseImage, setUploadingCourseImage] = useState(false);
 
@@ -4004,6 +4005,7 @@ function CourseFormModal({
  ? new Date((c as { nextSessionDate: string }).nextSessionDate).toISOString().slice(0, 10)
  : "",
  sortOrder: Number((c as { sortOrder?: number }).sortOrder ?? 0),
+ stlLevel: String((c as { stlLevel?: string }).stlLevel ?? ""),
  });
  } finally {
  setLoading(false);
@@ -4055,6 +4057,7 @@ function CourseFormModal({
  instructors: selectedInstructors,
  nextSessionDate: form.nextSessionDate || null,
  sortOrder: Math.max(0, Math.floor(Number(form.sortOrder) || 0)),
+ stlLevel: form.stlLevel,
  };
  try {
  if (mode === "create") {
@@ -4291,6 +4294,23 @@ function CourseFormModal({
  }
  className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
  />
+ </label>
+ <label className="block text-slate-400">
+ <span className="mb-1 block text-xs">
+ Learning journey stage (groups this course on /learning-path)
+ </span>
+ <select
+ value={form.stlLevel}
+ onChange={(e) => setForm((f) => ({ ...f, stlLevel: e.target.value }))}
+ className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+ >
+ <option value="">— not placed yet —</option>
+ <option value="explorer">Explorer (ages 5–8)</option>
+ <option value="builder">Builder (ages 8–10)</option>
+ <option value="creator">Creator (ages 9–12)</option>
+ <option value="innovator">Innovator (ages 11–14)</option>
+ <option value="pro">Pro (ages 13–18)</option>
+ </select>
  </label>
  <input
  placeholder="title EN"

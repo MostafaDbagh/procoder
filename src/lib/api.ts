@@ -84,6 +84,8 @@ async function request<T>(
 // --- Courses ---
 
 export interface APICourse {
+ /** Stage of the five-level learning journey; "" when not yet placed. */
+ stlLevel?: "explorer" | "builder" | "creator" | "innovator" | "pro" | "";
  _id: string;
  slug: string;
  category: string;
@@ -263,6 +265,8 @@ export interface ExplorerAnswerDetail {
 
 export interface ExplorerRequestData {
  type: "registration" | "call_request";
+ /** Which of the five journey levels the request came from. */
+ level?: "explorer" | "builder" | "creator" | "innovator" | "pro";
  locale: string;
  parentName: string;
  email: string;
