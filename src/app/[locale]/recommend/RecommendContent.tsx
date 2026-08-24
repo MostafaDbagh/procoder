@@ -35,7 +35,6 @@ const interestOptions: { key: string; category: Category | "programming" }[] = [
  { key: "programming", category: "programming" },
  { key: "robotics", category: "robotics" },
  { key: "algorithms", category: "algorithms" },
- { key: "arabic", category: "arabic" },
  { key: "gaming", category: "programming" },
 ];
 
@@ -818,7 +817,7 @@ export default function RecommendContent({ initialCourses }: Props) {
               : "bg-background border border-border text-muted hover:border-primary/30 hover:text-foreground"
             }`}
            >
-            {t(opt.key as "programming" | "robotics" | "algorithms" | "arabic" | "gaming")}
+            {t(opt.key as "programming" | "robotics" | "algorithms" | "gaming")}
            </button>
           ))}
          </div>

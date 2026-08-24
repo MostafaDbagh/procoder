@@ -561,7 +561,7 @@ export default function DashboardContent({ initialCourses }: Props) {
                   key={course.slug || i}
                   course={{
                     id: course.slug,
-                    category: course.category as "programming" | "robotics" | "algorithms" | "arabic" | "arabic",
+                    category: course.category as never,
                     ageMin: course.ageMin,
                     ageMax: course.ageMax,
                     level: course.level as "beginner" | "intermediate" | "advanced",

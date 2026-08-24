@@ -30,11 +30,11 @@ export function LearningJourney() {
  return (
  <section
  dir="ltr"
- className="hidden min-[786px]:block relative overflow-hidden pt-0 pb-0 font-display"
+ className="relative overflow-hidden pt-0 pb-0 font-display"
  aria-labelledby="learning-journey-title"
  >
  {/* Desktop: full-width bg image + absolutely-positioned text labels under each icon */}
- <div className="hidden md:block relative w-full aspect-[1280/737]">
+ <div className="hidden min-[786px]:block relative w-full aspect-[1280/737]">
  <Image
  src="/images/ladder.webp"
  alt="StemTechLab learning journey: Ask, Break Down, Test, Build, Improve — five steps that turn curiosity into real skills"
@@ -113,7 +113,7 @@ export function LearningJourney() {
  </div>
 
  {/* Mobile / tablet: full-width image, then a responsive grid of steps */}
- <div className="md:hidden">
+ <div className="min-[786px]:hidden">
  <div className="relative w-full aspect-[1280/737]">
  <Image
  src="/images/ladder.webp"
@@ -154,7 +154,7 @@ export function LearningJourney() {
  </div>
 
  {/* Mobile only: flow chips + tagline below the image */}
- <div className="md:hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+ <div className="min-[786px]:hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
  <div className="mt-10 sm:mt-14 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 mb-3">
  {flow.map((word, i) => (
  <div key={word} className="flex items-center gap-3">

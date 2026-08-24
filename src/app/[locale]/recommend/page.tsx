@@ -104,7 +104,7 @@ export default async function RecommendPage({
  featureList: [
  "Natural-language input in English or Arabic — no login required",
  "Server-side OpenAI + DeepSeek API integrations extract age, interests, skill level, and parent goals",
- "Deterministic scoring engine ranks live courses (Programming, Robotics, Algorithms, Arabic) by age fit, level, and interest match",
+ "Deterministic scoring engine ranks live courses (Programming, Robotics, Algorithms, AI, Web & Mobile) by age fit, level, and interest match",
  "Returns top 2–3 best-fit courses with plain-English explanation",
  "Generates a personalized 3-phase learning path",
  "Asks follow-up questions when the child profile is incomplete",
@@ -116,15 +116,8 @@ export default async function RecommendPage({
  "@type": "Thing",
  name: "Personalized course recommendation for children ages 6–18",
  description:
- "Matches each child to live online STEM, coding, robotics, algorithms, or Arabic classes based on age, current skill level, learning interests, and parent goals.",
+ "Matches each child to live online STEM, coding, robotics, algorithms or AI classes based on age, current skill level, learning interests, and parent goals.",
  },
- keywords: [
- "AI course finder for kids",
- "personalized STEM matching",
- "kids coding course recommendation",
- "Arabic kids classes finder",
- "GCC STEM course matcher",
- ].join(", "),
  };
 
  return (

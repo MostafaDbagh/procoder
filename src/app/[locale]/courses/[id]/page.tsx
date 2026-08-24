@@ -5,7 +5,7 @@ import { getTranslations } from "next-intl/server";
 import { courses as staticCourses } from "@/data/courses";
 import CourseDetailContent from "./CourseDetailContent";
 import { BreadcrumbSchema, buildCourseSchema } from "@/components/StructuredData";
-import { getCourseISR, getCourseSlugsISR } from "@/lib/server-api";
+import { getCourseISR, getCourseSlugsISR, getCoursesISR } from "@/lib/server-api";
 import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
 import { resolveArabicSlug, isArabicSlug } from "@/lib/arabicSlugs";
 
@@ -16,12 +16,10 @@ export const revalidate = 60;
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 export async function generateStaticParams() {
+ // Live catalogue only. Merging the offline fallback here used to publish
+ // indexable pages for courses that do not exist.
  const slugs = await getCourseSlugsISR();
- const merged = new Set([
- ...slugs,
- ...staticCourses.map((c) => c.id),
- ]);
- return [...merged].map((id) => ({ id }));
+ return slugs.map((id) => ({ id }));
 }
 
 export async function generateMetadata({
@@ -80,36 +78,26 @@ export async function generateMetadata({
  seoDescription = description + suffix;
  }
 
- const brandedTitle = lang === "ar" ? `${title} | ستم تك لاب` : `${title} | StemTechLab`;
+ // Enrich the title with the age band (data we already have) — the bare
+ // "<name> | StemTechLab" form was ~30 chars and wasted the SERP slot.
+ const ages = apiCourse
+ ? `${apiCourse.ageMin}-${apiCourse.ageMax}`
+ : `${staticCourse!.ageMin}-${staticCourse!.ageMax}`;
+ const withAges =
+ lang === "ar"
+ ? `${title} — أعمار ${ages} أونلاين | ستم تك لاب`
+ : `${title} — Ages ${ages} Online Classes | StemTechLab`;
+ const bare = lang === "ar" ? `${title} | ستم تك لاب` : `${title} | StemTechLab`;
+ const brandedTitle = withAges.length <= 60 ? withAges : bare;
  const coverImage = apiCourse?.imageUrl;
  const fallbackOg = `${SITE_URL}/og?locale=${lang}&title=${encodeURIComponent(title)}&cat=${encodeURIComponent(apiCourse?.category ?? staticCourse?.category ?? "")}`;
  const ogImages = coverImage
  ? [{ url: coverImage, alt: title }, { url: fallbackOg, width: 1200, height: 630, alt: title }]
  : [{ url: fallbackOg, width: 1200, height: 630, alt: title }];
 
- const courseKeywords = () => {
- const course = apiCourse || staticCourse;
- if (!course) return "";
- const ageRange = `${course.ageMin}-${course.ageMax}`;
- if (lang === "ar") {
- const categoryMap: Record<string, string> = {
- programming: "تعليم البرمجة",
- robotics: "دروس الروبوتات",
- algorithms: "تعليم الخوارزميات",
- arabic: "دروس اللغة العربية",
- };
- const cat = categoryMap[course.category] || course.category;
- return `${cat}, دورات أونلاين للأطفال, تعليم STEM الإمارات, دروس مباشرة ${ageRange} سنة`;
- } else {
- const cat = course.category;
- return `${cat} for kids, ${cat} ages ${ageRange}, learn ${cat.toLowerCase()} kids, online ${cat.toLowerCase()} courses, kids coding UAE, STEM classes, live coding lessons`;
- }
- };
-
  return {
  title: { absolute: brandedTitle },
  description: seoDescription,
- keywords: courseKeywords(),
  alternates: buildAlternates(lang, `/courses/${id}`),
  openGraph: {
  title: brandedTitle,
@@ -147,6 +135,12 @@ export default async function CourseDetailPage({
 
  const id = rawId;
  const apiCourse = await getCourseISR(id);
+ // Sibling courses at the same journey stage, server-rendered so the links are
+ // crawlable. Previously this template linked to zero other courses.
+ const allCourses = apiCourse?.stlLevel ? await getCoursesISR() : null;
+ const related = (allCourses ?? [])
+ .filter((c) => c.stlLevel === apiCourse?.stlLevel && c.slug !== id)
+ .slice(0, 3);
  const staticCourse = staticCourses.find((c) => c.id === id);
  if (!apiCourse && !staticCourse) {
  notFound();
@@ -218,7 +212,11 @@ export default async function CourseDetailPage({
  dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
  />
  )}
- <CourseDetailContent initialCourse={apiCourse ?? undefined} />
+ <CourseDetailContent
+ initialCourse={apiCourse ?? undefined}
+ relatedCourses={related}
+ stageKey={apiCourse?.stlLevel || undefined}
+ />
  </>
  );
 }

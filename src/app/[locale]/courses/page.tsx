@@ -17,12 +17,12 @@ const meta = {
  en: {
  title: "Kids’ Coding & STEM Courses Online (6–18)",
  description:
- "Live coding & STEM courses for kids 6–18: Python, Scratch, Robotics, Algorithms & Game Dev. Certified teachers, small groups. Free trial.",
+ "Live coding & STEM courses for kids 6–18: Python, Robotics, Algorithms, AI, Web & Mobile Development. Certified teachers, small groups. Free trial.",
  },
  ar: {
  title: "دورات برمجة وSTEM للأطفال أونلاين ٦–١٨",
  description:
- "دورات مباشرة للأطفال ٦–١٨: بايثون، سكراتش، روبوتات، خوارزميات وتطوير الألعاب. معلمون معتمدون، مجموعات صغيرة. تجربة مجانية.",
+ "دورات مباشرة للأطفال ٦–١٨: بايثون، روبوتات، خوارزميات، ذكاء اصطناعي، وتطوير الويب والتطبيقات. معلمون معتمدون، مجموعات صغيرة. تجربة مجانية.",
  },
 };
 

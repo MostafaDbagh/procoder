@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type ElementType } from "react";
+import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { LocalizedLink } from "@/components/LocalizedLink";
@@ -119,8 +120,13 @@ function resolveCategoryHero(category: string): HeroStyle {
 
 export default function CourseDetailContent({
  initialCourse,
+ relatedCourses = [],
+ stageKey,
 }: {
  initialCourse?: APICourse;
+ /** Sibling courses at the same journey stage, supplied by the server. */
+ relatedCourses?: APICourse[];
+ stageKey?: string;
 }) {
  const { id: slug } = useParams<{ id: string }>();
  const locale = useLocale();
@@ -253,15 +259,40 @@ export default function CourseDetailContent({
  </LocalizedLink>
  </AnimatedSection>
 
+ <nav aria-label="Breadcrumb" className="mb-4 text-sm text-muted">
+ <ol className="flex flex-wrap items-center gap-1.5">
+ <li>
+ <LocalizedLink href="/" className="hover:text-primary hover:underline">
+ {t("breadcrumbHome")}
+ </LocalizedLink>
+ </li>
+ <li aria-hidden className="opacity-60">/</li>
+ <li>
+ <LocalizedLink href="/courses" className="hover:text-primary hover:underline">
+ {common("title")}
+ </LocalizedLink>
+ </li>
+ <li aria-hidden className="opacity-60">/</li>
+ <li aria-current="page" className="font-medium text-foreground">
+ {course.title}
+ </li>
+ </ol>
+ </nav>
+
  {coverSrc ? (
  <>
  <AnimatedSection delay={0.1}>
  <div className="rounded-3xl overflow-hidden border border-border bg-muted/30 mb-6 relative w-full aspect-[16/10] sm:aspect-[2/1] max-h-[min(420px,55vh)] sm:max-h-[480px]">
- {/* eslint-disable-next-line @next/next/no-img-element */}
- <img
+ {/* This is the page's LCP element — through next/image with an
+ explicit sizes so the optimiser picks a sane width, and priority
+ because it sits above the fold. */}
+ <Image
  src={coverSrc}
  alt={course.title}
- className="absolute inset-0 w-full h-full object-cover"
+ fill
+ sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 896px"
+ priority
+ className="object-cover"
  />
  </div>
  </AnimatedSection>
@@ -494,6 +525,52 @@ export default function CourseDetailContent({
  </div>
  </AnimatedSection>
  </div>
+
+ {/* Sibling courses + the journey stage. Server-supplied, so these links
+ are in the HTML — this template previously linked to no other course. */}
+ {(relatedCourses.length > 0 || stageKey) && (
+ <AnimatedSection delay={0.05}>
+ <section className="mx-auto mt-14 max-w-5xl px-4 sm:px-6 lg:px-8">
+ <h2 className="text-xl font-extrabold tracking-tight">
+ {t("relatedHeading")}
+ </h2>
+ <p className="mt-1 text-sm text-muted">{t("relatedIntro")}</p>
+
+ {relatedCourses.length > 0 && (
+ <ul className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+ {relatedCourses.map((rc) => (
+ <li key={rc.slug}>
+ <LocalizedLink
+ href={`/courses/${rc.slug}`}
+ className="group flex h-full flex-col rounded-2xl border border-border bg-surface p-5 transition-all duration-200 hover:border-primary/40 hover:-translate-y-0.5 hover:shadow-lg"
+ >
+ <h3 className="font-bold leading-snug group-hover:text-primary">
+ {rc.title?.[lang] ?? rc.slug}
+ </h3>
+ <p className="mt-2 line-clamp-2 flex-1 text-sm leading-relaxed text-muted">
+ {rc.description?.[lang] ?? ""}
+ </p>
+ <span className="mt-3 text-xs text-muted">
+ {rc.ageMin}–{rc.ageMax} · {rc.lessons} {common("lessons")}
+ </span>
+ </LocalizedLink>
+ </li>
+ ))}
+ </ul>
+ )}
+
+ {stageKey && (
+ <LocalizedLink
+ href={`/learning-path/${stageKey}`}
+ className="group mt-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-5 py-2.5 text-sm font-bold text-primary transition-all hover:bg-primary hover:text-white"
+ >
+ {t("seeStage", { level: stageKey })}
+ <KidArrowRightIcon className="h-4 w-4" />
+ </LocalizedLink>
+ )}
+ </section>
+ </AnimatedSection>
+ )}
 
  <EnrollModal
  open={enrollOpen}

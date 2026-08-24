@@ -30,7 +30,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
  return {
  title: { absolute: brandedTitle },
  description,
- keywords: post.tags.join(", "),
  alternates: buildAlternates(lang, `/blogs/${slug}`),
  openGraph: {
  title: brandedTitle,
@@ -93,7 +92,6 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ loc
  mainEntityOfPage: siteUrl(lang, `/blogs/${slug}`),
  ...(safeCoverImage(post.coverImage) ? { image: safeCoverImage(post.coverImage) } : {}),
  inLanguage: locale,
- keywords: post.tags.join(", "),
  }),
  }}
  />

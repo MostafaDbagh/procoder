@@ -568,14 +568,6 @@
               "value": "5–8"
             },
             {
-              "label": "Number of sessions",
-              "value": "12 sessions"
-            },
-            {
-              "label": "Session duration",
-              "value": "60 minutes"
-            },
-            {
               "label": "Delivery model",
               "value": "Online-first"
             },
@@ -653,14 +645,6 @@
             {
               "label": "Age range",
               "value": "8–10"
-            },
-            {
-              "label": "Number of sessions",
-              "value": "Varies by pathway"
-            },
-            {
-              "label": "Session duration",
-              "value": "60 minutes"
             },
             {
               "label": "Delivery model",
@@ -742,14 +726,6 @@
               "value": "9–12"
             },
             {
-              "label": "Number of sessions",
-              "value": "Varies by pathway"
-            },
-            {
-              "label": "Session duration",
-              "value": "60 minutes"
-            },
-            {
               "label": "Delivery model",
               "value": "Online-first"
             },
@@ -829,14 +805,6 @@
               "value": "11–14"
             },
             {
-              "label": "Number of sessions",
-              "value": "Varies by pathway"
-            },
-            {
-              "label": "Session duration",
-              "value": "60 minutes"
-            },
-            {
               "label": "Delivery model",
               "value": "Online-first"
             },
@@ -914,14 +882,6 @@
             {
               "label": "Age range",
               "value": "13–18"
-            },
-            {
-              "label": "Number of sessions",
-              "value": "Varies by pathway"
-            },
-            {
-              "label": "Session duration",
-              "value": "60 minutes"
             },
             {
               "label": "Delivery model",
@@ -1055,7 +1015,11 @@
         "q": "What is your refund policy?",
         "a": "We offer a full refund if you cancel before the second session. After that, we'll work with you on a pro-rated credit toward another course."
       }
-    ]
+    ],
+    "breadcrumbHome": "Home",
+    "relatedHeading": "More in this stage",
+    "relatedIntro": "Courses at the same point in the learning journey.",
+    "seeStage": "See the {level} stage"
   },
   "recommend": {
     "title": "Let Us Help You Find the Perfect Fit",
@@ -1161,7 +1125,7 @@
     "arabic2": "Arabic"
   },
   "footer": {
-    "description": "AI-powered STEM learning for kids 6–18. Coding, robotics & Arabic — live classes, certified teachers.",
+    "description": "AI-powered STEM learning for kids 6–18. Coding, robotics & AI — live classes, certified teachers.",
     "quickLinks": "Quick Links",
     "categories": "Categories",
     "contact": "Reach Out",

@@ -9,6 +9,7 @@ import type { APICourse } from "@/lib/api";
 import { CourseCard } from "@/components/CourseCard";
 import { motion, AnimatePresence } from "framer-motion";
 import {
+ Smartphone,
  Search,
  Code2,
  Bot,
@@ -21,7 +22,6 @@ import {
  Layout,
  Workflow,
 } from "lucide-react";
-import { ScratchCatIcon } from "@/components/icons/ScratchCatIcon";
 
 type AgeFilter = "all" | "6-9" | "10-13" | "14-18";
 
@@ -34,10 +34,9 @@ const categoryTabs: {
  { value: "programming", icon: Code2, activeColor: "bg-blue-500 text-white" },
  { value: "robotics", icon: Bot, activeColor: "bg-emerald-500 text-white" },
  { value: "algorithms", icon: Workflow, activeColor: "bg-violet-500 text-white" },
- { value: "arabic", icon: BookMarked, activeColor: "bg-rose-500 text-white" },
  { value: "web-development", icon: Layout, activeColor: "bg-cyan-500 text-white" },
  { value: "artificial-intelligence", icon: Brain, activeColor: "bg-indigo-500 text-white" },
- { value: "scratch", icon: ScratchCatIcon as React.ElementType, activeColor: "bg-orange-500 text-white" },
+ { value: "mobile-app-development", icon: Smartphone, activeColor: "bg-pink-500 text-white" },
 ];
 
 function categoryFromSearchParams(

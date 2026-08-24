@@ -35,16 +35,7 @@ const AI_AND_SEARCH_BOTS = [
  "Screaming Frog SEO Spider",
 ] as const;
 
-type RobotRule = {
- userAgent: string;
- allow: string[];
- disallow: string[];
-};
-
-function publicCrawlerRule(userAgent: string): RobotRule {
- return {
- userAgent,
- allow: [
+const PUBLIC_CRAWL_ALLOW = [
  "/",
  "/llms.txt",
  "/llms-full.txt",
@@ -53,16 +44,20 @@ function publicCrawlerRule(userAgent: string): RobotRule {
  "/.well-known/llms.txt",
  "/.well-known/llms-full.txt",
  "/.well-known/ai-plugin.json",
- ],
- disallow: [...PRIVATE_CRAWL_PATHS],
- };
-}
+];
 
 export default function robots(): MetadataRoute.Robots {
+ // One rule block listing every user-agent, instead of repeating a byte-identical
+ // 30-line block per bot. The old form emitted ~22.7KB of which only 63 lines
+ // were unique. Crawlers apply the most specific matching group, and since every
+ // group carried the same rules the expansion bought nothing.
  return {
  rules: [
- publicCrawlerRule("*"),
- ...AI_AND_SEARCH_BOTS.map((bot) => publicCrawlerRule(bot)),
+ {
+ userAgent: ["*", ...AI_AND_SEARCH_BOTS],
+ allow: PUBLIC_CRAWL_ALLOW,
+ disallow: [...PRIVATE_CRAWL_PATHS],
+ },
  ],
  sitemap: `${SITE_URL}/sitemap.xml`,
  host: SITE_URL,

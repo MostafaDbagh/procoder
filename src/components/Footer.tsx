@@ -112,7 +112,7 @@ export function Footer() {
  <li><LocalizedLink href="/courses?category=robotics" className="text-sm text-muted hover:text-primary transition-colors">{cats("robotics")}</LocalizedLink></li>
  <li><LocalizedLink href="/courses?category=algorithms" className="text-sm text-muted hover:text-primary transition-colors">{cats("algorithms")}</LocalizedLink></li>
  <li><LocalizedLink href="/courses?category=artificial-intelligence" className="text-sm text-muted hover:text-primary transition-colors">{cats("artificial-intelligence")}</LocalizedLink></li>
- <li><LocalizedLink href="/courses?category=mobile-development" className="text-sm text-muted hover:text-primary transition-colors">{cats("mobile-development")}</LocalizedLink></li>
+ <li><LocalizedLink href="/courses?category=mobile-app-development" className="text-sm text-muted hover:text-primary transition-colors">{cats("mobile-development")}</LocalizedLink></li>
  <li><LocalizedLink href="/courses?category=web-development" className="text-sm text-muted hover:text-primary transition-colors">{cats("web-development")}</LocalizedLink></li>
  </ul>
  </div>

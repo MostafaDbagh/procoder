@@ -8,7 +8,7 @@ import { HowItWorks } from "@/components/HowItWorks";
 import { WhyUs } from "@/components/WhyUs";
 import { CTABanner } from "@/components/CTABanner";
 import { ExplorerFloatBubble } from "@/components/ExplorerFloatBubble";
-import { getCategoriesPublicISR } from "@/lib/server-api";
+import { getCategoriesPublicISR, getCoursesISR } from "@/lib/server-api";
 import { buildAlternates, siteUrl } from "@/lib/seo";
 
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
@@ -41,9 +41,6 @@ export async function generateMetadata({
  return {
  title,
  description: meta[lang].description,
- keywords: lang === "ar"
- ? "تعليم البرمجة للأطفال, دروس البرمجة أونلاين الإمارات, تعليم STEM للأطفال, دورات الروبوتات, تعليم الخوارزميات, دروس لغة عربية أونلاين, منصة تعليم الاطفال"
- : "kids coding courses online, STEM education UAE, online coding classes for kids, robotics for children, programming for kids 6-18, algorithm courses kids, free trial coding, UAE STEM academy, GCC coding platform",
  alternates: buildAlternates(lang, ""),
  openGraph: {
  title: ogTitle,
@@ -70,7 +67,14 @@ export default async function HomePage({
 }) {
  const { locale } = await params;
  setRequestLocale(locale);
- const cmsCategories = await getCategoriesPublicISR();
+ const [cmsCategories, allCourses] = await Promise.all([
+ getCategoriesPublicISR(),
+ getCoursesISR(),
+ ]);
+ // Only promote categories that actually have a course behind them.
+ const availableSlugs = [
+ ...new Set((allCourses ?? []).map((c) => c.category).filter(Boolean)),
+ ];
 
  return (
  <>
@@ -78,7 +82,7 @@ export default async function HomePage({
  <LearningJourney />
  <ParentQuestions />
  <WhyUs />
- <CategorySection categories={cmsCategories} />
+ <CategorySection categories={cmsCategories} availableSlugs={availableSlugs} />
  <HowItWorks />
  <CTABanner />
  <ExplorerFloatBubble />

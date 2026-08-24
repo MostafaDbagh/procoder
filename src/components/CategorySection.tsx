@@ -103,6 +103,13 @@ const DEFAULT_STYLE = {
  emoji: "📚",
 };
 
+/** True when the category has a live course (or when we have no list to check). */
+function hasCourses(slug: string, available?: string[]): boolean {
+ if (!available) return true;
+ const norm = (v: string) => v.trim().toLowerCase();
+ return available.some((a) => norm(a) === norm(slug));
+}
+
 const STATIC_FALLBACK: StaticCat[] = [
  {
  key: "programming",
@@ -163,9 +170,15 @@ type Props = {
  * `[]` = no active categories in DB.
  */
  categories: APICategory[] | null;
+ /**
+  * Category slugs that actually have at least one live course. Cards for any
+  * other category are hidden, so the homepage can never promote a category
+  * whose "Explore" button lands on an empty results page.
+  */
+ availableSlugs?: string[];
 };
 
-export function CategorySection({ categories: apiCategories }: Props) {
+export function CategorySection({ categories: apiCategories, availableSlugs }: Props) {
  const t = useTranslations("categories");
  const locale = useLocale();
 
@@ -274,7 +287,9 @@ export function CategorySection({ categories: apiCategories }: Props) {
 
  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-7">
  {fromApi
- ? apiCategories!.map((row, i) => (
+ ? apiCategories!
+ .filter((row) => hasCourses(row.slug, availableSlugs))
+ .map((row, i) => (
  <CategoryCardApi
  key={row.slug}
  row={row}
@@ -283,9 +298,11 @@ export function CategorySection({ categories: apiCategories }: Props) {
  locale={locale}
  />
  ))
- : STATIC_FALLBACK.map((cat, i) => (
+ : STATIC_FALLBACK.filter((cat) => hasCourses(cat.key, availableSlugs)).map(
+ (cat, i) => (
  <CategoryCardStatic key={cat.key} cat={cat} i={i} t={t} />
- ))}
+ )
+ )}
  </div>
 
  <AnimatedSection delay={0.5} className="text-center mt-14">

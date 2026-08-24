@@ -3,6 +3,15 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const withNextIntl = createNextIntlPlugin();
 
+/**
+ * Dev-only CSP relaxations. React's development build calls eval() for
+ * debugging features, Turbopack HMR opens a websocket, and the browser talks
+ * to stem-Be on :5000 directly (admin previews, direct NEXT_PUBLIC_API_URL).
+ * None of this is allowed in production — that policy stays strict.
+ */
+const isDev = process.env.NODE_ENV !== "production";
+const devOrigins = "http://127.0.0.1:5000 http://localhost:5000";
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
@@ -117,6 +126,15 @@ const nextConfig: NextConfig = {
       ],
     },
     {
+      // /admin is mounted outside [locale] — never locale-prefixed.
+      source: "/admin",
+      headers: [
+        { key: "X-Robots-Tag", value: "noindex, nofollow, noai" },
+        { key: "X-Content-Type-Options", value: "nosniff" },
+      ],
+    },
+    {
+      // (wildcard for /admin/login, /admin/dashboard, ...)
       source: "/admin/:path*",
       headers: [
         { key: "X-Robots-Tag", value: "noindex, nofollow, noai" },
@@ -124,14 +142,40 @@ const nextConfig: NextConfig = {
       ],
     },
     {
-      source: "/dashboard/:path*",
+      // Locale-prefixed: /en/dashboard, /ar/dashboard.
+      source: "/:locale(en|ar)/dashboard",
       headers: [
         { key: "X-Robots-Tag", value: "noindex, nofollow, noai" },
         { key: "X-Content-Type-Options", value: "nosniff" },
       ],
     },
     {
-      source: "/instructor/:path*",
+      // (wildcard for /en/dashboard/courses, /ar/dashboard/settings, ...)
+      source: "/:locale(en|ar)/dashboard/:path*",
+      headers: [
+        { key: "X-Robots-Tag", value: "noindex, nofollow, noai" },
+        { key: "X-Content-Type-Options", value: "nosniff" },
+      ],
+    },
+    {
+      // Locale-prefixed: /en/instructor, /ar/instructor.
+      source: "/:locale(en|ar)/instructor",
+      headers: [
+        { key: "X-Robots-Tag", value: "noindex, nofollow, noai" },
+        { key: "X-Content-Type-Options", value: "nosniff" },
+      ],
+    },
+    {
+      // (wildcard for /en/instructor/courses, /ar/instructor/students, ...)
+      source: "/:locale(en|ar)/instructor/:path*",
+      headers: [
+        { key: "X-Robots-Tag", value: "noindex, nofollow, noai" },
+        { key: "X-Content-Type-Options", value: "nosniff" },
+      ],
+    },
+    {
+      // Parent portal login is private too.
+      source: "/:locale(en|ar)/parent/:path*",
       headers: [
         { key: "X-Robots-Tag", value: "noindex, nofollow, noai" },
         { key: "X-Content-Type-Options", value: "nosniff" },
@@ -168,11 +212,11 @@ const nextConfig: NextConfig = {
           key: "Content-Security-Policy",
           value: [
             "default-src 'self'",
-            "script-src 'self' 'unsafe-inline'",
+            `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
             "font-src 'self' https://fonts.gstatic.com",
-            "img-src 'self' data: blob: https://res.cloudinary.com https://images.unsplash.com",
-            "connect-src 'self' https://res.cloudinary.com https://vitals.vercel-insights.com https://va.vercel-scripts.com",
+            `img-src 'self' data: blob: https://res.cloudinary.com https://images.unsplash.com${isDev ? ` ${devOrigins}` : ""}`,
+            `connect-src 'self' https://res.cloudinary.com https://vitals.vercel-insights.com https://va.vercel-scripts.com${isDev ? ` ${devOrigins} ws://localhost:* ws://127.0.0.1:*` : ""}`,
             "frame-ancestors 'none'",
             "base-uri 'self'",
             "form-action 'self'",

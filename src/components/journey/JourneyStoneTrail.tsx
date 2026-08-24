@@ -6,8 +6,6 @@ import { motion, useReducedMotion } from "framer-motion";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { JOURNEY_LEVEL_LIST, type JourneyLevel } from "@/data/journeyLevels";
 import {
-  CalendarDays,
-  Clock,
   Compass,
   Blocks,
   Palette,
@@ -441,17 +439,6 @@ export default function JourneyStoneTrail({
                           </span>
                         ))}
                     </div>
-                  </div>
-
-                  <div aria-hidden="true" className="mt-3 hidden items-center gap-3 text-[12px] text-muted map:flex">
-                    <span className="inline-flex items-center gap-1">
-                      <CalendarDays className="h-3.5 w-3.5" />
-                      {tLevels(`${lvl.key}.meta.sessions`)}
-                    </span>
-                    <span className="inline-flex items-center gap-1">
-                      <Clock className="h-3.5 w-3.5" />
-                      {tLevels(`${lvl.key}.meta.duration`)}
-                    </span>
                   </div>
 
                   <div aria-hidden="true" className="mt-3 border-t border-border pt-3">
