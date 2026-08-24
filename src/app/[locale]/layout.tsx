@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Navbar } from "@/components/Navbar";
+import { getCoursesISR } from "@/lib/server-api";
 import { Footer } from "@/components/Footer";
 import { LocaleHtmlAttrs } from "@/components/LocaleHtmlAttrs";
 import { QueryProvider } from "@/components/QueryProvider";
@@ -49,6 +50,14 @@ export default async function LocaleLayout({
  setRequestLocale(locale);
  const messages = await getMessages();
 
+ // Course list for the header dropdown. Fetched here (ISR-cached) rather than
+ // client-side so the links are in the server HTML and cost no extra request.
+ const allCourses = await getCoursesISR();
+ const navCourses = (allCourses ?? []).map((c) => ({
+ slug: c.slug,
+ title: c.title,
+ }));
+
  return (
  <NextIntlClientProvider locale={locale} messages={messages}>
  <QueryProvider>
@@ -59,7 +68,7 @@ export default async function LocaleLayout({
  <WebsiteSchema locale={locale} />
  <CourseFinderApplicationSchema locale={locale} />
  <EducationalServiceSchema locale={locale} />
- <Navbar />
+ <Navbar courses={navCourses} />
  <main className="flex-1">{children}</main>
  <Footer />
  </ThemeProvider>

@@ -18,7 +18,9 @@
     "bookDemo": "احجز حصة تجريبية مجانية",
     "bookDemoSubject": "حصة تجريبية مجانية — {course}",
     "bookDemoSubjectGeneric": "حصة تجريبية مجانية",
-    "learningPath": "مسار التعلّم"
+    "learningPath": "مسار التعلّم",
+    "allCourses": "كل الدورات",
+    "browseCourses": "تصفّح الدورات"
   },
   "notFound": {
     "title": "عذراً! هذه الصفحة تاهت",

@@ -18,7 +18,9 @@
     "bookDemo": "Book a Free Trial Class",
     "bookDemoSubject": "Free trial class — {course}",
     "bookDemoSubjectGeneric": "Free trial class",
-    "learningPath": "Learning path"
+    "learningPath": "Learning path",
+    "allCourses": "All courses",
+    "browseCourses": "Browse courses"
   },
   "notFound": {
     "title": "Oops! This page wandered off",

@@ -1,59 +1,69 @@
 "use client";
 
-import { useState, useEffect, useMemo, startTransition } from "react";
+import { useState, useEffect, useMemo, useRef, startTransition } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { usePathname } from "@/i18n/navigation";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sun, Moon } from "lucide-react";
+import { Menu, X, Sun, Moon, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { useTheme } from "./ThemeProvider";
-import { courses as staticCourses } from "@/data/courses";
 
-function titleizeSlug(slug: string) {
- return slug
- .split("-")
- .filter(Boolean)
- .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
- .join(" ");
+/** Minimal shape the header needs — supplied by the server layout. */
+export interface NavCourse {
+ slug: string;
+ title: { en: string; ar: string };
 }
 
-export function Navbar() {
+export function Navbar({ courses = [] }: { courses?: NavCourse[] }) {
  const t = useTranslations("nav");
- const ct = useTranslations("courseData");
  const locale = useLocale();
  const pathname = usePathname();
  const { theme, toggleTheme } = useTheme();
  const [mobileOpen, setMobileOpen] = useState(false);
-
- const contactWithTrialSubject = useMemo(() => {
- const m = pathname.match(/\/courses\/([^/?#]+)/);
- const slug = m?.[1];
- const subject = slug
- ? (() => {
- const staticCourse = staticCourses.find((c) => c.id === slug);
- const courseLabel = staticCourse ? ct(staticCourse.titleKey) : titleizeSlug(slug);
- return t("bookDemoSubject", { course: courseLabel });
- })()
- : t("bookDemoSubjectGeneric");
- return `/contact?subject=${encodeURIComponent(subject)}`;
- }, [pathname, t, ct]);
+ const [coursesOpen, setCoursesOpen] = useState(false);
+ const [mobileCoursesOpen, setMobileCoursesOpen] = useState(false);
+ const coursesRef = useRef<HTMLDivElement | null>(null);
+ const lang = locale === "ar" ? "ar" : "en";
+ const inCourses = pathname === "/courses" || pathname.startsWith("/courses/") || pathname === "/recommend";
 
  useEffect(() => {
  startTransition(() => {
  setMobileOpen(false);
+ setCoursesOpen(false);
+ setMobileCoursesOpen(false);
  });
  }, [pathname, locale]);
 
- const links = useMemo(() => [
+ // Close the dropdown on Escape or a click outside it.
+ useEffect(() => {
+ if (!coursesOpen) return;
+ const onKey = (e: KeyboardEvent) => {
+ if (e.key === "Escape") setCoursesOpen(false);
+ };
+ const onDown = (e: MouseEvent) => {
+ if (!coursesRef.current?.contains(e.target as Node)) setCoursesOpen(false);
+ };
+ document.addEventListener("keydown", onKey);
+ document.addEventListener("mousedown", onDown);
+ return () => {
+ document.removeEventListener("keydown", onKey);
+ document.removeEventListener("mousedown", onDown);
+ };
+ }, [coursesOpen]);
+
+ // The Courses dropdown is rendered between these two groups, so it keeps its
+ // original position in the bar.
+ const linksBefore = useMemo(() => [
  { href: "/", label: t("home"), wideOnly: false },
  { href: "/learning-path", label: t("learningPath"), wideOnly: false },
- { href: "/courses", label: t("courses"), wideOnly: false },
- { href: "/recommend", label: t("recommend"), wideOnly: false },
+ ], [t]);
+ const linksAfter = useMemo(() => [
  { href: "/free-trial", label: t("freeTrial"), wideOnly: false },
  { href: "/parents", label: t("parents"), wideOnly: false },
  { href: "/contact", label: t("contact"), wideOnly: true },
  ], [t]);
+ const links = useMemo(() => [...linksBefore, ...linksAfter], [linksBefore, linksAfter]);
 
  // localePrefix:"always" — swap /en ↔ /ar prefix directly
  // usePathname() returns path WITHOUT locale prefix (e.g. "/courses")
@@ -72,7 +82,105 @@ export function Navbar() {
 
  {/* Desktop nav */}
  <div className="hidden md:flex items-center gap-1">
- {links.map((link) => {
+ {linksBefore.map((link) => {
+ const active = pathname === link.href;
+ return (
+ <LocalizedLink
+ key={link.href}
+ href={link.href}
+ className={`relative px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
+ link.wideOnly ? "hidden min-[1350px]:inline-flex" : ""
+ } ${
+ active
+ ? "bg-primary/15 text-primary"
+ : "text-muted hover:text-foreground hover:bg-surface-hover"
+ }`}
+ >
+ {link.label}
+ {active && (
+ <motion.span
+ layoutId="nav-active-dot"
+ className="absolute left-1/2 -bottom-1 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-primary"
+ transition={{ type: "spring", stiffness: 500, damping: 35 }}
+ />
+ )}
+ </LocalizedLink>
+ );
+ })}
+
+ {/* Courses dropdown: the catalogue plus the course finder. Opens on
+ hover for pointer users and on click/Enter for keyboard users. */}
+ <div
+ ref={coursesRef}
+ className="relative"
+ onMouseEnter={() => setCoursesOpen(true)}
+ onMouseLeave={() => setCoursesOpen(false)}
+ >
+ <button
+ type="button"
+ aria-expanded={coursesOpen}
+ aria-haspopup="true"
+ aria-controls="nav-courses-menu"
+ onClick={() => setCoursesOpen((v) => !v)}
+ className={`relative inline-flex items-center gap-1 px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
+ inCourses
+ ? "bg-primary/15 text-primary"
+ : "text-muted hover:text-foreground hover:bg-surface-hover"
+ }`}
+ >
+ {t("courses")}
+ <ChevronDown
+ className={`h-4 w-4 transition-transform duration-200 ${coursesOpen ? "rotate-180" : ""}`}
+ aria-hidden
+ />
+ </button>
+
+ <div
+ id="nav-courses-menu"
+ className={`absolute start-0 top-full z-50 mt-2 w-[34rem] rounded-2xl border border-border bg-surface p-3 shadow-xl shadow-black/10 transition-all duration-150 ${
+ coursesOpen
+ ? "visible translate-y-0 opacity-100"
+ : "invisible -translate-y-1 opacity-0"
+ }`}
+ >
+ {courses.length > 0 && (
+ <>
+ <p className="px-3 pb-1 pt-1 text-[11px] font-bold uppercase tracking-[0.14em] text-muted">
+ {t("browseCourses")}
+ </p>
+ <ul className="grid grid-cols-2 gap-0.5">
+ {courses.map((c) => (
+ <li key={c.slug}>
+ <LocalizedLink
+ href={`/courses/${c.slug}`}
+ className="block rounded-xl px-3 py-2 text-sm font-medium text-muted transition-colors hover:bg-surface-hover hover:text-foreground"
+ >
+ {c.title?.[lang] ?? c.slug}
+ </LocalizedLink>
+ </li>
+ ))}
+ </ul>
+ <div className="my-2 border-t border-border" />
+ </>
+ )}
+ <div className="grid grid-cols-2 gap-0.5">
+ <LocalizedLink
+ href="/courses"
+ className="block rounded-xl px-3 py-2 text-sm font-bold text-primary transition-colors hover:bg-primary/10"
+ >
+ {t("allCourses")}
+ </LocalizedLink>
+ <LocalizedLink
+ href="/recommend"
+ className="block rounded-xl px-3 py-2 text-sm font-bold text-primary transition-colors hover:bg-primary/10"
+ >
+ {t("recommend")}
+ </LocalizedLink>
+ </div>
+ </div>
+ </div>
+
+ {linksAfter.map((link) => {
  const active = pathname === link.href;
  return (
  <LocalizedLink
@@ -178,6 +286,63 @@ className="hidden p-2 rounded-full text-muted hover:text-foreground hover:bg-sur
  </LocalizedLink>
  );
  })}
+
+ {/* Courses section — expandable, since touch has no hover. */}
+ <button
+ type="button"
+ aria-expanded={mobileCoursesOpen}
+ aria-controls="nav-courses-mobile"
+ onClick={() => setMobileCoursesOpen((v) => !v)}
+ className={`flex w-full items-center justify-between px-4 py-3 rounded-full text-sm font-semibold transition-colors ${
+ inCourses
+ ? "text-primary bg-primary/15"
+ : "text-muted hover:text-foreground hover:bg-surface-hover"
+ }`}
+ >
+ {t("courses")}
+ <ChevronDown
+ className={`h-4 w-4 transition-transform duration-200 ${mobileCoursesOpen ? "rotate-180" : ""}`}
+ aria-hidden
+ />
+ </button>
+
+ <AnimatePresence initial={false}>
+ {mobileCoursesOpen && (
+ <motion.div
+ id="nav-courses-mobile"
+ initial={{ height: 0, opacity: 0 }}
+ animate={{ height: "auto", opacity: 1 }}
+ exit={{ height: 0, opacity: 0 }}
+ transition={{ duration: 0.2 }}
+ className="overflow-hidden"
+ >
+ <div className="ms-3 space-y-0.5 border-s border-border ps-3">
+ {courses.map((c) => (
+ <LocalizedLink
+ key={c.slug}
+ href={`/courses/${c.slug}`}
+ className="block rounded-xl px-4 py-2.5 text-sm font-medium text-muted transition-colors hover:bg-surface-hover hover:text-foreground"
+ >
+ {c.title?.[lang] ?? c.slug}
+ </LocalizedLink>
+ ))}
+ <LocalizedLink
+ href="/courses"
+ className="block rounded-xl px-4 py-2.5 text-sm font-bold text-primary transition-colors hover:bg-primary/10"
+ >
+ {t("allCourses")}
+ </LocalizedLink>
+ <LocalizedLink
+ href="/recommend"
+ className="block rounded-xl px-4 py-2.5 text-sm font-bold text-primary transition-colors hover:bg-primary/10"
+ >
+ {t("recommend")}
+ </LocalizedLink>
+ </div>
+ </motion.div>
+ )}
+ </AnimatePresence>
+
 <div className="mx-4 mt-1 flex gap-2">
  {/* TODO: re-enable when dark mode is ready for prod */}
  <button
