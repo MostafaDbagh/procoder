@@ -122,7 +122,7 @@ const TABS: { key: Tab; icon: ElementType }[] = [
 const PRACTICE_ICONS: ElementType[] = [ListOrdered, Search, Wrench, RotateCcw];
 
 const inputCls =
-  "w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary transition-all outline-none";
+  "w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted focus:lvl-border transition-all outline-none";
 const inputErrCls =
   "w-full px-4 py-3 rounded-xl bg-background border border-red-400 text-foreground placeholder:text-muted focus:border-red-400 focus:ring-2 focus:ring-red-400/20 transition-all outline-none";
 const labelCls = "block text-sm font-medium mb-2";
@@ -164,11 +164,17 @@ export default function LevelContent({
 
   return (
     <LevelContext.Provider value={ctx}>
-      <div className="py-10 sm:py-16">
+      {/* --lvl re-tints this whole page to the level's own colour, so the detail
+          page matches the card and stone that led here. */}
+      <div
+        data-lvl={level}
+        style={{ ["--lvl" as string]: meta.accentHex }}
+        className="py-10 sm:py-16"
+      >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <LocalizedLink
             href="/learning-path"
-            className="group inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-primary/10 text-primary font-semibold text-sm hover:bg-primary hover:text-white transition-all duration-200"
+            className="group inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full lvl-soft lvl-text font-semibold text-sm hover:lvl-bg hover:text-white transition-all duration-200"
           >
             <ArrowLeft className="w-4 h-4 transition-transform duration-200 rtl:rotate-180 group-hover:-translate-x-0.5 rtl:group-hover:translate-x-0.5" />
             <span>{t("index.levelsHeading")}</span>
@@ -188,13 +194,13 @@ export default function LevelContent({
                   aria-pressed={active}
                   className={`group flex flex-col items-start gap-2 rounded-2xl border p-4 text-start transition-all ${
                     active
-                      ? "border-primary bg-primary text-white shadow-lg shadow-primary/20"
-                      : "border-border bg-surface text-foreground hover:border-primary/40 hover:-translate-y-0.5"
+                      ? "lvl-border lvl-bg text-white shadow-lg lvl-shadow"
+                      : "border-border bg-surface text-foreground hover:lvl-edge hover:-translate-y-0.5"
                   }`}
                 >
                   <span
                     className={`flex h-9 w-9 items-center justify-center rounded-xl ${
-                      active ? "bg-white/20" : "bg-primary/10 text-primary"
+                      active ? "bg-white/20" : "lvl-soft lvl-text"
                     }`}
                   >
                     <Icon className="h-5 w-5" />
@@ -239,12 +245,12 @@ function LevelHero() {
   const meta = JOURNEY_LEVEL_META[level];
   const Icon = LEVEL_ICONS[level];
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-primary/15 bg-gradient-to-br from-violet-50 via-sky-50 to-emerald-50 p-7 dark:border-primary/20 dark:from-violet-950/40 dark:via-slate-900 dark:to-slate-900 sm:p-10">
-      <div className="pointer-events-none absolute -top-10 -end-10 h-40 w-40 rounded-full bg-primary/5" />
-      <div className="pointer-events-none absolute -bottom-12 -start-8 h-48 w-48 rounded-full bg-primary/5" />
+    <div className="relative overflow-hidden rounded-3xl border lvl-edge bg-gradient-to-br from-violet-50 via-sky-50 to-emerald-50 p-7 dark:lvl-edge dark:from-violet-950/40 dark:via-slate-900 dark:to-slate-900 sm:p-10">
+      <div className="pointer-events-none absolute -top-10 -end-10 h-40 w-40 rounded-full lvl-faint" />
+      <div className="pointer-events-none absolute -bottom-12 -start-8 h-48 w-48 rounded-full lvl-faint" />
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute end-6 top-6 text-primary/30"
+        className="pointer-events-none absolute end-6 top-6 lvl-text-80"
         animate={{ rotate: [0, 12, -8, 0], scale: [1, 1.08, 1] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       >
@@ -258,7 +264,7 @@ function LevelHero() {
           <Icon className="h-9 w-9" />
         </div>
         <div className="min-w-0">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+          <span className="inline-flex items-center gap-1.5 rounded-full lvl-soft px-3 py-1 text-xs font-semibold lvl-text">
             <Star className="h-3.5 w-3.5" /> {tl("meta.ages")}
           </span>
           <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
@@ -279,7 +285,7 @@ function OverviewPanel() {
   const rows = tl.raw("overview.rows") as OverviewRow[];
   return (
     <section className="rounded-2xl border border-border bg-surface p-6 sm:p-8">
-      <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary/80">
+      <p className="text-xs font-bold uppercase tracking-[0.2em] lvl-text-80">
         {tl("overview.sectionLabel")}
       </p>
       <div className="mt-3 space-y-3 leading-relaxed text-muted">
@@ -303,7 +309,7 @@ function OverviewPanel() {
         ))}
       </dl>
 
-      <p className="mt-6 rounded-xl border-s-4 border-primary bg-primary/5 p-4 font-medium leading-relaxed text-foreground">
+      <p className="mt-6 rounded-xl border-s-4 lvl-border lvl-faint p-4 font-medium leading-relaxed text-foreground">
         {tl("overview.closing")}
       </p>
     </section>
@@ -317,7 +323,7 @@ function PracticePanel() {
   return (
     <div className="space-y-6">
       <section className="rounded-2xl border border-border bg-surface p-6 sm:p-8">
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary/80">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] lvl-text-80">
           {tl("practice.sectionLabel")}
         </p>
         <p className="mt-3 text-lg font-semibold">{tl("practice.intro1")}</p>
@@ -330,12 +336,12 @@ function PracticePanel() {
           return (
             <section key={i} className="rounded-2xl border border-border bg-surface p-6">
               <div className="flex items-center gap-3">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl lvl-soft lvl-text">
                   <Icon className="h-5 w-5" />
                 </span>
                 <div>
                   <h3 className="font-bold leading-tight">{h.name}</h3>
-                  <p className="text-xs font-medium text-primary">“{h.tag}”</p>
+                  <p className="text-xs font-medium lvl-text">“{h.tag}”</p>
                 </div>
               </div>
               <div className="mt-3 space-y-2 text-sm leading-relaxed text-muted">
@@ -417,7 +423,7 @@ function ApplySection({
 
   return (
     <section id="join" className="mt-12 scroll-mt-24">
-      <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary/80">
+      <p className="text-xs font-bold uppercase tracking-[0.2em] lvl-text-80">
         {t("apply.sectionLabel")}
       </p>
       <h2 className="mt-2 text-2xl font-extrabold tracking-tight">{t("apply.title")}</h2>
@@ -427,9 +433,9 @@ function ApplySection({
         {options.map(({ key, icon: Icon, title, body, cta }) => (
           <div
             key={key}
-            className="flex flex-col rounded-2xl border border-border bg-surface p-6 transition-all hover:border-primary/40 hover:-translate-y-0.5"
+            className="flex flex-col rounded-2xl border border-border bg-surface p-6 transition-all hover:lvl-edge hover:-translate-y-0.5"
           >
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl lvl-soft lvl-text">
               <Icon className="h-5 w-5" />
             </span>
             <h3 className="mt-4 font-bold leading-tight">{t(`apply.${title}`)}</h3>
@@ -439,7 +445,7 @@ function ApplySection({
             <button
               type="button"
               onClick={() => setMode(key)}
-              className="group mt-5 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-white shadow-sm transition-all duration-200 hover:shadow-lg active:scale-95"
+              className="group mt-5 inline-flex items-center justify-center gap-2 rounded-full lvl-bg px-5 py-2.5 text-sm font-bold text-white shadow-sm transition-all duration-200 hover:shadow-lg active:scale-95"
             >
               {t(`apply.${cta}`)}
               <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
@@ -485,7 +491,7 @@ function NextLevelCard() {
       </p>
       <LocalizedLink
         href={`/learning-path/${next}`}
-        className="group mt-4 inline-flex items-center gap-2 rounded-full bg-primary/10 px-5 py-2.5 text-sm font-bold text-primary transition-all hover:bg-primary hover:text-white"
+        className="group mt-4 inline-flex items-center gap-2 rounded-full lvl-soft px-5 py-2.5 text-sm font-bold lvl-text transition-all hover:lvl-bg hover:text-white"
       >
         {t("apply.nextCta", { next: nextName })}
         <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
@@ -686,7 +692,7 @@ function StartJourney({ onExit }: { onExit: () => void }) {
   if (stage === "intro") {
     return (
       <section className="rounded-2xl border border-border bg-surface p-6 sm:p-8">
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary/80">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] lvl-text-80">
           {t("start.sectionLabel")}
         </p>
         <h2 className="mt-2 text-xl font-bold">{t("start.leadTitle")}</h2>
@@ -700,7 +706,7 @@ function StartJourney({ onExit }: { onExit: () => void }) {
         <button
           type="button"
           onClick={() => setStage("quiz")}
-          className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-primary px-7 py-3 font-semibold text-white shadow-lg shadow-primary/20 transition-transform hover:scale-[1.02]"
+          className="mt-6 inline-flex items-center gap-2 rounded-2xl lvl-bg px-7 py-3 font-semibold text-white shadow-lg lvl-shadow transition-transform hover:scale-[1.02]"
         >
           {t("start.beginCta")}
           <ChevronRight className="h-5 w-5 rtl:rotate-180" />
@@ -721,7 +727,7 @@ function StartJourney({ onExit }: { onExit: () => void }) {
           </div>
           <div className="h-1.5 w-full overflow-hidden rounded-full bg-border">
             <motion.div
-              className="h-full rounded-full bg-primary"
+              className="h-full rounded-full lvl-bg"
               animate={{ width: `${progress}%` }}
               transition={{ duration: 0.3 }}
             />
@@ -764,13 +770,13 @@ function StartJourney({ onExit }: { onExit: () => void }) {
                       onClick={() => pick(current.id as string, o.value)}
                       className={`flex w-full items-center gap-3 rounded-xl border p-3.5 text-start text-sm font-medium transition-all ${
                         selected
-                          ? "border-primary bg-primary/10 text-foreground"
-                          : "border-border bg-background hover:border-primary/40"
+                          ? "lvl-border lvl-soft text-foreground"
+                          : "border-border bg-background hover:lvl-edge"
                       }`}
                     >
                       <span
                         className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${
-                          selected ? "border-primary bg-primary" : "border-border"
+                          selected ? "lvl-border lvl-bg" : "border-border"
                         }`}
                       >
                         {selected && <CheckCircle2 className="h-4 w-4 text-white" />}
@@ -792,7 +798,7 @@ function StartJourney({ onExit }: { onExit: () => void }) {
           <button
             type="button"
             onClick={back}
-            className="inline-flex items-center gap-2 rounded-xl border border-border px-5 py-2.5 text-sm font-medium text-muted transition-all hover:text-foreground hover:border-primary/40"
+            className="inline-flex items-center gap-2 rounded-xl border border-border px-5 py-2.5 text-sm font-medium text-muted transition-all hover:text-foreground hover:lvl-edge"
           >
             <ArrowLeft className="h-4 w-4 rtl:rotate-180" />
             {t("start.back")}
@@ -800,7 +806,7 @@ function StartJourney({ onExit }: { onExit: () => void }) {
           <button
             type="button"
             onClick={next}
-            className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-white shadow-md shadow-primary/10 transition-all hover:scale-[1.02]"
+            className="inline-flex items-center gap-2 rounded-xl lvl-bg px-6 py-2.5 text-sm font-semibold text-white shadow-md lvl-shadow-sm transition-all hover:scale-[1.02]"
           >
             {isLast ? t("start.seeResult") : t("start.next")}
             <ArrowRight className="h-4 w-4 rtl:rotate-180" />
@@ -867,7 +873,7 @@ function ResultPanel({
   const { name } = useLevel();
   return (
     <section className="rounded-2xl border border-border bg-surface p-6 sm:p-8">
-      <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
+      <span className="inline-flex items-center gap-1.5 rounded-full lvl-soft px-3 py-1 text-xs font-bold lvl-text">
         <Sparkles className="h-3.5 w-3.5" />
         {t("start.result.kicker")}
       </span>
@@ -887,8 +893,8 @@ function ResultPanel({
         </div>
       )}
 
-      <div className="mt-5 flex items-start gap-2 rounded-xl border-s-4 border-primary/60 bg-primary/5 p-4 text-sm text-foreground">
-        <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+      <div className="mt-5 flex items-start gap-2 rounded-xl border-s-4 lvl-edge lvl-faint p-4 text-sm text-foreground">
+        <Info className="mt-0.5 h-4 w-4 shrink-0 lvl-text" />
         <span>{t("start.result.disclaimer")}</span>
       </div>
 
@@ -908,7 +914,7 @@ function ResultPanel({
         <button
           type="button"
           onClick={onRegister}
-          className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 font-semibold text-white shadow-md shadow-primary/10 transition-transform hover:scale-[1.02]"
+          className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl lvl-bg px-5 py-3 font-semibold text-white shadow-md lvl-shadow-sm transition-transform hover:scale-[1.02]"
         >
           <Rocket className="h-4 w-4" />
           {t("start.result.register")}
@@ -916,7 +922,7 @@ function ResultPanel({
         <button
           type="button"
           onClick={onContact}
-          className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl border border-primary/30 bg-primary/5 px-5 py-3 font-semibold text-primary transition-colors hover:bg-primary/10"
+          className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl border lvl-edge lvl-faint px-5 py-3 font-semibold lvl-text transition-colors hover:lvl-soft"
         >
           <MessagesSquare className="h-4 w-4" />
           {t("start.result.contact")}
@@ -934,7 +940,7 @@ function ResultPanel({
       <button
         type="button"
         onClick={onRetake}
-        className="mx-auto mt-4 flex items-center gap-1.5 text-xs font-medium text-muted hover:text-primary"
+        className="mx-auto mt-4 flex items-center gap-1.5 text-xs font-medium text-muted hover:lvl-text"
       >
         <RotateCcw className="h-3.5 w-3.5" />
         {t("start.result.retake")}
@@ -968,8 +974,8 @@ function Segmented({
             onClick={() => onChange(o.value)}
             className={`rounded-xl px-4 py-2 text-sm font-medium transition-all ${
               value === o.value
-                ? "bg-primary text-white shadow-sm shadow-primary/10"
-                : "border border-border bg-background text-muted hover:border-primary/40"
+                ? "lvl-bg text-white shadow-sm lvl-shadow-sm"
+                : "border border-border bg-background text-muted hover:lvl-edge"
             }`}
           >
             {o.label}
@@ -1197,7 +1203,7 @@ function ContactForm({
         <button
           type="submit"
           disabled={submitting}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-primary px-6 py-3 font-semibold text-white shadow-md shadow-primary/10 transition-transform hover:scale-[1.01] disabled:opacity-60"
+          className="inline-flex w-full items-center justify-center gap-2 rounded-2xl lvl-bg px-6 py-3 font-semibold text-white shadow-md lvl-shadow-sm transition-transform hover:scale-[1.01] disabled:opacity-60"
         >
           {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
           {submitting ? t("start.contactForm.submitting") : t("start.contactForm.submit")}
@@ -1463,7 +1469,7 @@ function RegisterForm({
             type="checkbox"
             checked={form.consent}
             onChange={(e) => set("consent", e.target.checked)}
-            className="mt-1 h-4 w-4 rounded border-border accent-primary"
+            className="mt-1 h-4 w-4 rounded border-border lvl-accent"
           />
           <span className="text-sm leading-relaxed text-muted">
             {t("start.registerForm.consent")} *
@@ -1476,7 +1482,7 @@ function RegisterForm({
         <button
           type="submit"
           disabled={submitting}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-primary px-6 py-3 font-semibold text-white shadow-md shadow-primary/10 transition-transform hover:scale-[1.01] disabled:opacity-60"
+          className="inline-flex w-full items-center justify-center gap-2 rounded-2xl lvl-bg px-6 py-3 font-semibold text-white shadow-md lvl-shadow-sm transition-transform hover:scale-[1.01] disabled:opacity-60"
         >
           {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Rocket className="h-4 w-4" />}
           {submitting ? t("start.registerForm.submitting") : t("start.registerForm.submit")}
@@ -1492,7 +1498,7 @@ function BackLink({ onBack, label }: { onBack: () => void; label: string }) {
     <button
       type="button"
       onClick={onBack}
-      className="inline-flex items-center gap-1.5 text-sm font-medium text-muted transition-colors hover:text-primary"
+      className="inline-flex items-center gap-1.5 text-sm font-medium text-muted transition-colors hover:lvl-text"
     >
       <ArrowLeft className="h-4 w-4 rtl:rotate-180" />
       {label}

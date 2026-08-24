@@ -139,7 +139,7 @@
     },
     "index": {
       "eyebrow": "The StemTechLab journey",
-      "title": "A structured learning journey that grows with your child",
+      "title": "A structured learning journey",
       "subtitle": "We do not teach children a list of tools. We build their ability to think, create, solve, and innovate — and introduce technology at the right stage to help them do it.",
       "intro": "Every child moves through five stages. Each one develops a distinct set of capabilities and prepares your child for the next. Choose a stage to see what it develops, who it suits, and what your child should be able to do by the end of it.",
       "progression": "Explore → Build → Create → Innovate → Specialize",
@@ -181,7 +181,11 @@
         "creator": "Understand — data, training examples, testing, accuracy, and responsible AI",
         "innovator": "Apply and build — Python with AI, APIs, and data-driven projects",
         "pro": "Specialize and evaluate — advanced projects, model evaluation, and independent work"
-      }
+      },
+      "mapHint": "Hover a stop — or tab through them — to read about each stage.",
+      "mapLabel": "The five stages of the journey",
+      "startHere": "Start here",
+      "titleLine2": "that grows with your child"
     },
     "buttons": {
       "overview": "Journey overview",

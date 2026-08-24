@@ -47,8 +47,8 @@ export function Navbar() {
 
  const links = useMemo(() => [
  { href: "/", label: t("home"), wideOnly: false },
- { href: "/courses", label: t("courses"), wideOnly: false },
  { href: "/learning-path", label: t("learningPath"), wideOnly: false },
+ { href: "/courses", label: t("courses"), wideOnly: false },
  { href: "/recommend", label: t("recommend"), wideOnly: false },
  { href: "/free-trial", label: t("freeTrial"), wideOnly: false },
  { href: "/parents", label: t("parents"), wideOnly: false },

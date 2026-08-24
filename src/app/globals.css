@@ -2,6 +2,11 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Journey map layout gate. Below this — every phone, tablet and touch laptop —
+   JourneyStoneTrail renders as a vertical rail with all five explanations
+   permanently visible, so hover is never required to read anything. */
+@custom-variant map (@media (min-width: 1280px) and (hover: hover) and (pointer: fine));
+
 @theme inline {
   --color-background: var(--bg);
   --color-foreground: var(--fg);
@@ -68,6 +73,12 @@ body {
 }
 
 /* Display headings — use Sora per design spec */
+/* Rounded, friendly numerals for the journey map's stage badges. */
+.font-kid {
+  font-family: var(--font-nunito), var(--font-inter), system-ui, sans-serif;
+  font-feature-settings: "ss01";
+}
+
 .font-display, h1, h2, h3 {
   font-family: var(--font-sora), var(--font-inter), system-ui, sans-serif;
 }
@@ -143,3 +154,166 @@ select:focus-visible {
   .text-6xl  { font-size: 2.75rem;   line-height: 1.1; }       /* 44px */
   .text-7xl  { font-size: 3.25rem;   line-height: 1.05; }      /* 52px */
 }
+
+
+/* ─── JourneyStoneTrail ────────────────────────────────────────────────────
+   The five-stage journey map on /learning-path.
+
+   NEVER change .jm-card's hidden state to display:none / visibility:hidden /
+   conditional mounting. All five descriptions must stay in the SSR DOM and in
+   the accessibility tree — that is what satisfies SEO and screen readers at
+   once. Opacity + transform + pointer-events ONLY.                          */
+
+.jm-frame {
+  --jm-bed: rgb(22 35 79 / 0.06);
+  --jm-dot: rgb(22 35 79 / 0.10);
+  --jm-star: #f6a646;                 /* warm sunlight sparkle in light */
+}
+.dark .jm-frame {
+  --jm-bed: rgb(226 232 240 / 0.08);
+  --jm-dot: rgb(226 232 240 / 0.14);
+  --jm-star: #f2f6ff;                 /* actual starlight at night */
+}
+
+/* Progress glow: lights the trail from the start flag up to the active stop.
+   Per-segment opacity, so there are no arc-length constants to go stale. */
+.jm-lit { opacity: 0; transition: opacity 200ms ease-out; }
+.jm-lit[data-lit="true"] { opacity: 1; transition: opacity 260ms ease-out var(--d); }
+
+@media (min-width: 1280px) and (hover: hover) and (pointer: fine) {
+  /* Absolute stop placement. The frame is a fixed 960x700 px box, so one SVG
+     user unit is one CSS pixel and these offsets can never drift. */
+  .jm-stop {
+    position: absolute;
+    inset-inline-start: var(--jm-x);
+    top: var(--jm-y);
+    width: 280px;   /* must equal COLUMN_W in JourneyStoneTrail.tsx */
+  }
+
+  .jm-card {
+    /* Positioned and sized here, not with start-0/end-0, so the outer cards can
+       be clamped inside the frame without a translate (which would flip in RTL). */
+    inset-inline-start: -44px;   /* centres a 368px card on its 280px column */
+    width: 368px;
+    opacity: 0;
+    transform: translateY(6px) scale(0.985);
+    pointer-events: none;   /* closed cards never swallow a neighbour's hover */
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    transition: opacity 140ms ease-in, transform 140ms ease-in,
+                background-color 140ms ease-in, border-color 140ms ease-in,
+                box-shadow 140ms ease-in;
+  }
+
+  /* Open on hover, on keyboard focus, and by default for the first stop so the
+     apron is never an empty hole and the interaction teaches itself. */
+  .jm-stop:hover .jm-card,
+  .jm-stop:focus-within .jm-card,
+  .jm-stops:not(:has(.jm-stop:hover)):not(:has(.jm-link:focus-visible)) > li:first-child .jm-card {
+    opacity: 1;
+    transform: none;
+    background-color: color-mix(in srgb, var(--surface) 95%, transparent);
+    border-color: var(--border-color);
+    box-shadow: 0 18px 40px -18px rgb(22 35 79 / 0.35);
+    backdrop-filter: blur(4px);
+  }
+  .dark .jm-stop:hover .jm-card,
+  .dark .jm-stop:focus-within .jm-card,
+  .dark .jm-stops:not(:has(.jm-stop:hover)):not(:has(.jm-link:focus-visible)) > li:first-child .jm-card {
+    box-shadow: 0 18px 40px -18px rgb(0 0 0 / 0.6);
+    outline: 1px solid rgb(255 255 255 / 0.06);
+  }
+
+  /* 90ms hover-commit debounce as a transition-delay: sweeping across the board
+     faster than that shows no card at all. Closing has no delay, so swaps stay
+     crisp; focus opens instantly. Load-bearing — without it a sideways sweep
+     strobes five cards and looks broken. */
+  /* The open card is interactive so its "See this stage" is clickable and so
+     moving the pointer onto the card does not close it. */
+  .jm-stop:hover .jm-card,
+  .jm-stop:focus-within .jm-card { pointer-events: auto; }
+
+  /* Bridge the 14px gap between the stone and its card. Without it the pointer
+     crosses a dead zone on the way down, .jm-stop:hover goes false, and the card
+     closes before "See this stage" can be clicked. The bridge belongs to the
+     card, so it inherits pointer-events: a closed card's bridge stays inert and
+     never steals hover from a neighbouring stop. */
+  .jm-card::before {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: -20px;      /* must exceed the real link-to-card gap (14px) */
+    height: 20px;
+  }
+
+  .jm-stop:hover .jm-card {
+    transition: opacity 200ms ease-out 90ms,
+                transform 220ms cubic-bezier(0.22, 0.61, 0.36, 1) 90ms,
+                background-color 200ms ease-out 90ms,
+                border-color 200ms ease-out 90ms,
+                box-shadow 200ms ease-out 90ms;
+  }
+  .jm-stop:focus-within .jm-card { transition-delay: 0ms; }
+
+  /* Dashes march only while the board is engaged, so it never burns battery
+     or competes with reading. */
+  @media (prefers-reduced-motion: no-preference) {
+    .jm-frame:hover .jm-march,
+    .jm-frame:focus-within .jm-march {
+      animation: jmMarch 2.8s linear infinite;
+      will-change: stroke-dashoffset;
+    }
+  }
+}
+
+@keyframes jmMarch { to { stroke-dashoffset: -36; } }  /* 36 = one dash period */
+
+@media (prefers-reduced-motion: reduce) {
+  /* The reveal itself must survive — it is information, not decoration. */
+  .jm-card {
+    transition-duration: 100ms !important;
+    transition-delay: 0ms !important;
+    transform: none !important;
+  }
+  .jm-stone, .jm-stone svg { transition: none !important; }
+  .jm-lit { transition: none !important; }
+  .jm-march { animation: none !important; }
+}
+
+
+/* ─── Level accent theming ─────────────────────────────────────────────────
+   A learning-path level page sets --lvl to its own colour (see
+   JourneyStoneTrail's accentHex), and these utilities re-tint the page so
+   /learning-path/builder reads sky-blue, /creator emerald, and so on — matching
+   the colour of that level's card and stone on the map.
+
+   Text uses a darkened/lightened mix of --lvl rather than the raw hex, because
+   the mid-500 tones fail AA as small text on one ground or the other.        */
+[data-lvl] {
+  --lvl-text: color-mix(in srgb, var(--lvl) 82%, #101828);
+  --lvl-soft: color-mix(in srgb, var(--lvl) 12%, transparent);
+  --lvl-faint: color-mix(in srgb, var(--lvl) 6%, transparent);
+  --lvl-edge: color-mix(in srgb, var(--lvl) 35%, transparent);
+}
+.dark [data-lvl] {
+  --lvl-text: color-mix(in srgb, var(--lvl) 62%, #ffffff);
+  --lvl-soft: color-mix(in srgb, var(--lvl) 20%, transparent);
+  --lvl-faint: color-mix(in srgb, var(--lvl) 10%, transparent);
+  --lvl-edge: color-mix(in srgb, var(--lvl) 45%, transparent);
+}
+
+.lvl-text   { color: var(--lvl-text); }
+.lvl-text-80{ color: color-mix(in srgb, var(--lvl-text) 80%, transparent); }
+.lvl-bg     { background-color: var(--lvl); }
+.lvl-soft   { background-color: var(--lvl-soft); }
+.lvl-faint  { background-color: var(--lvl-faint); }
+.lvl-border { border-color: var(--lvl); }
+.lvl-edge   { border-color: var(--lvl-edge); }
+.lvl-ring   { --tw-ring-color: var(--lvl); }
+.lvl-shadow   { --tw-shadow-color: color-mix(in srgb, var(--lvl) 30%, transparent); }
+.lvl-shadow-sm{ --tw-shadow-color: color-mix(in srgb, var(--lvl) 18%, transparent); }
+.lvl-accent   { accent-color: var(--lvl); }
+.hover\:lvl-bg:hover     { background-color: var(--lvl); }
+.hover\:lvl-edge:hover   { border-color: var(--lvl-edge); }
+.hover\:lvl-text:hover   { color: var(--lvl-text); }
