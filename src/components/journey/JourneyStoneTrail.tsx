@@ -148,6 +148,8 @@ export default function JourneyStoneTrail({
           className="pointer-events-none absolute inset-0 -z-10 rounded-3xl bg-gradient-to-b from-amber-50/70 via-transparent to-indigo-100/70 dark:from-amber-950/20 dark:via-transparent dark:to-indigo-950/40 map:bg-none"
         />
 
+        <GrowthWatermark />
+
         {/* Decorative only. NEVER put a <text> node in here — the RTL mirror on
             the svg below would render it backwards.
             The mirror is an inline style, not an rtl: utility: the utility does
@@ -191,25 +193,6 @@ export default function JourneyStoneTrail({
               )}
             </mask>
           </defs>
-
-          {/* Trailhead hill + grass */}
-          <g aria-hidden>
-            <path
-              d={"M -10 470 Q 90 424 190 452 T 380 472 L 380 " + BOX_H + " L -10 " + BOX_H + " Z"}
-              fill="#10b981"
-              className="opacity-[0.07] dark:opacity-[0.06]"
-            />
-            {[34, 52, 70].map((x, i) => (
-              <path
-                key={x}
-                d={`M ${x} 410 L ${x + (i - 1) * 2} 396`}
-                stroke="#10b981"
-                strokeWidth={2}
-                strokeLinecap="round"
-                opacity={0.25}
-              />
-            ))}
-          </g>
 
           <g mask="url(#jmWipe)">
             {/* Bed under the dashes — matters more in dark, where bare dashes
@@ -465,5 +448,52 @@ export default function JourneyStoneTrail({
         </ol>
       </div>
     </>
+  );
+}
+
+/**
+ * A quiet growth chart behind the trail: one rounded bar per stage, each in that
+ * stage's own colour and each taller than the last. It says "your child gets
+ * further at every level" without needing a caption, and stays faint enough to
+ * sit under the map rather than compete with it.
+ *
+ * Its own svg, so the trail svg's RTL mirror does not apply twice; mirrored here
+ * independently, which is safe because it contains no text.
+ */
+function GrowthWatermark() {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
+
+  const BAR_W = 58;
+  const GAP = 26;
+  const HEIGHTS = [78, 116, 154, 198, 248];
+  const BASE = 248;
+  const W = HEIGHTS.length * BAR_W + (HEIGHTS.length - 1) * GAP;
+
+  return (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      role="presentation"
+      viewBox={`0 0 ${W} ${BASE}`}
+      width={W}
+      height={BASE}
+      fill="none"
+      className="pointer-events-none absolute bottom-10 start-2 -z-10 hidden select-none map:block"
+      style={isRtl ? { transform: "scaleX(-1)" } : undefined}
+    >
+      {JOURNEY_LEVEL_LIST.map((lvl, i) => (
+        <rect
+          key={lvl.key}
+          x={i * (BAR_W + GAP)}
+          y={BASE - HEIGHTS[i]}
+          width={BAR_W}
+          height={HEIGHTS[i]}
+          rx={BAR_W / 2}
+          fill={lvl.accentHex}
+          className="opacity-[0.11] dark:opacity-[0.17]"
+        />
+      ))}
+    </svg>
   );
 }
