@@ -3559,6 +3559,22 @@ function promoDateToLocalInput(iso: string | Date | undefined | null): string {
  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
+/**
+ * Shown only when the Categories API returns nothing. Mirrors the slugs
+ * stem-Be seeds (`scripts/seed-categories.js`) — the live list still comes from
+ * the API, and stem-Be rejects any category that is not active there.
+ */
+const FALLBACK_CATEGORY_SLUGS = [
+ "programming",
+ "robotics",
+ "algorithms",
+ "scratch",
+ "game-development",
+ "web-development",
+ "mobile-app-development",
+ "artificial-intelligence",
+];
+
 /** Matches stem-Be category slug validation (`routes/categories.js`). */
 const KEBAB_SLUG_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -4180,13 +4196,7 @@ function CourseFormModal({
  ? catRows.filter(
  (r) => r.isActive || r.slug === form.category
  )
- : [
- "programming",
- "robotics",
- "algorithms",
- "arabic",
- "arabic",
- ].map((slug) => ({
+ : FALLBACK_CATEGORY_SLUGS.map((slug) => ({
  slug,
  title: { en: slug, ar: slug },
  }))
