@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import {
  adminFetch,
@@ -3559,22 +3559,6 @@ function promoDateToLocalInput(iso: string | Date | undefined | null): string {
  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
-/**
- * Shown only when the Categories API returns nothing. Mirrors the slugs
- * stem-Be seeds (`scripts/seed-categories.js`) — the live list still comes from
- * the API, and stem-Be rejects any category that is not active there.
- */
-const FALLBACK_CATEGORY_SLUGS = [
- "programming",
- "robotics",
- "algorithms",
- "scratch",
- "game-development",
- "web-development",
- "mobile-app-development",
- "artificial-intelligence",
-];
-
 /** Matches stem-Be category slug validation (`routes/categories.js`). */
 const KEBAB_SLUG_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -3920,13 +3904,18 @@ function CourseFormModal({
  const [loading, setLoading] = useState(mode === "edit" && !!editSlug);
  const [saveErr, setSaveErr] = useState("");
  const [catRows, setCatRows] = useState<AdminCategoryRow[]>([]);
+ const [catErr, setCatErr] = useState("");
+ const [catLoading, setCatLoading] = useState(true);
+ /** Bumped by the Retry button to re-run the options fetch. */
+ const [optionsReload, setOptionsReload] = useState(0);
  const [instructorOptions, setInstructorOptions] = useState<
  { _id: string; name: string }[]
  >([]);
  const [selectedInstructors, setSelectedInstructors] = useState<string[]>([]);
  const [form, setForm] = useState({
  slug: "",
- category: "programming",
+ /** Filled from stem-Be once the category list arrives — never hardcoded. */
+ category: "",
  ageMin: 8,
  ageMax: 12,
  level: "beginner",
@@ -3950,38 +3939,83 @@ function CourseFormModal({
  });
  const [uploadingCourseImage, setUploadingCourseImage] = useState(false);
 
+ /**
+  * What the picker offers: every active category from stem-Be, plus this
+  * course's own slug when editing so a deactivated category is not silently
+  * rewritten on save.
+  */
+ const categoryChoices = useMemo(() => {
+ const live = catRows.filter((r) => r.isActive || r.slug === form.category);
+ return live.length || !form.category
+ ? live.map((r) => ({ slug: r.slug, label: r.title?.en || r.slug }))
+ : [{ slug: form.category, label: form.category }];
+ }, [catRows, form.category]);
+
+ /** New courses start on whatever stem-Be lists first, not a hardcoded slug. */
+ useEffect(() => {
+ if (mode !== "create" || !catRows.length) return;
+ setForm((f) =>
+ catRows.some((r) => r.slug === f.category && r.isActive)
+ ? f
+ : { ...f, category: catRows.find((r) => r.isActive)?.slug ?? f.category }
+ );
+ }, [catRows, mode]);
+
+ /**
+  * Categories always come from stem-Be — it rejects any slug that is not an
+  * active row there, so there is no client-side list to fall back to. Settled
+  * separately from instructors: one failing must not blank the other.
+  */
  useEffect(() => {
  let cancelled = false;
+ setCatLoading(true);
+ setCatErr("");
  (async () => {
- try {
- const [catRaw, usersRaw] = await Promise.all([
+ const [catRes, usersRes] = await Promise.allSettled([
  adminFetch<unknown>("/categories/admin/list?page=1&limit=200"),
  adminFetch<unknown>("/users?role=instructor&limit=200"),
  ]);
- const { items: cats } = normalizePagedResponse<AdminCategoryRow>(
- catRaw,
+ if (cancelled) return;
+
+ if (catRes.status === "fulfilled") {
+ const { items } = normalizePagedResponse<AdminCategoryRow>(
+ catRes.value,
  PAGE_SIZE
  );
- const { items: instructorUsers } = normalizePagedResponse<Record<string, unknown>>(usersRaw, PAGE_SIZE);
- const instrs = instructorUsers.map((m) => ({
+ setCatRows(items);
+ setCatErr(
+ items.length
+ ? ""
+ : "No categories exist yet — add one in the Categories tab."
+ );
+ } else {
+ setCatRows([]);
+ setCatErr(
+ `Could not load categories from the API${
+ catRes.reason instanceof Error ? `: ${catRes.reason.message}` : ""
+ }`
+ );
+ }
+ setCatLoading(false);
+
+ if (usersRes.status === "fulfilled") {
+ const { items: instructorUsers } = normalizePagedResponse<
+ Record<string, unknown>
+ >(usersRes.value, PAGE_SIZE);
+ setInstructorOptions(
+ instructorUsers.map((m) => ({
  _id: String(m._id ?? ""),
  name: String(m.name ?? ""),
- }));
- if (!cancelled) {
- setCatRows(cats);
- setInstructorOptions(instrs);
- }
- } catch {
- if (!cancelled) {
- setCatRows([]);
+ }))
+ );
+ } else {
  setInstructorOptions([]);
- }
  }
  })();
  return () => {
  cancelled = true;
  };
- }, []);
+ }, [optionsReload]);
 
  useEffect(() => {
  if (mode !== "edit" || !editSlug) return;
@@ -4181,6 +4215,7 @@ function CourseFormModal({
  />
  </label>
  </div>
+ <div>
  <label className="block text-slate-400">
  <span className="mb-1 block text-xs">Category</span>
  <select
@@ -4188,25 +4223,34 @@ function CourseFormModal({
  onChange={(e) =>
  setForm((f) => ({ ...f, category: e.target.value }))
  }
- className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1"
+ disabled={!categoryChoices.length}
+ className="w-full rounded border border-slate-700 bg-slate-950 px-2 py-1 disabled:opacity-60"
  >
- {(catRows.filter(
- (r) => r.isActive || r.slug === form.category
- ).length
- ? catRows.filter(
- (r) => r.isActive || r.slug === form.category
- )
- : FALLBACK_CATEGORY_SLUGS.map((slug) => ({
- slug,
- title: { en: slug, ar: slug },
- }))
- ).map((c) => (
+ {!categoryChoices.length && (
+ <option value="">
+ {catLoading ? "Loading categories…" : "— none available —"}
+ </option>
+ )}
+ {categoryChoices.map((c) => (
  <option key={c.slug} value={c.slug}>
- {c.title.en} ({c.slug})
+ {c.label} ({c.slug})
  </option>
  ))}
  </select>
  </label>
+ {catErr && (
+ <p className="mt-1 flex flex-wrap items-center gap-2 text-xs text-amber-300">
+ <span>{catErr}</span>
+ <button
+ type="button"
+ onClick={() => setOptionsReload((n) => n + 1)}
+ className="underline underline-offset-2 hover:text-amber-200"
+ >
+ Retry
+ </button>
+ </p>
+ )}
+ </div>
  <label className="block text-slate-400">
  <span className="mb-1 block text-xs">Level</span>
  <select
