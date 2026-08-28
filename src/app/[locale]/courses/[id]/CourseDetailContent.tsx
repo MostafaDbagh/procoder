@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { LocalizedLink } from "@/components/LocalizedLink";
+import { BackLink } from "@/components/BackLink";
 import { courses as staticCourses } from "@/data/courses";
 import { useCourse } from "@/hooks/useCourses";
 import type { APICourse } from "@/lib/api";
@@ -204,13 +205,13 @@ export default function CourseDetailContent({
  return (
  <div className="py-32 text-center">
  <p className="text-muted text-xl">{t("notFound")}</p>
- <LocalizedLink
- href="/courses"
+ <BackLink
+ fallbackHref="/courses"
  className="group inline-flex items-center gap-2 mt-6 px-5 py-2.5 rounded-full bg-primary text-white font-bold shadow-sm hover:shadow-lg hover:-translate-y-0.5 active:scale-95 transition-all duration-200 rtl:flex-row-reverse"
  >
  <ArrowLeft className="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-1 rtl:rotate-180 rtl:group-hover:translate-x-1" />
  {t("backToCourses")}
- </LocalizedLink>
+ </BackLink>
  </div>
  );
  }
@@ -250,13 +251,15 @@ export default function CourseDetailContent({
  <div className="py-12 sm:py-20">
  <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
  <AnimatedSection>
- <LocalizedLink
- href="/courses"
+ {/* Returns to wherever the visitor came from (a journey stage, the
+ catalogue, the home page); /courses only when there is no history. */}
+ <BackLink
+ fallbackHref="/courses"
  className="group inline-flex items-center gap-2 mb-8 px-5 py-2.5 rounded-full bg-primary/10 text-primary font-bold text-sm sm:text-base shadow-sm hover:bg-primary hover:text-white hover:shadow-lg hover:-translate-y-0.5 active:scale-95 transition-all duration-200 rtl:flex-row-reverse"
  >
  <ArrowLeft className="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-1 rtl:rotate-180 rtl:group-hover:translate-x-1" />
  {t("backToCourses")}
- </LocalizedLink>
+ </BackLink>
  </AnimatedSection>
 
  <nav aria-label="Breadcrumb" className="mb-4 text-sm text-muted">
