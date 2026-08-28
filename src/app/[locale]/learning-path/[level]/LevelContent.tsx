@@ -172,8 +172,10 @@ export default function LevelContent({
         className="py-10 sm:py-16"
       >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Lands on the five-stage trail itself, not the top of the page —
+              the visitor came from a stone and expects to see the map again. */}
           <LocalizedLink
-            href="/learning-path"
+            href="/learning-path#stages-heading"
             className="group inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full lvl-soft lvl-text font-semibold text-sm hover:lvl-bg hover:text-white transition-all duration-200"
           >
             <ArrowLeft className="w-4 h-4 transition-transform duration-200 rtl:rotate-180 group-hover:-translate-x-0.5 rtl:group-hover:translate-x-0.5" />

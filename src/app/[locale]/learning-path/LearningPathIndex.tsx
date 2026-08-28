@@ -58,7 +58,10 @@ export default function LearningPathIndex({
         </header>
 
         {/* The five levels */}
-        <h2 id="stages-heading" className="mt-14 text-2xl font-extrabold tracking-tight">
+        <h2
+          id="stages-heading"
+          className="mt-14 scroll-mt-24 text-2xl font-extrabold tracking-tight"
+        >
           {t("levelsHeading")}
         </h2>
         <JourneyStoneTrail courseCounts={courseCounts} />
