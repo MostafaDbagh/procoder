@@ -698,7 +698,9 @@ function StartJourney({ onExit }: { onExit: () => void }) {
           {t("start.sectionLabel")}
         </p>
         <h2 className="mt-2 text-xl font-bold">{t("start.leadTitle")}</h2>
-        <p className="mt-2 leading-relaxed text-muted">{t("start.lead")}</p>
+        <p className="mt-2 leading-relaxed text-muted">
+          {t("start.lead", { level: levelName })}
+        </p>
 
         <div className="mt-6 rounded-xl border border-border bg-background/40 p-5">
           <h3 className="font-bold">{t("start.fitTitle", { level: levelName })}</h3>
@@ -1229,7 +1231,7 @@ function RegisterForm({
   onSubmitted: () => void;
 }) {
   const t = useTranslations("journey");
-  const { level } = useLevel();
+  const { level, name: levelName } = useLevel();
   const locale = useLocale();
   const [loadedAt] = useState(() => Date.now());
   const [hp, setHp] = useState("");
@@ -1328,9 +1330,9 @@ function RegisterForm({
   return (
     <section className="rounded-2xl border border-border bg-surface p-6 sm:p-8">
       <BackLink onBack={onBack} label={t("start.back")} />
-      <h2 className="mt-3 text-xl font-bold">{t("start.registerForm.title")}</h2>
+      <h2 className="mt-3 text-xl font-bold">{t("start.registerForm.title", { level: levelName })}</h2>
       <p className="mt-1 text-sm font-medium text-muted">{t("start.registerForm.functionNote")}</p>
-      <p className="mt-3 text-sm leading-relaxed text-muted">{t("start.registerForm.intro")}</p>
+      <p className="mt-3 text-sm leading-relaxed text-muted">{t("start.registerForm.intro", { level: levelName })}</p>
 
       <form onSubmit={submit} className="mt-6 space-y-5">
         <Honeypot hp={hp} setHp={setHp} id="explorer-register-hp" />
@@ -1474,7 +1476,7 @@ function RegisterForm({
             className="mt-1 h-4 w-4 rounded border-border lvl-accent"
           />
           <span className="text-sm leading-relaxed text-muted">
-            {t("start.registerForm.consent")} *
+            {t("start.registerForm.consent", { level: levelName })} *
           </span>
         </label>
         {attempted && !form.consent && (

@@ -217,7 +217,7 @@
     "start": {
       "sectionLabel": "Start the journey",
       "leadTitle": "A calm path, not a checkout",
-      "lead": "The Start button does not take you straight to payment, and it is not a final enrolment. It opens a calm path that helps you check whether Explorer is a good fit — then you choose one of: continue to registration, request a short call with the team, or go back.",
+      "lead": "The Start button does not take you straight to payment, and it is not a final enrolment. It opens a calm path that helps you check whether {level} is a good fit — then you choose one of: continue to registration, request a short call with the team, or go back.",
       "fitTitle": "First: is {level} right for my child?",
       "fitIntro": "These questions help us suggest an initial starting point for your child. Choose the answer closest to what you most often notice. We are not looking for a perfect or 100% precise answer — just simple signals that help us choose a suitable step. The result is a preliminary automated recommendation based on your choices, not a human assessment or a diagnosis of the child.",
       "beginCta": "Begin the quick check",
@@ -499,9 +499,9 @@
         "successBody": "Your application is under review. Our expert will review it and contact you through the channel you chose."
       },
       "registerForm": {
-        "title": "Register for Explorer",
+        "title": "Register for {level}",
         "functionNote": "Registration does not re-check fit. It collects basic details to organize the join request and follow-up.",
-        "intro": "Complete the basic details to request joining the Explorer journey. The team will use this information to contact you and organize the next step.",
+        "intro": "Complete the basic details to request joining the {level} journey. The team will use this information to contact you and organize the next step.",
         "parentSection": "Parent details",
         "fullName": "Parent's full name",
         "phone": "Phone or WhatsApp number",
@@ -516,7 +516,7 @@
         "followSection": "Preferred follow-up",
         "note": "Optional note",
         "notePlaceholder": "Anything brief you'd like the team to know before we contact you?",
-        "consent": "I agree that this information will be used only to contact us about the Explorer journey and to organize the registration step, respecting my child's privacy and not sharing their data beyond this purpose.",
+        "consent": "I agree that this information will be used only to contact us about the {level} journey and to organize the registration step, respecting my child's privacy and not sharing their data beyond this purpose.",
         "submit": "Send registration request",
         "submitting": "Sending…",
         "successTitle": "Thank you for submitting your application!",
