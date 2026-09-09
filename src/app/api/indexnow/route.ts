@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { courses as staticCourses } from "@/data/courses";
 import { LOCALES, PUBLIC_STATIC_PATHS } from "@/lib/seo";
+import { getCourseSlugsISR, serverApiRoot } from "@/lib/server-api";
 
 export async function GET() {
   return NextResponse.json({ ok: true, info: "Use POST with x-cron-secret header to submit URLs." });
@@ -13,7 +13,25 @@ const KEY = "86d963b1569d44d5bbd3e189c6fa2157";
 const KEY_LOCATION = `${SITE}/${KEY}.txt`;
 
 const STATIC_PATHS = PUBLIC_STATIC_PATHS.map((page) => page.path);
-const COURSE_SLUGS = staticCourses.map((course) => course.id);
+
+/**
+ * Course and blog URLs come from the live catalogue. They used to come from the
+ * static fallback in @/data/courses, which was emptied on 2026-08-24 — since
+ * then every "submit all URLs" run silently pinged only the static pages, so no
+ * course or article was ever announced to Bing/Yandex.
+ */
+async function liveBlogSlugs(): Promise<string[]> {
+  try {
+    const res = await fetch(`${serverApiRoot()}/blog?limit=500`, {
+      next: { revalidate: 3600 },
+    });
+    if (!res.ok) return [];
+    const data = (await res.json()) as { items?: { slug: string }[] };
+    return (data.items ?? []).map((p) => p.slug).filter(Boolean);
+  } catch {
+    return [];
+  }
+}
 
 /**
  * POST /api/indexnow
@@ -34,12 +52,19 @@ export async function POST(req: NextRequest) {
     if (Array.isArray(body.urls) && body.urls.length > 0) {
       urlList = body.urls;
     } else {
+      const [courseSlugs, blogSlugs] = await Promise.all([
+        getCourseSlugsISR(),
+        liveBlogSlugs(),
+      ]);
       urlList = [
         ...LOCALES.flatMap((locale) =>
           STATIC_PATHS.map((path) => `${SITE}/${locale}${path}`)
         ),
         ...LOCALES.flatMap((locale) =>
-          COURSE_SLUGS.map((slug) => `${SITE}/${locale}/courses/${slug}`)
+          courseSlugs.map((slug) => `${SITE}/${locale}/courses/${slug}`)
+        ),
+        ...LOCALES.flatMap((locale) =>
+          blogSlugs.map((slug) => `${SITE}/${locale}/blogs/${slug}`)
         ),
       ];
     }

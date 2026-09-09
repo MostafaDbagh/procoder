@@ -12,6 +12,26 @@ const withNextIntl = createNextIntlPlugin();
 const isDev = process.env.NODE_ENV !== "production";
 const devOrigins = "http://127.0.0.1:5000 http://localhost:5000";
 
+/**
+ * Course slugs removed from the catalogue, mapped to their nearest living
+ * replacement. "" means no equivalent exists — send those to the catalogue.
+ * Keep an entry here forever once a slug has been public: deleting the redirect
+ * re-creates the 404 that cost the ranking in the first place.
+ */
+const RETIRED_COURSE_SLUGS: Record<string, string> = {
+  scratch: "programming1",
+  webdev: "web-beginner",
+  "robot-basics": "robotics",
+  "robot-advanced": "robotics",
+  "algo-competitive": "algo-intro",
+  gamedev: "",
+  // Arabic-language teaching was discontinued — no replacement course exists.
+  "arabic-reading": "",
+  "arabic-grammar": "",
+  "arabic-recitation": "",
+  "arabic-memorization": "",
+};
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
@@ -44,6 +64,21 @@ const nextConfig: NextConfig = {
         destination: "/:locale/learning-path/explorer",
         permanent: true,
       },
+      // Courses retired on 2026-08-24 (commit 6ea3abe). They were indexed and
+      // ranking; hard-404s since then are what took search impressions to zero.
+      // 301 to the nearest live course so the signals transfer instead of dying.
+      ...Object.entries(RETIRED_COURSE_SLUGS).flatMap(([from, to]) => [
+        {
+          source: `/courses/${from}`,
+          destination: to === "" ? "/en/courses" : `/en/courses/${to}`,
+          permanent: true,
+        },
+        {
+          source: `/:locale(en|ar)/courses/${from}`,
+          destination: to === "" ? "/:locale/courses" : `/:locale/courses/${to}`,
+          permanent: true,
+        },
+      ]),
       { source: "/llm.txt", destination: "/llms.txt", permanent: true },
       { source: "/llm-full.txt", destination: "/llms-full.txt", permanent: true },
     ];

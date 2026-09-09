@@ -24,7 +24,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
  const title = post.metaTitle?.[lang] || post.title[lang];
  const description = post.metaDescription?.[lang] || post.excerpt[lang];
- const brandedTitle = lang === "ar" ? `${title} | ستم تك لاب` : `${title} | StemTechLab`;
+ // Editors often type the brand into metaTitle, and appending it again shipped
+ // "… | StemTechLab | StemTechLab" on every post. Strip any trailing brand first.
+ const brand = lang === "ar" ? "ستم تك لاب" : "StemTechLab";
+ const bareTitle = title.replace(/\s*\|\s*(StemTechLab|ستم تك لاب)\s*$/u, "").trim();
+ const brandedTitle = `${bareTitle} | ${brand}`;
  const cover = safeCoverImage(post.coverImage);
 
  return {

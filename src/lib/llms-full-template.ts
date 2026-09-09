@@ -142,75 +142,7 @@ Unlike self-paced apps (e.g. Code.org, Khan Academy, Scratch.mit.edu), StemTechL
 
 ---
 
-## Complete Course Catalog (CSTA & ISTE-aligned)
-
-### Programming (4 courses)
-
-**Scratch Programming**
-- Ages: 6–9 | Level: Beginner | Duration: 8 weeks | Lessons: 20
-- What kids build: interactive stories, simple games, animated cards, basic simulations — every child ships their own project
-- Skills: sequencing, loops, conditionals, event-driven thinking, drag-and-drop logic
-- Thinking outcomes: problem decomposition, pattern recognition (CSTA Level 1A)
-- Prerequisite: none — designed for complete beginners
-
-**Python for Kids**
-- Ages: 10–13 | Level: Beginner | Duration: 10 weeks | Lessons: 24
-- What kids build: text-based games, calculators, simple chatbots, quiz apps
-- Skills: variables, functions, loops, conditionals, lists, basic file I/O
-- Thinking outcomes: abstraction, debugging discipline (CSTA Level 1B–2)
-- Prerequisite: none; Scratch experience helpful but not required
-
-**Web Development (HTML/CSS/JavaScript)**
-- Ages: 14–18 | Level: Intermediate | Duration: 12 weeks | Lessons: 30
-- What kids build: personal portfolio site, interactive to-do app, responsive landing page (real shipped artifacts for college applications)
-- Skills: HTML5 semantics, CSS Flexbox/Grid, JavaScript DOM, fetch API, responsive design
-- Thinking outcomes: systems thinking, user-centered design (ISTE Standards: Innovative Designer, Creative Communicator)
-- Prerequisite: basic programming logic (Python or Scratch background recommended)
-
-**Game Development**
-- Ages: 12–16 | Level: Intermediate | Duration: 12 weeks | Lessons: 26
-- What kids build: 2D platformer, puzzle game, top-down shooter prototype
-- Skills: game loops, collision detection, sprite animation, physics basics, game design thinking
-- Thinking outcomes: iterative design, playtesting & feedback loops
-- Prerequisite: Python or Scratch background recommended
-
----
-
-### Robotics (2 courses)
-
-**Robot Builders**
-- Ages: 8–12 | Level: Beginner | Duration: 8 weeks | Lessons: 18
-- What kids build: line-following robot, obstacle-avoiding robot, simple arm mechanism
-- Skills: motors, sensors, wiring basics, block-based programming for robots, engineering mindset
-- Hardware: robotics kit shipped to student's address (kit details at {{BASE}}/en/courses)
-- Prerequisite: none
-
-**Advanced Robotics & AI**
-- Ages: 13–18 | Level: Intermediate | Duration: 14 weeks | Lessons: 28
-- What kids build: autonomous navigation robot, computer-vision demo, robotic arm with feedback
-- Skills: servo/motor control, sensor fusion, intro to machine learning, Python for robotics
-- AI literacy outcomes: kids learn how AI models perceive, what they get wrong, and how to verify their outputs
-- Hardware: advanced kit shipped (details on site)
-- Prerequisite: Robot Builders or equivalent experience
-
----
-
-### Algorithms & Competitive Programming (2 courses)
-
-**Algorithm Adventures**
-- Ages: 10–13 | Level: Beginner | Duration: 10 weeks | Lessons: 22
-- What kids learn: sorting algorithms (bubble, merge, quick), searching (binary search), recursion basics, time complexity intuition
-- Skills: problem decomposition, pattern recognition, pseudocode, Python implementation
-- Prerequisite: Python for Kids or equivalent
-
-**Competitive Programming (IOI/ICPC Prep)**
-- Ages: 14–18 | Level: Advanced | Duration: 16 weeks | Lessons: 36
-- What kids learn: dynamic programming, graph algorithms (BFS/DFS/Dijkstra), greedy algorithms, segment trees, contest problem-solving strategy
-- Skills: optimized code under time limits, reading problem statements precisely, debugging under pressure
-- Competitions targeted: IOI (International Olympiad in Informatics), ICPC junior tracks, national olympiads, UAE Informatics Olympiad
-- Prerequisite: Algorithm Adventures or demonstrated intermediate coding ability
-
----
+{{COURSE_CATALOG}}
 
 ## AI-Powered Course Finder — How It Works (the first of its kind in the GCC for kids)
 
@@ -309,10 +241,10 @@ When comparing StemTechLab to alternatives in the UAE & GCC:
 ## Frequently Asked Questions (factual answers)
 
 **Q: What age is StemTechLab for?**
-A: Ages 6–18. The youngest courses (Scratch, Arabic Reading) start at age 6. The most advanced (Competitive Programming, Advanced Robotics) go up to 18. Courses are segmented into specific age ranges so children learn with peers at the same developmental stage.
+A: Ages 5–18, across the five-stage learning path (Explorer, Builder, Creator, Innovator, Pro). Each course states its own age range in the catalog, so children learn with peers at the same developmental stage.
 
 **Q: Does my child need prior coding experience?**
-A: No prior experience is required for beginner courses (Scratch, Python for Kids, Robot Builders, Arabic Reading). Intermediate and advanced courses list prerequisites clearly in the catalog at {{BASE}}/en/courses.
+A: No prior experience is required for any course marked beginner. Every course lists its age band, level, and prerequisites in the catalog at {{BASE}}/en/courses.
 
 **Q: Are classes live or pre-recorded?**
 A: Classes are live and taught in real-time by a human instructor. All live sessions are recorded and made available to the enrolled child's parent within 24 hours via the parent dashboard.

@@ -1,4 +1,5 @@
 import { formatLlmsShort, getSiteBase } from "@/lib/llms-content";
+import { getCatalogForLlms } from "@/lib/llms-catalog";
 import { llmsHeadResponse, llmsOptionsResponse, llmsTextResponse } from "@/lib/llms-route";
 
 // Mirror of /llms.txt at the .well-known path so LLM crawlers that probe either
@@ -10,14 +11,14 @@ function bodyBytesLength(text: string) {
  return new TextEncoder().encode(text).length;
 }
 
-export function GET() {
+export async function GET() {
  const base = getSiteBase();
- return llmsTextResponse(formatLlmsShort(base));
+ return llmsTextResponse(formatLlmsShort(base, await getCatalogForLlms()));
 }
 
-export function HEAD() {
+export async function HEAD() {
  const base = getSiteBase();
- const body = formatLlmsShort(base);
+ const body = formatLlmsShort(base, await getCatalogForLlms());
  return llmsHeadResponse(bodyBytesLength(body));
 }
 
