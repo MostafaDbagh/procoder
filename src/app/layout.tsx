@@ -108,6 +108,9 @@ export const metadata: Metadata = {
  category: "education",
  verification: {
  google: process.env.GOOGLE_SITE_VERIFICATION,
+ other: {
+ "msvalidate.01": "9A66A8F3F7B6E1BA08284B4A4E8DA3B7",
+ },
  },
  other: {
  "geo.region": "AE",
