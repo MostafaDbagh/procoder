@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/seo";
 import { after, NextResponse, type NextRequest } from "next/server";
 import { revalidatePath } from "next/cache";
 import { backendOrigin } from "@/lib/api-proxy";
@@ -64,7 +65,7 @@ export async function POST(req: NextRequest) {
     for (const p of ["/sitemap.xml", "/llms.txt", "/llms-full.txt"]) revalidatePath(p);
 
     // Keep notification work alive after the response on supported Next hosts.
-    const site = (process.env.SITE_URL || "https://www.stemtechlab.com").replace(/\/$/, "");
+    const site = SITE_URL;
     const secret = process.env.CRON_SECRET;
     if (secret) {
       after(async () => {

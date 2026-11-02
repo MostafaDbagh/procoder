@@ -1,9 +1,9 @@
+import { SITE_URL } from "@/lib/seo";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import CreateCourseContent from "./CreateCourseContent";
 import { PRIVATE_APP_ROBOTS } from "@/lib/seo";
 
-const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 export async function generateMetadata({
  params,

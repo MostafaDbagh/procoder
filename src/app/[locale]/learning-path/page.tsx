@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/seo";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import LearningPathIndex from "./LearningPathIndex";
@@ -10,7 +11,6 @@ import {
   type JourneyLevel,
 } from "@/data/journeyLevels";
 
-const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 export const revalidate = 300;
 

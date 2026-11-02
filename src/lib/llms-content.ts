@@ -1,8 +1,9 @@
+import { SITE_URL } from "@/lib/seo";
 import { LLMS_FULL_TEMPLATE } from "./llms-full-template";
 
 /** Canonical origin for LLM files (no trailing slash). */
 export function getSiteBase(): string {
- return (process.env.SITE_URL || "https://www.stemtechlab.com").replace(/\/$/, "");
+ return SITE_URL;
 }
 
 /**

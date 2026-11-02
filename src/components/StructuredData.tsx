@@ -1,8 +1,8 @@
+import { SITE_URL } from "@/lib/seo";
 import { getTranslations } from "next-intl/server";
 import { priceAfterCourseDiscount } from "@/lib/formatCoursePrice";
 import { ALL_FAQ_KEYS } from "@/data/faqKeys";
 
-const SITE_URL = (process.env.SITE_URL || "https://www.stemtechlab.com").replace(/\/$/, "");
 const ORG_ID = `${SITE_URL}/#organization`;
 const WEBSITE_ID = `${SITE_URL}/#website`;
 /** Public contact only — set in Vercel env; never put API keys in NEXT_PUBLIC_* . */

@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/seo";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
@@ -6,7 +7,6 @@ import { BreadcrumbSchema } from "@/components/StructuredData";
 import BlogListClient from "./BlogListClient";
 import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
 
-const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 export const revalidate = 300;
 

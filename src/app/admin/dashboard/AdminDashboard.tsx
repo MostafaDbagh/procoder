@@ -1206,6 +1206,7 @@ export default function AdminDashboard() {
  try {
  await adminFetch(`/careers/${id}`, { method: "DELETE" });
  await loadCareers();
+ void revalidatePublicPages(["/en/careers", "/ar/careers"]);
  setAdminNotice("Career deleted");
  } catch (e) {
  setErr(e instanceof Error ? e.message : "Delete failed");
@@ -1219,6 +1220,7 @@ export default function AdminDashboard() {
  body: JSON.stringify({ isActive: !isActive }),
  });
  await loadCareers();
+ void revalidatePublicPages(["/en/careers", "/ar/careers"]);
  } catch (e) {
  setErr(e instanceof Error ? e.message : "Update failed");
  }
@@ -3445,6 +3447,7 @@ export default function AdminDashboard() {
  onSaved={async () => {
  setCareerModal(null);
  await loadCareers();
+ void revalidatePublicPages(["/en/careers", "/ar/careers"]);
  }}
  />
  )}

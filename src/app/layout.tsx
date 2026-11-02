@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/seo";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { headers } from "next/headers";
@@ -39,7 +40,6 @@ const cairo = Cairo({
  display: "swap",
 });
 
-const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 /** stem-Be origin for preconnect only (no secrets). Set NEXT_PUBLIC_API_ORIGIN in production; omit in git. */
 const API_PRECONNECT = process.env.NEXT_PUBLIC_API_ORIGIN?.trim().replace(/\/$/, "") || "";

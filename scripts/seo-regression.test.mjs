@@ -8,7 +8,7 @@ const resolveModule = createRequire(import.meta.url);
 function load(file, mocks = {}, globals = {}) {
  const code = ts.transpileModule(fs.readFileSync(file, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX } }).outputText;
  const loaded = { exports: {} };
- vm.runInNewContext(code, { module: loaded, exports: loaded.exports, require: name => name in mocks ? mocks[name] : resolveModule(name), process: { env: {} }, Date, URL, console, ...globals }, { filename: file });
+ vm.runInNewContext(code, { module: loaded, exports: loaded.exports, require: name => name in mocks ? mocks[name] : name === "@/lib/seo" ? seo : resolveModule(name), process: { env: {} }, Date, URL, console, ...globals }, { filename: file });
  return loaded.exports;
 }
 const seo = load('src/lib/seo.ts');
@@ -121,4 +121,53 @@ test('HTTP 200 null entity is unavailable rather than a confirmed deletion', asy
  const api = load('src/lib/server-api.ts', { './mediaUrls': load('src/lib/mediaUrls.ts') }, { AbortSignal, fetch:async () => ({ok:true,status:200,json:async () => null}) });
  await assert.rejects(() => api.getBlogPostISR('post'), /invalid blog/);
  await assert.rejects(() => api.getCourseISR('course'), /invalid course/);
+});
+
+test('all public surfaces share a normalized canonical origin', () => {
+ assert.equal(seo.normalizeSiteOrigin('https://stemtechlab.com/'), 'https://www.stemtechlab.com');
+ assert.equal(seo.normalizeSiteOrigin('https://www.stemtechlab.com///'), 'https://www.stemtechlab.com');
+ assert.equal(seo.normalizeSiteOrigin('https://preview.example/path?query=1'), 'https://preview.example');
+ assert.throws(() => seo.normalizeSiteOrigin('https://user:password@example.com'));
+ assert.throws(() => seo.normalizeSiteOrigin('javascript:alert(1)'));
+});
+test('fresh server course snapshots override older browser data, including empty catalogs', () => {
+ const hooks = load('src/hooks/useCourses.ts', {
+  '@tanstack/react-query': { useQuery: () => ({ data:[{slug:'old'}], isLoading:true }) },
+  '@/lib/api': {},
+ });
+ const current=[{slug:'new',price:90}];
+ assert.equal(hooks.useCourses(current).data,current);
+ assert.equal(hooks.useCourses(current).isLoading,false);
+ assert.equal(hooks.useCourses([]).data.length,0);
+ assert.equal(hooks.useCourse('new',current[0]).data,current[0]);
+ assert.equal(hooks.useCourses().data[0].slug,'old');
+});
+test('career inventory reads every page and distinguishes empty from unavailable', async () => {
+ const item={_id:'1',title:{en:'Teacher',ar:'معلم'},description:{en:'Teach Python',ar:'تعليم بايثون'}};
+ const mocks={'./server-api': {serverApiRoot:()=> 'https://api.example/api',ApiUnavailableError:Error}};
+ let calls=0;
+ const valid=load('src/lib/careers-api.ts',mocks,{AbortSignal,fetch:async()=>({ok:true,json:async()=>({totalPages:2,items:++calls===1 ? Array.from({length:50},(_,i)=>({...item,_id:String(i)})):[item]})})});
+ assert.equal((await valid.getPublicCareers()).length,51);
+ assert.equal(calls,2);
+ for (const response of [{ok:false}, {ok:true,json:async()=>null}, {ok:true,json:async()=>({items:[]})}]) {
+  const bad=load('src/lib/careers-api.ts',mocks,{AbortSignal,fetch:async()=>response});
+  await assert.rejects(()=>bad.getPublicCareers(),/career inventory/);
+ }
+ const empty=load('src/lib/careers-api.ts',mocks,{AbortSignal,fetch:async()=>({ok:true,json:async()=>({items:[],totalPages:1})})});
+ assert.equal((await empty.getPublicCareers()).length,0);
+});
+test('vacancy descriptions and application links exist in server HTML before interaction', async () => {
+ const React=resolveModule('react');
+ const {renderToStaticMarkup}=resolveModule('react-dom/server');
+ const container=({children})=>React.createElement('div',null,children);
+ const content=load('src/app/[locale]/careers/CareersContent.tsx',{
+  'next-intl/server':{getTranslations:async()=>key=>key},
+  '@/components/AnimatedSection':{AnimatedSection:container,AnimatedCard:container},
+ }).default;
+ const html=renderToStaticMarkup(await content({locale:'en',careers:[{_id:'1',title:{en:'Python teacher'},description:{en:'Teach Python live'},requirements:{en:'Teaching experience'},department:'education',location:'Remote',employmentType:'part-time',skills:['Python'],applicationUrl:'https://example.com/apply'}]}));
+ assert.ok(html.includes('<details'));
+ assert.ok(html.includes('<summary'));
+ assert.ok(html.includes('Teach Python live'));
+ assert.ok(html.includes('Teaching experience'));
+ assert.ok(html.includes('href="https://example.com/apply"'));
 });

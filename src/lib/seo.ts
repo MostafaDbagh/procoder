@@ -33,9 +33,14 @@ export const PRIVATE_APP_ROBOTS: NonNullable<Metadata["robots"]> = {
   googleBot: { index: false, follow: false },
 };
 
-const SITE = process.env.SITE_URL || "https://www.stemtechlab.com";
-
-export const SITE_URL = SITE.replace(/\/$/, "");
+/** One origin for canonical, schema, sitemap, robots, social and discovery URLs. */
+export function normalizeSiteOrigin(value: string): string {
+ const url = new URL(value.trim());
+ if (!['https:', 'http:'].includes(url.protocol) || url.username || url.password) throw new Error("SITE_URL must be a public HTTP(S) origin");
+ if (url.hostname === "stemtechlab.com" || url.hostname === "www.stemtechlab.com") return "https://www.stemtechlab.com";
+ return url.origin;
+}
+export const SITE_URL = normalizeSiteOrigin(process.env.SITE_URL || "https://www.stemtechlab.com");
 
 export const LOCALES = ["en", "ar"] as const;
 export type SiteLocale = (typeof LOCALES)[number];

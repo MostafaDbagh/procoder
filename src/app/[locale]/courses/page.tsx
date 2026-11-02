@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/seo";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import CoursesContent from "./CoursesContent";
@@ -5,7 +6,6 @@ import { BreadcrumbSchema, CourseCatalogSchema, type CourseListSchemaItem } from
 import { ApiUnavailableError, getCoursesISR } from "@/lib/server-api";
 import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
 
-const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 // ISR: rebuild every 5 minutes so price/status changes land quickly
 // without hammering the backend on every crawl hit.
@@ -79,7 +79,7 @@ export default async function CoursesPage({
 }) {
  const { locale } = await params;
  setRequestLocale(locale);
- const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
+
  const homeUrl = `${SITE_URL}/${locale}`;
  const coursesUrl = `${SITE_URL}/${locale}/courses`;
  const lang = locale === "ar" ? "ar" : "en";

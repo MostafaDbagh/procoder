@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/seo";
 import { NextResponse, type NextRequest } from "next/server";
 import { LOCALES, PUBLIC_STATIC_PATHS } from "@/lib/seo";
 import { getCoursesISR, serverApiRoot } from "@/lib/server-api";
@@ -6,7 +7,7 @@ export async function GET() {
   return NextResponse.json({ ok: true, info: "Use POST with x-cron-secret header to submit URLs." });
 }
 
-const SITE = (process.env.SITE_URL || "https://www.stemtechlab.com").replace(/\/$/, "");
+const SITE = SITE_URL;
 const HOST = new URL(SITE).hostname;
 // Generated in Bing Webmaster Tools — must match the key file hosted at /<KEY>.txt
 const KEY = "86d963b1569d44d5bbd3e189c6fa2157";

@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/seo";
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
@@ -13,7 +14,6 @@ import { resolveArabicSlug, isArabicSlug } from "@/lib/arabicSlugs";
 // /api/revalidate with the localized course paths after edits to purge instantly.
 export const revalidate = 60;
 
-const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 export async function generateStaticParams() {
  // Live catalogue only. Merging the offline fallback here used to publish

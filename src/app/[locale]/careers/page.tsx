@@ -1,21 +1,22 @@
+import { SITE_URL } from "@/lib/seo";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { BreadcrumbSchema } from "@/components/StructuredData";
+import { getPublicCareers } from "@/lib/careers-api";
 import CareersContent from "./CareersContent";
 import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
 
-const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 const meta = {
  en: {
  title: "Careers at StemTechLab | Teach Kids Coding & STEM Online",
  description:
- "We’re hiring certified online instructors for coding (Scratch, Python, web & game dev), robotics, and algorithms. Fully remote, flexible hours, ages 6–18.",
+ "Explore current opportunities at StemTechLab. Read role descriptions, requirements and application details for the positions currently available.",
  },
  ar: {
  title: "وظائف ستم تك لاب | علّم البرمجة وSTEM للأطفال أونلاين",
  description:
- "ستم تك لاب توظف معلمين أونلاين معتمدين في البرمجة (سكراتش، بايثون، تطوير مواقع وألعاب)، الروبوتات والخوارزميات. عمل عن بُعد وساعات مرنة. خبرة بتدريس الأطفال ٦–١٨.",
+ "استكشف فرص العمل الحالية في ستم تك لاب، واقرأ وصف كل وظيفة ومتطلباتها وطريقة التقديم للفرص المتاحة.",
  },
 };
 
@@ -57,6 +58,7 @@ export default async function CareersPage({
  const { locale } = await params;
  const lang = locale === "ar" ? "ar" : "en";
  setRequestLocale(locale);
+ const careers = await getPublicCareers();
  return (
  <>
  <BreadcrumbSchema
@@ -65,7 +67,7 @@ export default async function CareersPage({
  { name: bcLabel("Careers", locale), url: siteUrl(lang, "/careers") },
  ]}
  />
- <CareersContent />
+ <CareersContent careers={careers} locale={locale} />
  </>
  );
 }

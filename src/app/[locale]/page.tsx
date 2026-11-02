@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/seo";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { Hero } from "@/components/Hero";
@@ -11,7 +12,6 @@ import { ExplorerFloatBubble } from "@/components/ExplorerFloatBubble";
 import { getCategoriesPublicISR, getCoursesISR } from "@/lib/server-api";
 import { buildAlternates, siteUrl } from "@/lib/seo";
 
-const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 const meta = {
  en: {

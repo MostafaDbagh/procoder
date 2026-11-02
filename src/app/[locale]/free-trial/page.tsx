@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/seo";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
@@ -5,7 +6,6 @@ import FreeTrialContent from "./FreeTrialContent";
 import { BreadcrumbSchema } from "@/components/StructuredData";
 import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
 
-const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 
 const meta = {

@@ -1,7 +1,7 @@
+import { SITE_URL } from "@/lib/seo";
 import type { MetadataRoute } from "next";
 import { PRIVATE_CRAWL_PATHS } from "@/lib/seo";
 
-const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 const AI_AND_SEARCH_BOTS = [
  "GPTBot",

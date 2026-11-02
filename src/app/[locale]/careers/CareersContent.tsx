@@ -1,32 +1,13 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { useTranslations, useLocale } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { AnimatedSection, AnimatedCard } from "@/components/AnimatedSection";
-import { apiRoot } from "@/lib/api";
+import type { PublicCareer } from "@/lib/careers-api";
 import {
   Briefcase,
   MapPin,
   Clock,
   ChevronRight,
   Users,
-  Sparkles,
 } from "lucide-react";
-
-interface Career {
-  _id: string;
-  slug: string;
-  title: { en: string; ar: string };
-  description: { en: string; ar: string };
-  requirements: { en: string; ar: string };
-  department: string;
-  location: string;
-  employmentType: string;
-  experienceLevel: string;
-  skills: string[];
-  applicationEmail: string;
-  applicationUrl: string;
-}
 
 const deptColors: Record<string, string> = {
   engineering: "from-blue-400 to-cyan-400",
@@ -38,28 +19,9 @@ const deptColors: Record<string, string> = {
   other: "from-slate-400 to-slate-500",
 };
 
-export default function CareersContent() {
-  const t = useTranslations("careers");
-  const locale = useLocale();
+export default async function CareersContent({ careers, locale }: { careers: PublicCareer[]; locale: string }) {
+  const t = await getTranslations({ locale, namespace: "careers" });
   const lang = locale === "ar" ? "ar" : "en";
-  const [careers, setCareers] = useState<Career[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [expanded, setExpanded] = useState<string | null>(null);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch(`${apiRoot()}/careers?limit=50`);
-        if (!res.ok) throw new Error();
-        const data = await res.json();
-        setCareers(data.items ?? []);
-      } catch {
-        setCareers([]);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
 
   return (
     <div className="py-12 sm:py-20">
@@ -76,12 +38,7 @@ export default function CareersContent() {
           </p>
         </AnimatedSection>
 
-        {loading ? (
-          <div className="text-center py-20">
-            <Sparkles className="w-8 h-8 text-primary animate-pulse mx-auto mb-3" />
-            <p className="text-muted">{t("loading")}</p>
-          </div>
-        ) : careers.length === 0 ? (
+        { careers.length === 0 ? (
           <AnimatedSection className="text-center py-20 bg-surface rounded-2xl border border-border">
             <Briefcase className="w-12 h-12 text-muted mx-auto mb-4" />
             <h2 className="text-xl font-bold mb-2">{t("noPositions")}</h2>
@@ -90,22 +47,19 @@ export default function CareersContent() {
         ) : (
           <div className="space-y-4">
             {careers.map((career, i) => {
-              const isOpen = expanded === career._id;
               return (
                 <AnimatedCard key={career._id} delay={i * 0.05}>
-                  <div className="bg-surface rounded-2xl border border-border overflow-hidden transition-all">
-                    <button
-                      type="button"
-                      onClick={() => setExpanded(isOpen ? null : career._id)}
-                      className="w-full text-start p-5 sm:p-6 flex items-center gap-4"
+                  <details className="group bg-surface rounded-2xl border border-border overflow-hidden transition-all">
+                    <summary
+                      className="w-full text-start p-5 sm:p-6 flex items-center gap-4 cursor-pointer list-none focus-visible:outline-2 focus-visible:outline-primary"
                     >
                       <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${deptColors[career.department] ?? deptColors.other} flex items-center justify-center shrink-0`}>
                         <Briefcase className="w-6 h-6 text-white" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-lg truncate">
+                        <h2 className="font-bold text-lg">
                           {career.title[lang]}
-                        </h3>
+                        </h2>
                         <div className="flex flex-wrap gap-3 mt-1 text-xs text-muted">
                           <span className="flex items-center gap-1">
                             <MapPin className="w-3.5 h-3.5" />
@@ -120,10 +74,9 @@ export default function CareersContent() {
                           </span>
                         </div>
                       </div>
-                      <ChevronRight className={`w-5 h-5 text-muted transition-transform ${isOpen ? "rotate-90" : ""}`} />
-                    </button>
+                      <ChevronRight className="w-5 h-5 text-muted transition-transform group-open:rotate-90" />
+                    </summary>
 
-                    {isOpen && (
                       <div className="px-5 pb-6 sm:px-6 border-t border-border pt-5 space-y-4">
                         <div>
                           <h4 className="font-semibold mb-2">{t("description")}</h4>
@@ -171,8 +124,7 @@ export default function CareersContent() {
                           ) : null}
                         </div>
                       </div>
-                    )}
-                  </div>
+                  </details>
                 </AnimatedCard>
               );
             })}

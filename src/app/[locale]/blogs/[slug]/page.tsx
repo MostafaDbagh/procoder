@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/seo";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
@@ -8,7 +9,6 @@ import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
 import { renderBlogBody } from "@/lib/blogBody";
 import { safeCoverImage } from "@/lib/mediaUrls";
 
-const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 export async function generateStaticParams() {
  const data = await getBlogPostsISR();

@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/seo";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -12,7 +13,6 @@ import {
 } from "@/data/journeyLevels";
 import { LOCALES } from "@/lib/seo";
 
-const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 // Matches the catalogue ISR window — level pages list live courses.
 export const revalidate = 300;
