@@ -38,7 +38,7 @@ export function Footer() {
    } as never);
    setSubDone(true);
   } catch {
-   setSubDone(true);
+   setEmailErr(lang === "ar" ? "تعذر إرسال الطلب. حاول مرة أخرى." : "Your request could not be sent. Please try again.");
   } finally {
    setSubLoading(false);
   }
@@ -57,14 +57,14 @@ export function Footer() {
  {t("description")}
  </p>
  <div className="flex items-center gap-3">
-  <a href="https://www.facebook.com/share/1D3FrzK2N9/" target="_blank" rel="noopener noreferrer"
+  <a aria-label="Facebook" href="https://www.facebook.com/share/1D3FrzK2N9/" target="_blank" rel="noopener noreferrer"
    className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform hover:scale-110"
    style={{ background: "#1877F2" }}>
    <svg viewBox="0 0 24 24" fill="white" className="w-4 h-4">
     <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
    </svg>
   </a>
-  <a href="https://www.instagram.com/stemtechlab" target="_blank" rel="noopener noreferrer"
+  <a aria-label="Instagram" href="https://www.instagram.com/stemtechlab" target="_blank" rel="noopener noreferrer"
    className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform hover:scale-110"
    style={{ background: "linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)" }}>
    <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
@@ -73,7 +73,7 @@ export function Footer() {
     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" strokeWidth="2.5"/>
    </svg>
   </a>
-  <a href="https://www.linkedin.com/company/stem-tech-lab/" target="_blank" rel="noopener noreferrer"
+  <a aria-label="LinkedIn" href="https://www.linkedin.com/company/stem-tech-lab/" target="_blank" rel="noopener noreferrer"
    className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform hover:scale-110"
    style={{ background: "#0A66C2" }}>
    <svg viewBox="0 0 24 24" fill="white" className="w-4 h-4">
@@ -92,11 +92,14 @@ export function Footer() {
  {t("quickLinks")}
  </h3>
  <ul className="space-y-2.5">
+ <li><LocalizedLink href="/oman" className="text-sm text-muted hover:text-primary transition-colors">{lang === "ar" ? "دورات أونلاين في عُمان" : "Online classes in Oman"}</LocalizedLink></li>
  <li><LocalizedLink href="/courses" className="text-sm text-muted hover:text-primary transition-colors">{nav("courses")}</LocalizedLink></li>
  <li><LocalizedLink href="/recommend" className="text-sm text-muted hover:text-primary transition-colors">{nav("recommend")}</LocalizedLink></li>
  <li><LocalizedLink href="/free-trial" className="text-sm text-muted hover:text-primary transition-colors">{nav("freeTrial")}</LocalizedLink></li>
  <li><LocalizedLink href="/challenge" className="text-sm text-muted hover:text-primary transition-colors">{nav("challenge")}</LocalizedLink></li>
  <li><LocalizedLink href="/blogs" className="text-sm text-muted hover:text-primary transition-colors">{nav("blog")}</LocalizedLink></li>
+ <li><LocalizedLink href="/about" className="text-sm text-muted hover:text-primary transition-colors">{lang === "ar" ? "من نحن" : "About us"}</LocalizedLink></li>
+ <li><LocalizedLink href="/careers" className="text-sm text-muted hover:text-primary transition-colors">{lang === "ar" ? "الوظائف" : "Careers"}</LocalizedLink></li>
  <li><LocalizedLink href="/faq" className="text-sm text-muted hover:text-primary transition-colors">{nav("faq")}</LocalizedLink></li>
  </ul>
  </div>

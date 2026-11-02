@@ -52,8 +52,12 @@ export async function generateMetadata({
  };
 
  // Truncate body to leave room for the appended stats (age, level, duration)
- const truncate = (s: string, max: number) =>
- s.length <= max ? s : s.slice(0, s.lastIndexOf(" ", max) || max) + "…";
+ const truncate = (s: string, max: number) => {
+ const text = s.replace(/\s+/g, " ").trim();
+ if (text.length <= max) return text;
+ const boundary = text.lastIndexOf(" ", max - 1);
+ return text.slice(0, boundary > 0 ? boundary : max - 1) + "…";
+ };
 
  if (apiCourse) {
  title = lang === "ar" ? apiCourse.title.ar : apiCourse.title.en;
@@ -63,7 +67,7 @@ export async function generateMetadata({
  const suffix = lang === "ar"
  ? ` للأعمار ${ageRange}. مستوى ${lvl}، ${apiCourse.lessons} درسًا على مدى ${apiCourse.durationWeeks} أسابيع.`
  : ` For ages ${ageRange}. ${lvl} level, ${apiCourse.lessons} lessons over ${apiCourse.durationWeeks} weeks.`;
- const body = truncate(rawBody.split("\n")[0], 120 - suffix.length);
+ const body = truncate(rawBody || title, 165 - suffix.length);
  seoDescription = body + suffix;
  } else {
  const sc = staticCourse!;
@@ -74,7 +78,7 @@ export async function generateMetadata({
  const suffix = lang === "ar"
  ? ` للأعمار ${ageRange}. مستوى ${lvl}، ${sc.lessons} درسًا على مدى ${sc.durationWeeks} أسابيع.`
  : ` For ages ${ageRange}. ${lvl} level, ${sc.lessons} lessons over ${sc.durationWeeks} weeks.`;
- const description = truncate(rawDesc.split("\n")[0], 120 - suffix.length);
+ const description = truncate(rawDesc || title, 165 - suffix.length);
  seoDescription = description + suffix;
  }
 
@@ -83,13 +87,10 @@ export async function generateMetadata({
  const ages = apiCourse
  ? `${apiCourse.ageMin}-${apiCourse.ageMax}`
  : `${staticCourse!.ageMin}-${staticCourse!.ageMax}`;
- const withAges =
- lang === "ar"
- ? `${title} — أعمار ${ages} أونلاين | ستم تك لاب`
- : `${title} — Ages ${ages} Online Classes | StemTechLab`;
- const bare = lang === "ar" ? `${title} | ستم تك لاب` : `${title} | StemTechLab`;
- const brandedTitle = withAges.length <= 60 ? withAges : bare;
- const coverImage = apiCourse?.imageUrl;
+ const brandedTitle = lang === "ar"
+ ? `${title} | دورة أونلاين للأعمار ${ages} | ستم تك لاب`
+ : `${title} | Online Course for Ages ${ages} | StemTechLab`;
+ const coverImage = apiCourse?.imageUrl ? new URL(apiCourse.imageUrl, SITE_URL).href : undefined;
  const fallbackOg = `${SITE_URL}/og?locale=${lang}&title=${encodeURIComponent(title)}&cat=${encodeURIComponent(apiCourse?.category ?? staticCourse?.category ?? "")}`;
  const ogImages = coverImage
  ? [{ url: coverImage, alt: title }, { url: fallbackOg, width: 1200, height: 630, alt: title }]
@@ -127,7 +128,7 @@ export default async function CourseDetailPage({
  setRequestLocale(locale);
 
  // Redirect Arabic slugs (e.g. /ar/courses/بايثون) to their canonical English slug
- if (isArabicSlug(rawId)) {
+ if (isArabicSlug(rawId) && resolveArabicSlug(rawId) !== rawId) {
  const resolved = resolveArabicSlug(rawId);
  const target = `/${locale}/courses/${resolved}`;
  redirect(target);
@@ -178,6 +179,7 @@ export default async function CourseDetailPage({
  lessons: apiCourse.lessons,
  durationWeeks: apiCourse.durationWeeks,
  price: apiCourse.price,
+ discountPercent: apiCourse.discountPercent,
  currency: apiCourse.currency,
  imageUrl: apiCourse.imageUrl,
  skills: apiCourse.skills?.[lang],
@@ -209,7 +211,7 @@ export default async function CourseDetailPage({
  {courseSchema && (
  <script
  type="application/ld+json"
- dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
+ dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema).replace(/</g, "\\u003c") }}
  />
  )}
  <CourseDetailContent

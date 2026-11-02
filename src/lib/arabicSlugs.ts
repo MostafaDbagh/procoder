@@ -7,30 +7,23 @@
  */
 
 export const ARABIC_SLUG_TO_ENGLISH: Record<string, string> = {
-  سكراتش: "scratch",
+  سكراتش: "programming1",
   بايثون: "python",
-  "تطوير-الويب": "webdev",
-  "تطوير-المواقع": "webdev",
-  خوارزميات: "algorithms",
+  "تطوير-الويب": "web-beginner",
+  "تطوير-المواقع": "web-beginner",
+  خوارزميات: "algo-intro",
   روبوتات: "robotics",
-  "روبوتات-متقدمة": "robotics-advanced",
-  "تطوير-الالعاب": "game-development",
-  "تطوير-الألعاب": "game-development",
-  "تطوير-الأعاب": "game-development",
-  موبايل: "mobile-development",
-  "تطوير-التطبيقات": "mobile-development",
-  "ذكاء-اصطناعي": "artificial-intelligence",
-  عربي: "arabic",
-  "لغة-عربية": "arabic",
-  "برمجة-تنافسية": "competitive-programming",
+  موبايل: "mobappdev",
+  "تطوير-التطبيقات": "mobappdev",
+  "ذكاء-اصطناعي": "aifoundation",
 };
 
 /** Reverse: English slug → preferred Arabic slug (for hreflang URLs). */
 export const ENGLISH_SLUG_TO_ARABIC: Record<string, string> = {
-  scratch: "سكراتش",
+  programming1: "سكراتش",
   python: "بايثون",
-  webdev: "تطوير-الويب",
-  algorithms: "خوارزميات",
+  "web-beginner": "تطوير-الويب",
+  "algo-intro": "خوارزميات",
 };
 
 /**

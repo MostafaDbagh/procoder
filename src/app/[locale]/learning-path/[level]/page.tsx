@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import LevelContent from "./LevelContent";
 import { BreadcrumbSchema } from "@/components/StructuredData";
-import { getCoursesISR } from "@/lib/server-api";
+import { ApiUnavailableError, getCoursesISR } from "@/lib/server-api";
 import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
 import {
   JOURNEY_LEVELS,
@@ -91,7 +91,8 @@ export default async function LevelPage({
   const url = siteUrl(lang, path);
 
   const allCourses = await getCoursesISR();
-  const courses = (allCourses ?? []).filter((c) => c.stlLevel === level);
+  if (allCourses === null) throw new ApiUnavailableError("learning level catalog");
+  const courses = allCourses.filter((c) => c.stlLevel === level);
 
   const habits = t.raw("practice.habits") as { name: string }[];
 
@@ -133,7 +134,7 @@ export default async function LevelPage({
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema).replace(/</g, "\\u003c") }}
       />
       <LevelContent level={level} courses={courses} />
     </>

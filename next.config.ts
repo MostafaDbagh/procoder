@@ -52,6 +52,11 @@ const nextConfig: NextConfig = {
         destination: "https://www.stemtechlab.com/:path*",
         permanent: true,
       },
+      // Historical singular blog URLs found in Search Console's 404 report.
+      { source: "/blog", destination: "/en/blogs", permanent: true },
+      { source: "/blog/:slug", destination: "/en/blogs/:slug", permanent: true },
+      { source: "/:locale(en|ar)/blog", destination: "/:locale/blogs", permanent: true },
+      { source: "/:locale(en|ar)/blog/:slug", destination: "/:locale/blogs/:slug", permanent: true },
       // /explorer became the Explorer stage of the five-level journey.
       // 301 so the old URL's ranking transfers to the new one.
       {
@@ -65,7 +70,7 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       // Courses retired on 2026-08-24 (commit 6ea3abe). They were indexed and
-      // ranking; hard-404s since then are what took search impressions to zero.
+      // Preserve known successor URLs; Search Console is needed to assess impact.
       // 301 to the nearest live course so the signals transfer instead of dying.
       ...Object.entries(RETIRED_COURSE_SLUGS).flatMap(([from, to]) => [
         {

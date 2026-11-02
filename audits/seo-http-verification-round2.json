@@ -1,0 +1,182 @@
+[
+  {
+    "path": "/en",
+    "status": 200,
+    "schemas": 3,
+    "details": 0
+  },
+  {
+    "path": "/en/oman",
+    "status": 200,
+    "schemas": 5,
+    "details": 0
+  },
+  {
+    "path": "/en/faq",
+    "status": 200,
+    "schemas": 5,
+    "details": 21
+  },
+  {
+    "path": "/en/courses",
+    "status": 200,
+    "schemas": 5,
+    "details": 0
+  },
+  {
+    "path": "/en/courses/robotics",
+    "status": 200,
+    "schemas": 5,
+    "details": 0
+  },
+  {
+    "path": "/en/blogs/coding-competitions-for-kids",
+    "status": 200,
+    "schemas": 5,
+    "details": 0
+  },
+  {
+    "path": "/ar",
+    "status": 200,
+    "schemas": 3,
+    "details": 0
+  },
+  {
+    "path": "/ar/oman",
+    "status": 200,
+    "schemas": 5,
+    "details": 0
+  },
+  {
+    "path": "/ar/faq",
+    "status": 200,
+    "schemas": 5,
+    "details": 21
+  },
+  {
+    "path": "/ar/courses",
+    "status": 200,
+    "schemas": 5,
+    "details": 0
+  },
+  {
+    "path": "/ar/courses/robotics",
+    "status": 200,
+    "schemas": 5,
+    "details": 0
+  },
+  {
+    "path": "/ar/blogs/coding-competitions-for-kids",
+    "status": 200,
+    "schemas": 5,
+    "details": 0
+  },
+  {
+    "path": "/en/blogs",
+    "status": 200,
+    "canonical": "https://www.stemtechlab.com/en/blogs"
+  },
+  {
+    "path": "/en/blogs?category=coding",
+    "status": 200,
+    "canonical": "https://www.stemtechlab.com/en/blogs?category=coding"
+  },
+  {
+    "path": "/en/contact",
+    "status": 200,
+    "canonical": "https://www.stemtechlab.com/en/contact"
+  },
+  {
+    "path": "/en/free-trial",
+    "status": 200,
+    "canonical": "https://www.stemtechlab.com/en/free-trial"
+  },
+  {
+    "path": "/en/learning-path/explorer",
+    "status": 200,
+    "canonical": "https://www.stemtechlab.com/en/learning-path/explorer"
+  },
+  {
+    "path": "/ar/blogs",
+    "status": 200,
+    "canonical": "https://www.stemtechlab.com/ar/blogs"
+  },
+  {
+    "path": "/ar/blogs?category=coding",
+    "status": 200,
+    "canonical": "https://www.stemtechlab.com/ar/blogs?category=coding"
+  },
+  {
+    "path": "/ar/contact",
+    "status": 200,
+    "canonical": "https://www.stemtechlab.com/ar/contact"
+  },
+  {
+    "path": "/ar/free-trial",
+    "status": 200,
+    "canonical": "https://www.stemtechlab.com/ar/free-trial"
+  },
+  {
+    "path": "/ar/learning-path/explorer",
+    "status": 200,
+    "canonical": "https://www.stemtechlab.com/ar/learning-path/explorer"
+  },
+  {
+    "path": "/en/blogs?page=0",
+    "status": 404,
+    "noindex": true
+  },
+  {
+    "path": "/ar/blogs?page=99999",
+    "status": 404,
+    "noindex": true
+  },
+  {
+    "path": "/en/blogs?category=invalid",
+    "status": 404,
+    "noindex": true
+  },
+  {
+    "path": "/ar/courses/بايثون/invalid",
+    "status": 404,
+    "noindex": true
+  },
+  {
+    "path": "/blog",
+    "status": 308,
+    "redirect": "/en/blogs"
+  },
+  {
+    "path": "/en/blog/coding-competitions-for-kids",
+    "status": 308,
+    "redirect": "/en/blogs/coding-competitions-for-kids"
+  },
+  {
+    "path": "/ar/courses/بايثون",
+    "status": 308,
+    "redirect": "/ar/courses/python"
+  },
+  {
+    "path": "/ar/courses/غير-موجود",
+    "status": 404,
+    "noindex": true
+  },
+  {
+    "path": "/en/courses/not-a-real-course",
+    "status": 404,
+    "noindex": true
+  },
+  {
+    "path": "/llms.txt",
+    "status": 200
+  },
+  {
+    "path": "/llms-full.txt",
+    "status": 200
+  },
+  {
+    "path": "/sitemap.xml",
+    "status": 200,
+    "entries": 106
+  }
+]

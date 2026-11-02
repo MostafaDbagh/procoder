@@ -137,7 +137,7 @@ export function Navbar({ courses = [] }: { courses?: NavCourse[] }) {
 
  <div
  id="nav-courses-menu"
- className={`absolute start-0 top-full z-50 mt-2 w-[34rem] rounded-2xl border border-border bg-surface p-3 shadow-xl shadow-black/10 transition-all duration-150 ${
+ className={`absolute start-0 top-full z-50 mt-2 w-96 lg:w-[34rem] rounded-2xl border border-border bg-surface p-3 shadow-xl shadow-black/10 transition-all duration-150 ${
  coursesOpen
  ? "visible translate-y-0 opacity-100"
  : "invisible -translate-y-1 opacity-0"

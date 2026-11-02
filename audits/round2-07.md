@@ -1,0 +1,20 @@
+# Round 2 specialist audit: image validation, covers, image SEO
+
+Read `AGENTS.md`. Read-only application audit; no application files changed. Findings verified against source and installed Next 16.2.3 image matcher/optimizer, with an executable probe of the actual TypeScript helper (transpiled using installed TypeScript). No live content availability assumed.
+
+## Verified findings
+
+1. **High — accepted blog covers fail Next image restrictions.** `src/lib/mediaUrls.ts:25-34` accepts any HTTP(S) URL containing an image extension and any protocol on an allowed host; `next.config.ts:41-44` permits only HTTPS Cloudinary/Unsplash. Actual probe: `https://example.com/a.jpg` and `http://res.cloudinary.com/a.jpg` both survive `safeCoverImage`, but Next's `hasRemoteMatch` returns false. Blog list/detail feed these values into optimized `<Image>` (`BlogListClient.tsx:128`, `BlogDetailClient.tsx:123`), resulting in optimizer rejection (or dev render error), rather than fallback. The same function accepts `//example.com/a.jpg` as local, which Next's loader explicitly rejects as protocol-relative. Fix: validate parsed protocol/host against the same policy used by Next; accept only single-slash local paths; remove extension-based host bypass. Apply the shared validation to editor submissions as well.
+
+2. **High — server normalization turns working local uploads into forbidden/private external covers.** `src/lib/server-api.ts:80-89` rewrites `/uploads/courses/a.jpg` to `${BACKEND_URL}/uploads/courses/a.jpg`; default is `http://127.0.0.1:5000` (`:19-29`). This is applied by course ISR getters (`:160`, `:175`, `:208`). Course cards and detail then preserve that absolute URL through `publicOrAbsoluteAssetUrl` and feed optimized `<Image>` (`CourseCard.tsx:133,152`, `journey/LevelCourseCard.tsx:23,42`, `CourseDetailContent.tsx:220,292`). Neither localhost nor a normal backend hostname is allow-listed. This defeats the existing `/uploads` proxy in `next.config.ts:102`. Metadata also emits the backend URL as OG/Twitter image (`courses/[id]/page.tsx:89-113`) and course schema image (`StructuredData.tsx:286`), potentially advertising loopback/internal origins to crawlers. Fix: keep browser upload paths relative; create canonical public-origin absolute URLs separately for metadata/schema.
+
+3. **Medium — local team uploads bypass optimization but are still blocked in production.** `server-api.ts:56-76,219` similarly absolutizes local team photos to the backend origin. `components/MeetOurStars.tsx:178-188` uses `unoptimized`, so browsers request that origin directly. Production `img-src` in `next.config.ts:258` permits only self, data/blob, HTTPS Cloudinary/Unsplash (localhost is dev-only). A separate backend origin is blocked; loopback default additionally addresses the visitor's own device. Fix: retain `/uploads/...` and use the existing same-origin rewrite.
+
+4. **Medium — default share-card copy advertises discontinued courses.** `src/app/og/route.tsx:32-36` embeds Arabic classes and Game Dev in both default category lists, and Arabic classes in both taglines. `next.config.ts:28-35` explicitly retires Game Dev with no replacement and Arabic teaching as discontinued. Site-wide metadata uses `/og?locale=...`, so shared links continue advertising those offerings. Fix: align both localized card taglines/categories with the current catalogue.
+
+## Positive checks / limits
+
+- Course/blog image components supply meaningful title-based alt text and responsive sizes; course detail hero has priority loading.
+- Blog metadata already provides generated OG/Twitter fallbacks when validation returns no cover, but mismatch above prevents those fallbacks for rejected URLs.
+- Verified probe also confirms HTTPS Unsplash is allowed and `/uploads/...` is preserved by `safeCoverImage` itself; failure #2 originates in server normalization.
+- Findings #2/#3 apply when stored uploads are relative and backend origin is not an allowed public image host; no claim that every deployed image currently uses this storage mode.

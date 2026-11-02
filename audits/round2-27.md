@@ -1,0 +1,20 @@
+# Round 2–27: Search Console evidence and Oman measurement
+
+Read-only review of `seo-audit-2026-11-02.md`, `seo-live.json` and `seo-http-verification.json`; no account access or application changes.
+
+## Evidence assessment
+
+- **Medium — Search Console numbers are not independently reproducible from saved repository evidence.** The original review transcribed authenticated UI observations; no raw performance export, country/query table, indexing export or screenshot is saved here. Treat the 28-day/three-month metrics, 74-country absence, indexing counts, sitemap fetch status and clean manual-action/security reports as UI-transcribed observations. Preserve dated exports/screenshots with property, exact date bounds, search type and active filters at the next authorized review. Do not imply these were verified against raw saved GSC data.
+- Arithmetic is internally consistent: 152→60 impressions is −60.5%; 12→3 clicks is −75%; CTR is 7.89%→5%. The seven exclusion categories total 105. These checks verify arithmetic, not source accuracy or causation.
+- The saved public crawl independently supports 104 successful page responses and no Oman/Muscat/عُمان/عمان matches in their extracted body text. Robotics title/H1 is “Introduction to Robotics Engineering”; its body nevertheless already includes ages 7–10, beginner level, live classes and virtual simulations. Prefer “title/H1 underemphasized the child-course intent” over an implication that the whole page lacked child-course positioning.
+- **Causal restraint is mostly sound.** The report explicitly avoids attributing historical Google 5xx to proxy/rate-limit warnings, equating missing Oman rows with zero exposure, asserting a penalty, or guaranteeing rankings. Retain those qualifications. “Highest-impact diagnosis” ranks hypotheses without measured impact; label this “Prioritized issues and hypotheses.” Broad engineering-query mismatch requires the unsaved query table; missing Oman copy alone does not establish why traffic declined.
+- No saved evidence establishes earlier meaningful Oman traffic. Describe the Oman initiative as establishing qualified visibility, with recovery assessed only if an earlier Oman baseline is later documented. Do not infer Oman decline from the property-wide decline.
+
+## Prioritized Oman measurements
+
+1. **Release and availability:** save deployment timestamp; record actual HTTP responses, sitemap fetch/read status and repeated availability for EN/AR Oman, robotics and Python pages. Track 429/5xx by URL/time separately from GSC's delayed indexing report. Establish successful crawl/indexing and selected canonical before judging search impact.
+2. **Comparable baseline:** save exact completed 28-day windows and identical filters. Record Web-search property totals separately from Oman-country totals. Save country=Oman page and query exports, plus an independent Oman-intent query cohort across all countries; these overlap and must not be added together. An absent/suppressed row is “not reported,” not a measured zero.
+3. **Relevant discovery:** compare impressions/clicks for EN/AR Oman pages, homepages and selected courses; separate branded, relevant child-course and broad engineering queries. Inspect which URL appears for Oman-intent queries before calling homepage/landing-page overlap harmful. CTR/position changes from tiny, changing query samples are descriptive, not reliable proof of a fix.
+4. **Parent outcomes:** use already-authorized organic trial attribution and successful submission counts. Verify that an Oman international phone number can submit (see `round2-24.md`); a conversion blocker can prevent gains from turning into trials. Do not introduce new personal-data collection for this audit.
+
+Review discovery weekly and comparable 28-day cohorts after release; keep availability monitoring frequent. At this volume, report absolute counts alongside percentages and retain uncertainty beyond the first month. Local smoke responses prove local behavior, not deployment, Google indexation or traffic recovery.

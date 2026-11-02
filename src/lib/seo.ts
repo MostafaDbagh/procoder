@@ -42,6 +42,7 @@ export type SiteLocale = (typeof LOCALES)[number];
 
 export const PUBLIC_STATIC_PATHS = [
  { path: "", priority: 1.0, changeFrequency: "weekly" as const },
+ { path: "/oman", priority: 0.9, changeFrequency: "monthly" as const },
  { path: "/courses", priority: 0.9, changeFrequency: "weekly" as const },
  { path: "/learning-path", priority: 0.9, changeFrequency: "monthly" as const },
  { path: "/learning-path/explorer", priority: 0.85, changeFrequency: "monthly" as const },
@@ -128,16 +129,7 @@ export function buildAlternates(lang: string, path: string = "") {
     canonical: siteUrl(lang, path),
     languages: {
       en: enUrl,
-      "en-US": enUrl,
-      "en-GB": enUrl,
       ar: arUrl,
-      "ar-SA": arUrl,
-      "ar-AE": arUrl,
-      "ar-QA": arUrl,
-      "ar-OM": arUrl,
-      "ar-KW": arUrl,
-      "ar-BH": arUrl,
-      "ar-EG": arUrl,
       "x-default": enUrl,
     },
   };

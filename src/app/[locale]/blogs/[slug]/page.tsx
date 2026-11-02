@@ -70,7 +70,12 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ loc
 
  if (!post) notFound();
 
- const relatedCourses = (courses || []).filter((c) => post.relatedCourses.includes(c.slug));
+ // Preserve relevant links when an editorial post still stores a retired slug.
+ const successors: Record<string, string> = {
+  scratch: "programming1", webdev: "web-beginner", "robot-basics": "robotics", "algo-competitive": "algo-intro",
+ };
+ const relatedSlugs = new Set(post.relatedCourses.map(slug => successors[slug] ?? slug));
+ const relatedCourses = (courses || []).filter((c) => relatedSlugs.has(c.slug));
  // Render Markdown → safe HTML on the server (avoids DOMPurify SSR crash).
  const bodyHtml = renderBlogBody(post.body[lang] || "");
 
@@ -89,14 +94,14 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ loc
  "@type": "BlogPosting",
  headline: post.title[lang],
  description: post.excerpt[lang],
- author: { "@type": "Person", name: post.author.name },
+ author: { "@type": post.author.name.trim().toLowerCase() === "stemtechlab team" ? "Organization" : "Person", name: post.author.name },
  datePublished: post.publishedAt,
  dateModified: post.updatedAt ?? post.publishedAt,
  publisher: { "@type": "Organization", name: "StemTechLab", url: SITE_URL },
  mainEntityOfPage: siteUrl(lang, `/blogs/${slug}`),
  ...(safeCoverImage(post.coverImage) ? { image: safeCoverImage(post.coverImage) } : {}),
  inLanguage: locale,
- }),
+ }).replace(/</g, "\\u003c"),
  }}
  />
  <BlogDetailClient post={post} relatedCourses={relatedCourses} bodyHtml={bodyHtml} />

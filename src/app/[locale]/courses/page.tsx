@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 import CoursesContent from "./CoursesContent";
 import { BreadcrumbSchema, CourseCatalogSchema, type CourseListSchemaItem } from "@/components/StructuredData";
-import { courses as staticCourses } from "@/data/courses";
-import { getCoursesISR } from "@/lib/server-api";
+import { ApiUnavailableError, getCoursesISR } from "@/lib/server-api";
 import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
 
 const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
@@ -84,13 +83,10 @@ export default async function CoursesPage({
  const homeUrl = `${SITE_URL}/${locale}`;
  const coursesUrl = `${SITE_URL}/${locale}/courses`;
  const lang = locale === "ar" ? "ar" : "en";
- const [apiCourses, ct] = await Promise.all([
- getCoursesISR(),
- getTranslations({ locale, namespace: "courseData" }),
- ]);
+ const apiCourses = await getCoursesISR();
+ if (apiCourses === null) throw new ApiUnavailableError("course catalog page");
  const schemaCourses: CourseListSchemaItem[] =
- apiCourses && apiCourses.length > 0
- ? apiCourses.map((course) => ({
+ apiCourses.map((course) => ({
  name: course.title[lang],
  description: course.description[lang],
  url: siteUrl(lang, `/courses/${course.slug}`),
@@ -100,22 +96,10 @@ export default async function CoursesPage({
  lessons: course.lessons,
  durationWeeks: course.durationWeeks,
  price: course.price,
+ discountPercent: course.discountPercent,
  currency: course.currency,
  imageUrl: course.imageUrl,
  skills: course.skills?.[lang],
- }))
- : staticCourses.map((course) => ({
- name: ct(course.titleKey),
- description: ct(course.descKey),
- url: siteUrl(lang, `/courses/${course.id}`),
- ageMin: course.ageMin,
- ageMax: course.ageMax,
- level: course.level,
- lessons: course.lessons,
- durationWeeks: course.durationWeeks,
- price: course.price,
- currency: course.currency,
- skills: course.skillKeys.map((key) => ct(key)),
  }));
 
  return (

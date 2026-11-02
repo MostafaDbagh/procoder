@@ -89,7 +89,7 @@ export function CoursesClient({ initialCourses }: Props) {
  const pathname = usePathname();
 
  // React Query — uses ISR data as initialData, refetches in background
- const { data: apiData, isLoading, isError } = useCourses(initialCourses ?? undefined);
+ const { data: apiData, isLoading } = useCourses(initialCourses ?? undefined);
 
  const [search, setSearch] = useState("");
  const category = useMemo(
@@ -112,7 +112,7 @@ export function CoursesClient({ initialCourses }: Props) {
  const [level, setLevel] = useState<Level | "all">("all");
 
  // Determine data source
- const fromApi = !isError && !!apiData && apiData.length > 0;
+ const fromApi = apiData !== undefined;
  const allCourses = fromApi
  ? apiData.map((c) => apiToLocal(c, locale))
  : staticCourses.map((c) => ({ ...c, _title: "", _desc: "" }));
@@ -164,7 +164,7 @@ export function CoursesClient({ initialCourses }: Props) {
  </div>
 
  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
- <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-10">
+ <motion.div initial={false} animate={{ opacity: 1, y: 0 }} className="text-center mb-10">
  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
  <GraduationCap className="w-4 h-4" />
  {allCourses.length}+ {t("title")}
@@ -174,7 +174,7 @@ export function CoursesClient({ initialCourses }: Props) {
  </motion.div>
 
  {/* Search */}
- <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="max-w-xl mx-auto mb-8">
+ <motion.div initial={false} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="max-w-xl mx-auto mb-8">
  <div className="relative">
  <Search className="absolute start-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted" />
  <input
@@ -194,7 +194,7 @@ export function CoursesClient({ initialCourses }: Props) {
  </motion.div>
 
  {/* Category tabs */}
- <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex justify-center">
+ <motion.div initial={false} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex justify-center">
  <div className="flex flex-wrap justify-center gap-2">
  {categoryTabs.map((tab) => {
  const Icon = tab.icon;
@@ -221,7 +221,7 @@ export function CoursesClient({ initialCourses }: Props) {
  <section className="py-10 sm:py-14">
  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
  {/* Filter row */}
- <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="flex flex-col gap-4 mb-8 bg-surface rounded-2xl border border-border p-5">
+ <motion.div initial={false} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="flex flex-col gap-4 mb-8 bg-surface rounded-2xl border border-border p-5">
  <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
  <span className="text-xs font-semibold text-muted uppercase tracking-wider sm:min-w-[90px] sm:shrink-0">{t("filterAge")}:</span>
  <div className="flex flex-wrap gap-2">
@@ -298,7 +298,7 @@ export function CoursesClient({ initialCourses }: Props) {
  {filtered.length > 0 ? (
  <motion.div
  key={`${category}-${age}-${level}-${search}`}
- initial={{ opacity: 0 }}
+ initial={false}
  animate={{ opacity: 1 }}
  exit={{ opacity: 0 }}
  transition={{ duration: 0.2 }}

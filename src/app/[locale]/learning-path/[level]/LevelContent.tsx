@@ -216,18 +216,8 @@ export default function LevelContent({
           </div>
 
           <div className="mt-6">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={tab}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.25 }}
-              >
-                {tab === "overview" && <OverviewPanel />}
-                {tab === "practice" && <PracticePanel />}
-              </motion.div>
-            </AnimatePresence>
+            <div hidden={tab !== "overview"}><OverviewPanel /></div>
+            <div hidden={tab !== "practice"}><PracticePanel /></div>
           </div>
 
           <LevelCourses courses={courses} />

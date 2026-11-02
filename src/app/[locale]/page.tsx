@@ -15,14 +15,14 @@ const SITE_URL = process.env.SITE_URL || "https://www.stemtechlab.com";
 
 const meta = {
  en: {
- title: "AI Course Matching for Kids (6–18) | StemTechLab",
+ title: "Online Coding Classes for Kids in Oman | StemTechLab",
  description:
- "AI course matching finds the right STEM or coding course for your child (6–18). Live classes, max 3 students, certified teachers, and a free trial.",
+ "Live online coding, robotics and AI classes for kids ages 6–18 in Oman. Small groups, English and Arabic support, and a free trial from home.",
  },
  ar: {
- title: "ذكاء اصطناعي يختار الدورة الأنسب لطفلك",
+ title: "دورات برمجة للأطفال في عُمان أونلاين",
  description:
- "ذكاء اصطناعي يحلّل عمر طفلك واهتماماته ليقترح الدورة الأنسب في STEM أو البرمجة. دروس مباشرة، حد أقصى ٣ طلاب، معلمون معتمدون، وتجربة مجانية.",
+ "دورات برمجة وروبوتات وذكاء اصطناعي للأطفال ٦–١٨ في عُمان. حصص مباشرة أونلاين، مجموعات صغيرة، ودعم بالعربية والإنجليزية. ابدأ بتجربة مجانية.",
  },
 };
 

@@ -178,6 +178,22 @@ function LegoTower({ height = 240, opacity = 0.13 }: { height?: number; opacity?
  );
 }
 
+const QMark = ({ size, color }: { size: number; color: string }) => (
+ <svg width={size} height={size} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+ <text
+ x="50"
+ y="78"
+ textAnchor="middle"
+ fontFamily="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
+ fontWeight={900}
+ fontSize={96}
+ fill={color}
+ >
+ ?
+ </text>
+ </svg>
+ );
+
 export function BrainPattern({ variant, className = "" }: { variant: Variant; className?: string }) {
  if (variant === "rubik") {
  // Single cube at the top — clean, no clutter at the bottom of the section.
@@ -216,21 +232,7 @@ export function BrainPattern({ variant, className = "" }: { variant: Variant; cl
 
  if (variant === "question") {
  // Floating "?" marks — fits the "why us / parent questions" theme.
- const QMark = ({ size, color }: { size: number; color: string }) => (
- <svg width={size} height={size} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
- <text
- x="50"
- y="78"
- textAnchor="middle"
- fontFamily="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
- fontWeight={900}
- fontSize={96}
- fill={color}
- >
- ?
- </text>
- </svg>
- );
+
  return (
  <div className={`pointer-events-none absolute inset-0 -z-10 overflow-hidden ${className}`}>
  <div className="absolute top-6 right-[6%] hidden sm:block" style={{ transform: "rotate(14deg)", opacity: 0.14 }}>

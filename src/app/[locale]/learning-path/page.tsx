@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import LearningPathIndex from "./LearningPathIndex";
 import { BreadcrumbSchema } from "@/components/StructuredData";
-import { getCoursesISR } from "@/lib/server-api";
+import { ApiUnavailableError, getCoursesISR } from "@/lib/server-api";
 import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
 import {
   JOURNEY_LEVELS,
@@ -61,7 +61,8 @@ export default async function LearningPathPage({
   const lang = locale === "ar" ? "ar" : "en";
   const t = await getTranslations({ locale, namespace: "journey" });
 
-  const courses = (await getCoursesISR()) ?? [];
+  const courses = await getCoursesISR();
+  if (courses === null) throw new ApiUnavailableError("learning path catalog");
   const courseCounts = JOURNEY_LEVELS.reduce(
     (acc, level) => {
       acc[level] = courses.filter((c) => c.stlLevel === level).length;
@@ -101,7 +102,7 @@ export default async function LearningPathPage({
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList).replace(/</g, "\\u003c") }}
       />
       <LearningPathIndex courseCounts={courseCounts} />
     </>

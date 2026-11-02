@@ -1,11 +1,12 @@
 import type { APICourse } from "./api";
+import { safeCoverImage } from "./mediaUrls";
 
 /**
  * The API was unreachable or returned an error — the resource's existence is
  * unknown. Callers that render a single entity must let this propagate so the
  * route responds 5xx ("retry later") instead of calling notFound(), which tells
- * Google the page is permanently gone and de-indexes it. On an ISR cache hit the
- * last good page keeps serving, so this only surfaces on a genuine cache miss.
+ * Google the page is permanently gone and de-indexes it. Fetch caching can reuse available data; dynamic routes must still handle
+ * upstream failures rather than assuming a cached HTML page exists.
  */
 export class ApiUnavailableError extends Error {
  constructor(resource: string, cause?: unknown) {
@@ -53,40 +54,24 @@ export interface APITeamMember {
  bio?: { en?: string; ar?: string };
 }
 
-function absolutizeTeamPhotoUrl(
- photoUrl: string | undefined | null,
- apiOrigin: string
-): string | undefined {
- const s = photoUrl?.trim();
- if (!s) return undefined;
- if (s.startsWith("http://") || s.startsWith("https://")) return s;
- const base = apiOrigin.replace(/\/$/, "");
- return `${base}${s.startsWith("/") ? s : `/${s}`}`;
+// Keep uploads on the public frontend origin; /uploads is proxied to the API.
+function publicAssetPath(value: string | undefined | null): string | undefined {
+ const raw = value?.trim();
+ if (!raw) return undefined;
+ if (/^https?:\/\//i.test(raw)) return raw;
+ return `/${raw.replace(/^\/+/, "")}`;
 }
 
-function normalizeTeamMembersForPublic(
- members: APITeamMember[],
- apiOrigin: string
-): APITeamMember[] {
+function normalizeTeamMembersForPublic(members: APITeamMember[]): APITeamMember[] {
  return members.map((m) => {
- const clone = { ...m } as APITeamMember & { photoPublicId?: string };
- delete clone.photoPublicId;
- const raw = clone.photoUrl;
- const abs = absolutizeTeamPhotoUrl(raw, apiOrigin);
- return abs ? { ...clone, photoUrl: abs } : { ...clone };
+  const clone = { ...m } as APITeamMember & { photoPublicId?: string };
+  delete clone.photoPublicId;
+  return { ...clone, photoUrl: publicAssetPath(clone.photoUrl) };
  });
 }
 
-function absolutizeCourseImage(course: APICourse, apiOrigin: string): APICourse {
- const raw = course.imageUrl?.trim();
- if (!raw || raw.startsWith("http://") || raw.startsWith("https://")) {
- return course;
- }
- const base = apiOrigin.replace(/\/$/, "");
- return {
- ...course,
- imageUrl: `${base}${raw.startsWith("/") ? raw : `/${raw}`}`,
- };
+function normalizeCourseImage(course: APICourse): APICourse {
+ return { ...course, imageUrl: safeCoverImage(publicAssetPath(course.imageUrl)) };
 }
 
 export interface PublicMonthlyChallenge {
@@ -136,6 +121,7 @@ export async function getCategoriesPublicISR(): Promise<APICategory[] | null> {
  try {
  const res = await fetch(`${serverApiRoot()}/categories`, {
  next: { revalidate: 60 },
+ signal: AbortSignal.timeout(8000),
  });
  if (!res.ok) return null;
  return (await res.json()) as APICategory[];
@@ -152,12 +138,12 @@ export async function getCoursesSSR(): Promise<APICourse[] | null> {
  try {
  const res = await fetch(`${serverApiRoot()}/courses`, {
  cache: "no-store",
+ signal: AbortSignal.timeout(8000),
  });
 
  if (!res.ok) return null;
  const list = (await res.json()) as APICourse[];
- const origin = apiOriginFromServerApiRoot();
- return list.map((c) => absolutizeCourseImage(c, origin));
+ return list.map(normalizeCourseImage);
  } catch {
  return null;
  }
@@ -167,12 +153,12 @@ export async function getCoursesISR(): Promise<APICourse[] | null> {
  try {
  const res = await fetch(`${serverApiRoot()}/courses`, {
  next: { revalidate: 60 },
+ signal: AbortSignal.timeout(8000),
  });
 
  if (!res.ok) return null;
  const list = (await res.json()) as APICourse[];
- const origin = apiOriginFromServerApiRoot();
- return list.map((c) => absolutizeCourseImage(c, origin));
+ return list.map(normalizeCourseImage);
  } catch {
  return null;
  }
@@ -194,8 +180,9 @@ export async function getCourseSlugsISR(): Promise<string[]> {
 export async function getCourseISR(slug: string): Promise<APICourse | null> {
  let res: Response;
  try {
- res = await fetch(`${serverApiRoot()}/courses/${slug}`, {
+ res = await fetch(`${serverApiRoot()}/courses/${encodeURIComponent(slug)}`, {
  next: { revalidate: 60 },
+ signal: AbortSignal.timeout(8000),
  });
  } catch (e) {
  throw new ApiUnavailableError(`course "${slug}"`, e);
@@ -205,18 +192,20 @@ export async function getCourseISR(slug: string): Promise<APICourse | null> {
  if (!res.ok) throw new ApiUnavailableError(`course "${slug}" (HTTP ${res.status})`);
 
  const c = (await res.json()) as APICourse;
- return absolutizeCourseImage(c, apiOriginFromServerApiRoot());
+ if (!c || typeof c.slug !== "string" || !c.title || !c.description) throw new ApiUnavailableError(`invalid course "${slug}"`);
+ return normalizeCourseImage(c);
 }
 
 export async function getTeamPublicISR(): Promise<APITeamMember[] | null> {
  try {
  const res = await fetch(`${serverApiRoot()}/team`, {
  next: { revalidate: 60 },
+ signal: AbortSignal.timeout(8000),
  });
  if (!res.ok) return null;
  const data = (await res.json()) as APITeamMember[];
  if (!Array.isArray(data)) return null;
- return normalizeTeamMembersForPublic(data, apiOriginFromServerApiRoot());
+ return normalizeTeamMembersForPublic(data);
  } catch {
  return null;
  }
@@ -261,9 +250,9 @@ export async function getBlogPostsSSR(params?: { category?: string; region?: str
  if (params?.page) query.set("page", String(params.page));
  query.set("limit", String(params?.limit ?? 50));
  const qs = query.toString();
- const res = await fetch(`${serverApiRoot()}/blog${qs ? `?${qs}` : ""}`, { cache: "no-store" });
+ const res = await fetch(`${serverApiRoot()}/blog${qs ? `?${qs}` : ""}`, { cache: "no-store", signal: AbortSignal.timeout(8000) });
  if (!res.ok) return null;
- return res.json();
+ return await res.json();
  } catch {
  return null;
  }
@@ -277,9 +266,9 @@ export async function getBlogPostsISR(params?: { category?: string; region?: str
  if (params?.page) query.set("page", String(params.page));
  query.set("limit", String(params?.limit ?? 50));
  const qs = query.toString();
- const res = await fetch(`${serverApiRoot()}/blog${qs ? `?${qs}` : ""}`, { next: { revalidate: 300 } });
+ const res = await fetch(`${serverApiRoot()}/blog${qs ? `?${qs}` : ""}`, { next: { revalidate: 300 }, signal: AbortSignal.timeout(8000) });
  if (!res.ok) return null;
- return res.json();
+ return await res.json();
  } catch {
  return null;
  }
@@ -293,7 +282,7 @@ export async function getBlogPostsISR(params?: { category?: string; region?: str
 export async function getBlogPostISR(slug: string): Promise<APIBlogPost | null> {
  let res: Response;
  try {
- res = await fetch(`${serverApiRoot()}/blog/${slug}`, {
+ res = await fetch(`${serverApiRoot()}/blog/${encodeURIComponent(slug)}`, {
    next: { revalidate: 300 },
    signal: AbortSignal.timeout(8000),
  });
@@ -303,7 +292,9 @@ export async function getBlogPostISR(slug: string): Promise<APIBlogPost | null> 
 
  if (res.status === 404) return null;
  if (!res.ok) throw new ApiUnavailableError(`blog post "${slug}" (HTTP ${res.status})`);
- return res.json();
+ const post = (await res.json()) as APIBlogPost;
+ if (!post || typeof post.slug !== "string" || !post.title || !post.body || !post.author) throw new ApiUnavailableError(`invalid blog post "${slug}"`);
+ return post;
 }
 
 // ── Pricing ───────────────────────────────────────────────────────────────────
@@ -352,9 +343,10 @@ export async function getPricingISR(): Promise<APIPricingData | null> {
   try {
     const res = await fetch(`${serverApiRoot()}/pricing`, {
       next: { revalidate: 300 },
+      signal: AbortSignal.timeout(8000),
     });
     if (!res.ok) return null;
-    return res.json();
+    return await res.json();
   } catch {
     return null;
   }
@@ -364,10 +356,11 @@ export async function getChallengePublicLatestISR(): Promise<PublicMonthlyChalle
  try {
  const res = await fetch(`${serverApiRoot()}/challenges/public/latest`, {
  next: { revalidate: 60 },
+ signal: AbortSignal.timeout(8000),
  });
  if (res.status === 404) return null;
  if (!res.ok) return null;
- return res.json() as Promise<PublicMonthlyChallenge>;
+ return (await res.json()) as PublicMonthlyChallenge;
  } catch {
  return null;
  }

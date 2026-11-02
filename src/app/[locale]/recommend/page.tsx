@@ -130,7 +130,7 @@ export default async function RecommendPage({
  />
  <script
  type="application/ld+json"
- dangerouslySetInnerHTML={{ __html: JSON.stringify(aiFinderJsonLd) }}
+ dangerouslySetInnerHTML={{ __html: JSON.stringify(aiFinderJsonLd).replace(/</g, "\\u003c") }}
  />
  <RecommendContent initialCourses={initialCourses} />
  </>

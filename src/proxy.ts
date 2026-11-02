@@ -6,7 +6,7 @@ import { resolveArabicSlug, isArabicSlug } from "./lib/arabicSlugs";
 const intlMiddleware = createMiddleware(routing);
 
 // Match /en/courses/<slug> or /ar/courses/<slug>
-const ARABIC_COURSE_RE = /^\/(en|ar)\/courses\/([^/?#]+)/;
+const ARABIC_COURSE_RE = /^\/(en|ar)\/courses\/([^/?#]+)\/?$/;
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -15,11 +15,14 @@ export async function proxy(request: NextRequest) {
   // before next-intl processes the request, so Google receives a proper 308.
   const m = pathname.match(ARABIC_COURSE_RE);
   if (m) {
-    const rawSlug = decodeURIComponent(m[2]);
+    let rawSlug: string;
+    try { rawSlug = decodeURIComponent(m[2]); } catch { return new NextResponse(null, { status: 400 }); }
     if (isArabicSlug(rawSlug)) {
       const englishSlug = resolveArabicSlug(rawSlug);
+      if (englishSlug === rawSlug) return intlMiddleware(request);
       const localePart = m[1]; // "en" or "ar"
       const target = new URL(`/${localePart}/courses/${englishSlug}`, request.url);
+      target.search = request.nextUrl.search;
       return NextResponse.redirect(target, { status: 308 });
     }
   }

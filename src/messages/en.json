@@ -29,15 +29,15 @@
     "courses": "Explore courses"
   },
   "hero": {
-    "title": "Before children learn a tool, they learn how to think through problems.",
-    "titleLead": "Before children learn a tool,",
-    "titleHighlight": "they learn how to think through problems.",
-    "subtitle": "We help them build their own <em>problem-solving algorithm</em>: ask, break down, test, build, and improve — across coding, robotics, AI, and whatever comes next.",
-    "intro": "StemTechLab is the UAE's leading bilingual learning home for children ages 6–18. Our caring, certified teachers guide your child through hands-on adventures in coding, robotics, AI, and Arabic — in small live classes built around international standards (CSTA, ISTE, CEFR), thinking skills, and responsible AI use, where every child is seen, heard, and celebrated.",
+    "title": "Live online coding & STEM classes for kids in Oman",
+    "titleLead": "Coding & STEM for kids,",
+    "titleHighlight": "live online in Oman.",
+    "subtitle": "Small classes for ages 6–18 in coding, robotics and AI. Help your child <em>think, build and solve problems</em> from home in Oman, with a free trial to find the right fit.",
+    "intro": "StemTechLab offers live online coding, robotics and AI classes for children ages 6–18 in Oman and across the GCC. Explore courses by age and experience, meet an instructor in a free trial, and choose a learning path with your child.",
     "cta": "Explore Courses",
     "secondaryCta": "Find the Right Fit",
     "freeTrialCta": "Try a Free Class Together",
-    "trustBadges": "Serving families across the UAE & GCC"
+    "trustBadges": "Online classes for families in Oman & the GCC"
   },
   "learnWithFun": {
     "title": "Learning That Feels Like Play",
@@ -571,7 +571,7 @@
             },
             {
               "label": "Delivery model",
-              "value": "Online-first"
+              "value": "Live online only"
             },
             {
               "label": "Nature of the experience",
@@ -650,7 +650,7 @@
             },
             {
               "label": "Delivery model",
-              "value": "Online-first"
+              "value": "Live online only"
             },
             {
               "label": "Nature of the experience",
@@ -729,7 +729,7 @@
             },
             {
               "label": "Delivery model",
-              "value": "Online-first"
+              "value": "Live online only"
             },
             {
               "label": "Nature of the experience",
@@ -808,7 +808,7 @@
             },
             {
               "label": "Delivery model",
-              "value": "Online-first"
+              "value": "Live online only"
             },
             {
               "label": "Nature of the experience",
@@ -887,7 +887,7 @@
             },
             {
               "label": "Delivery model",
-              "value": "Online-first"
+              "value": "Live online only"
             },
             {
               "label": "Nature of the experience",
@@ -946,7 +946,7 @@
     }
   },
   "courses": {
-    "title": "Our Learning Adventures",
+    "title": "Online Coding & STEM Courses for Kids",
     "subtitle": "Discover the perfect journey for your child's heart and mind",
     "filterCategory": "Category",
     "filterAge": "Age Group",
@@ -1015,7 +1015,7 @@
       },
       {
         "q": "What is your refund policy?",
-        "a": "We offer a full refund if you cancel before the second session. After that, we'll work with you on a pro-rated credit toward another course."
+        "a": "We're here to help with your refund. Refunds are returned to the registered user's bank account within a maximum of 15 days. Please contact our team to request assistance."
       }
     ],
     "breadcrumbHome": "Home",
@@ -1056,7 +1056,7 @@
     "howAiStep2Title": "2. Our AI reads your description",
     "howAiStep2Desc": "Server-side OpenAI and DeepSeek extract age, interests, current skill level, and your goals from what you wrote. Never run in your browser; never sold.",
     "howAiStep3Title": "3. We match against our live courses",
-    "howAiStep3Desc": "A transparent scoring engine ranks every course in our catalog — Programming, Robotics, Algorithms, Arabic — across age fit, level, and interest match.",
+    "howAiStep3Desc": "The course finder compares courses in the current catalog using age, experience and interests to suggest a starting point.",
     "howAiStep4Title": "4. You see the best 2 picks + a learning path",
     "howAiStep4Desc": "We surface the top 2–3 courses with a plain-English explanation of why, plus follow-up questions if the picture is incomplete. The decision is always yours.",
     "howAiClarifierTitle": "What this AI is NOT",
@@ -1065,12 +1065,12 @@
     "aiGreeting": "Share your child's age range and what they enjoy — no personal details needed. We'll suggest the best live classes for them.",
     "aiExamples": "You could say something like:",
     "aiExample1": "My 8-year-old loves games and wants to try coding for the first time",
-    "aiExample2": "I'd love my 12-year-old to begin learning Arabic recitation",
+    "aiExample2": "I'd love my 12-year-old to begin learning Python",
     "aiExample3": "My daughter is 14 and dreams of building her own robot",
     "aiPlaceholder": "e.g. My child is around 10, loves games, and wants to try coding for the first time...",
     "aiPlaceholder2": "e.g. My 7-year-old draws every day and wants to make her own animated stories...",
     "aiPlaceholder3": "e.g. My 12-year-old dreams of building robots and exploring AI...",
-    "aiPlaceholder4": "e.g. My 9-year-old wants to read Arabic confidently and discover its beauty...",
+    "aiPlaceholder4": "e.g. My 9-year-old wants to build a first website...",
     "aiSend": "Find the right classes",
     "aiTimeout": "That took a little longer than expected — please try once more!"
   },
@@ -1219,7 +1219,7 @@
     "visionTitle": "Our Vision",
     "visionDesc": "A world where every child — wherever they live — can discover the joy of learning, grow in faith, and find their voice through knowledge.",
     "missionTitle": "Our Mission",
-    "missionDesc": "To give children ages 6–18 a warm, live learning experience in coding, robotics, and Arabic — where they're encouraged, celebrated, and never left behind.",
+    "missionDesc": "To give children ages 6–18 a welcoming, live learning experience in coding, robotics and AI, with time to ask questions and build practical skills.",
     "aiTechTitle": "How we use AI (OpenAI & DeepSeek)",
     "aiTechBody": "Our Course finder uses server-side connections to the OpenAI API and the DeepSeek API. Parents and guardians can describe their child in their own words or use a short form; we turn that into suggested live courses. Suggestions are advisory—you always choose what’s right for your family. We are not sponsored by OpenAI or DeepSeek; we use their technology as independent tools under our privacy policy.",
     "valuesTitle": "Our Values",
@@ -1234,7 +1234,7 @@
     "value4Desc": "Whether you're in Dubai or London, in English or Arabic — every family is welcome here.",
     "storyTitle": "Our Story",
     "storyP1": "We started StemTechLab because we believe every child deserves a teacher who sees them, a classroom where they feel safe, and lessons that make their hearts sing.",
-    "storyP2": "Today, we teach coding, robotics, AI, and Arabic to families across the UAE and the wider GCC — always in small, live classes where every child's name is known, every question is welcomed, and every lesson builds the way they think.",
+    "storyP2": "Today, we teach coding, robotics and AI online to families in Oman and across the GCC, in small live classes that encourage questions and practical learning.",
     "teamTitle": "The People Who Care",
     "teamSubtitle": "Teachers, builders, and dreamers — all here for your child",
     "member1Name": "Mohamed Ali",
@@ -1283,7 +1283,7 @@
   },
   "terms": {
     "title": "Terms & Conditions",
-    "lastUpdated": "Last updated: April 2026",
+    "lastUpdated": "Last updated: 2 November 2026",
     "intro": "Welcome to the StemTechLab family! By using our platform, you agree to these terms. We've kept them clear and simple — please take a moment to read them.",
     "s1Title": "1. Acceptance of Terms",
     "s1Content": "By accessing or using StemTechLab, you agree to be bound by these terms. If you are a parent or guardian registering on behalf of a child, you accept these terms on their behalf.",
@@ -1296,7 +1296,9 @@
     "s5Title": "5. Limitation of Liability",
     "s5Content": "StemTechLab provides educational content as-is. While we strive for accuracy, we do not guarantee specific learning outcomes. We are not liable for any indirect damages arising from use of our platform.",
     "s6Title": "6. Changes to Terms",
-    "s6Content": "We may update these terms from time to time. We will notify registered users of significant changes via email. Continued use of the platform constitutes acceptance of updated terms."
+    "s6Content": "We may update these terms from time to time. We will notify registered users of significant changes via email. Continued use of the platform constitutes acceptance of updated terms.",
+    "s7Title": "7. Refunds",
+    "s7Content": "We're here to help with your refund. Refunds are returned to the registered user's bank account within a maximum of 15 days. Please contact our team to request assistance."
   },
   "contact": {
     "title": "We'd Love to Hear from You",
@@ -1308,7 +1310,7 @@
     "emailLabel": "Email Address",
     "emailPlaceholder": "you@example.com",
     "phoneLabel": "Phone Number",
-    "phonePlaceholder": "+971 5XXX XXX XXXX",
+    "phonePlaceholder": "+968 9123 4567",
     "subjectLabel": "Subject",
     "subjectPlaceholder": "What is this about?",
     "messageLabel": "Message",
@@ -1360,7 +1362,7 @@
     "parentEmail": "Email Address",
     "emailPlaceholder": "you@example.com",
     "phone": "Phone Number",
-    "phonePlaceholder": "+971 5XXX XXX XXXX",
+    "phonePlaceholder": "+968 9123 4567",
     "childInfoTitle": "About Your Child",
     "childInfoDesc": "Help us get to know your little learner so we can make their experience special.",
     "childName": "Child's Full Name",
@@ -1464,9 +1466,9 @@
     "ce4_q": "Will my child have homework?",
     "ce4_a": "We offer fun, optional practice activities and mini-projects after each class to help ideas stick. They take about 15–30 minutes and are designed to feel like play, not pressure. They're encouraged but never required.",
     "ce5_q": "What do the classes look like?",
-    "ce5_a": "Classes are live, online, and full of warmth! Your child joins a small group (4–8 friends) or a private 1-on-1 session with a caring teacher. We use interactive tools, shared screens, and hands-on activities to make every minute joyful and engaging.",
+    "ce5_a": "Classes are live, online, and full of warmth! Your child joins a small group (up to 3 students) or a private 1-on-1 session with a caring teacher. We use interactive tools, shared screens, and hands-on activities to make every minute joyful and engaging.",
     "ce6_q": "What does my child need to get started?",
-    "ce6_a": "Just a laptop or desktop computer and a good internet connection — that's it! Our coding tools run right in the browser, so there's nothing to install. For robotics classes, we'll send the kit straight to your door.",
+    "ce6_a": "Prepare a laptop or desktop computer, a stable internet connection and working audio. Software and equipment depend on the course. Our introductory robotics course uses virtual simulations; check the chosen course requirements with the team before buying equipment.",
     "ce7_q": "Does my child need any experience?",
     "ce7_a": "Not at all! Every expert was once a beginner. Our courses welcome children of all levels — from their very first line of code to advanced projects. We'll help you find the perfect starting point for your child.",
     "ce8_q": "What if we need to reschedule?",
@@ -1482,7 +1484,7 @@
     "cs1_q": "How can I reach you?",
     "cs1_a": "We're always happy to hear from you! You can write to us through our Contact page, email contact@stemtechlab.com, or use the live chat on our website. Our friendly team responds within 2–4 hours on business days.",
     "cs2_q": "What if we're not happy with the course?",
-    "cs2_a": "Your family's happiness means everything to us. We offer a full refund within 7 days of enrollment, no questions asked. After the first week, we provide fair, prorated refunds based on unused sessions.",
+    "cs2_a": "We're here to help with your refund. Refunds are returned to the registered user's bank account within a maximum of 15 days. Please contact our team to request assistance.",
     "cs3_q": "Can we try a class before enrolling?",
     "cs3_a": "Absolutely! We'd love for your child to experience a full class with one of our teachers — completely free, with no obligation. It's the best way to see if StemTechLab feels like the right home for your child.",
     "cs4_q": "Do you have discounts for siblings or longer plans?",
@@ -1492,7 +1494,7 @@
     "tq1_q": "Who are the teachers at StemTechLab?",
     "tq1_a": "Our teachers are certified educators and experienced professionals who genuinely love working with children. Every teacher goes through careful selection, background checks, and ongoing training — because your child deserves someone truly special.",
     "tq2_q": "How many children are in each class?",
-    "tq2_a": "We keep our groups small — no more than 8 children per teacher — so every child gets the attention they deserve. We also offer private 1-on-1 sessions for children who thrive with individual support.",
+    "tq2_a": "We keep our groups small — no more than 3 children per teacher — so every child gets the attention they deserve. We also offer private 1-on-1 sessions for children who thrive with individual support.",
     "tq3_q": "Can my child stay with a teacher they love?",
     "tq3_a": "Of course! When a child bonds with a teacher, that connection is precious. Just let us know your preference, and we'll do our very best to keep them together.",
     "tq4_q": "How do teachers adapt to different children?",
@@ -1556,7 +1558,7 @@
     "emailLabel": "Email Address",
     "emailPlaceholder": "you@example.com",
     "phoneLabel": "Phone Number",
-    "phonePlaceholder": "+971 5XXX XXX XXXX",
+    "phonePlaceholder": "+968 9123 4567",
     "passwordLabel": "Password",
     "passwordPlaceholder": "At least 6 characters",
     "signupButton": "Create Account",
@@ -1706,8 +1708,8 @@
     "faqTitle": "Pricing FAQ",
     "faq1Q": "Is the free trial really free?",
     "faq1A": "Yes — completely free. No credit card required. Your child attends one full 60-minute live class with a certified teacher.",
-    "faq2Q": "Can I cancel anytime?",
-    "faq2A": "On the monthly plan, yes. Cancel before your next billing cycle and you won't be charged again. Annual plans are non-refundable after 14 days.",
+    "faq2Q": "How are refunds processed?",
+    "faq2A": "We're here to help with your refund. Refunds are returned to the registered user's bank account within a maximum of 15 days. Please contact our team to request assistance.",
     "faq3Q": "Are there discounts for multiple children?",
     "faq3A": "Yes! Enroll a second child and get 15% off their plan automatically. Contact us for families with 3 or more children.",
     "faq4Q": "What payment methods do you accept?",
@@ -1721,24 +1723,24 @@
     "subtitle": "Let your child experience the joy of learning with one of our certified teachers. 60 minutes, completely free.",
     "badgeLabel": "Free Trial",
     "step1Title": "Book in 30 seconds",
-    "step1Desc": "Fill in your name, phone, and your child's age. We'll do the rest.",
+    "step1Desc": "Share your name, email and child’s name. You can also add a phone number.",
     "step2Title": "Attend the live class",
     "step2Desc": "A certified teacher runs a full 60-minute live session just for your child.",
     "step3Title": "Decide with zero pressure",
     "step3Desc": "Love it? Enroll. Not sure? That's perfectly fine. No follow-up sales calls.",
     "includesTitle": "What's included in the free trial",
     "include1": "Full 60-minute live class",
-    "include2": "One-on-one or small group (max 6 kids)",
+    "include2": "One-on-one or small group (maximum 3 students)",
     "include3": "Your choice of course category",
     "include4": "Class recording sent to you",
     "include5": "Personalized feedback from the teacher",
     "include6": "Zero cost — no card needed",
     "formTitle": "Book Your Free Trial",
-    "formSubtitle": "We'll contact you within 2 hours to confirm your slot.",
+    "formSubtitle": "Send your request and our team will contact you to arrange a suitable time.",
     "nameLabel": "Your Name",
     "namePlaceholder": "Parent or guardian name",
     "phoneLabel": "Phone / WhatsApp",
-    "phonePlaceholder": "+971 5XX XXX XXXX",
+    "phonePlaceholder": "+968 9123 4567",
     "childAgeLabel": "Child's Age",
     "selectAge": "Select age",
     "interestLabel": "Course Interest",
@@ -1752,8 +1754,8 @@
     "messagePlaceholder": "Tell us about your child — we'd love to know!",
     "submit": "Book My Free Trial →",
     "submitting": "Booking...",
-    "successTitle": "You're booked!",
-    "successDesc": "We'll WhatsApp or call you within 2 hours to confirm your free trial slot. We can't wait to meet your child!",
+    "successTitle": "Trial request received",
+    "successDesc": "Our team will contact you by email or the phone number you provided to confirm availability and arrange your free trial.",
     "trustBadge1": "Free — no card needed",
     "trustBadge2": "Max 3 students per class",
     "trustBadge3": "Certified teachers"
@@ -1774,7 +1776,7 @@
     "description": "Live 1-on-1 coding classes for kids ages 5–18, taught by expert mentors with personalized learning paths.",
     "tag1": "Scratch",
     "tag2": "Python",
-    "tag3": "Arabic",
+    "tag3": "AI",
     "tag4": "Algorithms",
     "tag5": "AI",
     "tag6": "Robotics",
@@ -1793,7 +1795,7 @@
     "formChildLabel": "Child's Name",
     "formChildPlaceholder": "Child's name",
     "formPhoneLabel": "Mobile (WhatsApp)",
-    "formPhonePlaceholder": "+971 XX XXX XXXX",
+    "formPhonePlaceholder": "+968 9123 4567",
     "formSubmit": "Send Message",
     "formSending": "Sending...",
     "formSuccess": "Thanks! We'll reach out within 24 hours."

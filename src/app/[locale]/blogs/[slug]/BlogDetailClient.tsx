@@ -55,7 +55,7 @@ export default function BlogDetailClient({ post, relatedCourses, bodyHtml }: Pro
  <div className="py-10 sm:py-16">
  <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
  {/* Back */}
- <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+ <motion.div initial={false} animate={{ opacity: 1 }}>
  <Link
  href="/blogs"
  className="inline-flex items-center gap-2 text-muted hover:text-primary font-medium mb-8 transition-colors text-sm"
@@ -66,7 +66,7 @@ export default function BlogDetailClient({ post, relatedCourses, bodyHtml }: Pro
  </motion.div>
 
  {/* Header */}
- <motion.header initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
+ <motion.header initial={false} animate={{ opacity: 1, y: 0 }} className="mb-10">
  {/* Category */}
  <span className="inline-block text-xs font-semibold px-3 py-1 rounded-full bg-primary/10 text-primary capitalize mb-4">
  {post.category}
@@ -117,20 +117,20 @@ export default function BlogDetailClient({ post, relatedCourses, bodyHtml }: Pro
 
  {/* Cover image */}
  {safeCoverImage(post.coverImage) && (
- <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="mb-10">
+ <motion.div initial={false} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="mb-10">
  {/* eslint-disable-next-line @next/next/no-img-element */}
  <img
  src={safeCoverImage(post.coverImage)}
  alt={post.title[lang] ?? ""}
- loading="lazy"
- className="w-full rounded-2xl border border-border"
+ loading="eager"
+ className="w-full aspect-video object-contain bg-surface rounded-2xl border border-border"
  />
  </motion.div>
  )}
 
  {/* Body */}
  <motion.div
- initial={{ opacity: 0, y: 10 }}
+ initial={false}
  animate={{ opacity: 1, y: 0 }}
  transition={{ delay: 0.15 }}
  className="prose prose-lg dark:prose-invert max-w-none mb-12

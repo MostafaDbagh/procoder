@@ -5,4 +5,6 @@ export const routing = defineRouting({
  defaultLocale: "en",
  localePrefix: "always",
  localeDetection: false,
+ // HTML metadata and sitemap provide canonical-aware alternates, including pagination.
+ alternateLinks: false,
 });

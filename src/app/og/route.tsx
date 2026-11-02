@@ -29,11 +29,11 @@ async function loadArabicFont(): Promise<ArrayBuffer | null> {
   }
 }
 
-const EN_TAGLINE = "Live coding, robotics & Arabic classes for kids ages 6–18";
-const AR_TAGLINE = "دروس مباشرة في البرمجة والروبوتات والعربية للأطفال ٦–١٨";
+const EN_TAGLINE = "Live online coding & STEM for kids in Oman • Max 3 students per class";
+const AR_TAGLINE = "برمجة وعلوم وتقنية للأطفال في عُمان عبر الإنترنت • ٣ طلاب كحد أقصى";
 
-const EN_CATS = ["Programming", "Robotics", "Algorithms", "Arabic", "Game Dev"];
-const AR_CATS = ["البرمجة", "الروبوتات", "الخوارزميات", "العربية", "تطوير الألعاب"];
+const EN_CATS = ["Programming", "Robotics", "Algorithms", "Game Dev"];
+const AR_CATS = ["البرمجة", "الروبوتات", "الخوارزميات", "تطوير الألعاب"];
 
 export async function GET(request: Request) {
   const { origin, searchParams } = new URL(request.url);

@@ -6,27 +6,38 @@ import { LOCALES, PUBLIC_STATIC_PATHS, siteUrl } from "@/lib/seo";
 export const revalidate = 21600;
 
 /**
- * Throws rather than degrading to [] when the API is down: a sitemap that
- * silently omits every post reads to Google as "these URLs are gone". Failing
- * the response instead makes Google retry and keep the last known sitemap.
+ * Only publish reliable modification dates; omit dates that are unknown.
  */
+function validDate(value?: string): Date | undefined {
+ if (!value) return undefined;
+ const date = new Date(value);
+ return Number.isNaN(date.getTime()) ? undefined : date;
+}
+
 async function getBlogSlugsForSitemap(): Promise<{ slug: string; lastModified?: string }[]> {
- let res: Response;
- try {
-  res = await fetch(`${serverApiRoot()}/blog?limit=500`, {
-   next: { revalidate: 21600 },
-  });
- } catch (e) {
-  throw new ApiUnavailableError("blog list for sitemap", e);
- }
- if (!res.ok) throw new ApiUnavailableError(`blog list for sitemap (HTTP ${res.status})`);
- const data = await res.json();
- return (data?.items ?? []).map(
-  (p: { slug: string; publishedAt?: string; updatedAt?: string }) => ({
-   slug: p.slug,
-   lastModified: p.updatedAt ?? p.publishedAt,
-  })
- );
+ const posts: { slug: string; lastModified?: string }[] = [];
+ let page = 1;
+ let totalPages = 1;
+ do {
+  let res: Response;
+  try {
+   res = await fetch(`${serverApiRoot()}/blog?limit=50&page=${page}`, {
+    next: { revalidate: 21600 },
+   });
+  } catch (error) {
+   throw new ApiUnavailableError("blog list for sitemap", error);
+  }
+  if (!res.ok) throw new ApiUnavailableError(`blog list for sitemap (HTTP ${res.status})`);
+  const data = await res.json();
+  if (!Array.isArray(data.items)) throw new ApiUnavailableError("invalid blog list for sitemap");
+  totalPages = Math.max(1, Number(data.totalPages) || 1);
+  posts.push(...data.items.map((post: { slug: string; publishedAt?: string; updatedAt?: string }) => ({
+   slug: post.slug,
+   lastModified: post.updatedAt ?? post.publishedAt,
+  })));
+  page += 1;
+ } while (page <= totalPages);
+ return posts;
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -40,22 +51,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
  // slug → updatedAt (Mongoose timestamp).
  const courseUpdatedAt = new Map<string, Date>();
  for (const c of apiCourses) {
- if (c.updatedAt) courseUpdatedAt.set(c.slug, new Date(c.updatedAt));
+ const updated = validDate(c.updatedAt);
+ if (updated) courseUpdatedAt.set(c.slug, updated);
  }
- const now = new Date();
+
 
  const entries: MetadataRoute.Sitemap = [];
 
- // llms.txt / ai.txt / ai-plugin.json are deliberately absent: sitemaps are for
- // indexable HTML, and Google reports non-HTML entries as unindexable. AI
- // crawlers find those files via robots.txt and /.well-known.
+ // This sitemap focuses on public landing pages. Optional AI discovery files
+ // are linked separately and are not commercial search landing pages.
 
  // Static pages for each locale
  for (const locale of LOCALES) {
  for (const page of PUBLIC_STATIC_PATHS) {
  entries.push({
  url: siteUrl(locale, page.path),
- lastModified: now,
  changeFrequency: page.changeFrequency,
  priority: page.priority,
  alternates: {
@@ -74,7 +84,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
  for (const slug of slugSet) {
  entries.push({
  url: siteUrl(locale, `/courses/${slug}`),
- lastModified: courseUpdatedAt.get(slug) ?? now,
+ lastModified: courseUpdatedAt.get(slug),
  changeFrequency: "monthly",
  priority: 0.8,
  alternates: {
@@ -95,7 +105,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
  for (const post of blogPosts) {
  entries.push({
  url: siteUrl(locale, `/blogs/${post.slug}`),
- lastModified: post.lastModified ? new Date(post.lastModified) : now,
+ lastModified: validDate(post.lastModified),
  changeFrequency: "monthly",
  priority: 0.7,
  alternates: {

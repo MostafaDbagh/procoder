@@ -1,9 +1,10 @@
 import { Suspense } from "react";
-import { getCoursesISR } from "@/lib/server-api";
+import { ApiUnavailableError, getCoursesISR } from "@/lib/server-api";
 import { CoursesClient } from "./CoursesClient";
 
 export default async function CoursesContent() {
  const courses = await getCoursesISR();
+ if (courses === null) throw new ApiUnavailableError("course catalog page");
  return (
  <Suspense
  fallback={

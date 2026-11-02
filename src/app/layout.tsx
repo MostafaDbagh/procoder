@@ -47,11 +47,11 @@ const API_PRECONNECT = process.env.NEXT_PUBLIC_API_ORIGIN?.trim().replace(/\/$/,
 export const metadata: Metadata = {
  metadataBase: new URL(SITE_URL),
  title: {
- default: "StemTechLab — AI course matching for kids | STEM, Coding & Arabic",
+ default: "Online Coding & STEM Classes for Kids | StemTechLab",
  template: "%s | StemTechLab",
  },
  description:
- "StemTechLab matches kids ages 6–18 with live STEM and coding classes. Certified instructors, small groups, UAE & GCC. Free trial.",
+ "StemTechLab matches kids ages 6–18 with live STEM and coding classes. Certified instructors, small groups, Oman & GCC. Free trial.",
  authors: [{ name: "StemTechLab", url: SITE_URL }],
  creator: "StemTechLab",
  publisher: "StemTechLab",
@@ -63,15 +63,15 @@ export const metadata: Metadata = {
  openGraph: {
  type: "website",
  siteName: "StemTechLab",
- title: "StemTechLab — AI course finder | Kids STEM, Coding & Arabic",
+ title: "Online Coding & STEM Classes for Kids | StemTechLab",
  description:
- "StemTechLab’s AI course finder suggests the perfect live classes for each child. Programming, Robotics, Algorithms, Arabic ages 6–18. Certified instructors, small groups, free trial. UAE & GCC.",
+ "StemTechLab’s AI course finder suggests the perfect live classes for each child. Programming, robotics and AI for ages 6–18. Certified instructors, small groups, free trial. Oman & GCC.",
  images: [
  {
  url: `${SITE_URL}/og`,
  width: 1200,
  height: 630,
- alt: "StemTechLab — Kids Learning Platform for Programming, Robotics & Arabic",
+ alt: "StemTechLab — Online Coding, Robotics & AI for Kids",
  },
  ],
  url: SITE_URL,
@@ -80,9 +80,9 @@ export const metadata: Metadata = {
  },
  twitter: {
  card: "summary_large_image",
- title: "StemTechLab — AI course finder | Kids STEM, Coding & Arabic",
+ title: "Online Coding & STEM Classes for Kids | StemTechLab",
  description:
- "AI-powered course finder for live STEM and coding classes for kids 6–18. Certified instructors, small groups. UAE & GCC.",
+ "AI-powered course finder for live STEM and coding classes for kids 6–18. Certified instructors, small groups. Oman & GCC.",
  creator: "@stemtechlab",
  site: "@stemtechlab",
  },
@@ -114,7 +114,7 @@ export const metadata: Metadata = {
  "geo.placename": "Dubai, United Arab Emirates",
  "audience": "parents, children ages 6-18, educators in the UAE and GCC",
  "ai:description":
- "StemTechLab — The UAE's leading live online STEM platform for kids ages 6–18. AI-powered course finder recommends Programming, Robotics, Algorithms, AI, and Web Development classes. Bilingual EN/AR. Free trial. UAE-headquartered, serving the UAE & GCC.",
+ "StemTechLab — Live online STEM classes for kids ages 6–18. AI-powered course finder recommends Programming, Robotics, Algorithms, AI, and Web Development classes. Bilingual EN/AR. Free trial. UAE-headquartered, serving Oman and the GCC.",
  "ai:site_type": "educational_platform",
  "ai:target_audience": "parents and children ages 6-18 in the UAE and GCC (Saudi Arabia, Qatar, Kuwait, Oman, Bahrain)",
  "ai:topics":

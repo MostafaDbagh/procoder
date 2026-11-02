@@ -1180,6 +1180,7 @@ export default function AdminDashboard() {
  try {
  await adminFetch(`/blog/${slug}`, { method: "DELETE" });
  await loadBlog();
+ void revalidatePublicPages([`/en/blogs/${slug}`, `/ar/blogs/${slug}`, "/en/blogs", "/ar/blogs"]);
  setAdminNotice("Blog post deleted");
  } catch (e) {
  setErr(e instanceof Error ? e.message : "Delete failed");
@@ -1193,6 +1194,7 @@ export default function AdminDashboard() {
  body: JSON.stringify({ isPublished: !isPublished }),
  });
  await loadBlog();
+ void revalidatePublicPages([`/en/blogs/${slug}`, `/ar/blogs/${slug}`, "/en/blogs", "/ar/blogs"]);
  } catch (e) {
  setErr(e instanceof Error ? e.message : "Update failed");
  }
@@ -3429,7 +3431,7 @@ export default function AdminDashboard() {
  onSaved={async () => {
  setBlogModal(null);
  await loadBlog();
- void revalidatePublicPages(["/en/blog", "/ar/blog"]);
+ void revalidatePublicPages(["/en/blogs", "/ar/blogs"]);
  }}
  />
  )}

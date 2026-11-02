@@ -11,7 +11,7 @@ import type { LlmsCourse } from "./llms-content";
 export async function getCatalogForLlms(): Promise<LlmsCourse[] | null> {
  try {
   const res = await fetch(`${serverApiRoot()}/courses`, {
-   next: { revalidate: 3600 },
+   next: { revalidate: 300 },
    signal: AbortSignal.timeout(3000),
   });
   if (!res.ok) return null;

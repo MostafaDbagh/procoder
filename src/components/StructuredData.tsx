@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import { priceAfterCourseDiscount } from "@/lib/formatCoursePrice";
 import { ALL_FAQ_KEYS } from "@/data/faqKeys";
 
 const SITE_URL = (process.env.SITE_URL || "https://www.stemtechlab.com").replace(/\/$/, "");
@@ -30,7 +31,7 @@ export function OrganizationSchema() {
  legalName: "StemTechLab",
  alternateName: ["STEM Tech Lab", "Stem Tech Lab"],
  description:
- "The UAE's leading live online STEM platform for kids ages 6–18. Bilingual English/Arabic interface, AI-powered course matching, and small-group classes. Programming, Robotics, Algorithms, AI, Web and Mobile Development. Built for families in the UAE and GCC. Certified teachers, parent dashboard, free trial.",
+ "Live online STEM and coding classes for children ages 6–18 in Oman, the UAE and other GCC countries. Bilingual English/Arabic interface, AI-powered course matching, and small-group classes. Programming, Robotics, Algorithms, AI, Web and Mobile Development. Built for families in the UAE and GCC. Certified teachers, parent dashboard, free trial.",
  url: SITE_URL,
  logo: `${SITE_URL}/logo.svg`,
  image: `${SITE_URL}/og`,
@@ -103,14 +104,7 @@ export function WebsiteSchema({ locale = "en" }: { locale?: string } = {}) {
  : "Live kids’ classes in programming, robotics, algorithms & AI (ages 6–18). Bilingual English/Arabic interface. UAE & GCC.",
  inLanguage: ["en", "ar"],
  publisher: { "@id": ORG_ID },
- potentialAction: {
- "@type": "SearchAction",
- target: {
- "@type": "EntryPoint",
- urlTemplate: `${SITE_URL}/${lang}/courses?q={search_term_string}`,
- },
- "query-input": "required name=search_term_string",
- },
+
  };
 
  return <JsonLd data={data} />;
@@ -126,6 +120,7 @@ export interface CourseListSchemaItem {
  lessons: number;
  durationWeeks: number;
  price?: number;
+ discountPercent?: number;
  currency?: string;
  imageUrl?: string;
  skills?: string[];
@@ -240,62 +235,13 @@ export function BreadcrumbSchema({ items }: { items: { name: string; url: string
  return <JsonLd data={data} />;
 }
 
-export function LocalBusinessSchema() {
- const locations = [
- { city: "Dubai", country: "AE", lat: 25.2048, lng: 55.2708 },
- { city: "Abu Dhabi", country: "AE", lat: 24.4539, lng: 54.3773 },
- { city: "Sharjah", country: "AE", lat: 25.3463, lng: 55.4209 },
- { city: "Ajman", country: "AE", lat: 25.4052, lng: 55.5136 },
- { city: "Ras Al Khaimah", country: "AE", lat: 25.7895, lng: 55.9432 },
- { city: "Fujairah", country: "AE", lat: 25.1288, lng: 56.3265 },
- { city: "Riyadh", country: "SA", lat: 24.7136, lng: 46.6753 },
- { city: "Doha", country: "QA", lat: 25.2854, lng: 51.5310 },
- { city: "Kuwait City", country: "KW", lat: 29.3759, lng: 47.9774 },
- ];
-
- return (
- <>
- {locations.map((loc) => {
- const locData: Record<string, unknown> = {
- "@context": "https://schema.org",
- "@type": "EducationalOrganization",
- name: `StemTechLab ${loc.city}`,
- description: `Live coding, robotics & AI for kids in ${loc.city}. Ages 6–18. Free trial.`,
- url: SITE_URL,
- address: {
- "@type": "PostalAddress",
- addressLocality: loc.city,
- addressCountry: loc.country,
- },
- geo: {
- "@type": "GeoCoordinates",
- latitude: loc.lat,
- longitude: loc.lng,
- },
- areaServed: { "@type": "City", name: loc.city },
- priceRange: "$$",
- openingHoursSpecification: {
- "@type": "OpeningHoursSpecification",
- dayOfWeek: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
- opens: "09:00",
- closes: "19:00",
- },
- };
- if (PUBLIC_CONTACT_PHONE) locData.telephone = PUBLIC_CONTACT_PHONE;
- if (PUBLIC_CONTACT_EMAIL) locData.email = PUBLIC_CONTACT_EMAIL;
- return <JsonLd key={loc.city} data={locData} />;
- })}
- </>
- );
-}
-
 // --- Helpers ---
 
-function JsonLd({ data }: { data: Record<string, unknown> }) {
+export function JsonLd({ data }: { data: Record<string, unknown> }) {
  return (
  <script
  type="application/ld+json"
- dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+ dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }}
  />
  );
 }
@@ -309,7 +255,7 @@ export function buildCourseSchema(course: CourseListSchemaItem, locale = "en") {
  "@type": "Offer",
  url: course.url,
  availability: "https://schema.org/InStock",
- price: String(course.price),
+ price: String(priceAfterCourseDiscount(course.price!, course.discountPercent ?? 0)),
  priceCurrency: (course.currency || "USD").toUpperCase(),
  category: "Paid",
  }
@@ -339,8 +285,7 @@ export function buildCourseSchema(course: CourseListSchemaItem, locale = "en") {
  },
  availableLanguage: ["English", "Arabic"],
  inLanguage: locale,
- courseMode: "online",
- ...(course.imageUrl ? { image: course.imageUrl } : {}),
+ ...(course.imageUrl ? { image: new URL(course.imageUrl, SITE_URL).href } : {}),
  ...(course.skills?.length ? { teaches: course.skills } : {}),
  ...(offer ? { offers: offer } : {}),
  hasCourseInstance: [
@@ -348,20 +293,7 @@ export function buildCourseSchema(course: CourseListSchemaItem, locale = "en") {
  "@type": "CourseInstance",
  name: course.name,
  courseMode: "online",
- // Google requires a schedule/workload on the instance; live online, weekly.
- courseWorkload: "PT1H",
- courseSchedule: {
- "@type": "Schedule",
- duration: "PT1H",
- repeatFrequency: "Weekly",
- repeatCount: course.durationWeeks,
- },
  location: { "@type": "VirtualLocation", url: course.url },
- instructor: {
- "@type": "Person",
- name: "StemTechLab Instructor",
- affiliation: { "@id": ORG_ID },
- },
  ...(offer ? { offers: offer } : {}),
  },
  ],

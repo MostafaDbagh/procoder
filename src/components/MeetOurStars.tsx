@@ -210,7 +210,7 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  </div>
 
  {/* Stars */}
- {(member.rating > 0 || member.reviews > 0) && (
+ {(member.rating > 0 && member.reviews > 0) && (
  <div className="flex items-center justify-center gap-1 mb-4">
  {Array.from({ length: 5 }).map((_, idx) => (
  <Star
@@ -367,7 +367,7 @@ export function MeetOurStars({ cmsTeam }: MeetOurStarsProps) {
  const rawRating = m.rating;
  const rating =
  rawRating === undefined || rawRating === null
- ? 5
+ ? 0
  : Math.min(5, Math.max(0, Number(rawRating)));
  const rawReviews = m.reviews;
  const reviews =

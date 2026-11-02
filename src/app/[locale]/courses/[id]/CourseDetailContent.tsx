@@ -137,12 +137,12 @@ export default function CourseDetailContent({
  const [enrollOpen, setEnrollOpen] = useState(false);
  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
- const { data: apiCourse, isLoading, isError } = useCourse(slug, initialCourse);
+ const { data: apiCourse, isLoading } = useCourse(slug, initialCourse);
 
  const staticCourse = staticCourses.find((c) => c.id === slug);
  const lang = locale === "ar" ? "ar" : "en";
 
- const fromApi = !isError && !!apiCourse;
+ const fromApi = !!apiCourse;
  const course = fromApi
  ? {
  id: apiCourse.slug,

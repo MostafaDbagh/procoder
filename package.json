@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "npm run lint && tsc --noEmit"
+    "test": "npm run lint && tsc --noEmit",
+    "test:seo": "node --test scripts/seo-regression.test.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.86.1",

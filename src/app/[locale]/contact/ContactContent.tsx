@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
-import { emailError, phoneError, isValidEmail, isValidUAEPhone } from "@/lib/validation";
+import { emailError, publicPhoneError, isValidEmail, isValidPublicPhone } from "@/lib/validation";
 import { AnimatedSection } from "@/components/AnimatedSection";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { motion } from "framer-motion";
@@ -47,15 +47,18 @@ export default function ContactContent() {
  }, [subjectParam, searchParams.toString()]);
  const [sending, setSending] = useState(false);
  const [sent, setSent] = useState(false);
+ const [submitError, setSubmitError] = useState("");
  const [cooldown, setCooldown] = useState(false);
  const [formLoadedAt] = useState(() => Date.now());
  const [hp, setHp] = useState("");
 
  const handleSubmit = async (e: React.FormEvent) => {
  e.preventDefault();
+    setSubmitError("");
+    if (sending) return;
  if (cooldown) return;
  const emailErr = isValidEmail(form.email) ? "" : emailError(form.email || "_", lang);
- const phoneErr = form.phone && !isValidUAEPhone(form.phone) ? phoneError(form.phone, lang) : "";
+ const phoneErr = form.phone && !isValidPublicPhone(form.phone) ? publicPhoneError(form.phone, lang) : "";
  if (emailErr || phoneErr) {
  setErrors({ email: emailErr, phone: phoneErr });
  return;
@@ -67,7 +70,7 @@ export default function ContactContent() {
  setCooldown(true);
  setTimeout(() => setCooldown(false), 60_000);
  } catch {
- setSent(true);
+ setSubmitError(lang === "ar" ? "تعذر إرسال الطلب. يُرجى المحاولة مرة أخرى." : "Your request could not be sent. Please try again.");
  } finally {
  setSending(false);
  }
@@ -121,7 +124,7 @@ export default function ContactContent() {
  </div>
  </div>
  {sent ? (
- <motion.div
+ <motion.div role="status"
  initial={{ opacity: 0, scale: 0.9 }}
  animate={{ opacity: 1, scale: 1 }}
  className="text-center py-12"
@@ -132,7 +135,8 @@ export default function ContactContent() {
  <p className="text-lg font-semibold mb-2">{t("success")}</p>
  </motion.div>
  ) : (
- <form onSubmit={handleSubmit} className="space-y-5 flex-1 flex flex-col">
+ <form aria-busy={sending} onSubmit={handleSubmit} className="space-y-5 flex-1 flex flex-col">
+ {submitError && <p role="alert" className="text-sm text-red-600">{submitError}</p>}
  {/* Honeypot */}
  <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "-9999px", opacity: 0, height: 0, overflow: "hidden" }}>
  <label htmlFor="contact-hp">Leave this empty</label>
@@ -141,10 +145,10 @@ export default function ContactContent() {
  {/* Row 1: Name + Email (email is required) */}
  <div className="grid sm:grid-cols-2 gap-5">
  <div>
- <label className="block text-sm font-medium mb-2">
+ <label htmlFor="contact-field-1" className="block text-sm font-medium mb-2">
  {t("nameLabel")} <span className="text-red-500">*</span>
  </label>
- <input
+ <input id="contact-field-1"
  type="text"
  required
  value={form.name}
@@ -154,10 +158,10 @@ export default function ContactContent() {
  />
  </div>
  <div>
- <label className="block text-sm font-medium mb-2">
+ <label htmlFor="contact-field-2" className="block text-sm font-medium mb-2">
  {t("emailLabel")} <span className="text-red-500">*</span>
  </label>
- <input
+ <input id="contact-field-2"
  type="email"
  required
  value={form.email}
@@ -168,20 +172,21 @@ export default function ContactContent() {
  onBlur={(e) => setErrors({ ...errors, email: emailError(e.target.value, lang) })}
  placeholder={t("emailPlaceholder")}
  aria-invalid={!!errors.email}
+ aria-describedby={errors.email ? "contact-email-error" : undefined}
  className={`w-full px-4 py-3 rounded-xl bg-background border text-foreground placeholder:text-muted outline-none transition-all ${errors.email ? "border-red-500 focus:border-red-500" : "border-border focus:border-primary"}`}
  />
  {errors.email && (
- <p className="mt-1.5 text-xs text-red-500">{errors.email}</p>
+ <p id="contact-email-error" className="mt-1.5 text-xs text-red-500">{errors.email}</p>
  )}
  </div>
  </div>
  {/* Row 2: Phone (optional) + Subject — one row on sm+ */}
  <div className="grid sm:grid-cols-2 gap-5">
  <div>
- <label className="block text-sm font-medium mb-2">
+ <label htmlFor="contact-field-3" className="block text-sm font-medium mb-2">
  {t("phoneLabel")}
  </label>
- <input
+ <input id="contact-field-3"
  type="tel"
  inputMode="tel"
  value={form.phone}
@@ -189,21 +194,22 @@ export default function ContactContent() {
  setForm({ ...form, phone: e.target.value });
  if (errors.phone) setErrors({ ...errors, phone: "" });
  }}
- onBlur={(e) => setErrors({ ...errors, phone: phoneError(e.target.value, lang) })}
+ onBlur={(e) => setErrors({ ...errors, phone: publicPhoneError(e.target.value, lang) })}
  placeholder={t("phonePlaceholder")}
  aria-invalid={!!errors.phone}
+ aria-describedby={errors.phone ? "contact-phone-error" : undefined}
  className={`w-full px-4 py-3 rounded-xl bg-background border text-foreground placeholder:text-muted outline-none transition-all ${errors.phone ? "border-red-500 focus:border-red-500" : "border-border focus:border-primary"}`}
  dir="ltr"
  />
  {errors.phone && (
- <p className="mt-1.5 text-xs text-red-500">{errors.phone}</p>
+ <p id="contact-phone-error" className="mt-1.5 text-xs text-red-500">{errors.phone}</p>
  )}
  </div>
  <div>
- <label className="block text-sm font-medium mb-2">
+ <label htmlFor="contact-field-4" className="block text-sm font-medium mb-2">
  {t("subjectLabel")}
  </label>
- <input
+ <input id="contact-field-4"
  type="text"
  value={form.subject}
  onChange={(e) => setForm({ ...form, subject: e.target.value })}
@@ -213,10 +219,10 @@ export default function ContactContent() {
  </div>
  </div>
  <div className="flex-1 flex flex-col min-h-[140px]">
- <label className="block text-sm font-medium mb-2">
+ <label htmlFor="contact-field-5" className="block text-sm font-medium mb-2">
  {t("messageLabel")} <span className="text-red-500">*</span>
  </label>
- <textarea
+ <textarea id="contact-field-5"
  required
  rows={5}
  value={form.message}

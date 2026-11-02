@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { ChatHeartIcon } from "@/components/icons/PillarIcons";
 import { VideoCameraIcon, GiftBoxIcon, SmileIcon } from "@/components/icons/KidIcons";
-import { emailError, phoneError, isValidEmail, isValidUAEPhone } from "@/lib/validation";
+import { emailError, publicPhoneError, isValidEmail, isValidPublicPhone } from "@/lib/validation";
 
 export default function FreeTrialContent() {
   const t = useTranslations("freeTrial");
@@ -24,6 +24,7 @@ export default function FreeTrialContent() {
   const [errors, setErrors] = useState({ email: "", phone: "" });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+ const [submitError, setSubmitError] = useState("");
 
   useEffect(() => {
     if (!sent) return;
@@ -45,9 +46,11 @@ export default function FreeTrialContent() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitError("");
+    if (sending) return;
     // Validate before submit — email is required, phone is optional but must be valid if filled
     const emailErr = isValidEmail(form.email) ? "" : emailError(form.email || "_", lang);
-    const phoneErr = form.phone && !isValidUAEPhone(form.phone) ? phoneError(form.phone, lang) : "";
+    const phoneErr = form.phone && !isValidPublicPhone(form.phone) ? publicPhoneError(form.phone, lang) : "";
     if (emailErr || phoneErr) {
       setErrors({ email: emailErr, phone: phoneErr });
       return;
@@ -65,7 +68,7 @@ export default function FreeTrialContent() {
       } as never);
       setSent(true);
     } catch {
-      setSent(true);
+      setSubmitError(lang === "ar" ? "تعذر إرسال الطلب. يُرجى المحاولة مرة أخرى." : "Your request could not be sent. Please try again.");
     } finally {
       setSending(false);
     }
@@ -119,7 +122,7 @@ export default function FreeTrialContent() {
               <p className="text-muted text-sm mb-7">{t("formSubtitle")}</p>
 
               {sent ? (
-                <motion.div
+                <motion.div role="status"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   className="text-center py-14"
@@ -131,17 +134,18 @@ export default function FreeTrialContent() {
                   <p className="text-muted text-sm max-w-sm mx-auto">{t("successDesc")}</p>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form aria-busy={sending} onSubmit={handleSubmit} className="space-y-4">
+ {submitError && <p role="alert" className="text-sm text-red-600">{submitError}</p>}
                   {/* Honeypot */}
                   <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, overflow: "hidden" }}>
                     <input type="text" name="_hp" tabIndex={-1} autoComplete="off" value={hp} onChange={(e) => setHp(e.target.value)} />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold mb-2">
+                    <label htmlFor="free-trial-field-1" className="block text-sm font-semibold mb-2">
                       {tc("formNameLabel")} <span className="text-red-500">*</span>
                     </label>
-                    <input
+                    <input id="free-trial-field-1"
                       type="text"
                       required
                       value={form.name}
@@ -151,10 +155,10 @@ export default function FreeTrialContent() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold mb-2">
+                    <label htmlFor="free-trial-field-2" className="block text-sm font-semibold mb-2">
                       {tc("formEmailLabel")} <span className="text-red-500">*</span>
                     </label>
-                    <input
+                    <input id="free-trial-field-2"
                       type="email"
                       required
                       value={form.email}
@@ -165,17 +169,18 @@ export default function FreeTrialContent() {
                       onBlur={(e) => setErrors({ ...errors, email: emailError(e.target.value, lang) })}
                       placeholder={tc("formEmailPlaceholder")}
                       aria-invalid={!!errors.email}
+ aria-describedby={errors.email ? "free-trial-email-error" : undefined}
                       className={`w-full px-4 py-3 rounded-xl bg-background border placeholder:text-muted outline-none transition-all ${errors.email ? "border-red-500 focus:border-red-500" : "border-border focus:border-primary"}`}
                     />
                     {errors.email && (
-                      <p className="mt-1.5 text-xs text-red-500">{errors.email}</p>
+                      <p id="free-trial-email-error" className="mt-1.5 text-xs text-red-500">{errors.email}</p>
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold mb-2">
+                    <label htmlFor="free-trial-field-3" className="block text-sm font-semibold mb-2">
                       {tc("formChildLabel")}
                     </label>
-                    <input
+                    <input id="free-trial-field-3"
                       type="text"
                       value={form.child}
                       onChange={(e) => setForm({ ...form, child: e.target.value })}
@@ -184,10 +189,10 @@ export default function FreeTrialContent() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold mb-2">
+                    <label htmlFor="free-trial-field-4" className="block text-sm font-semibold mb-2">
                       {tc("formPhoneLabel")}
                     </label>
-                    <input
+                    <input id="free-trial-field-4"
                       type="tel"
                       inputMode="tel"
                       value={form.phone}
@@ -195,14 +200,15 @@ export default function FreeTrialContent() {
                         setForm({ ...form, phone: e.target.value });
                         if (errors.phone) setErrors({ ...errors, phone: "" });
                       }}
-                      onBlur={(e) => setErrors({ ...errors, phone: phoneError(e.target.value, lang) })}
+                      onBlur={(e) => setErrors({ ...errors, phone: publicPhoneError(e.target.value, lang) })}
                       placeholder={tc("formPhonePlaceholder")}
                       aria-invalid={!!errors.phone}
+ aria-describedby={errors.phone ? "free-trial-phone-error" : undefined}
                       className={`w-full px-4 py-3 rounded-xl bg-background border placeholder:text-muted outline-none transition-all ${lang === "ar" ? "text-right" : ""} ${errors.phone ? "border-red-500 focus:border-red-500" : "border-border focus:border-primary"}`}
                       dir="ltr"
                     />
                     {errors.phone && (
-                      <p className="mt-1.5 text-xs text-red-500">{errors.phone}</p>
+                      <p id="free-trial-phone-error" className="mt-1.5 text-xs text-red-500">{errors.phone}</p>
                     )}
                   </div>
 

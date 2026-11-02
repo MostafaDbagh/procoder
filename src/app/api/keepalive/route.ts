@@ -9,7 +9,7 @@ export async function GET() {
       signal: AbortSignal.timeout(10000),
     });
     const data = await res.json().catch(() => ({}));
-    return NextResponse.json({ ok: res.ok, backend: data });
+    return NextResponse.json({ ok: res.ok, backend: data }, { status: res.ok ? 200 : 502 });
   } catch (e) {
     const msg = e instanceof Error ? e.message : "unknown";
     return NextResponse.json({ ok: false, error: msg }, { status: 502 });

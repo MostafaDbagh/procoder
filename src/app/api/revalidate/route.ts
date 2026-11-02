@@ -1,4 +1,4 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { after, NextResponse, type NextRequest } from "next/server";
 import { revalidatePath } from "next/cache";
 import { backendOrigin } from "@/lib/api-proxy";
 
@@ -57,31 +57,27 @@ export async function POST(req: NextRequest) {
     const body = (await req.json()) as { paths?: string[] };
     const paths = normalizeRevalidationPaths(body.paths);
 
-    if (paths.length === 0) {
-      // Default: revalidate all locale home pages + courses
-      revalidatePath("/en");
-      revalidatePath("/ar");
-      revalidatePath("/en/courses");
-      revalidatePath("/ar/courses");
-    } else {
-      for (const p of paths) {
-        revalidatePath(p);
-      }
-    }
+    // CMS records appear across listings, detail pages, navigation, and guides.
+    // Invalidating the locale layout covers old slugs as well as renamed records.
+    revalidatePath("/[locale]", "layout");
+    for (const p of paths) revalidatePath(p);
+    for (const p of ["/sitemap.xml", "/llms.txt", "/llms-full.txt"]) revalidatePath(p);
 
-    // Notify IndexNow after revalidation — fire-and-forget
+    // Keep notification work alive after the response on supported Next hosts.
     const site = (process.env.SITE_URL || "https://www.stemtechlab.com").replace(/\/$/, "");
     const secret = process.env.CRON_SECRET;
     if (secret) {
-      fetch(`${site}/api/indexnow`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "x-cron-secret": secret },
-        body: JSON.stringify(
-          paths.length > 0
-            ? { urls: paths.map((p) => `${site}${p}`) }
-            : {}
-        ),
-      }).catch(() => {});
+      after(async () => {
+        try {
+          const response = await fetch(`${site}/api/indexnow`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "x-cron-secret": secret },
+            body: JSON.stringify(paths.length > 0 ? { urls: paths.map(p => `${site}${p}`) } : {}),
+            signal: AbortSignal.timeout(10000),
+          });
+          if (!response.ok) console.error("IndexNow notification failed", response.status);
+        } catch { console.error("IndexNow notification unavailable"); }
+      });
     }
 
     return NextResponse.json({ revalidated: true, paths });

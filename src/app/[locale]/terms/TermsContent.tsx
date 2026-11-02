@@ -14,6 +14,7 @@ export default function TermsContent() {
  { title: t("s4Title"), content: t("s4Content") },
  { title: t("s5Title"), content: t("s5Content") },
  { title: t("s6Title"), content: t("s6Content") },
+ { title: t("s7Title"), content: t("s7Content") },
  ];
 
  return (

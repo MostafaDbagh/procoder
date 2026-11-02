@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { canGoBackInApp } from "@/lib/navHistory";
@@ -23,9 +23,9 @@ export function BackLink({
 }) {
  const router = useRouter();
  // Resolved after hydration: the server has no history to inspect.
- const [canGoBack, setCanGoBack] = useState(false);
+ const canGoBack = useRef(false);
  useEffect(() => {
- setCanGoBack(canGoBackInApp());
+ canGoBack.current = canGoBackInApp();
  }, []);
 
  return (
@@ -35,7 +35,7 @@ export function BackLink({
  onNavigate={(e) => {
  // Only fires on same-origin client navigation, so modifier-clicks
  // that open a new tab keep the plain /courses href.
- if (!canGoBack) return;
+ if (!canGoBack.current) return;
  e.preventDefault();
  router.back();
  }}

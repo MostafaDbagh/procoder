@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { BlogListResponse, APIBlogPost } from "@/lib/server-api";
@@ -22,20 +21,26 @@ const categories = [
  { value: "robotics", label: "Robotics", labelAr: "الروبوتات" },
  { value: "arabic", label: "Arabic", labelAr: "العربية" },
  { value: "stem", label: "STEM", labelAr: "العلوم" },
+ { value: "general", label: "General", labelAr: "عام" },
  { value: "parenting", label: "Parenting", labelAr: "الأبوة" },
 ];
 
 interface Props {
- initialData: BlogListResponse | null;
+ initialData: BlogListResponse;
+ page: number;
+ category: string;
 }
 
-export default function BlogListClient({ initialData }: Props) {
+export default function BlogListClient({ initialData, page, category }: Props) {
  const locale = useLocale();
  const lang = locale === "ar" ? "ar" : "en";
- const [filter, setFilter] = useState("all");
-
- const posts = initialData?.items || [];
- const filtered = filter === "all" ? posts : posts.filter((p) => p.category === filter);
+ const posts = initialData.items;
+ const archiveHref = (targetPage: number, targetCategory = category) => {
+ const query = new URLSearchParams();
+ if (targetCategory !== "all") query.set("category", targetCategory);
+ if (targetPage > 1) query.set("page", String(targetPage));
+ return `/blogs${query.size ? `?${query}` : ""}`;
+ };
 
  return (
  <div className="min-h-screen">
@@ -46,7 +51,7 @@ export default function BlogListClient({ initialData }: Props) {
  <div className="absolute bottom-10 right-[10%] w-72 h-72 bg-purple/5 rounded-full blur-3xl" />
  </div>
  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
- <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+ <motion.div initial={false} animate={{ opacity: 1, y: 0 }}>
  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
  <BookOpen className="w-4 h-4" />
  {lang === "ar" ? "المدونة" : "Blog"}
@@ -56,25 +61,26 @@ export default function BlogListClient({ initialData }: Props) {
  </h1>
  <p className="text-muted text-lg max-w-2xl mx-auto">
  {lang === "ar"
- ? "مقالات متخصصة حول تعليم الأطفال البرمجة والروبوتات والعربية"
- : "Expert articles on kids coding, robotics, Arabic & STEM education"}
+ ? "مقالات متخصصة حول تعليم الأطفال البرمجة والروبوتات والعلوم والتكنولوجيا"
+ : "Expert articles on kids coding, robotics & STEM education"}
  </p>
  </motion.div>
 
  {/* Category filter */}
- <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="flex flex-wrap justify-center gap-2 mt-8">
+ <motion.div initial={false} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="flex flex-wrap justify-center gap-2 mt-8">
  {categories.map((cat) => (
- <button
+ <Link
  key={cat.value}
- onClick={() => setFilter(cat.value)}
+ href={archiveHref(1, cat.value)}
+ aria-current={category === cat.value ? "page" : undefined}
  className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
- filter === cat.value
+ category === cat.value
  ? "bg-primary text-white shadow-md"
  : "bg-surface border border-border text-muted hover:text-foreground hover:border-primary/30"
  }`}
  >
  {lang === "ar" ? cat.labelAr : cat.label}
- </button>
+ </Link>
  ))}
  </motion.div>
  </div>
@@ -83,9 +89,9 @@ export default function BlogListClient({ initialData }: Props) {
  {/* Posts grid */}
  <section className="py-12 sm:py-16">
  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
- {filtered.length > 0 ? (
+ {posts.length > 0 ? (
  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
- {filtered.map((post, i) => (
+ {posts.map((post, i) => (
  <BlogCard key={post._id} post={post} lang={lang} index={i} />
  ))}
  </div>
@@ -96,6 +102,13 @@ export default function BlogListClient({ initialData }: Props) {
  {lang === "ar" ? "لا توجد مقالات في هذه الفئة" : "No articles in this category"}
  </p>
  </div>
+ )}
+ {initialData.totalPages > 1 && (
+ <nav aria-label={lang === "ar" ? "صفحات المدونة" : "Blog pagination"} className="flex items-center justify-center gap-4 mt-10">
+ {page > 1 && <Link href={archiveHref(page - 1)} rel="prev" className="px-4 py-2 rounded-xl border border-border text-primary font-semibold">{lang === "ar" ? "السابق" : "Previous"}</Link>}
+ <span className="text-sm text-muted">{lang === "ar" ? `الصفحة ${page} من ${initialData.totalPages}` : `Page ${page} of ${initialData.totalPages}`}</span>
+ {page < initialData.totalPages && <Link href={archiveHref(page + 1)} rel="next" className="px-4 py-2 rounded-xl border border-border text-primary font-semibold">{lang === "ar" ? "التالي" : "Next"}</Link>}
+ </nav>
  )}
  </div>
  </section>
@@ -115,7 +128,7 @@ function BlogCard({ post, lang, index }: { post: APIBlogPost; lang: "en" | "ar";
 
  return (
  <motion.article
- initial={{ opacity: 0, y: 20 }}
+ initial={false}
  whileInView={{ opacity: 1, y: 0 }}
  viewport={{ once: true }}
  transition={{ delay: index * 0.06 }}

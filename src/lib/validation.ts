@@ -45,3 +45,18 @@ export function phoneError(input: string, locale: "en" | "ar" = "en"): string {
  ? "يرجى إدخال رقم إماراتي صحيح (مثال: 050 224 9596)"
  : "Please enter a valid UAE number (e.g. 050 224 9596)";
 }
+
+/** Public enquiries accept Oman local numbers, UAE legacy formats, and international numbers. */
+export function isValidPublicPhone(input: string): boolean {
+ const value = (input ?? "").trim().replace(/[٠-٩]/g, c => String(c.charCodeAt(0) - 0x660)).replace(/[۰-۹]/g, c => String(c.charCodeAt(0) - 0x6f0));
+ if (!/^[+\d\s().-]+$/.test(value)) return false;
+ const compact = value.replace(/[\s().-]/g, "");
+ if (compact.startsWith("+")) return /^\+[1-9]\d{7,14}$/.test(compact);
+ if (compact.startsWith("00")) return /^00[1-9]\d{7,14}$/.test(compact);
+ return /^\d{8}$/.test(compact) || isValidUAEPhone(compact);
+}
+
+export function publicPhoneError(input: string, locale: "en" | "ar" = "en"): string {
+ if (!input.trim() || isValidPublicPhone(input)) return "";
+ return locale === "ar" ? "أدخل رقم هاتف صحيحاً مع رمز الدولة، مثل +968 9123 4567" : "Enter a valid phone number with country code, e.g. +968 9123 4567";
+}
