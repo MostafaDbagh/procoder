@@ -31,7 +31,7 @@ export function OrganizationSchema() {
  legalName: "StemTechLab",
  alternateName: ["STEM Tech Lab", "Stem Tech Lab"],
  description:
- "Live online STEM and coding classes for children ages 6–18 in Oman, the UAE and other GCC countries. Bilingual English/Arabic interface, AI-powered course matching, and small-group classes. Programming, Robotics, Algorithms, AI, Web and Mobile Development. Built for families in the UAE and GCC. Certified teachers, parent dashboard, free trial.",
+ "Live online STEM and coding classes for children ages 6–18 in the UAE and other GCC countries. Bilingual English/Arabic interface, AI-powered course matching, and small-group classes. Programming, Robotics, Algorithms, AI, Web and Mobile Development. Built for families in the UAE and GCC. Certified teachers, parent dashboard, free trial.",
  url: SITE_URL,
  logo: `${SITE_URL}/logo.svg`,
  image: `${SITE_URL}/og`,
@@ -49,7 +49,6 @@ export function OrganizationSchema() {
  "Qatar",
  "Kuwait",
  "Bahrain",
- "Oman",
  ].map((name) => ({ "@type": "Country", name })),
  address: {
  "@type": "PostalAddress",
@@ -196,7 +195,6 @@ export function EducationalServiceSchema({ locale = "en" }: { locale?: string } 
  "Qatar",
  "Kuwait",
  "Bahrain",
- "Oman",
  ].map((name) => ({ "@type": "Country", name })),
  audience: {
  "@type": "EducationalAudience",

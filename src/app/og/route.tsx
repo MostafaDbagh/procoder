@@ -29,8 +29,8 @@ async function loadArabicFont(): Promise<ArrayBuffer | null> {
   }
 }
 
-const EN_TAGLINE = "Live online coding & STEM for kids in Oman • Max 3 students per class";
-const AR_TAGLINE = "برمجة وعلوم وتقنية للأطفال في عُمان عبر الإنترنت • ٣ طلاب كحد أقصى";
+const EN_TAGLINE = "Live online coding & STEM for kids in the UAE • Max 3 students per class";
+const AR_TAGLINE = "برمجة وعلوم وتقنية للأطفال في الإمارات عبر الإنترنت • ٣ طلاب كحد أقصى";
 
 const EN_CATS = ["Programming", "Robotics", "Algorithms", "Game Dev"];
 const AR_CATS = ["البرمجة", "الروبوتات", "الخوارزميات", "تطوير الألعاب"];

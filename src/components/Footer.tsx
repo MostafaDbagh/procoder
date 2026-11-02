@@ -92,7 +92,7 @@ export function Footer() {
  {t("quickLinks")}
  </h3>
  <ul className="space-y-2.5">
- <li><LocalizedLink href="/oman" className="text-sm text-muted hover:text-primary transition-colors">{lang === "ar" ? "دورات أونلاين في عُمان" : "Online classes in Oman"}</LocalizedLink></li>
+ <li><LocalizedLink href="/uae" className="text-sm text-muted hover:text-primary transition-colors">{lang === "ar" ? "دورات أونلاين في الإمارات" : "Online classes in the UAE"}</LocalizedLink></li>
  <li><LocalizedLink href="/courses" className="text-sm text-muted hover:text-primary transition-colors">{nav("courses")}</LocalizedLink></li>
  <li><LocalizedLink href="/recommend" className="text-sm text-muted hover:text-primary transition-colors">{nav("recommend")}</LocalizedLink></li>
  <li><LocalizedLink href="/free-trial" className="text-sm text-muted hover:text-primary transition-colors">{nav("freeTrial")}</LocalizedLink></li>

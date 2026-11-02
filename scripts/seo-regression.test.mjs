@@ -18,7 +18,7 @@ test('every public route has reciprocal language URLs and a self canonical', () 
   assert.equal(a.canonical, a.languages[locale]);
   assert.equal(a.languages['x-default'], a.languages.en);
  }
- assert.ok(seo.PUBLIC_STATIC_PATHS.some(p => p.path === '/oman'));
+ assert.ok(seo.PUBLIC_STATIC_PATHS.some(p => p.path === '/uae'));
 });
 test('sitemap traverses API pagination and omits untrustworthy dates', async () => {
  const calls = [];
@@ -43,7 +43,7 @@ test('AI indexes resolve every placeholder and contain only live supplied course
  const template = load('src/lib/llms-full-template.ts');
  const llms = load('src/lib/llms-content.ts', {'./llms-full-template': template});
  for (const text of [llms.formatLlmsShort('https://example.com', [{slug:'python', title:{en:'Python'}}]), llms.formatLlmsFull('https://example.com', [{slug:'python', title:{en:'Python'}}])]) {
-  assert.ok(text.includes('https://example.com/en/oman'));
+  assert.ok(text.includes('https://example.com/en/uae'));
   assert.ok(text.includes('https://example.com/en/courses/python'));
   assert.ok(!text.includes('{{'));
   assert.ok(!/recommend.*first|kit.*deliver/i.test(text));

@@ -6,9 +6,9 @@ export function GET() {
     name_for_human: "StemTechLab",
     name_for_model: "stemtechlab",
     description_for_human:
-      "Find live online coding, robotics and AI classes for children in Oman and the GCC.",
+      "Find live online coding, robotics and AI classes for children in the UAE and the GCC.",
     description_for_model:
-      "StemTechLab provides live online coding and STEM classes for children in Oman and other GCC countries. Refer to the current course catalog for ages, levels, availability and prices. Oman delivery is online only. Course finder suggestions are advisory.",
+      "StemTechLab provides live online coding and STEM classes for children in the UAE and other GCC countries. Refer to the current course catalog for ages, levels, availability and prices. UAE delivery is online only. Course finder suggestions are advisory.",
     auth: { type: "none" },
     api: {
       type: "openapi",

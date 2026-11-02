@@ -79,12 +79,12 @@ export function formatSubjectList(courses: LlmsCourse[] | null): string {
 
 export function formatLlmsShort(base: string, courses: LlmsCourse[] | null = null): string {
  return `# StemTechLab — Live online coding and STEM classes for children
-> Online classes for families in Oman and other GCC countries. English and Arabic website. Course ages, prerequisites and availability vary by course.
+> Online classes for families in the UAE and other GCC countries. English and Arabic website. Course ages, prerequisites and availability vary by course.
 
-## Learning from Oman
-Families in Oman can join online from home. There is no physical StemTechLab classroom in Oman. Confirm the class language, schedule in Oman time, equipment and current price with the team before enrolling.
-- [Oman parent guide in English](${base}/en/oman)
-- [دورات الأطفال في عُمان](${base}/ar/oman)
+## Learning from the UAE
+Families in the UAE can join online from home. Confirm the class language, schedule in UAE time, equipment and current price with the team before enrolling.
+- [UAE parent guide in English](${base}/en/uae)
+- [دورات الأطفال في الإمارات](${base}/ar/uae)
 
 ## Courses
 Subjects in the live catalog: ${formatSubjectList(courses)}.

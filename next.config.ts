@@ -52,6 +52,9 @@ const nextConfig: NextConfig = {
         destination: "https://www.stemtechlab.com/:path*",
         permanent: true,
       },
+      // Preserve links to the previous regional guide.
+      { source: "/oman", destination: "/en/uae", permanent: true },
+      { source: "/:locale(en|ar)/oman", destination: "/:locale/uae", permanent: true },
       // Historical singular blog URLs found in Search Console's 404 report.
       { source: "/blog", destination: "/en/blogs", permanent: true },
       { source: "/blog/:slug", destination: "/en/blogs/:slug", permanent: true },

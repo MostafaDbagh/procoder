@@ -24,12 +24,12 @@ def get(path):
  return r.status,r.headers,r.read().decode()
 checks=[]
 for lang in ['en','ar']:
- for path in ['', '/oman','/faq','/courses','/courses/robotics','/blogs/coding-competitions-for-kids']:
+ for path in ['', '/uae','/faq','/courses','/courses/robotics','/blogs/coding-competitions-for-kids']:
   status,headers,body=get('/'+lang+path);assert status==200,(lang,path,status)
   p=HTML();p.feed(body);assert p.lang==lang
   assert p.canonical=='https://www.stemtechlab.com/'+lang+path,(path,p.canonical)
   if path=='/faq':assert p.details==21
-  if path=='/oman':assert p.meta.get('og:image') and p.meta.get('twitter:image')
+  if path=='/uae':assert p.meta.get('og:image') and p.meta.get('twitter:image')
   for schema in p.schemas:
    if schema.get('@type')=='Course':assert 'courseSchedule' not in schema['hasCourseInstance'][0]
   checks.append({'path':'/'+lang+path,'status':status,'schemas':len(p.schemas),'details':p.details})
@@ -57,12 +57,12 @@ for path in ['/ar/courses/غير-موجود','/en/courses/not-a-real-course']:
  checks.append({'path':path,'status':status,'noindex':'noindex' in body})
 for path in ['/llms.txt','/llms-full.txt']:
  status,headers,body=get(path);assert status==200
- assert '{{' not in body and '/en/oman' in body and '/ar/oman' in body
+ assert '{{' not in body and '/en/uae' in body and '/ar/uae' in body
  checks.append({'path':path,'status':status})
 status,_,body=get('/sitemap.xml');assert status==200
 root=ET.fromstring(body);entries=root.findall('{*}url');urls=[e.find('{*}loc').text for e in entries]
-assert 'https://www.stemtechlab.com/en/oman' in urls and 'https://www.stemtechlab.com/ar/oman' in urls
+assert 'https://www.stemtechlab.com/en/uae' in urls and 'https://www.stemtechlab.com/ar/uae' in urls
 for e in entries:
- if e.find('{*}loc').text.endswith(('/en','/ar','/oman')):assert e.find('{*}lastmod') is None
+ if e.find('{*}loc').text.endswith(('/en','/ar','/uae')):assert e.find('{*}lastmod') is None
 checks.append({'path':'/sitemap.xml','status':status,'entries':len(entries)})
 print(json.dumps(checks,indent=2,ensure_ascii=False))
