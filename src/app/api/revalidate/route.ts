@@ -1,6 +1,6 @@
 import { SITE_URL } from "@/lib/seo";
 import { after, NextResponse, type NextRequest } from "next/server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { backendOrigin } from "@/lib/api-proxy";
 
 type AuthUserResponse = {
@@ -60,6 +60,7 @@ export async function POST(req: NextRequest) {
 
     // CMS records appear across listings, detail pages, navigation, and guides.
     // Invalidating the locale layout covers old slugs as well as renamed records.
+    for (const tag of ["public-catalog", "public-blog", "public-sitemap"]) revalidateTag(tag, "max");
     revalidatePath("/[locale]", "layout");
     for (const p of paths) revalidatePath(p);
     for (const p of ["/sitemap.xml", "/llms.txt", "/llms-full.txt"]) revalidatePath(p);

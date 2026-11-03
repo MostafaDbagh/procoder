@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import type { APICourse } from "./api";
 import { safeCoverImage } from "./mediaUrls";
 
@@ -149,10 +150,10 @@ export async function getCoursesSSR(): Promise<APICourse[] | null> {
  }
 }
 
-export async function getCoursesISR(): Promise<APICourse[] | null> {
+async function fetchCoursesSnapshot(): Promise<APICourse[] | null> {
  try {
  const res = await fetch(`${serverApiRoot()}/courses`, {
- next: { revalidate: 60 },
+ cache: "no-store",
  signal: AbortSignal.timeout(8000),
  });
 
@@ -177,11 +178,11 @@ export async function getCourseSlugsISR(): Promise<string[]> {
  * Throws {@link ApiUnavailableError} when the API is unreachable or errored, so
  * a sleeping backend can never be mistaken for a deleted course.
  */
-export async function getCourseISR(slug: string): Promise<APICourse | null> {
+async function fetchCourseSnapshot(slug: string): Promise<APICourse | null> {
  let res: Response;
  try {
  res = await fetch(`${serverApiRoot()}/courses/${encodeURIComponent(slug)}`, {
- next: { revalidate: 60 },
+ cache: "no-store",
  signal: AbortSignal.timeout(8000),
  });
  } catch (e) {
@@ -279,11 +280,11 @@ export async function getBlogPostsISR(params?: { category?: string; region?: str
  * Throws {@link ApiUnavailableError} on transport/server failure — see the note
  * on {@link getCourseISR} for why this must not collapse into a 404.
  */
-export async function getBlogPostISR(slug: string): Promise<APIBlogPost | null> {
+async function fetchBlogSnapshot(slug: string): Promise<APIBlogPost | null> {
  let res: Response;
  try {
  res = await fetch(`${serverApiRoot()}/blog/${encodeURIComponent(slug)}`, {
-   next: { revalidate: 300 },
+   cache: "no-store",
    signal: AbortSignal.timeout(8000),
  });
  } catch (e) {
@@ -364,4 +365,29 @@ export async function getChallengePublicLatestISR(): Promise<PublicMonthlyChalle
  } catch {
  return null;
  }
+}
+
+// Preserve successful public data during temporary upstream errors. Empty catalogs
+// and explicit 404s are successful responses and replace withdrawn content normally.
+const cachedCourses = unstable_cache(async () => {
+ const courses = await fetchCoursesSnapshot();
+ if (!courses) throw new ApiUnavailableError("course catalog");
+ return courses;
+}, ["public-courses-v1", serverApiRoot()], { revalidate: 60, tags: ["public-catalog"] });
+const cachedCourse = unstable_cache(fetchCourseSnapshot, ["public-course-v1", serverApiRoot()], {
+ revalidate: 60, tags: ["public-catalog"],
+});
+const cachedBlog = unstable_cache(fetchBlogSnapshot, ["public-blog-v1", serverApiRoot()], {
+ revalidate: 300, tags: ["public-blog"],
+});
+
+export async function getCoursesISR(): Promise<APICourse[] | null> {
+ try { return await cachedCourses(); }
+ catch { return null; }
+}
+export async function getCourseISR(slug: string): Promise<APICourse | null> {
+ return cachedCourse(slug);
+}
+export async function getBlogPostISR(slug: string): Promise<APIBlogPost | null> {
+ return cachedBlog(slug);
 }

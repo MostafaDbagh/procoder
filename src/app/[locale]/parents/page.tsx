@@ -1,3 +1,4 @@
+import { ParentCourseChecklist } from "@/components/ParentCourseChecklist";
 import { SITE_URL } from "@/lib/seo";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
@@ -9,14 +10,14 @@ import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
 
 const meta = {
  en: {
- title: "For Parents — Track Your Child’s Progress",
+ title: "Choosing Coding Classes for Kids in the UAE | Parent Guide",
  description:
- "Match your child to the right course with the AI course finder, then follow attendance, progress, and instructor notes from the parent dashboard.",
+ "Compare coding, Python and robotics courses for your child. A practical UAE parent checklist for readiness, trial lessons, equipment and learning progress.",
  },
  ar: {
- title: "لأولياء الأمور — تابع تقدم طفلك",
+ title: "دليل اختيار دورات البرمجة للأطفال في الإمارات",
  description:
- "منتقي دورات بالذكاء الاصطناعي يختار الأنسب لطفلك. تابع الحضور والتقدم وملاحظات المعلم من لوحة التحكم. معلمون معتمدون، حد أقصى ٣ طلاب، وتجربة مجانية.",
+ "دليل عملي لأولياء الأمور في الإمارات لمقارنة البرمجة وبايثون والروبوتات، وتقييم استعداد الطفل وتجهيز الأجهزة والاستفادة من الحصة التجريبية.",
  },
 };
 
@@ -73,6 +74,7 @@ export default async function ParentsPage({
  ]}
  />
  <ParentsContent />
+ <ParentCourseChecklist locale={locale} />
  </>
  );
 }

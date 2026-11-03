@@ -3,6 +3,9 @@ import type { MetadataRoute } from "next";
 import { PRIVATE_CRAWL_PATHS } from "@/lib/seo";
 
 
+// Keep this endpoint build-time generated, independent of locale rendering and API health.
+export const dynamic = "force-static";
+
 const AI_AND_SEARCH_BOTS = [
  "GPTBot",
  "ChatGPT-User",
@@ -60,6 +63,5 @@ export default function robots(): MetadataRoute.Robots {
  },
  ],
  sitemap: `${SITE_URL}/sitemap.xml`,
- host: SITE_URL,
  };
 }

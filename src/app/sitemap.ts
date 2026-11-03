@@ -1,6 +1,7 @@
+import { unstable_cache } from "next/cache";
 import type { MetadataRoute } from "next";
 import { ApiUnavailableError, getCoursesISR, serverApiRoot } from "@/lib/server-api";
-import { LOCALES, PUBLIC_STATIC_PATHS, siteUrl } from "@/lib/seo";
+import { SITE_URL, LOCALES, PUBLIC_STATIC_PATHS, siteUrl } from "@/lib/seo";
 
 // Revalidate sitemap every 6 hours instead of on every request
 export const revalidate = 21600;
@@ -22,7 +23,8 @@ async function getBlogSlugsForSitemap(): Promise<{ slug: string; lastModified?: 
   let res: Response;
   try {
    res = await fetch(`${serverApiRoot()}/blog?limit=50&page=${page}`, {
-    next: { revalidate: 21600 },
+    cache: "no-store",
+    signal: AbortSignal.timeout(8000),
    });
   } catch (error) {
    throw new ApiUnavailableError("blog list for sitemap", error);
@@ -30,7 +32,10 @@ async function getBlogSlugsForSitemap(): Promise<{ slug: string; lastModified?: 
   if (!res.ok) throw new ApiUnavailableError(`blog list for sitemap (HTTP ${res.status})`);
   const data = await res.json();
   if (!Array.isArray(data.items)) throw new ApiUnavailableError("invalid blog list for sitemap");
-  totalPages = Math.max(1, Number(data.totalPages) || 1);
+  const pages = data.totalPages ?? 1;
+  if (!Number.isSafeInteger(pages) || pages < 0 || pages > 1000) throw new ApiUnavailableError("invalid sitemap pagination");
+  totalPages = Math.max(1, pages);
+  if (data.items.some((post: { slug?: unknown }) => typeof post?.slug !== "string" || !post.slug || /[/?#]/.test(post.slug))) throw new ApiUnavailableError("invalid sitemap blog slug");
   posts.push(...data.items.map((post: { slug: string; publishedAt?: string; updatedAt?: string }) => ({
    slug: post.slug,
    lastModified: post.updatedAt ?? post.publishedAt,
@@ -40,7 +45,7 @@ async function getBlogSlugsForSitemap(): Promise<{ slug: string; lastModified?: 
  return posts;
 }
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+async function buildSitemap(): Promise<MetadataRoute.Sitemap> {
  const apiCourses = await getCoursesISR();
  if (!apiCourses) throw new ApiUnavailableError("course catalog for sitemap");
 
@@ -121,4 +126,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
  }
 
  return entries;
+}
+
+// Cache only a complete successful snapshot. A failed background refresh leaves the
+// last good sitemap in Next's persistent Data Cache, including across deployments.
+const cachedSitemap = unstable_cache(buildSitemap, ["public-sitemap-v1", SITE_URL, serverApiRoot()], {
+ revalidate: 21600, tags: ["public-sitemap"],
+});
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+ return cachedSitemap();
 }

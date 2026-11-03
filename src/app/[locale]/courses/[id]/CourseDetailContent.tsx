@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, type ElementType } from "react";
+import { coursePublicTitle } from "@/lib/course-positioning";
+import { useState, type ReactNode, type ElementType } from "react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
@@ -14,7 +15,7 @@ import { EnrollModal } from "@/components/EnrollModal";
 import { formatCoursePrice, priceAfterCourseDiscount } from "@/lib/formatCoursePrice";
 import { publicOrAbsoluteAssetUrl } from "@/lib/mediaUrls";
 import { courseCategoryLabelKey, titleizeCategorySlug } from "@/lib/courseCategoryLabel";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
  ArrowLeft,
  Clock,
@@ -123,11 +124,13 @@ export default function CourseDetailContent({
  initialCourse,
  relatedCourses = [],
  stageKey,
+ parentGuide,
 }: {
  initialCourse?: APICourse;
  /** Sibling courses at the same journey stage, supplied by the server. */
  relatedCourses?: APICourse[];
  stageKey?: string;
+ parentGuide?: ReactNode;
 }) {
  const { id: slug } = useParams<{ id: string }>();
  const locale = useLocale();
@@ -135,7 +138,6 @@ export default function CourseDetailContent({
  const ct = useTranslations("courseData");
  const common = useTranslations("courses");
  const [enrollOpen, setEnrollOpen] = useState(false);
- const [openFaq, setOpenFaq] = useState<number | null>(null);
 
  const { data: apiCourse, isLoading } = useCourse(slug, initialCourse);
 
@@ -153,7 +155,7 @@ export default function CourseDetailContent({
  lessons: apiCourse.lessons,
  durationWeeks: apiCourse.durationWeeks,
  color: apiCourse.color,
- title: apiCourse.title[lang],
+ title: coursePublicTitle(apiCourse.slug, apiCourse.title[lang], lang),
  description: apiCourse.description[lang],
  skills: apiCourse.skills[lang] || [],
  price: typeof apiCourse.price === "number" ? apiCourse.price : 0,
@@ -475,6 +477,8 @@ export default function CourseDetailContent({
  </div>
  </AnimatedSection>
 
+ {parentGuide}
+
  {Array.isArray(faqItems) && faqItems.length > 0 && (
  <AnimatedSection delay={0.45}>
  <div className="bg-surface rounded-2xl border border-border p-7 sm:p-9 mb-8">
@@ -484,30 +488,13 @@ export default function CourseDetailContent({
  </h2>
  <div className="divide-y divide-border">
  {faqItems.map((item, i) => (
- <div key={i}>
- <button
- type="button"
- onClick={() => setOpenFaq(openFaq === i ? null : i)}
- className="w-full flex items-center justify-between gap-3 py-4 text-start font-semibold text-sm hover:text-primary transition-colors"
- >
+ <details key={i} className="group">
+ <summary className="flex cursor-pointer list-none items-center justify-between gap-3 py-4 text-start font-semibold text-sm hover:text-primary transition-colors [&::-webkit-details-marker]:hidden">
  {item.q}
- <ChevronDown className={`w-4 h-4 shrink-0 text-muted transition-transform duration-200 ${openFaq === i ? "rotate-180" : ""}`} />
- </button>
- <AnimatePresence initial={false}>
- {openFaq === i && (
- <motion.div
- key="body"
- initial={{ height: 0, opacity: 0 }}
- animate={{ height: "auto", opacity: 1 }}
- exit={{ height: 0, opacity: 0 }}
- transition={{ duration: 0.2 }}
- className="overflow-hidden"
- >
+ <ChevronDown aria-hidden="true" className="w-4 h-4 shrink-0 text-muted transition-transform duration-200 group-open:rotate-180" />
+ </summary>
  <p className="pb-4 text-sm text-muted leading-relaxed">{item.a}</p>
- </motion.div>
- )}
- </AnimatePresence>
- </div>
+ </details>
  ))}
  </div>
  </div>

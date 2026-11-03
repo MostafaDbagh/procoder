@@ -1,3 +1,5 @@
+import { CourseParentGuide } from "@/components/CourseParentGuide";
+import { coursePublicTitle } from "@/lib/course-positioning";
 import { SITE_URL } from "@/lib/seo";
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
@@ -81,6 +83,8 @@ export async function generateMetadata({
  const description = truncate(rawDesc || title, 165 - suffix.length);
  seoDescription = description + suffix;
  }
+
+ title = coursePublicTitle(id, title, lang);
 
  // Enrich the title with the age band (data we already have) — the bare
  // "<name> | StemTechLab" form was ~30 chars and wasted the SERP slot.
@@ -170,7 +174,7 @@ export default async function CourseDetailPage({
  ...buildCourseSchema(
  apiCourse
  ? {
- name: apiCourse.title[lang],
+ name: coursePublicTitle(id, apiCourse.title[lang], lang),
  description: apiCourse.description[lang],
  url: siteUrl(lang, `/courses/${id}`),
  ageMin: apiCourse.ageMin,
@@ -218,6 +222,7 @@ export default async function CourseDetailPage({
  initialCourse={apiCourse ?? undefined}
  relatedCourses={related}
  stageKey={apiCourse?.stlLevel || undefined}
+ parentGuide={apiCourse ? <CourseParentGuide slug={id} locale={locale} /> : null}
  />
  </>
  );

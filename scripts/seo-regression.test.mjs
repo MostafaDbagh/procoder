@@ -8,7 +8,7 @@ const resolveModule = createRequire(import.meta.url);
 function load(file, mocks = {}, globals = {}) {
  const code = ts.transpileModule(fs.readFileSync(file, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX } }).outputText;
  const loaded = { exports: {} };
- vm.runInNewContext(code, { module: loaded, exports: loaded.exports, require: name => name in mocks ? mocks[name] : name === "@/lib/seo" ? seo : resolveModule(name), process: { env: {} }, Date, URL, console, ...globals }, { filename: file });
+ vm.runInNewContext(code, { module: loaded, exports: loaded.exports, require: name => name in mocks ? mocks[name] : name === "@/lib/seo" ? seo : name === "next/cache" ? { unstable_cache: fn => fn } : resolveModule(name), process: { env: {} }, Date, URL, AbortSignal, console, ...globals }, { filename: file });
  return loaded.exports;
 }
 const seo = load('src/lib/seo.ts');
@@ -36,7 +36,7 @@ test('sitemap traverses API pagination and omits untrustworthy dates', async () 
  assert.equal(entries.find(e => e.url.endsWith('/blogs/post-2')).lastModified.toISOString(), '2026-10-01T00:00:00.000Z');
 });
 test('sitemap rejects an unavailable catalog instead of publishing a partial sitemap', async () => {
- const sitemap = load('src/app/sitemap.ts', {'@/lib/seo': seo, '@/lib/server-api': { ApiUnavailableError: Error, getCoursesISR: async () => null }}).default;
+ const sitemap = load('src/app/sitemap.ts', {'@/lib/seo': seo, '@/lib/server-api': { ApiUnavailableError: Error, serverApiRoot: () => "https://api.example/api", getCoursesISR: async () => null }}).default;
  await assert.rejects(sitemap, /course catalog/);
 });
 test('AI indexes resolve every placeholder and contain only live supplied courses', () => {
