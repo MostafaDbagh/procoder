@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "test": "npm run lint && tsc --noEmit",
+    "check:discovery": "python3 scripts/check-ai-discovery.py",
+    "test:discovery": "python3 -m unittest discover -s scripts -p test_ai_discovery.py",
     "test:seo": "node --test scripts/seo-regression.test.mjs"
   },
   "dependencies": {

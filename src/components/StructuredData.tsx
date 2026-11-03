@@ -31,7 +31,7 @@ export function OrganizationSchema() {
  legalName: "StemTechLab",
  alternateName: ["STEM Tech Lab", "Stem Tech Lab"],
  description:
- "Live online STEM and coding classes for children ages 6–18 in the UAE and other GCC countries. Bilingual English/Arabic interface, AI-powered course matching, and small-group classes. Programming, Robotics, Algorithms, AI, Web and Mobile Development. Built for families in the UAE and GCC. Certified teachers, parent dashboard, free trial.",
+ "Live online STEM and coding classes for children ages 6–18 in the UAE and other GCC countries. Bilingual English/Arabic interface, AI-powered course matching, and small-group classes. Programming, Robotics, Algorithms, AI, Web and Mobile Development. Built for families in the UAE and GCC. Live instruction, parent dashboard, free trial.",
  url: SITE_URL,
  logo: `${SITE_URL}/logo.svg`,
  image: `${SITE_URL}/og`,
@@ -281,7 +281,7 @@ export function buildCourseSchema(course: CourseListSchemaItem, locale = "en") {
  suggestedMinAge: course.ageMin,
  suggestedMaxAge: course.ageMax,
  },
- availableLanguage: ["English", "Arabic"],
+ // The page language does not establish the teaching language of a course.
  inLanguage: locale,
  ...(course.imageUrl ? { image: new URL(course.imageUrl, SITE_URL).href } : {}),
  ...(course.skills?.length ? { teaches: course.skills } : {}),

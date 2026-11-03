@@ -41,7 +41,7 @@ test('sitemap rejects an unavailable catalog instead of publishing a partial sit
 });
 test('AI indexes resolve every placeholder and contain only live supplied courses', () => {
  const template = load('src/lib/llms-full-template.ts');
- const llms = load('src/lib/llms-content.ts', {'./llms-full-template': template});
+ const llms = load('src/lib/llms-content.ts', {'./llms-full-template': template, './course-positioning': load('src/lib/course-positioning.ts')});
  for (const text of [llms.formatLlmsShort('https://example.com', [{slug:'python', title:{en:'Python'}}]), llms.formatLlmsFull('https://example.com', [{slug:'python', title:{en:'Python'}}])]) {
   assert.ok(text.includes('https://example.com/en/uae'));
   assert.ok(text.includes('https://example.com/en/courses/python'));
@@ -170,4 +170,17 @@ test('vacancy descriptions and application links exist in server HTML before int
  assert.ok(html.includes('Teach Python live'));
  assert.ok(html.includes('Teaching experience'));
  assert.ok(html.includes('href="https://example.com/apply"'));
+});
+
+test('AI catalog titles match the parent-facing course pages in both index formats', () => {
+ const llms = load('src/lib/llms-content.ts', {
+  './llms-full-template': load('src/lib/llms-full-template.ts'),
+  './course-positioning': load('src/lib/course-positioning.ts'),
+ });
+ const courses = [{slug:'robotics',title:{en:'Introduction to Robotics Engineering'},ageMin:7,ageMax:10}];
+ for (const text of [llms.formatLlmsShort('https://example.com',courses), llms.formatLlmsFull('https://example.com',courses)]) {
+  assert.ok(text.includes('Online Robotics for Kids'));
+  assert.ok(!text.includes('Introduction to Robotics Engineering'));
+ }
+ assert.ok(llms.formatLlmsFull('https://example.com',courses).includes('https://example.com/ar/courses/robotics'));
 });

@@ -1,0 +1,1910 @@
+[
+  {
+    "url": "https://www.stemtechlab.com/en",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en",
+    "lang": "en",
+    "title": "Online Coding Classes for Kids in the UAE | StemTechLab",
+    "description": "Live online coding, robotics and AI classes for kids ages 6–18 in the UAE. Small groups, English and Arabic support, and a free trial from home.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en",
+      "ar": "https://www.stemtechlab.com/ar",
+      "x-default": "https://www.stemtechlab.com/en"
+    },
+    "h1": "Coding & STEM for kids, live online in the UAE.",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/uae",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/uae",
+    "lang": "en",
+    "title": "Online Coding & STEM Classes for Kids in the UAE | StemTechLab",
+    "description": "Explore live online coding, robotics and AI classes for children in the UAE. Compare course ages and levels, plan lessons from home and request a free trial.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/uae",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/uae",
+      "ar": "https://www.stemtechlab.com/ar/uae",
+      "x-default": "https://www.stemtechlab.com/en/uae"
+    },
+    "h1": "Online Coding & STEM Classes for Kids in the UAE",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/courses",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/courses",
+    "lang": "en",
+    "title": "Kids’ Coding & STEM Courses Online (6–18) | StemTechLab",
+    "description": "Live coding & STEM courses for kids 6–18: Python, Robotics, Algorithms, AI, Web & Mobile Development. Certified teachers, small groups. Free trial.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/courses",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses",
+      "ar": "https://www.stemtechlab.com/ar/courses",
+      "x-default": "https://www.stemtechlab.com/en/courses"
+    },
+    "h1": "Online Coding & STEM Courses for Kids",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/learning-path",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/learning-path",
+    "lang": "en",
+    "title": "Learning Path — Five Stages for Kids 5–18 | StemTechLab",
+    "description": "A structured five-stage learning journey for ages 5–18: Explorer, Builder, Creator, Innovator, Pro. See what each stage develops and where your child fits.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/learning-path",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/learning-path",
+      "ar": "https://www.stemtechlab.com/ar/learning-path",
+      "x-default": "https://www.stemtechlab.com/en/learning-path"
+    },
+    "h1": "A structured learning journey that grows with your child",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/learning-path/explorer",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/learning-path/explorer",
+    "lang": "en",
+    "title": "Explorer: Coding for Kids Ages 5–8 | StemTechLab",
+    "description": "A foundational journey that turns your child's curiosity into clearer thinking: sequencing, noticing, trying, and improving — through story and guided play.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/learning-path/explorer",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/learning-path/explorer",
+      "ar": "https://www.stemtechlab.com/ar/learning-path/explorer",
+      "x-default": "https://www.stemtechlab.com/en/learning-path/explorer"
+    },
+    "h1": "Explorer",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/learning-path/builder",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/learning-path/builder",
+    "lang": "en",
+    "title": "Builder: Coding Classes for Ages 8–10 | StemTechLab",
+    "description": "The stage where your child’s ideas become instructions a machine can follow — first programs, first prototypes, first robots that respond.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/learning-path/builder",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/learning-path/builder",
+      "ar": "https://www.stemtechlab.com/ar/learning-path/builder",
+      "x-default": "https://www.stemtechlab.com/en/learning-path/builder"
+    },
+    "h1": "Builder",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/learning-path/creator",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/learning-path/creator",
+    "lang": "en",
+    "title": "Creator: Coding & Robotics, Ages 9–12 | StemTechLab",
+    "description": "The stage where separate skills come together into projects your child plans, programs, debugs, and improves from start to finish.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/learning-path/creator",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/learning-path/creator",
+      "ar": "https://www.stemtechlab.com/ar/learning-path/creator",
+      "x-default": "https://www.stemtechlab.com/en/learning-path/creator"
+    },
+    "h1": "Creator",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/learning-path/innovator",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/learning-path/innovator",
+    "lang": "en",
+    "title": "Innovator: AI & STEM Projects, Ages 11–14 | StemTechLab",
+    "description": "The stage where your child chooses and combines technologies to tackle problems that do not come with a given answer.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/learning-path/innovator",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/learning-path/innovator",
+      "ar": "https://www.stemtechlab.com/ar/learning-path/innovator",
+      "x-default": "https://www.stemtechlab.com/en/learning-path/innovator"
+    },
+    "h1": "Innovator",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/learning-path/pro",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/learning-path/pro",
+    "lang": "en",
+    "title": "Pro: Advanced Coding & AI, Ages 13–18 | StemTechLab",
+    "description": "The stage where your child works independently in a chosen specialization — sustaining a substantial project from first idea to finished, documented work.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/learning-path/pro",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/learning-path/pro",
+      "ar": "https://www.stemtechlab.com/ar/learning-path/pro",
+      "x-default": "https://www.stemtechlab.com/en/learning-path/pro"
+    },
+    "h1": "Pro",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/free-trial",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/free-trial",
+    "lang": "en",
+    "title": "Free Trial Class for Kids — Coding & Robotics | StemTechLab",
+    "description": "Book your child's free 60-minute live class with a certified instructor — no credit card, no commitment. Coding and robotics for ages 6–18.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/free-trial",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/free-trial",
+      "ar": "https://www.stemtechlab.com/ar/free-trial",
+      "x-default": "https://www.stemtechlab.com/en/free-trial"
+    },
+    "h1": "Try a Free Class — No Card, No Commitment",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/parents",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/parents",
+    "lang": "en",
+    "title": "For Parents — Track Your Child’s Progress | StemTechLab",
+    "description": "Match your child to the right course with the AI course finder, then follow attendance, progress, and instructor notes from the parent dashboard.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/parents",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/parents",
+      "ar": "https://www.stemtechlab.com/ar/parents",
+      "x-default": "https://www.stemtechlab.com/en/parents"
+    },
+    "h1": "Every parent has a different question. Every child needs a different start.",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/blogs",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/blogs",
+    "lang": "en",
+    "title": "Blog — Tips, Guides & News for Parents | StemTechLab",
+    "description": "Practical guides for parents: choosing your child’s first coding course, when to start robotics, and the STEM skills that matter most by age (6–18).",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/blogs",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs",
+      "ar": "https://www.stemtechlab.com/ar/blogs",
+      "x-default": "https://www.stemtechlab.com/en/blogs"
+    },
+    "h1": "Tips & Guides for Parents",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/recommend",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/recommend",
+    "lang": "en",
+    "title": "AI Course Finder — Right Fit for Kids | StemTechLab",
+    "description": "The AI course finder analyses your child's age, interests, pace, and goals to suggest the best-fit STEM or coding course. Free, no sign-up.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/recommend",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/recommend",
+      "ar": "https://www.stemtechlab.com/ar/recommend",
+      "x-default": "https://www.stemtechlab.com/en/recommend"
+    },
+    "h1": "Let Us Help You Find the Perfect Fit",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/challenge",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/challenge",
+    "lang": "en",
+    "title": "Paper pixel letter | StemTechLab",
+    "description": "A 10-minute offline activity that connects art with how computers store simple images — perfect to try before your first coding class.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/challenge",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/challenge",
+      "ar": "https://www.stemtechlab.com/ar/challenge",
+      "x-default": "https://www.stemtechlab.com/en/challenge"
+    },
+    "h1": "Paper pixel letter",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/about",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/about",
+    "lang": "en",
+    "title": "About StemTechLab | AI STEM Platform for Kids (6–18)",
+    "description": "AI course matching finds the right fit for each child. Live STEM & coding classes for ages 6–18, certified teachers, max 3 students, and a parent dashboard.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/about",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/about",
+      "ar": "https://www.stemtechlab.com/ar/about",
+      "x-default": "https://www.stemtechlab.com/en/about"
+    },
+    "h1": "Built with Love, for Every Child",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/faq",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/faq",
+    "lang": "en",
+    "title": "FAQ — Frequently Asked Questions | StemTechLab",
+    "description": "Answers about StemTechLab classes, scheduling, teachers, and more — live coding & robotics courses for kids 6–18 across the UAE and GCC.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/faq",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/faq",
+      "ar": "https://www.stemtechlab.com/ar/faq",
+      "x-default": "https://www.stemtechlab.com/en/faq"
+    },
+    "h1": "Questions from   Our Families",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/contact",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/contact",
+    "lang": "en",
+    "title": "Contact StemTechLab | Free trial for kids’ coding & STEM",
+    "description": "Ask StemTechLab about enrollment, course fit, or your child’s needs — we reply within 24 hours. Arabic-speaking support across the UAE and GCC.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/contact",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/contact",
+      "ar": "https://www.stemtechlab.com/ar/contact",
+      "x-default": "https://www.stemtechlab.com/en/contact"
+    },
+    "h1": "We'd Love to Hear from You",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/careers",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/careers",
+    "lang": "en",
+    "title": "Careers at StemTechLab | Teach Kids Coding & STEM Online",
+    "description": "Explore current opportunities at StemTechLab. Read role descriptions, requirements and application details for the positions currently available.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/careers",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/careers",
+      "ar": "https://www.stemtechlab.com/ar/careers",
+      "x-default": "https://www.stemtechlab.com/en/careers"
+    },
+    "h1": "Join Our Team",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/privacy",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/privacy",
+    "lang": "en",
+    "title": "Privacy Policy | StemTechLab",
+    "description": "How StemTechLab collects, stores, and protects parent and child data, our COPPA-aware practices, third-party AI disclosure, and how to request deletion.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/privacy",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/privacy",
+      "ar": "https://www.stemtechlab.com/ar/privacy",
+      "x-default": "https://www.stemtechlab.com/en/privacy"
+    },
+    "h1": "Privacy Policy",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/terms",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/terms",
+    "lang": "en",
+    "title": "Terms of Service | StemTechLab",
+    "description": "StemTechLab terms of service: enrollment, cancellation and refunds, acceptable use for students 6–18, session recording, and conditions for parents.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/terms",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/terms",
+      "ar": "https://www.stemtechlab.com/ar/terms",
+      "x-default": "https://www.stemtechlab.com/en/terms"
+    },
+    "h1": "Terms & Conditions",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar",
+    "lang": "ar",
+    "title": "دورات برمجة للأطفال في الإمارات أونلاين | ستم تك لاب",
+    "description": "دورات برمجة وروبوتات وذكاء اصطناعي للأطفال ٦–١٨ في الإمارات. حصص مباشرة أونلاين، مجموعات صغيرة، ودعم بالعربية والإنجليزية. ابدأ بتجربة مجانية.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en",
+      "ar": "https://www.stemtechlab.com/ar",
+      "x-default": "https://www.stemtechlab.com/en"
+    },
+    "h1": "البرمجة وSTEM للأطفال، مباشرة أونلاين في الإمارات.",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/uae",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/uae",
+    "lang": "ar",
+    "title": "دورات برمجة وSTEM للأطفال في الإمارات أونلاين | ستم تك لاب",
+    "description": "استكشف حصص البرمجة والروبوتات والذكاء الاصطناعي المباشرة للأطفال في الإمارات. اختر الدورة المناسبة لعمر طفلك ومستواه، وتعلّم من المنزل مع حصة تجريبية مجانية.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/uae",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/uae",
+      "ar": "https://www.stemtechlab.com/ar/uae",
+      "x-default": "https://www.stemtechlab.com/en/uae"
+    },
+    "h1": "دورات برمجة وSTEM للأطفال في الإمارات أونلاين",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/courses",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/courses",
+    "lang": "ar",
+    "title": "دورات برمجة وSTEM للأطفال أونلاين ٦–١٨ | ستم تك لاب",
+    "description": "دورات مباشرة للأطفال ٦–١٨: بايثون، روبوتات، خوارزميات، ذكاء اصطناعي، وتطوير الويب والتطبيقات. معلمون معتمدون، مجموعات صغيرة. تجربة مجانية.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/courses",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses",
+      "ar": "https://www.stemtechlab.com/ar/courses",
+      "x-default": "https://www.stemtechlab.com/en/courses"
+    },
+    "h1": "دورات البرمجة وSTEM للأطفال أونلاين",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/learning-path",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/learning-path",
+    "lang": "ar",
+    "title": "مسار التعلّم — خمس مراحل للأعمار 5–18 | ستم تك لاب",
+    "description": "رحلة تعلّم منظّمة من خمس مراحل للأعمار 5–18: Explorer وBuilder وCreator وInnovator وPro. تعرّف على ما تنمّيه كل مرحلة وأين يقع طفلك.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/learning-path",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/learning-path",
+      "ar": "https://www.stemtechlab.com/ar/learning-path",
+      "x-default": "https://www.stemtechlab.com/en/learning-path"
+    },
+    "h1": "رحلة تعلّم منظّمة تكبر مع طفلك",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/learning-path/explorer",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/learning-path/explorer",
+    "lang": "ar",
+    "title": "Explorer: برمجة للأطفال 5–8 سنوات | ستم تك لاب",
+    "description": "رحلة تأسيسية تأخذ فضول طفلك نحو تفكير أوضح: ترتيب، ملاحظة، تجربة، وتحسين — بالقصة واللعب الموجّه.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/learning-path/explorer",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/learning-path/explorer",
+      "ar": "https://www.stemtechlab.com/ar/learning-path/explorer",
+      "x-default": "https://www.stemtechlab.com/en/learning-path/explorer"
+    },
+    "h1": "Explorer",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/learning-path/builder",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/learning-path/builder",
+    "lang": "ar",
+    "title": "Builder: برمجة للأطفال 8–10 سنوات | ستم تك لاب",
+    "description": "المرحلة التي تتحوّل فيها أفكار طفلك إلى تعليمات ينفّذها الجهاز: أول برنامج، أول نموذج، وأول روبوت يستجيب له.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/learning-path/builder",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/learning-path/builder",
+      "ar": "https://www.stemtechlab.com/ar/learning-path/builder",
+      "x-default": "https://www.stemtechlab.com/en/learning-path/builder"
+    },
+    "h1": "Builder",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/learning-path/creator",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/learning-path/creator",
+    "lang": "ar",
+    "title": "Creator: برمجة وروبوتات 9–12 سنة | ستم تك لاب",
+    "description": "المرحلة التي تجتمع فيها المهارات المنفصلة في مشاريع يخطّط لها طفلك ويبرمجها ويصحّحها ويحسّنها من البداية إلى النهاية.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/learning-path/creator",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/learning-path/creator",
+      "ar": "https://www.stemtechlab.com/ar/learning-path/creator",
+      "x-default": "https://www.stemtechlab.com/en/learning-path/creator"
+    },
+    "h1": "Creator",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/learning-path/innovator",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/learning-path/innovator",
+    "lang": "ar",
+    "title": "Innovator: ذكاء اصطناعي وSTEM 11–14 سنة | ستم تك لاب",
+    "description": "المرحلة التي يختار فيها طفلك التقنيات ويدمجها لمعالجة مشكلات لا تأتي بإجابة جاهزة.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/learning-path/innovator",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/learning-path/innovator",
+      "ar": "https://www.stemtechlab.com/ar/learning-path/innovator",
+      "x-default": "https://www.stemtechlab.com/en/learning-path/innovator"
+    },
+    "h1": "Innovator",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/learning-path/pro",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/learning-path/pro",
+    "lang": "ar",
+    "title": "Pro: برمجة متقدّمة وذكاء اصطناعي 13–18 | ستم تك لاب",
+    "description": "المرحلة التي يعمل فيها طفلك باستقلالية في تخصّص يختاره، ويواصل مشروعًا كبيرًا من الفكرة الأولى إلى عمل مكتمل وموثّق.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/learning-path/pro",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/learning-path/pro",
+      "ar": "https://www.stemtechlab.com/ar/learning-path/pro",
+      "x-default": "https://www.stemtechlab.com/en/learning-path/pro"
+    },
+    "h1": "Pro",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/free-trial",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/free-trial",
+    "lang": "ar",
+    "title": "حصة مجانية للأطفال | برمجة وروبوتات | ستم تك لاب",
+    "description": "احجز حصة مجانية ٦٠ دقيقة لطفلك — معلم معتمد، مجموعة صغيرة، بدون بطاقة ائتمان. برمجة وروبوتات للأعمار ٦–١٨. الأماكن محدودة.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/free-trial",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/free-trial",
+      "ar": "https://www.stemtechlab.com/ar/free-trial",
+      "x-default": "https://www.stemtechlab.com/en/free-trial"
+    },
+    "h1": "جرّب حصة مجانية — بدون بطاقة أو التزام",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/parents",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/parents",
+    "lang": "ar",
+    "title": "لأولياء الأمور — تابع تقدم طفلك | ستم تك لاب",
+    "description": "منتقي دورات بالذكاء الاصطناعي يختار الأنسب لطفلك. تابع الحضور والتقدم وملاحظات المعلم من لوحة التحكم. معلمون معتمدون، حد أقصى ٣ طلاب، وتجربة مجانية.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/parents",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/parents",
+      "ar": "https://www.stemtechlab.com/ar/parents",
+      "x-default": "https://www.stemtechlab.com/en/parents"
+    },
+    "h1": "لكل أب وأم سؤال مختلف. ولكل طفل بداية مختلفة.",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/blogs",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/blogs",
+    "lang": "ar",
+    "title": "المدونة — نصائح وأدلة وأخبار للوالدين | ستم تك لاب",
+    "description": "أدلة عملية لأولياء الأمور: اختيار دورة البرمجة المناسبة لطفلك، متى يبدأ الروبوتات، ومهارات STEM الأهم حسب العمر. للعائلات في الإمارات ودول الخليج.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/blogs",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs",
+      "ar": "https://www.stemtechlab.com/ar/blogs",
+      "x-default": "https://www.stemtechlab.com/en/blogs"
+    },
+    "h1": "نصائح وأدلة للوالدين",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/recommend",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/recommend",
+    "lang": "ar",
+    "title": "منتقي الدورات بالذكاء الاصطناعي | ستم تك لاب",
+    "description": "منتقي دورات مدعوم بالذكاء الاصطناعي يحلّل عمر طفلك واهتماماته وأهدافه ليقترح أنسب دورة STEM أو برمجة مع مسار تعلم من ٣ مراحل. مجاني، بدون تسجيل.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/recommend",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/recommend",
+      "ar": "https://www.stemtechlab.com/ar/recommend",
+      "x-default": "https://www.stemtechlab.com/en/recommend"
+    },
+    "h1": "اعثر على الدورة المناسبة",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/challenge",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/challenge",
+    "lang": "ar",
+    "title": "حرفك على شكل بكسل ورقي | ستم تك لاب",
+    "description": "نشاط ورقي قصير يربط الرسم بفكرة كيف تخزن الحواسيب صورًا بسيطة — مناسب قبل أول حصة برمجة.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/challenge",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/challenge",
+      "ar": "https://www.stemtechlab.com/ar/challenge",
+      "x-default": "https://www.stemtechlab.com/en/challenge"
+    },
+    "h1": "حرفك على شكل بكسل ورقي",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/about",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/about",
+    "lang": "ar",
+    "title": "عن ستم تك لاب | منصة STEM ذكية للأطفال",
+    "description": "تستخدم ستم تك لاب الذكاء الاصطناعي لاختيار الدورة الأنسب لكل طفل. دروس مباشرة في STEM والبرمجة للأعمار ٦–١٨، معلمون معتمدون، حد أقصى ٣ طلاب، ولوحة متابعة لولي الأمر.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/about",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/about",
+      "ar": "https://www.stemtechlab.com/ar/about",
+      "x-default": "https://www.stemtechlab.com/en/about"
+    },
+    "h1": "بُني بحب، لكل طفل",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/faq",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/faq",
+    "lang": "ar",
+    "title": "الأسئلة الشائعة | ستم تك لاب",
+    "description": "أجوبة على أسئلتك حول حصص ستم تك لاب، المواعيد، المعلمين، الأسعار وأكثر. دورات برمجة وروبوتات للأطفال ٦–١٨ في الإمارات ودول الخليج العربي.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/faq",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/faq",
+      "ar": "https://www.stemtechlab.com/ar/faq",
+      "x-default": "https://www.stemtechlab.com/en/faq"
+    },
+    "h1": "أسئلة من   عائلاتنا",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/contact",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/contact",
+    "lang": "ar",
+    "title": "تواصل مع ستم تك لاب | تجربة مجانية لبرمجة الأطفال وSTEM",
+    "description": "أرسل رسالة إلى ستم تك لاب بشأن التسجيل أو الدورة المناسبة أو احتياجات طفلك. نرد خلال ٢٤ ساعة. الدعم متاح بالعربية في الإمارات ودول الخليج. contact@stemtechlab.com.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/contact",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/contact",
+      "ar": "https://www.stemtechlab.com/ar/contact",
+      "x-default": "https://www.stemtechlab.com/en/contact"
+    },
+    "h1": "يسعدنا سماعك",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/careers",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/careers",
+    "lang": "ar",
+    "title": "وظائف ستم تك لاب | علّم البرمجة وSTEM للأطفال أونلاين",
+    "description": "استكشف فرص العمل الحالية في ستم تك لاب، واقرأ وصف كل وظيفة ومتطلباتها وطريقة التقديم للفرص المتاحة.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/careers",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/careers",
+      "ar": "https://www.stemtechlab.com/ar/careers",
+      "x-default": "https://www.stemtechlab.com/en/careers"
+    },
+    "h1": "انضم لفريقنا",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/privacy",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/privacy",
+    "lang": "ar",
+    "title": "سياسة الخصوصية | ستم تك لاب",
+    "description": "كيف تجمع ستم تك لاب بيانات أولياء الأمور والأطفال وتحميها، توافقنا مع COPPA، الإفصاح عن مزودي الذكاء الاصطناعي، وكيفية طلب حذف البيانات.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/privacy",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/privacy",
+      "ar": "https://www.stemtechlab.com/ar/privacy",
+      "x-default": "https://www.stemtechlab.com/en/privacy"
+    },
+    "h1": "سياسة الخصوصية",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/terms",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/terms",
+    "lang": "ar",
+    "title": "شروط الخدمة | ستم تك لاب",
+    "description": "شروط خدمة ستم تك لاب: التسجيل، الإلغاء والاسترداد، الاستخدام المقبول للطلاب ٦–١٨، تسجيل الجلسات، وشروط الاستخدام لأولياء الأمور.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/terms",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/terms",
+      "ar": "https://www.stemtechlab.com/ar/terms",
+      "x-default": "https://www.stemtechlab.com/en/terms"
+    },
+    "h1": "الشروط والأحكام",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/courses/mobappdev",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/courses/mobappdev",
+    "lang": "en",
+    "title": "Create Your First Mobile App | Online Course for Ages 8-14 | StemTechLab",
+    "description": "From idea to app—your child builds real technology! In this hands-on course, students explore how mobile… For ages 8–14. Beginner level, 22 lessons over 12 weeks.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/courses/mobappdev",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/mobappdev",
+      "ar": "https://www.stemtechlab.com/ar/courses/mobappdev",
+      "x-default": "https://www.stemtechlab.com/en/courses/mobappdev"
+    },
+    "h1": "Create Your First Mobile App",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/courses/programming2",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/courses/programming2",
+    "lang": "en",
+    "title": "Advanced Programming | Online Course for Ages 8-14 | StemTechLab",
+    "description": "As students progress into the complexities of variables, sequences, and loops, they move toward the goal of… For ages 8–14. Beginner level, 22 lessons over 12 weeks.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/courses/programming2",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/programming2",
+      "ar": "https://www.stemtechlab.com/ar/courses/programming2",
+      "x-default": "https://www.stemtechlab.com/en/courses/programming2"
+    },
+    "h1": "Advanced Programming",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/courses/web-beginner",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/courses/web-beginner",
+    "lang": "en",
+    "title": "My First Website | Online Course for Ages 8-12 | StemTechLab",
+    "description": "In this fun beginner course, your child will create their very first real website! 🎉 They’ll learn how to… For ages 8–12. Beginner level, 10 lessons over 8 weeks.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/courses/web-beginner",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/web-beginner",
+      "ar": "https://www.stemtechlab.com/ar/courses/web-beginner",
+      "x-default": "https://www.stemtechlab.com/en/courses/web-beginner"
+    },
+    "h1": "My First Website",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/courses/algo-intro",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/courses/algo-intro",
+    "lang": "en",
+    "title": "Algorithms Adventure | Online Course for Ages 6-10 | StemTechLab",
+    "description": "Train your child to think like a problem solver! In this interactive online course, students learn how to… For ages 6–10. Beginner level, 8 lessons over 6 weeks.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/courses/algo-intro",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/algo-intro",
+      "ar": "https://www.stemtechlab.com/ar/courses/algo-intro",
+      "x-default": "https://www.stemtechlab.com/en/courses/algo-intro"
+    },
+    "h1": "Algorithms Adventure",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/courses/motionstorylab",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/courses/motionstorylab",
+    "lang": "en",
+    "title": "Motion & Story Lab | Online Course for Ages 6-8 | StemTechLab",
+    "description": "From idea to animation—your child brings stories to life! In this hands-on course, students explore the… For ages 6–8. Beginner level, 10 lessons over 8 weeks.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/courses/motionstorylab",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/motionstorylab",
+      "ar": "https://www.stemtechlab.com/ar/courses/motionstorylab",
+      "x-default": "https://www.stemtechlab.com/en/courses/motionstorylab"
+    },
+    "h1": "Motion & Story Lab",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/courses/aiadvanced",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/courses/aiadvanced",
+    "lang": "en",
+    "title": "Advanced AI Engineering | Online Course for Ages 10-15 | StemTechLab",
+    "description": "Level 2 transitions into the engineering behind advanced AI, exploring Decision Trees and the… For ages 10–15. Intermediate level, 22 lessons over 12 weeks.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/courses/aiadvanced",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/aiadvanced",
+      "ar": "https://www.stemtechlab.com/ar/courses/aiadvanced",
+      "x-default": "https://www.stemtechlab.com/en/courses/aiadvanced"
+    },
+    "h1": "Advanced AI Engineering",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/courses/python",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/courses/python",
+    "lang": "en",
+    "title": "Python for Kids | Online Course for Ages 8-13 | StemTechLab",
+    "description": "From first lines of code to real creative projects! In this engaging Python course, students start with the… For ages 8–13. Beginner level, 22 lessons over 12 weeks.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/courses/python",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/python",
+      "ar": "https://www.stemtechlab.com/ar/courses/python",
+      "x-default": "https://www.stemtechlab.com/en/courses/python"
+    },
+    "h1": "Python for Kids",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/courses/pcep",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/courses/pcep",
+    "lang": "en",
+    "title": "PCEP Certification Prep | Online Course for Ages 13-18 | StemTechLab",
+    "description": "Welcome to the next step in your programming journey. Designed for young innovators aged 13 to 18, this… For ages 13–18. Advanced level, 24 lessons over 12 weeks.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/courses/pcep",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/pcep",
+      "ar": "https://www.stemtechlab.com/ar/courses/pcep",
+      "x-default": "https://www.stemtechlab.com/en/courses/pcep"
+    },
+    "h1": "PCEP Certification Prep",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/courses/web-intermediate",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/courses/web-intermediate",
+    "lang": "en",
+    "title": "Web Design & Styling | Online Course for Ages 11-14 | StemTechLab",
+    "description": "Your child is ready for the next challenge. In this course, they'll move beyond the basics and start… For ages 11–14. Intermediate level, 16 lessons over 10 weeks.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/courses/web-intermediate",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/web-intermediate",
+      "ar": "https://www.stemtechlab.com/ar/courses/web-intermediate",
+      "x-default": "https://www.stemtechlab.com/en/courses/web-intermediate"
+    },
+    "h1": "Web Design & Styling",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/courses/web-advanced",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/courses/web-advanced",
+    "lang": "en",
+    "title": "Full Web Developer | Online Course for Ages 14-18 | StemTechLab",
+    "description": "This is where your hero becomes a true web developer. JavaScript, live interactions, real APIs, and… For ages 14–18. Advanced level, 24 lessons over 14 weeks.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/courses/web-advanced",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/web-advanced",
+      "ar": "https://www.stemtechlab.com/ar/courses/web-advanced",
+      "x-default": "https://www.stemtechlab.com/en/courses/web-advanced"
+    },
+    "h1": "Full Web Developer",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/courses/programming1",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/courses/programming1",
+    "lang": "en",
+    "title": "Programming Foundations | Online Course for Ages 6-10 | StemTechLab",
+    "description": "In this foundational stage, students transition from passive technology consumers to active creators by… For ages 6–10. Beginner level, 22 lessons over 12 weeks.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/courses/programming1",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/programming1",
+      "ar": "https://www.stemtechlab.com/ar/courses/programming1",
+      "x-default": "https://www.stemtechlab.com/en/courses/programming1"
+    },
+    "h1": "Programming Foundations",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/courses/aifoundation",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/courses/aifoundation",
+    "lang": "en",
+    "title": "AI Engineering Foundation | Online Course for Ages 9-14 | StemTechLab",
+    "description": "In this introductory building stage, students shift from coding with fixed rules to training models with… For ages 9–14. Beginner level, 22 lessons over 12 weeks.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/courses/aifoundation",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/aifoundation",
+      "ar": "https://www.stemtechlab.com/ar/courses/aifoundation",
+      "x-default": "https://www.stemtechlab.com/en/courses/aifoundation"
+    },
+    "h1": "AI Engineering Foundation",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/courses/robotics",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/courses/robotics",
+    "lang": "en",
+    "title": "Introduction to Robotics Engineering | Online Course for Ages 7-10 | StemTechLab",
+    "description": "Build, control, and think like a real robotics engineer! In this interactive course, students explore how… For ages 7–10. Beginner level, 20 lessons over 10 weeks.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/courses/robotics",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/robotics",
+      "ar": "https://www.stemtechlab.com/ar/courses/robotics",
+      "x-default": "https://www.stemtechlab.com/en/courses/robotics"
+    },
+    "h1": "Introduction to Robotics Engineering",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/courses/mobappdev",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/courses/mobappdev",
+    "lang": "ar",
+    "title": "إبدأ تصميم أول تطبيق موبايل | دورة أونلاين للأعمار 8-14 | ستم تك لاب",
+    "description": "!من فكرة إلى تطبيق—طفلك يصنع تكنولوجيا حقيقية في هذه الدورة التطبيقية، يتعلم الطلاب كيفية إنشاء تطبيقات… للأعمار 8–14. مستوى مبتدئ، 22 درسًا على مدى 12 أسابيع.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/courses/mobappdev",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/mobappdev",
+      "ar": "https://www.stemtechlab.com/ar/courses/mobappdev",
+      "x-default": "https://www.stemtechlab.com/en/courses/mobappdev"
+    },
+    "h1": "إبدأ تصميم أول تطبيق موبايل",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/courses/programming2",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/courses/programming2",
+    "lang": "ar",
+    "title": "البرمجة المتقدمة | دورة أونلاين للأعمار 8-14 | ستم تك لاب",
+    "description": "مع ارتقاء الطلاب لمواجهة تعقيدات المتغيرات، والتسلسل، والحلقات التكرارية، فإنهم ينتقلون نحو هدف \"التطبيق… للأعمار 8–14. مستوى مبتدئ، 22 درسًا على مدى 12 أسابيع.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/courses/programming2",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/programming2",
+      "ar": "https://www.stemtechlab.com/ar/courses/programming2",
+      "x-default": "https://www.stemtechlab.com/en/courses/programming2"
+    },
+    "h1": "البرمجة المتقدمة",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/courses/web-beginner",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/courses/web-beginner",
+    "lang": "ar",
+    "title": "موقعي الأول على الإنترنت | دورة أونلاين للأعمار 8-12 | ستم تك لاب",
+    "description": "في هذه الدورة التدريبية الممتعة للمبتدئين، سيُنشئ طفلك موقعه الإلكتروني الأول! 🎉 سيتعلم كيفية تصميم صفحات… للأعمار 8–12. مستوى مبتدئ، 10 درسًا على مدى 8 أسابيع.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/courses/web-beginner",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/web-beginner",
+      "ar": "https://www.stemtechlab.com/ar/courses/web-beginner",
+      "x-default": "https://www.stemtechlab.com/en/courses/web-beginner"
+    },
+    "h1": "موقعي الأول على الإنترنت",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/courses/algo-intro",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/courses/algo-intro",
+    "lang": "ar",
+    "title": "مغامرات الخوارزميات | دورة أونلاين للأعمار 6-10 | ستم تك لاب",
+    "description": "!درّب طفلك على التفكير كحلّال للمشكلات في هذه الدورة التفاعلية عبر الإنترنت، يتعلم الطلاب كيفية تحليل المشكلات… للأعمار 6–10. مستوى مبتدئ، 8 درسًا على مدى 6 أسابيع.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/courses/algo-intro",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/algo-intro",
+      "ar": "https://www.stemtechlab.com/ar/courses/algo-intro",
+      "x-default": "https://www.stemtechlab.com/en/courses/algo-intro"
+    },
+    "h1": "مغامرات الخوارزميات",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/courses/motionstorylab",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/courses/motionstorylab",
+    "lang": "ar",
+    "title": "الرسوم المتحركة والقصص | دورة أونلاين للأعمار 6-8 | ستم تك لاب",
+    "description": "من الفكرة إلى الرسوم المتحركة—يحوّل طفلك قصصه إلى مشاهد نابضة بالحياة! في هذه الدورة العملية، يتعرف الطلاب على… للأعمار 6–8. مستوى مبتدئ، 10 درسًا على مدى 8 أسابيع.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/courses/motionstorylab",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/motionstorylab",
+      "ar": "https://www.stemtechlab.com/ar/courses/motionstorylab",
+      "x-default": "https://www.stemtechlab.com/en/courses/motionstorylab"
+    },
+    "h1": "الرسوم المتحركة والقصص",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/courses/aiadvanced",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/courses/aiadvanced",
+    "lang": "ar",
+    "title": "هندسة الذكاء الإصطناعي المتقدمة | دورة أونلاين للأعمار 10-15 | ستم تك لاب",
+    "description": "ينتقل المستوى الثاني إلى الهندسة الكامنة وراء الذكاء الاصطناعي المتقدم، حيث يستكشف الطلاب \"أشجار القرار\"… للأعمار 10–15. مستوى متوسط، 22 درسًا على مدى 12 أسابيع.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/courses/aiadvanced",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/aiadvanced",
+      "ar": "https://www.stemtechlab.com/ar/courses/aiadvanced",
+      "x-default": "https://www.stemtechlab.com/en/courses/aiadvanced"
+    },
+    "h1": "هندسة الذكاء الإصطناعي المتقدمة",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/courses/python",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/courses/python",
+    "lang": "ar",
+    "title": "بايثون للأطفال | دورة أونلاين للأعمار 8-13 | ستم تك لاب",
+    "description": "برمجة بايثون للأطفال من أول سطر برمجي إلى مشاريع إبداعية حقيقية! في هذه الدورة الممتعة، يبدأ الطلاب بأساسيات… للأعمار 8–13. مستوى مبتدئ، 22 درسًا على مدى 12 أسابيع.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/courses/python",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/python",
+      "ar": "https://www.stemtechlab.com/ar/courses/python",
+      "x-default": "https://www.stemtechlab.com/en/courses/python"
+    },
+    "h1": "بايثون للأطفال",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/courses/pcep",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/courses/pcep",
+    "lang": "ar",
+    "title": "PCEP دورة التحضير لشهادة | دورة أونلاين للأعمار 13-18 | ستم تك لاب",
+    "description": "Python PCEP Certification Prep مرحباً بكم في الخطوة التالية من رحلتكم في عالم البرمجة. صُممت هذه الدورة… للأعمار 13–18. مستوى متقدم، 24 درسًا على مدى 12 أسابيع.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/courses/pcep",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/pcep",
+      "ar": "https://www.stemtechlab.com/ar/courses/pcep",
+      "x-default": "https://www.stemtechlab.com/en/courses/pcep"
+    },
+    "h1": "PCEP دورة التحضير لشهادة",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/courses/web-intermediate",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/courses/web-intermediate",
+    "lang": "ar",
+    "title": "تصميم الويب والتنسيق الاحترافي | دورة أونلاين للأعمار 11-14 | ستم تك لاب",
+    "description": "طفلك مستعد للخطوة التالية. في هذه الدورة، سيتجاوز المبادئ الأولى ويبدأ ببناء مواقع حقيقية تبدو احترافية… للأعمار 11–14. مستوى متوسط، 16 درسًا على مدى 10 أسابيع.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/courses/web-intermediate",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/web-intermediate",
+      "ar": "https://www.stemtechlab.com/ar/courses/web-intermediate",
+      "x-default": "https://www.stemtechlab.com/en/courses/web-intermediate"
+    },
+    "h1": "تصميم الويب والتنسيق الاحترافي",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/courses/web-advanced",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/courses/web-advanced",
+    "lang": "ar",
+    "title": "مطور ويب متكامل | دورة أونلاين للأعمار 14-18 | ستم تك لاب",
+    "description": "هنا يصبح بطلك مطور ويب حقيقياً. جافاسكريبت وتفاعلات مباشرة وواجهات برمجية حقيقية ومشاريع كاملة يضعها في… للأعمار 14–18. مستوى متقدم، 24 درسًا على مدى 14 أسابيع.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/courses/web-advanced",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/web-advanced",
+      "ar": "https://www.stemtechlab.com/ar/courses/web-advanced",
+      "x-default": "https://www.stemtechlab.com/en/courses/web-advanced"
+    },
+    "h1": "مطور ويب متكامل",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/courses/programming1",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/courses/programming1",
+    "lang": "ar",
+    "title": "أساسيات البرمجة | دورة أونلاين للأعمار 6-10 | ستم تك لاب",
+    "description": "في هذه المرحلة التأسيسية، ينتقل الطلاب من دور المستهلك السلبي للتكنولوجيا إلى دور المبدع الفاعل عبر إتقان… للأعمار 6–10. مستوى مبتدئ، 22 درسًا على مدى 12 أسابيع.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/courses/programming1",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/programming1",
+      "ar": "https://www.stemtechlab.com/ar/courses/programming1",
+      "x-default": "https://www.stemtechlab.com/en/courses/programming1"
+    },
+    "h1": "أساسيات البرمجة",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/courses/aifoundation",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/courses/aifoundation",
+    "lang": "ar",
+    "title": "أساسيات هندسة الذكاء الصنعي | دورة أونلاين للأعمار 9-14 | ستم تك لاب",
+    "description": "في هذه المرحلة التأسيسية للبناء، ينتقل الطلاب من البرمجة القائمة على القواعد الثابتة إلى تدريب النماذج… للأعمار 9–14. مستوى مبتدئ، 22 درسًا على مدى 12 أسابيع.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/courses/aifoundation",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/aifoundation",
+      "ar": "https://www.stemtechlab.com/ar/courses/aifoundation",
+      "x-default": "https://www.stemtechlab.com/en/courses/aifoundation"
+    },
+    "h1": "أساسيات هندسة الذكاء الصنعي",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/courses/robotics",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/courses/robotics",
+    "lang": "ar",
+    "title": "مدخل إلى هندسة الروبوتات | دورة أونلاين للأعمار 7-10 | ستم تك لاب",
+    "description": "!ابنِ وتحكّم وفكّر كمهندس روبوتات حقيقي في هذه الدورة التفاعلية، يتعرف الطلاب على كيفية حركة الروبوتات… للأعمار 7–10. مستوى مبتدئ، 20 درسًا على مدى 10 أسابيع.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/courses/robotics",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/courses/robotics",
+      "ar": "https://www.stemtechlab.com/ar/courses/robotics",
+      "x-default": "https://www.stemtechlab.com/en/courses/robotics"
+    },
+    "h1": "مدخل إلى هندسة الروبوتات",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/blogs/minecraft-coding-for-kids",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/blogs/minecraft-coding-for-kids",
+    "lang": "en",
+    "title": "Minecraft Coding for Kids: Python & Mods | StemTechLab",
+    "description": "Kids learn Python by coding Minecraft mods. Live classes, ages 8+. Turn screen time into coding skills.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/blogs/minecraft-coding-for-kids",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/minecraft-coding-for-kids",
+      "ar": "https://www.stemtechlab.com/ar/blogs/minecraft-coding-for-kids",
+      "x-default": "https://www.stemtechlab.com/en/blogs/minecraft-coding-for-kids"
+    },
+    "h1": "Minecraft Coding for Kids: Turn Play Into Real Skills",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/blogs/coding-competitions-for-kids",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/blogs/coding-competitions-for-kids",
+    "lang": "en",
+    "title": "Coding Competitions for Kids: Guide & Prep | StemTechLab",
+    "description": "Prepare your child for coding contests: Hour of Code, FLL, Codeforces. Skills, confidence, and college edge.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/blogs/coding-competitions-for-kids",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/coding-competitions-for-kids",
+      "ar": "https://www.stemtechlab.com/ar/blogs/coding-competitions-for-kids",
+      "x-default": "https://www.stemtechlab.com/en/blogs/coding-competitions-for-kids"
+    },
+    "h1": "Coding Competitions for Kids: Why They Matter & How to Prepare",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/blogs/web-development-for-kids-html-css-javascript",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/blogs/web-development-for-kids-html-css-javascript",
+    "lang": "en",
+    "title": "Web Development for Kids: HTML, CSS, JavaScript | StemTechLab",
+    "description": "Kids learn HTML, CSS, and JavaScript to build real websites. Live classes, ages 10+.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/blogs/web-development-for-kids-html-css-javascript",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/web-development-for-kids-html-css-javascript",
+      "ar": "https://www.stemtechlab.com/ar/blogs/web-development-for-kids-html-css-javascript",
+      "x-default": "https://www.stemtechlab.com/en/blogs/web-development-for-kids-html-css-javascript"
+    },
+    "h1": "Web Development for Kids: Build Real Websites with HTML, CSS & JS",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/blogs/girls-who-code-empowering-young-female-coders",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/blogs/girls-who-code-empowering-young-female-coders",
+    "lang": "en",
+    "title": "Girls Who Code: Empower Your Daughter in Tech | StemTechLab",
+    "description": "Help your daughter join the next generation of female coders. Live coding classes for girls ages 6–16.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/blogs/girls-who-code-empowering-young-female-coders",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/girls-who-code-empowering-young-female-coders",
+      "ar": "https://www.stemtechlab.com/ar/blogs/girls-who-code-empowering-young-female-coders",
+      "x-default": "https://www.stemtechlab.com/en/blogs/girls-who-code-empowering-young-female-coders"
+    },
+    "h1": "Girls Who Code: Empowering Young Female Coders",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/blogs/motivate-reluctant-child-to-code",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/blogs/motivate-reluctant-child-to-code",
+    "lang": "en",
+    "title": "Motivate a Reluctant Child to Code | StemTechLab",
+    "description": "4 proven hooks to get reluctant kids interested in coding. Real parent strategies that work.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/blogs/motivate-reluctant-child-to-code",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/motivate-reluctant-child-to-code",
+      "ar": "https://www.stemtechlab.com/ar/blogs/motivate-reluctant-child-to-code",
+      "x-default": "https://www.stemtechlab.com/en/blogs/motivate-reluctant-child-to-code"
+    },
+    "h1": "How to Motivate a Reluctant Child to Try Coding",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/blogs/arduino-electronics-for-kids",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/blogs/arduino-electronics-for-kids",
+    "lang": "en",
+    "title": "Arduino & Electronics for Kids | StemTechLab",
+    "description": "Kids learn Arduino, LEDs, sensors, and real engineering. Hands-on hardware classes for ages 10+.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/blogs/arduino-electronics-for-kids",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/arduino-electronics-for-kids",
+      "ar": "https://www.stemtechlab.com/ar/blogs/arduino-electronics-for-kids",
+      "x-default": "https://www.stemtechlab.com/en/blogs/arduino-electronics-for-kids"
+    },
+    "h1": "Arduino & Electronics for Kids: The First Step Into Hardware",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/blogs/ai-for-kids-safe-and-fun",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/blogs/ai-for-kids-safe-and-fun",
+    "lang": "en",
+    "title": "AI for Kids: Safe & Fun Classes | StemTechLab",
+    "description": "Kid-safe AI courses. Build chatbots, image tools, and smart games. Ages 9+.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/blogs/ai-for-kids-safe-and-fun",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/ai-for-kids-safe-and-fun",
+      "ar": "https://www.stemtechlab.com/ar/blogs/ai-for-kids-safe-and-fun",
+      "x-default": "https://www.stemtechlab.com/en/blogs/ai-for-kids-safe-and-fun"
+    },
+    "h1": "AI for Kids: Safe, Fun, and Future-Ready",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/blogs/best-age-to-start-coding",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/blogs/best-age-to-start-coding",
+    "lang": "en",
+    "title": "Best Age to Start Coding | Parent Guide | StemTechLab",
+    "description": "Find the right coding course by age. Scratch for 6–8, Python for 9–12, apps for 13+.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/blogs/best-age-to-start-coding",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/best-age-to-start-coding",
+      "ar": "https://www.stemtechlab.com/ar/blogs/best-age-to-start-coding",
+      "x-default": "https://www.stemtechlab.com/en/blogs/best-age-to-start-coding"
+    },
+    "h1": "What's the Best Age to Start Coding? A Parent's Quick Guide",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/blogs/5-coding-projects-kids-build-in-one-month",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/blogs/5-coding-projects-kids-build-in-one-month",
+    "lang": "en",
+    "title": "5 Coding Projects for Kids in One Month | StemTechLab",
+    "description": "Project-based coding for kids. Build a maze, quiz, drawing app, card, and chatbot in 4 weeks.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/blogs/5-coding-projects-kids-build-in-one-month",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/5-coding-projects-kids-build-in-one-month",
+      "ar": "https://www.stemtechlab.com/ar/blogs/5-coding-projects-kids-build-in-one-month",
+      "x-default": "https://www.stemtechlab.com/en/blogs/5-coding-projects-kids-build-in-one-month"
+    },
+    "h1": "5 Cool Coding Projects Kids Can Build in One Month",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/blogs/robotics-vs-coding-which-first",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/blogs/robotics-vs-coding-which-first",
+    "lang": "en",
+    "title": "Robotics vs Coding for Kids: Which First? | StemTechLab",
+    "description": "Choose between robotics and coding for your child. Quick guide by personality and interests.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/blogs/robotics-vs-coding-which-first",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/robotics-vs-coding-which-first",
+      "ar": "https://www.stemtechlab.com/ar/blogs/robotics-vs-coding-which-first",
+      "x-default": "https://www.stemtechlab.com/en/blogs/robotics-vs-coding-which-first"
+    },
+    "h1": "Robotics or Coding First? How to Choose for Your Child",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/blogs/why-every-child-should-learn-coding",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/blogs/why-every-child-should-learn-coding",
+    "lang": "en",
+    "title": "Why Every Child Should Learn Coding | StemTechLab",
+    "description": "Discover why coding is essential for children in 2026. Learn how it builds critical thinking, creativity, and confidence.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/blogs/why-every-child-should-learn-coding",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/why-every-child-should-learn-coding",
+      "ar": "https://www.stemtechlab.com/ar/blogs/why-every-child-should-learn-coding",
+      "x-default": "https://www.stemtechlab.com/en/blogs/why-every-child-should-learn-coding"
+    },
+    "h1": "Why Every Child Should Learn to Code in 2026",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/blogs/scratch-vs-python-which-is-right-for-your-child",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/blogs/scratch-vs-python-which-is-right-for-your-child",
+    "lang": "en",
+    "title": "Scratch vs Python for Kids | StemTechLab",
+    "description": "Compare Scratch and Python for kids. Find the best programming language based on your child's age and experience.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/blogs/scratch-vs-python-which-is-right-for-your-child",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/scratch-vs-python-which-is-right-for-your-child",
+      "ar": "https://www.stemtechlab.com/ar/blogs/scratch-vs-python-which-is-right-for-your-child",
+      "x-default": "https://www.stemtechlab.com/en/blogs/scratch-vs-python-which-is-right-for-your-child"
+    },
+    "h1": "Scratch vs Python: Which Programming Language Is Right for Your Child?",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/blogs/5-benefits-of-robotics-for-children",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/blogs/5-benefits-of-robotics-for-children",
+    "lang": "en",
+    "title": "5 Benefits of Robotics for Kids | StemTechLab",
+    "description": "Discover 5 key benefits of robotics education for children including problem-solving, teamwork, and engineering skills.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/blogs/5-benefits-of-robotics-for-children",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/5-benefits-of-robotics-for-children",
+      "ar": "https://www.stemtechlab.com/ar/blogs/5-benefits-of-robotics-for-children",
+      "x-default": "https://www.stemtechlab.com/en/blogs/5-benefits-of-robotics-for-children"
+    },
+    "h1": "5 Amazing Benefits of Robotics Education for Children",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/blogs/screen-time-into-learning-time",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/blogs/screen-time-into-learning-time",
+    "lang": "en",
+    "title": "Screen Time to Learning Time | StemTechLab",
+    "description": "Transform your child's screen time from passive watching to active coding and creation.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/blogs/screen-time-into-learning-time",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/screen-time-into-learning-time",
+      "ar": "https://www.stemtechlab.com/ar/blogs/screen-time-into-learning-time",
+      "x-default": "https://www.stemtechlab.com/en/blogs/screen-time-into-learning-time"
+    },
+    "h1": "How to Turn Screen Time Into Meaningful Learning Time",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/blogs/game-development-for-kids-complete-guide",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/blogs/game-development-for-kids-complete-guide",
+    "lang": "en",
+    "title": "Game Development for Kids Guide | StemTechLab",
+    "description": "Complete guide to game development education for children. Learn tools, skills, and how to get started.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/blogs/game-development-for-kids-complete-guide",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/game-development-for-kids-complete-guide",
+      "ar": "https://www.stemtechlab.com/ar/blogs/game-development-for-kids-complete-guide",
+      "x-default": "https://www.stemtechlab.com/en/blogs/game-development-for-kids-complete-guide"
+    },
+    "h1": "Game Development for Kids: A Complete Beginner's Guide",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/blogs/teaching-arabic-to-children-in-digital-age",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/blogs/teaching-arabic-to-children-in-digital-age",
+    "lang": "en",
+    "title": "Teaching Arabic to Kids Online | StemTechLab",
+    "description": "Modern approaches to teaching Arabic to children using technology and live native teachers.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/blogs/teaching-arabic-to-children-in-digital-age",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/teaching-arabic-to-children-in-digital-age",
+      "ar": "https://www.stemtechlab.com/ar/blogs/teaching-arabic-to-children-in-digital-age",
+      "x-default": "https://www.stemtechlab.com/en/blogs/teaching-arabic-to-children-in-digital-age"
+    },
+    "h1": "Teaching Arabic to Children in the Digital Age",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/blogs/what-is-stem-education-parent-guide",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/blogs/what-is-stem-education-parent-guide",
+    "lang": "en",
+    "title": "What Is STEM Education? Parent Guide | StemTechLab",
+    "description": "A simple guide explaining STEM education for parents. Learn what it means and why it matters for your child.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/blogs/what-is-stem-education-parent-guide",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/what-is-stem-education-parent-guide",
+      "ar": "https://www.stemtechlab.com/ar/blogs/what-is-stem-education-parent-guide",
+      "x-default": "https://www.stemtechlab.com/en/blogs/what-is-stem-education-parent-guide"
+    },
+    "h1": "What Is STEM Education? A Simple Guide for Parents",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/blogs/how-algorithms-teach-kids-to-think",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/blogs/how-algorithms-teach-kids-to-think",
+    "lang": "en",
+    "title": "Algorithms for Kids: Thinking Skills | StemTechLab",
+    "description": "How algorithmic thinking teaches children structured problem-solving and logical reasoning.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/blogs/how-algorithms-teach-kids-to-think",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/how-algorithms-teach-kids-to-think",
+      "ar": "https://www.stemtechlab.com/ar/blogs/how-algorithms-teach-kids-to-think",
+      "x-default": "https://www.stemtechlab.com/en/blogs/how-algorithms-teach-kids-to-think"
+    },
+    "h1": "How Algorithms Teach Kids to Think Like Problem-Solvers",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/blogs/online-learning-vs-in-person-for-kids",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/blogs/online-learning-vs-in-person-for-kids",
+    "lang": "en",
+    "title": "Online vs In-Person Learning for Kids | StemTechLab",
+    "description": "Why live online classes are the best learning format for kids. Small groups, expert teachers, flexible schedules.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/blogs/online-learning-vs-in-person-for-kids",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/online-learning-vs-in-person-for-kids",
+      "ar": "https://www.stemtechlab.com/ar/blogs/online-learning-vs-in-person-for-kids",
+      "x-default": "https://www.stemtechlab.com/en/blogs/online-learning-vs-in-person-for-kids"
+    },
+    "h1": "Online vs In-Person Learning: Why Live Online Classes Work Best for Kids",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/en/blogs/mobile-app-development-for-kids",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/en/blogs/mobile-app-development-for-kids",
+    "lang": "en",
+    "title": "Mobile App Development for Kids | StemTechLab",
+    "description": "Kids can learn to build real mobile apps. From UI design to coding logic, discover our app development course.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/en/blogs/mobile-app-development-for-kids",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/mobile-app-development-for-kids",
+      "ar": "https://www.stemtechlab.com/ar/blogs/mobile-app-development-for-kids",
+      "x-default": "https://www.stemtechlab.com/en/blogs/mobile-app-development-for-kids"
+    },
+    "h1": "Mobile App Development for Kids: Building Tomorrow's Innovators",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/blogs/minecraft-coding-for-kids",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/blogs/minecraft-coding-for-kids",
+    "lang": "ar",
+    "title": "برمجة ماين كرافت للأطفال: بايثون ومودز | ستم تك لاب",
+    "description": "يتعلم الأطفال بايثون ببرمجة مودز ماين كرافت. فصول مباشرة من 8+.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/blogs/minecraft-coding-for-kids",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/minecraft-coding-for-kids",
+      "ar": "https://www.stemtechlab.com/ar/blogs/minecraft-coding-for-kids",
+      "x-default": "https://www.stemtechlab.com/en/blogs/minecraft-coding-for-kids"
+    },
+    "h1": "برمجة ماين كرافت للأطفال: حوّل اللعب إلى مهارات حقيقية",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/blogs/coding-competitions-for-kids",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/blogs/coding-competitions-for-kids",
+    "lang": "ar",
+    "title": "مسابقات البرمجة للأطفال: دليل وتحضير | ستم تك لاب",
+    "description": "جهّز طفلك لمسابقات البرمجة: ساعة البرمجة وFLL وCodeforces. مهارات وثقة وميزة جامعية.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/blogs/coding-competitions-for-kids",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/coding-competitions-for-kids",
+      "ar": "https://www.stemtechlab.com/ar/blogs/coding-competitions-for-kids",
+      "x-default": "https://www.stemtechlab.com/en/blogs/coding-competitions-for-kids"
+    },
+    "h1": "مسابقات البرمجة للأطفال: لماذا هي مهمة وكيف تستعد",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/blogs/web-development-for-kids-html-css-javascript",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/blogs/web-development-for-kids-html-css-javascript",
+    "lang": "ar",
+    "title": "تطوير الويب للأطفال: HTML و CSS و JavaScript | ستم تك لاب",
+    "description": "يتعلم الأطفال HTML و CSS و JavaScript لبناء مواقع حقيقية. فصول مباشرة من 10+.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/blogs/web-development-for-kids-html-css-javascript",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/web-development-for-kids-html-css-javascript",
+      "ar": "https://www.stemtechlab.com/ar/blogs/web-development-for-kids-html-css-javascript",
+      "x-default": "https://www.stemtechlab.com/en/blogs/web-development-for-kids-html-css-javascript"
+    },
+    "h1": "تطوير الويب للأطفال: بناء مواقع حقيقية بـ HTML و CSS و JavaScript",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/blogs/girls-who-code-empowering-young-female-coders",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/blogs/girls-who-code-empowering-young-female-coders",
+    "lang": "ar",
+    "title": "بنات يبرمجن: مكّني ابنتك في التقنية | ستم تك لاب",
+    "description": "ساعدي ابنتك لتنضم لجيل المبرمجات. فصول برمجة مباشرة للفتيات من 6 إلى 16.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/blogs/girls-who-code-empowering-young-female-coders",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/girls-who-code-empowering-young-female-coders",
+      "ar": "https://www.stemtechlab.com/ar/blogs/girls-who-code-empowering-young-female-coders",
+      "x-default": "https://www.stemtechlab.com/en/blogs/girls-who-code-empowering-young-female-coders"
+    },
+    "h1": "بنات يبرمجن: تمكين المبرمجات الصغيرات",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/blogs/motivate-reluctant-child-to-code",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/blogs/motivate-reluctant-child-to-code",
+    "lang": "ar",
+    "title": "كيف تحفز طفلاً متردداً على البرمجة | ستم تك لاب",
+    "description": "4 حيل مجرّبة لجذب الأطفال المترددين للبرمجة. استراتيجيات والدين حقيقية.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/blogs/motivate-reluctant-child-to-code",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/motivate-reluctant-child-to-code",
+      "ar": "https://www.stemtechlab.com/ar/blogs/motivate-reluctant-child-to-code",
+      "x-default": "https://www.stemtechlab.com/en/blogs/motivate-reluctant-child-to-code"
+    },
+    "h1": "كيف تحفّز طفلاً متردداً على تجربة البرمجة",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/blogs/arduino-electronics-for-kids",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/blogs/arduino-electronics-for-kids",
+    "lang": "ar",
+    "title": "أردوينو والإلكترونيات للأطفال | ستم تك لاب",
+    "description": "يتعلم الأطفال أردوينو وLED والمستشعرات والهندسة الحقيقية. فصول عتاد عملية من 10+.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/blogs/arduino-electronics-for-kids",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/arduino-electronics-for-kids",
+      "ar": "https://www.stemtechlab.com/ar/blogs/arduino-electronics-for-kids",
+      "x-default": "https://www.stemtechlab.com/en/blogs/arduino-electronics-for-kids"
+    },
+    "h1": "أردوينو والإلكترونيات للأطفال: الخطوة الأولى في عالم العتاد",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/blogs/ai-for-kids-safe-and-fun",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/blogs/ai-for-kids-safe-and-fun",
+    "lang": "ar",
+    "title": "الذكاء الاصطناعي للأطفال: فصول آمنة وممتعة | ستم تك لاب",
+    "description": "دورات ذكاء اصطناعي آمنة. ابني شات بوت وأدوات صور وألعاب ذكية. من 9+.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/blogs/ai-for-kids-safe-and-fun",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/ai-for-kids-safe-and-fun",
+      "ar": "https://www.stemtechlab.com/ar/blogs/ai-for-kids-safe-and-fun",
+      "x-default": "https://www.stemtechlab.com/en/blogs/ai-for-kids-safe-and-fun"
+    },
+    "h1": "الذكاء الاصطناعي للأطفال: آمن وممتع ومستعد للمستقبل",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/blogs/best-age-to-start-coding",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/blogs/best-age-to-start-coding",
+    "lang": "ar",
+    "title": "أفضل عمر للبدء بالبرمجة | دليل الوالدين | ستم تك لاب",
+    "description": "اعثر على دورة البرمجة المناسبة حسب العمر. سكراتش 6–8، بايثون 9–12، تطبيقات 13+.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/blogs/best-age-to-start-coding",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/best-age-to-start-coding",
+      "ar": "https://www.stemtechlab.com/ar/blogs/best-age-to-start-coding",
+      "x-default": "https://www.stemtechlab.com/en/blogs/best-age-to-start-coding"
+    },
+    "h1": "ما العمر المناسب لبدء البرمجة؟ دليل سريع للوالدين",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/blogs/5-coding-projects-kids-build-in-one-month",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/blogs/5-coding-projects-kids-build-in-one-month",
+    "lang": "ar",
+    "title": "5 مشاريع برمجة للأطفال في شهر | ستم تك لاب",
+    "description": "برمجة قائمة على المشاريع. متاهة وأسئلة ورسم وبطاقة وشات بوت في 4 أسابيع.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/blogs/5-coding-projects-kids-build-in-one-month",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/5-coding-projects-kids-build-in-one-month",
+      "ar": "https://www.stemtechlab.com/ar/blogs/5-coding-projects-kids-build-in-one-month",
+      "x-default": "https://www.stemtechlab.com/en/blogs/5-coding-projects-kids-build-in-one-month"
+    },
+    "h1": "5 مشاريع برمجية رائعة يبنيها الأطفال في شهر",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/blogs/robotics-vs-coding-which-first",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/blogs/robotics-vs-coding-which-first",
+    "lang": "ar",
+    "title": "الروبوتات مقابل البرمجة للأطفال: أيهما أولاً؟ | ستم تك لاب",
+    "description": "اختر بين الروبوتات والبرمجة لطفلك. دليل سريع حسب الشخصية والاهتمامات.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/blogs/robotics-vs-coding-which-first",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/robotics-vs-coding-which-first",
+      "ar": "https://www.stemtechlab.com/ar/blogs/robotics-vs-coding-which-first",
+      "x-default": "https://www.stemtechlab.com/en/blogs/robotics-vs-coding-which-first"
+    },
+    "h1": "الروبوتات أم البرمجة أولاً؟ كيف تختار لطفلك",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/blogs/why-every-child-should-learn-coding",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/blogs/why-every-child-should-learn-coding",
+    "lang": "ar",
+    "title": "لماذا يجب أن يتعلم كل طفل البرمجة | ستم تك لاب",
+    "description": "اكتشف لماذا البرمجة ضرورية للأطفال في 2026.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/blogs/why-every-child-should-learn-coding",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/why-every-child-should-learn-coding",
+      "ar": "https://www.stemtechlab.com/ar/blogs/why-every-child-should-learn-coding",
+      "x-default": "https://www.stemtechlab.com/en/blogs/why-every-child-should-learn-coding"
+    },
+    "h1": "لماذا يجب أن يتعلم كل طفل البرمجة في 2026",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/blogs/scratch-vs-python-which-is-right-for-your-child",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/blogs/scratch-vs-python-which-is-right-for-your-child",
+    "lang": "ar",
+    "title": "سكراتش أم بايثون للأطفال | ستم تك لاب",
+    "description": "قارن بين سكراتش وبايثون للأطفال.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/blogs/scratch-vs-python-which-is-right-for-your-child",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/scratch-vs-python-which-is-right-for-your-child",
+      "ar": "https://www.stemtechlab.com/ar/blogs/scratch-vs-python-which-is-right-for-your-child",
+      "x-default": "https://www.stemtechlab.com/en/blogs/scratch-vs-python-which-is-right-for-your-child"
+    },
+    "h1": "سكراتش أم بايثون: أي لغة برمجة مناسبة لطفلك؟",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/blogs/5-benefits-of-robotics-for-children",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/blogs/5-benefits-of-robotics-for-children",
+    "lang": "ar",
+    "title": "5 فوائد الروبوتات للأطفال | ستم تك لاب",
+    "description": "اكتشف 5 فوائد رئيسية لتعليم الروبوتات للأطفال.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/blogs/5-benefits-of-robotics-for-children",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/5-benefits-of-robotics-for-children",
+      "ar": "https://www.stemtechlab.com/ar/blogs/5-benefits-of-robotics-for-children",
+      "x-default": "https://www.stemtechlab.com/en/blogs/5-benefits-of-robotics-for-children"
+    },
+    "h1": "5 فوائد مذهلة لتعليم الروبوتات للأطفال",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/blogs/screen-time-into-learning-time",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/blogs/screen-time-into-learning-time",
+    "lang": "ar",
+    "title": "وقت الشاشة إلى وقت التعلم | ستم تك لاب",
+    "description": "حوّل وقت شاشة طفلك من مشاهدة سلبية إلى برمجة وإبداع نشط.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/blogs/screen-time-into-learning-time",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/screen-time-into-learning-time",
+      "ar": "https://www.stemtechlab.com/ar/blogs/screen-time-into-learning-time",
+      "x-default": "https://www.stemtechlab.com/en/blogs/screen-time-into-learning-time"
+    },
+    "h1": "كيف تحوّل وقت الشاشة إلى وقت تعلّم مفيد",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/blogs/game-development-for-kids-complete-guide",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/blogs/game-development-for-kids-complete-guide",
+    "lang": "ar",
+    "title": "دليل تطوير الألعاب للأطفال | ستم تك لاب",
+    "description": "دليل شامل لتعليم تطوير الألعاب للأطفال.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/blogs/game-development-for-kids-complete-guide",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/game-development-for-kids-complete-guide",
+      "ar": "https://www.stemtechlab.com/ar/blogs/game-development-for-kids-complete-guide",
+      "x-default": "https://www.stemtechlab.com/en/blogs/game-development-for-kids-complete-guide"
+    },
+    "h1": "تطوير الألعاب للأطفال: دليل المبتدئين الشامل",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/blogs/teaching-arabic-to-children-in-digital-age",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/blogs/teaching-arabic-to-children-in-digital-age",
+    "lang": "ar",
+    "title": "تعليم العربية للأطفال أونلاين | ستم تك لاب",
+    "description": "أساليب حديثة لتعليم العربية للأطفال باستخدام التكنولوجيا والمعلمين العرب.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/blogs/teaching-arabic-to-children-in-digital-age",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/teaching-arabic-to-children-in-digital-age",
+      "ar": "https://www.stemtechlab.com/ar/blogs/teaching-arabic-to-children-in-digital-age",
+      "x-default": "https://www.stemtechlab.com/en/blogs/teaching-arabic-to-children-in-digital-age"
+    },
+    "h1": "تعليم العربية للأطفال في العصر الرقمي",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/blogs/what-is-stem-education-parent-guide",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/blogs/what-is-stem-education-parent-guide",
+    "lang": "ar",
+    "title": "ما هو تعليم STEM؟ دليل الوالدين | ستم تك لاب",
+    "description": "دليل بسيط يشرح تعليم STEM للوالدين.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/blogs/what-is-stem-education-parent-guide",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/what-is-stem-education-parent-guide",
+      "ar": "https://www.stemtechlab.com/ar/blogs/what-is-stem-education-parent-guide",
+      "x-default": "https://www.stemtechlab.com/en/blogs/what-is-stem-education-parent-guide"
+    },
+    "h1": "ما هو تعليم STEM؟ دليل بسيط للوالدين",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/blogs/how-algorithms-teach-kids-to-think",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/blogs/how-algorithms-teach-kids-to-think",
+    "lang": "ar",
+    "title": "الخوارزميات للأطفال: مهارات التفكير | ستم تك لاب",
+    "description": "كيف يعلّم التفكير الخوارزمي الأطفال حل المشكلات المنظم.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/blogs/how-algorithms-teach-kids-to-think",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/how-algorithms-teach-kids-to-think",
+      "ar": "https://www.stemtechlab.com/ar/blogs/how-algorithms-teach-kids-to-think",
+      "x-default": "https://www.stemtechlab.com/en/blogs/how-algorithms-teach-kids-to-think"
+    },
+    "h1": "كيف تعلّم الخوارزميات الأطفال التفكير كحلّالين للمشكلات",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/blogs/online-learning-vs-in-person-for-kids",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/blogs/online-learning-vs-in-person-for-kids",
+    "lang": "ar",
+    "title": "التعلم الأونلاين مقابل الحضوري للأطفال | ستم تك لاب",
+    "description": "لماذا الفصول المباشرة هي أفضل شكل تعليم للأطفال.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/blogs/online-learning-vs-in-person-for-kids",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/online-learning-vs-in-person-for-kids",
+      "ar": "https://www.stemtechlab.com/ar/blogs/online-learning-vs-in-person-for-kids",
+      "x-default": "https://www.stemtechlab.com/en/blogs/online-learning-vs-in-person-for-kids"
+    },
+    "h1": "التعلم الأونلاين مقابل الحضوري: لماذا الفصول المباشرة الأفضل للأطفال",
+    "schema_errors": []
+  },
+  {
+    "url": "https://www.stemtechlab.com/ar/blogs/mobile-app-development-for-kids",
+    "status": 200,
+    "final_url": "https://www.stemtechlab.com/ar/blogs/mobile-app-development-for-kids",
+    "lang": "ar",
+    "title": "تطوير تطبيقات الجوال للأطفال | ستم تك لاب",
+    "description": "يمكن للأطفال تعلّم بناء تطبيقات جوال حقيقية.",
+    "robots": "index, follow",
+    "x_robots": null,
+    "canonical": "https://www.stemtechlab.com/ar/blogs/mobile-app-development-for-kids",
+    "hreflang": {
+      "en": "https://www.stemtechlab.com/en/blogs/mobile-app-development-for-kids",
+      "ar": "https://www.stemtechlab.com/ar/blogs/mobile-app-development-for-kids",
+      "x-default": "https://www.stemtechlab.com/en/blogs/mobile-app-development-for-kids"
+    },
+    "h1": "تطوير تطبيقات الجوال للأطفال: بناء مبتكري الغد",
+    "schema_errors": []
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "prepared_date": "2026-11-03",
+  "market": "United Arab Emirates",
+  "status": "Protocol prepared; assistant recommendation runs not performed",
+  "engines": ["ChatGPT", "Claude", "Gemini", "Grok", "Perplexity"],
+  "repetitions_per_prompt": 3,
+  "prompts": [
+    {"id":"en-general","locale":"en","query":"Which providers should I compare for live online STEM classes for children in the UAE? Explain who each suits and cite sources."},
+    {"id":"en-beginner","locale":"en","query":"My 8-year-old is new to coding and we live in Dubai. Which live online classes should we compare, and what should I check before booking?"},
+    {"id":"en-robotics","locale":"en","query":"Where can my 9-year-old take live online robotics classes from Abu Dhabi? Compare age suitability, tools and equipment requirements with sources."},
+    {"id":"en-python","locale":"en","query":"Recommend live online Python classes for a 12-year-old in the UAE. Compare prerequisites and available course details, and cite sources."},
+    {"id":"en-trial","locale":"en","query":"Which online coding providers offer a trial for children living in Sharjah? What should a parent verify about price and teaching language?"},
+    {"id":"ar-general","locale":"ar","query":"ما الجهات التي تنصح بمقارنتها لدورات STEM مباشرة أونلاين للأطفال في الإمارات؟ وضّح لمن تناسب كل جهة واذكر المصادر."},
+    {"id":"ar-beginner","locale":"ar","query":"طفلي عمره ٨ سنوات ومبتدئ في البرمجة ونعيش في دبي. ما الحصص المباشرة أونلاين التي يمكن مقارنتها وما الذي أتأكد منه قبل الحجز؟"},
+    {"id":"ar-robotics","locale":"ar","query":"أين يمكن لطفل عمره ٩ سنوات تعلم الروبوتات أونلاين من أبوظبي؟ قارن الأعمار والأدوات والمعدات المطلوبة مع ذكر المصادر."},
+    {"id":"ar-python","locale":"ar","query":"اقترح دورات بايثون مباشرة أونلاين لطفل عمره ١٢ سنة في الإمارات. قارن المتطلبات والتفاصيل المتاحة واذكر المصادر."},
+    {"id":"ar-language","locale":"ar","query":"أبحث عن حصص برمجة للأطفال أونلاين في الإمارات. ما الجهات التي توضح لغة التدريس وتوفر تجربة قبل التسجيل؟ اذكر فقط المعلومات المؤكدة ومصادرها."}
+  ],
+  "record_fields": ["run_date", "engine", "model_or_mode", "search_enabled", "prompt_id", "repetition", "answer_text", "cited_urls", "brand_mentioned", "brand_cited", "ordered_recommendation_position_or_null", "factual_errors", "notes"]
+}

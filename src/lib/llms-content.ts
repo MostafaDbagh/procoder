@@ -1,3 +1,4 @@
+import { coursePublicTitle } from "./course-positioning";
 import { SITE_URL } from "@/lib/seo";
 import { LLMS_FULL_TEMPLATE } from "./llms-full-template";
 
@@ -49,7 +50,7 @@ export function formatCourseList(courses: LlmsCourse[] | null, base: string): st
  return `## Course catalog\nLive catalogue: ${base}/en/courses (Arabic: ${base}/ar/courses)`;
  }
  const lines = courses.map((c) => {
- const name = c.title?.en?.trim() || c.slug;
+ const name = coursePublicTitle(c.slug, c.title?.en?.trim() || c.slug, "en");
  const ages = c.ageMin && c.ageMax ? `ages ${c.ageMin}–${c.ageMax}` : null;
  const bits = [
  ages,
@@ -124,7 +125,7 @@ export function formatLlmsFull(
 /** Long-form catalogue for llms-full.txt, grouped by category, live data only. */
 export function formatCourseCatalog(courses: LlmsCourse[] | null, base: string): string {
  if (!courses || courses.length === 0) {
-  return `## Complete Course Catalog\nThe live catalogue with every course, age band, and price is at ${base}/en/courses (Arabic: ${base}/ar/courses).`;
+  return `## Complete Course Catalog\nThe live catalogue with current course details is at ${base}/en/courses (Arabic: ${base}/ar/courses).`;
  }
  const byCategory = new Map<string, LlmsCourse[]>();
  for (const c of courses) {
@@ -142,11 +143,12 @@ export function formatCourseCatalog(courses: LlmsCourse[] | null, base: string):
    const skills = c.skills?.en?.length ? `\n- Skills: ${c.skills.en.join(", ")}` : "";
    const desc = c.description?.en?.trim();
    return [
-    `**${c.title?.en?.trim() || c.slug}**`,
+    `**${coursePublicTitle(c.slug, c.title?.en?.trim() || c.slug, "en")}**`,
     facts ? `- ${facts}` : "",
     desc ? `- ${desc}` : "",
     skills.replace(/^\n/, ""),
-    `- Page: ${base}/en/courses/${c.slug}`,
+    `- English page: ${base}/en/courses/${c.slug}`,
+    `- Arabic page: ${base}/ar/courses/${c.slug}`,
    ].filter(Boolean).join("\n");
   });
   return `### ${categoryLabel(cat)} (${list.length} course${list.length === 1 ? "" : "s"})\n\n${entries.join("\n\n")}`;
