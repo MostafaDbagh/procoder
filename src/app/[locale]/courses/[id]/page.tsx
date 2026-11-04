@@ -36,9 +36,7 @@ export async function generateMetadata({
  const apiCourse = await getCourseISR(id);
  const staticCourse = staticCourses.find((c) => c.id === id);
 
- if (!apiCourse && !staticCourse) {
- return { title: "Course Not Found" };
- }
+ if (!apiCourse) notFound();
 
  const ct = await getTranslations({ locale, namespace: "courseData" });
  let title: string;
@@ -147,9 +145,7 @@ export default async function CourseDetailPage({
  .filter((c) => c.stlLevel === apiCourse?.stlLevel && c.slug !== id)
  .slice(0, 3);
  const staticCourse = staticCourses.find((c) => c.id === id);
- if (!apiCourse && !staticCourse) {
- notFound();
- }
+ if (!apiCourse) notFound();
 
  const ct = staticCourse
  ? await getTranslations({ locale, namespace: "courseData" })

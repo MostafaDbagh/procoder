@@ -25,7 +25,7 @@ test('sitemap traverses API pagination and omits untrustworthy dates', async () 
  const sitemap = load('src/app/sitemap.ts', {
   '@/lib/seo': seo,
   '@/lib/server-api': { ApiUnavailableError: Error, serverApiRoot: () => 'https://api.example/api', getCoursesISR: async () => [{ slug: 'python', updatedAt: 'invalid' }] },
- }, { fetch: async url => { calls.push(url); const page = new URL(url).searchParams.get('page'); return { ok: true, json: async () => ({ totalPages: 2, items: [{ slug: `post-${page}`, updatedAt: page === '1' ? 'invalid' : '2026-10-01' }] }) }; } }).default;
+ }, { fetch: async url => { calls.push(url); const page = new URL(url).searchParams.get('page'); return { ok: true, json: async () => ({ totalPages: 2, items: page === '1' ? Array.from({length:50}, (_,i) => ({slug:i === 0 ? 'post-1' : `first-${i}`,updatedAt:'invalid'})) : [{slug:'post-2',updatedAt:'2026-10-01'}] }) }; } }).default;
  const entries = await sitemap();
  assert.equal(calls.length, 2);
  assert.ok(calls[1].endsWith('limit=50&page=2'));
@@ -183,4 +183,56 @@ test('AI catalog titles match the parent-facing course pages in both index forma
   assert.ok(!text.includes('Introduction to Robotics Engineering'));
  }
  assert.ok(llms.formatLlmsFull('https://example.com',courses).includes('https://example.com/ar/courses/robotics'));
+});
+
+
+test('sitemap rejects partial, shifting, duplicate and malformed inventories', async () => {
+ const mocks = {'@/lib/server-api': {ApiUnavailableError:Error,serverApiRoot:()=> 'https://api.example/api',getCoursesISR:async()=>[{slug:'robotics'}]}};
+ const full = Array.from({length:50},(_,i)=>({slug:`post-${i}`}));
+ for (const responses of [
+  [{items:[]}],
+  [{items:[{slug:'only-one'}],totalPages:2}],
+  [{items:full,totalPages:2},{items:[],totalPages:2}],
+  [{items:full,totalPages:2},{items:[{slug:'last'}],totalPages:3}],
+  [{items:full,totalPages:2},{items:[{slug:'post-0'}],totalPages:2}],
+  [null],
+ ]) {
+  let index=0;
+  const sitemap=load('src/app/sitemap.ts',mocks,{fetch:async()=>({ok:true,json:async()=>responses[index++]})}).default;
+  await assert.rejects(sitemap);
+ }
+});
+
+test('blog archive cache only accepts usable inventories and preserves query isolation', async () => {
+ const calls=[];
+ let response={items:[],total:0,totalPages:0};
+ let ok=true;
+ const callbacks=[];
+ const api=load('src/lib/server-api.ts',{
+  './mediaUrls':load('src/lib/mediaUrls.ts'),
+  'next/cache':{unstable_cache:fn=>{callbacks.push(fn);return fn;}},
+ },{URLSearchParams,fetch:async url=>{calls.push(url);return {ok,status:ok?200:503,json:async()=>response};}});
+ assert.equal((await api.getBlogPostsISR({category:'coding',page:2})).total,0);
+ assert.ok(calls.at(-1).includes('category=coding&page=2&limit=50'));
+ response={items:[],total:0};
+ assert.equal(await api.getBlogPostsISR(),null);
+ // The cached function must throw: caching null would overwrite a healthy archive.
+ const snapshot=callbacks.find(fn=>fn.name==='fetchBlogListSnapshot');
+ await assert.rejects(()=>snapshot('page=1'),/blog list/);
+ ok=false;
+ await assert.rejects(()=>snapshot('page=1'),/blog list/);
+});
+
+test('confirmed course deletion returns not found even for a legacy fallback slug', async () => {
+ const notFound=()=>{throw new Error('NOT_FOUND');};
+ const page=load('src/app/[locale]/courses/[id]/page.tsx',{
+  '@/components/CourseParentGuide':{}, '@/lib/course-positioning':{},
+  'next/navigation':{notFound}, 'next-intl/server':{setRequestLocale:()=>{}},
+  '@/data/courses':{courses:[{id:'robotics'}]}, './CourseDetailContent':{},
+  '@/components/StructuredData':{}, '@/lib/arabicSlugs':{resolveArabicSlug:s=>s,isArabicSlug:()=>false},
+  '@/lib/server-api':{getCourseISR:async()=>null},
+ });
+ const props={params:Promise.resolve({locale:'en',id:'robotics'})};
+ await assert.rejects(()=>page.generateMetadata(props),/NOT_FOUND/);
+ await assert.rejects(()=>page.default(props),/NOT_FOUND/);
 });

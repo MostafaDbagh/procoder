@@ -259,20 +259,40 @@ export async function getBlogPostsSSR(params?: { category?: string; region?: str
  }
 }
 
-export async function getBlogPostsISR(params?: { category?: string; region?: string; page?: number; limit?: number }): Promise<BlogListResponse | null> {
+type BlogListParams = { category?: string; region?: string; page?: number; limit?: number };
+
+async function fetchBlogListSnapshot(query: string): Promise<BlogListResponse> {
  try {
+  const res = await fetch(`${serverApiRoot()}/blog?${query}`, {
+   cache: "no-store", signal: AbortSignal.timeout(8000),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const data = await res.json();
+  if (!data || !Array.isArray(data.items) || !Number.isSafeInteger(data.totalPages) || data.totalPages < 0 ||
+      !Number.isSafeInteger(data.total) || data.total < 0 ||
+      data.items.some((post: APIBlogPost) => !post || typeof post.slug !== "string" || !post.title || !post.excerpt)) {
+   throw new Error("Invalid blog inventory");
+  }
+  return data;
+ } catch (error) {
+  throw new ApiUnavailableError("blog list", error);
+ }
+}
+
+// Cache parsed successful data, never an HTTP error or a null fallback. A failed
+// refresh keeps the last usable archive; cold-cache failures remain explicit.
+const cachedBlogList = unstable_cache(fetchBlogListSnapshot, ["public-blog-list-v1", serverApiRoot()], {
+ revalidate: 300, tags: ["public-blog"],
+});
+
+export async function getBlogPostsISR(params?: BlogListParams): Promise<BlogListResponse | null> {
  const query = new URLSearchParams();
  if (params?.category) query.set("category", params.category);
  if (params?.region) query.set("region", params.region);
- if (params?.page) query.set("page", String(params.page));
+ query.set("page", String(params?.page ?? 1));
  query.set("limit", String(params?.limit ?? 50));
- const qs = query.toString();
- const res = await fetch(`${serverApiRoot()}/blog${qs ? `?${qs}` : ""}`, { next: { revalidate: 300 }, signal: AbortSignal.timeout(8000) });
- if (!res.ok) return null;
- return await res.json();
- } catch {
- return null;
- }
+ try { return await cachedBlogList(query.toString()); }
+ catch { return null; }
 }
 
 /**

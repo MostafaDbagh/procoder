@@ -19,23 +19,35 @@ async function getBlogSlugsForSitemap(): Promise<{ slug: string; lastModified?: 
  const posts: { slug: string; lastModified?: string }[] = [];
  let page = 1;
  let totalPages = 1;
+ const seen = new Set<string>();
+ // Bound the complete traversal, not just each individual request.
+ const signal = AbortSignal.timeout(20000);
  do {
   let res: Response;
   try {
    res = await fetch(`${serverApiRoot()}/blog?limit=50&page=${page}`, {
     cache: "no-store",
-    signal: AbortSignal.timeout(8000),
+    signal: AbortSignal.any([signal, AbortSignal.timeout(8000)]),
    });
   } catch (error) {
    throw new ApiUnavailableError("blog list for sitemap", error);
   }
   if (!res.ok) throw new ApiUnavailableError(`blog list for sitemap (HTTP ${res.status})`);
   const data = await res.json();
-  if (!Array.isArray(data.items)) throw new ApiUnavailableError("invalid blog list for sitemap");
-  const pages = data.totalPages ?? 1;
+  if (!data || !Array.isArray(data.items)) throw new ApiUnavailableError("invalid blog list for sitemap");
+  const pages = data.totalPages;
   if (!Number.isSafeInteger(pages) || pages < 0 || pages > 1000) throw new ApiUnavailableError("invalid sitemap pagination");
+  if ((page > 1 && Math.max(1, pages) !== totalPages) ||
+      (page < pages && data.items.length !== 50) ||
+      (page > 1 && data.items.length === 0) || (pages === 0 && data.items.length > 0)) {
+   throw new ApiUnavailableError("incomplete sitemap pagination");
+  }
   totalPages = Math.max(1, pages);
   if (data.items.some((post: { slug?: unknown }) => typeof post?.slug !== "string" || !post.slug || /[/?#]/.test(post.slug))) throw new ApiUnavailableError("invalid sitemap blog slug");
+  for (const post of data.items) {
+   if (seen.has(post.slug)) throw new ApiUnavailableError("duplicate sitemap blog slug");
+   seen.add(post.slug);
+  }
   posts.push(...data.items.map((post: { slug: string; publishedAt?: string; updatedAt?: string }) => ({
    slug: post.slug,
    lastModified: post.updatedAt ?? post.publishedAt,
@@ -48,6 +60,10 @@ async function getBlogSlugsForSitemap(): Promise<{ slug: string; lastModified?: 
 async function buildSitemap(): Promise<MetadataRoute.Sitemap> {
  const apiCourses = await getCoursesISR();
  if (!apiCourses) throw new ApiUnavailableError("course catalog for sitemap");
+ if (apiCourses.some(c => typeof c.slug !== "string" || !c.slug || /[/?#]/.test(c.slug)) ||
+     new Set(apiCourses.map(c => c.slug)).size !== apiCourses.length) {
+  throw new ApiUnavailableError("invalid course catalog for sitemap");
+ }
 
  // Live catalog only. Slugs that exist solely in the static fallback are not
  // linked from anywhere in the UI, so submitting them asks Google to spend

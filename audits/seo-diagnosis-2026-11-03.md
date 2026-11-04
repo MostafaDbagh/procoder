@@ -1,6 +1,43 @@
 # StemTechLab SEO diagnosis — 3 November 2026
 
+## Six-month follow-up — 4 November 2026
+
+Directly rechecked the signed-in Search Console Web performance report for `https://www.stemtechlab.com/`, using Last 6 months: **3 May–2 November 2026**. The report showed last update 5.5 hours ago. Monthly values below were read from the MONTHS table, first without a page filter and then with the exact English robotics URL selected. No production changes were made.
+
+**The monthly breakdown reveals a severe visibility collapse that the three-month averages below obscure.** Site impressions fell from 1,387 in August to 138 in September (90.1%), then to 92 in October (a further 33.3%; 93.4% below August). The daily chart visually places the sharp break around late August; the exact first lost-impression date was not extracted.
+
+| Period | Site clicks | Site impressions | English robotics impressions |
+|---|---:|---:|---:|
+| May 3–31 | 13 | 60 | 3 |
+| June | 1 | 982 | 951 |
+| July | 0 | 996 | 906 |
+| August | 1 | 1,387 | 1,143 |
+| September | 11 | 138 | 0 |
+| October | 4 | 92 | 0 |
+| November 1–2 | 0 | 3 | 0 |
+
+Six-month site totals: **30 clicks, 3,658 impressions** (summary rounds to 3.66k), **0.8% CTR, average position 63.1**. May and November are partial months. Robotics: **3,003 page impressions, zero clicks, average position 68.7**. The English homepage recorded 19 clicks/113 impressions; Python recorded 1 click/167 impressions. Page and property aggregation differ, so page impressions are not an exact decomposition of property totals.
+
+The robotics page's 1,143 August impressions followed by zero in September and October is the main concrete lead. Its visible queries include “robotics engineering” (545 six-month impressions), “robotic engineering” (248), and “robot engineering” (151), all with zero clicks. Historical exposure was already failing to generate visits, but that does not make the subsequent loss unimportant.
+
+**Correction to emphasis in the original conclusion:** a substantial impression collapse is confirmed. Click acquisition was weak throughout; September actually had more clicks than August. These are distinct findings. Three-month aggregate comparisons conceal the timing because August's remaining exposure sits inside the August–October total.
+
+**Causation remains unresolved.** The late-September/October robots failures documented below cannot, by themselves, explain a break already visible in late August. The next investigation should examine late-August deployments/content/canonical/redirect changes, historical availability and URL inspection evidence for robotics, and whether another canonical URL inherited its impressions. The earlier July 4 last-crawl observation and later successful fetches do not establish the page's state at the breakpoint. There is still no demonstrated manual penalty or proven algorithm-update cause.
+
+[Six-month Search Console performance](https://search.google.com/search-console/performance/search-analytics?resource_id=https%3A%2F%2Fwww.stemtechlab.com%2F&num_of_months=6&time_granularity=MONTH&breakdown=date).
+
 ## Conclusion
+
+> Implementation status, 4 November: the original findings below are historical. Commits `b0dcf05` and `009e3e9` already added static robots, successful-data caching for course/blog detail and sitemap, parent-focused course titles/guidance, and native FAQ disclosures. Today's live HTTP checks confirm both robotics pages return 200 with five FAQ disclosures each, correct language/canonicals, and a valid 106-URL sitemap. Do not repeat those old findings as unfixed current defects.
+
+### Additional repairs prepared on 4 November
+
+- Blog archive data now caches only successfully parsed inventories, so failed background refreshes cannot replace good data with a null/error response. Cold-cache failures remain unavailable rather than invented content.
+- Confirmed course 404 responses now call `notFound()` in metadata and page rendering even when the slug exists in the old static fallback. API outages still throw rather than becoming false deletions.
+- Sitemap generation rejects missing pagination, incomplete or shifting pages, duplicate slugs and invalid course paths. A 20-second overall traversal deadline bounds the paginated fetch, alongside per-request timeouts. Failed generation preserves the existing successful cache where available.
+- Validation: 22 SEO tests pass; lint/TypeScript pass (15 pre-existing lint warnings); production build passes; all 34 HTTP checks pass against both the deployed site and the local production build. The new source changes are local, not deployed by this session.
+- Search Console resubmission could not be completed: browser navigation changed the URL/title but the content stopped refreshing, then remained unloaded. No successful submission or indexing request was observed.
+- Remaining investigation: exact late-August cause, edge/robots outage traces, verified Render proxy topology/configuration, and reduction of dynamic HTML dependencies. These changes do not establish restored rankings or resolve those operational questions.
 
 There is no evidence of a permanent Google-wide block or manual penalty. There IS direct Google evidence of intermittent crawl failures, including robots.txt fetch failures late in October, plus weak commercial-search visibility and a large indexing backlog. Historical impression loss is concentrated in the English robotics page. These are separate problems and should not be collapsed into one speculative explanation.
 
