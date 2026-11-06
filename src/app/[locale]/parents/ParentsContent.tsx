@@ -62,9 +62,9 @@ export default function ParentsContent() {
  return (
  <div>
  {/* ═══ HERO ═══ */}
- <section dir="ltr" className="relative overflow-hidden w-full min-h-screen sm:min-h-0 py-12 sm:py-0 sm:aspect-[1448/1086]">
- {/* Mobile-only decorative bg — same vibe as the home hero */}
- <div className="sm:hidden absolute inset-0 -z-10">
+ <section dir="ltr" className="relative overflow-hidden w-full [container-type:inline-size] min-h-screen xl:min-h-0 py-12 xl:py-0 xl:aspect-[1448/1086]">
+ {/* Mobile and tablet decorative bg — same vibe as the home hero */}
+ <div className="xl:hidden absolute inset-0 -z-10">
  <div className="absolute inset-0 bg-gradient-to-br from-purple/10 via-primary/5 to-background" />
  <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-purple/20 blur-3xl" />
  <div className="absolute -bottom-24 -left-16 w-72 h-72 rounded-full bg-primary/15 blur-3xl" />
@@ -92,64 +92,66 @@ export default function ParentsContent() {
  </svg>
  </div>
 
- {/* Image — hidden on mobile, full bg on sm+ */}
+ {/* Image — hidden on mobile and tablet, full bg on xl+ */}
  <Image
  src="/images/parent-bg.webp"
  alt="StemTechLab for parents — AI course matching and parent dashboard for tracking your child's learning"
  fill
  priority
  sizes="100vw"
- className="hidden sm:block object-contain object-center -z-10"
+ className="hidden xl:block object-contain object-center -z-10"
  />
 
  {/* Decision Map text overlays — desktop only, positioned on the empty boxes in the image */}
- <div className="hidden sm:block absolute inset-0 pointer-events-none">
+ <div className="hidden xl:block absolute inset-0 pointer-events-none">
  <h2
- className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-display font-extrabold whitespace-nowrap text-[32px] m-0"
+ className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-display font-extrabold whitespace-nowrap text-[2.2cqw] m-0"
  style={{ top: "14%", left: "68%", color: "#16234F" }}
  >
  {t("dmTitle")}
  </h2>
  <p
- className="absolute -translate-x-1/2 -translate-y-1/2 text-center whitespace-nowrap m-0"
+ className="absolute -translate-x-1/2 -translate-y-1/2 text-center whitespace-nowrap text-[1.15cqw] m-0"
  style={{ top: "18%", left: "68%", color: "rgb(63, 72, 104)" }}
  >
  {t("dmSubtitle")}
  </p>
- <LocalizedLink href={dmHref("dm1")} className="absolute -translate-x-1/2 -translate-y-1/2 max-w-[16%] pointer-events-auto" style={{ top: "27%", left: "55%" }}>
- <h3 className="text-center font-bold leading-tight text-[16px] whitespace-pre-line m-0" style={{ color: "#16234F" }}>{t("dm1")}</h3>
+ {/* Text regions exclude the illustrated icons and scale with the artwork. */}
+ {([
+ { key: "dm1", top: "26.5%", left: "56.2%", width: "10.5%" },
+ { key: "dm2", top: "26.5%", left: "86%", width: "11.5%" },
+ { key: "dm3", top: "43%", left: "50.5%", width: "10%" },
+ { key: "dm4", top: "44%", left: "88%", width: "10%" },
+ { key: "dm5", top: "59.5%", left: "53.5%", width: "8%" },
+ { key: "dm6", top: "60.5%", left: "87%", width: "11%" },
+ ] as const).map(({ key, ...position }) => (
+ <LocalizedLink
+ key={key}
+ href={dmHref(key)}
+ className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+ style={position}
+ >
+ <h3 dir="auto" className="text-center font-bold leading-snug text-[1.15cqw] m-0" style={{ color: "#16234F" }}>
+ {t(key).replace(/\n/g, " ")}
+ </h3>
  </LocalizedLink>
- <LocalizedLink href={dmHref("dm2")} className="absolute -translate-x-1/2 -translate-y-1/2 max-w-[16%] pointer-events-auto" style={{ top: "27%", left: "85%" }}>
- <h3 className="text-center font-bold leading-tight text-[16px] whitespace-pre-line m-0" style={{ color: "#16234F" }}>{t("dm2")}</h3>
- </LocalizedLink>
- <LocalizedLink href={dmHref("dm3")} className="absolute -translate-x-1/2 -translate-y-1/2 max-w-[16%] pointer-events-auto" style={{ top: "43%", left: "50%" }}>
- <h3 className="text-center font-bold leading-tight text-[16px] whitespace-pre-line m-0" style={{ color: "#16234F" }}>{t("dm3")}</h3>
- </LocalizedLink>
- <LocalizedLink href={dmHref("dm4")} className="absolute -translate-x-1/2 -translate-y-1/2 max-w-[16%] pointer-events-auto" style={{ top: "44%", left: "88%" }}>
- <h3 className="text-center font-bold leading-tight text-[16px] whitespace-pre-line m-0" style={{ color: "#16234F" }}>{t("dm4")}</h3>
- </LocalizedLink>
- <LocalizedLink href={dmHref("dm5")} className="absolute -translate-x-1/2 -translate-y-1/2 max-w-[16%] pointer-events-auto" style={{ top: "60%", left: "53%" }}>
- <h3 className="text-center font-bold leading-tight text-[16px] whitespace-pre-line m-0" style={{ color: "#16234F" }}>{t("dm5")}</h3>
- </LocalizedLink>
- <LocalizedLink href={dmHref("dm6")} className="absolute -translate-x-1/2 -translate-y-1/2 max-w-[16%] pointer-events-auto" style={{ top: "61%", left: "87%" }}>
- <h3 className="text-center font-bold leading-tight text-[16px] whitespace-pre-line m-0" style={{ color: "#16234F" }}>{t("dm6")}</h3>
- </LocalizedLink>
- <LocalizedLink href="/recommend" className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto" style={{ top: "73%", left: "67%" }}>
- <p className="text-center font-bold whitespace-pre-line text-[16px] m-0" style={{ color: "#16234F" }}>{t("dmAnotherConcern")}</p>
+ ))}
+ <LocalizedLink href="/recommend" className="absolute -translate-x-1/2 -translate-y-1/2 w-[13%] pointer-events-auto" style={{ top: "73%", left: "67%" }}>
+ <p dir="auto" className="text-center font-bold whitespace-pre-line text-[1.15cqw] leading-snug m-0" style={{ color: "#16234F" }}>{t("dmAnotherConcern")}</p>
  </LocalizedLink>
  </div>
 
- <div className="relative sm:absolute sm:inset-0 sm:flex sm:items-start">
- <div className="max-w-7xl mx-auto sm:h-full w-full">
+ <div className="relative xl:absolute xl:inset-0 xl:flex xl:items-start">
+ <div className="max-w-7xl mx-auto xl:h-full w-full">
  <motion.div
  initial={{ opacity: 0, x: -20 }}
  animate={{ opacity: 1, x: 0 }}
  transition={{ duration: 0.6 }}
- className="px-4 sm:px-0 mt-8 sm:mt-0 sm:pt-10 lg:pt-16 max-w-full sm:max-w-[45%] lg:max-w-[36%]"
+ className="px-4 xl:px-0 mt-8 xl:mt-0 xl:pt-16 max-w-full xl:max-w-[36%]"
  >
  <h1
  dir="auto"
- className={`font-display font-extrabold leading-[1.1] tracking-tight text-[38px] md:text-[42px] lg:text-[48px] xl:text-[54px] ${isArabic ? "sm:mt-28" : ""}`}
+ className={`font-display font-extrabold leading-[1.1] tracking-tight text-[38px] md:text-[42px] lg:text-[48px] xl:text-[54px] ${isArabic ? "xl:mt-28" : ""}`}
  style={{ color: "#16234F" }}
  >
  <span className="block">{t("heroTitleLead")}</span>
@@ -159,11 +161,11 @@ export default function ParentsContent() {
  </h1>
 
  {/* Purple divider line per spec */}
- <div className={`h-1 w-16 rounded-full mt-3 mb-3 sm:my-3 ${isArabic ? "ml-auto" : ""}`} style={{ backgroundColor: "#8B6CFF" }} />
+ <div className={`h-1 w-16 rounded-full mt-3 mb-3 xl:my-3 ${isArabic ? "ml-auto" : ""}`} style={{ backgroundColor: "#8B6CFF" }} />
 
  <p
  dir="auto"
- className="leading-relaxed mb-6 sm:mb-4 text-[18px] md:text-[20px] lg:text-[24px] xl:text-[24px]"
+ className="leading-relaxed mb-6 xl:mb-4 text-[18px] md:text-[20px] lg:text-[24px] xl:text-[24px]"
  style={{ color: "#3F4868" }}
  >
  {t.rich("heroSubtitle", {
@@ -173,20 +175,20 @@ export default function ParentsContent() {
  })}
  </p>
 
- <div className="flex flex-col gap-2 sm:gap-3 max-w-xs">
+ <div className="flex flex-col gap-2 xl:gap-3 max-w-xs">
  <button
  type="button"
  onClick={() => setAuthOpen(true)}
- className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:py-3 rounded-2xl bg-primary text-white font-semibold text-sm sm:text-base shadow-md shadow-primary/10 hover:shadow-lg hover:scale-[1.02] transition-all"
+ className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-2.5 xl:py-3 rounded-2xl bg-primary text-white font-semibold text-sm xl:text-base shadow-md shadow-primary/10 hover:shadow-lg hover:scale-[1.02] transition-all"
  >
- <UserPlus className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
+ <UserPlus className="w-4 h-4 xl:w-5 xl:h-5 shrink-0" />
  {t("heroCta")} / {t("loginLink")}
  </button>
  <LocalizedLink
  href="/parent/login"
- className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:py-3 rounded-2xl border-2 border-border bg-surface text-foreground font-semibold text-sm sm:text-base shadow-sm transition-all hover:border-primary/45 hover:bg-primary/[0.06] hover:text-primary hover:shadow-md hover:scale-[1.02] dark:hover:bg-primary/10"
+ className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-2.5 xl:py-3 rounded-2xl border-2 border-border bg-surface text-foreground font-semibold text-sm xl:text-base shadow-sm transition-all hover:border-primary/45 hover:bg-primary/[0.06] hover:text-primary hover:shadow-md hover:scale-[1.02] dark:hover:bg-primary/10"
  >
- <LayoutDashboard className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" aria-hidden />
+ <LayoutDashboard className="w-4 h-4 xl:w-5 xl:h-5 shrink-0" aria-hidden />
  <span>{t("openDashboard")}</span>
  </LocalizedLink>
  </div>
@@ -195,8 +197,8 @@ export default function ParentsContent() {
  </div>
  </section>
 
- {/* ═══ DECISION MAP — mobile semantic version (desktop sees the absolute overlays above) ═══ */}
- <section className="sm:hidden px-4 pt-6 pb-12">
+ {/* ═══ DECISION MAP — mobile and tablet semantic version (desktop sees the absolute overlays above) ═══ */}
+ <section className="xl:hidden px-4 pt-6 pb-12">
  <div className="bg-surface rounded-2xl border border-border p-6">
  <h2
  className="font-display font-extrabold text-center text-[26px] leading-tight mb-2 m-0"

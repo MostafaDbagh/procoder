@@ -5,6 +5,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ElementType,
 } from "react";
@@ -450,8 +451,27 @@ function ApplySection({
 }
 
 function ApplyFrame({ children }: { children: React.ReactNode }) {
+  const frameRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    // Wait for the selected form to replace the cards before scrolling.
+    const frame = requestAnimationFrame(() => {
+      const section = frameRef.current;
+      if (!section) return;
+
+      section.focus({ preventScroll: true });
+      section.scrollIntoView({
+        block: "start",
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "instant"
+          : "smooth",
+      });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
   return (
-    <section id="join" className="mt-12 scroll-mt-24">
+    <section ref={frameRef} id="join" tabIndex={-1} className="mt-12 scroll-mt-24 focus:outline-none">
       {children}
     </section>
   );
