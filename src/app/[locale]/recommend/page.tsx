@@ -10,14 +10,14 @@ import { siteUrl, bcLabel, metaForMaybeVariant } from "@/lib/seo";
 
 const meta = {
  en: {
- title: "AI Course Finder — Right Fit for Kids | StemTechLab",
+ title: "Find Your Child’s STEM Starting Level | StemTechLab",
  description:
- "The AI course finder analyses your child's age, interests, pace, and goals to suggest the best-fit STEM or coding course. Free, no sign-up.",
+ "Explore a STEM starting level for your child, ages 5–18. Share what they enjoy and can do in a simple guided conversation. Free, in English and Arabic.",
  },
  ar: {
- title: "منتقي الدورات بالذكاء الاصطناعي | ستم تك لاب",
+ title: "اكتشف مستوى البداية المناسب لطفلك | ستم تك لاب",
  description:
- "منتقي دورات مدعوم بالذكاء الاصطناعي يحلّل عمر طفلك واهتماماته وأهدافه ليقترح أنسب دورة STEM أو برمجة مع مسار تعلم من ٣ مراحل. مجاني، بدون تسجيل.",
+ "اكتشف مستوى بداية لطفلك من عمر ٥ إلى ١٨ سنة عبر محادثة بسيطة عن اهتماماته وخبرته وما يستطيع فعله. خمسة مستويات، بالعربية والإنجليزية، مجاناً دون حساب.",
  },
 };
 
@@ -73,11 +73,11 @@ export default async function RecommendPage({
  "@context": "https://schema.org",
  "@type": "SoftwareApplication",
  "@id": `${SITE_URL}/${locale}/recommend#ai-course-finder`,
- name: locale === "ar" ? "منتقي الدورات بالذكاء الاصطناعي" : "AI Course Finder",
+ name: locale === "ar" ? "مرشد مستوى البداية لطفلك" : "STEM Starting Level Finder",
  alternateName: locale === "ar" ? "مرشد الدورات الذكي" : "Smart Course Finder",
  url: `${SITE_URL}/${locale}/recommend`,
  applicationCategory: "EducationalApplication",
- applicationSubCategory: "Course Recommendation",
+ applicationSubCategory: "Learning Level Guidance",
  operatingSystem: "Any (browser-based)",
  inLanguage: ["en", "ar"],
  isAccessibleForFree: true,
@@ -98,25 +98,21 @@ export default async function RecommendPage({
  audience: {
  "@type": "EducationalAudience",
  educationalRole: "parent",
- suggestedMinAge: 6,
- suggestedMaxAge: 18,
  },
  featureList: [
- "Natural-language input in English or Arabic — no login required",
- "Server-side OpenAI + DeepSeek API integrations extract age, interests, skill level, and parent goals",
- "Deterministic scoring engine ranks live courses (Programming, Robotics, Algorithms, AI, Web & Mobile) by age fit, level, and interest match",
- "Returns top 2–3 best-fit courses with plain-English explanation",
- "Generates a personalized 3-phase learning path",
- "Asks follow-up questions when the child profile is incomplete",
- "Advisory output — final enrollment decision always belongs to the parent",
- "Does NOT track child progress (handled separately in the parent dashboard)",
- "No personal data sold; child data not used for AI training",
+ "English and Arabic guided conversation — no login required",
+ "Reuses details already shared and asks one missing question at a time",
+ "Provisional suggestions across Explorer, Builder, Creator, Innovator and Pro",
+ "Missing or conflicting answers prompt clarification or teacher review",
+ "Compatible published courses filtered by stage, age and experience",
+ "Application-controlled educational guidance; AI cannot override placement rules",
+ "Teacher observation is needed to confirm the starting point",
  ],
  about: {
  "@type": "Thing",
- name: "Personalized course recommendation for children ages 6–18",
+ name: "Provisional learning-level guidance for children ages 5–18",
  description:
- "Matches each child to live online STEM, coding, robotics, algorithms or AI classes based on age, current skill level, learning interests, and parent goals.",
+ "Offers a provisional starting level based on parent-reported age, experience, observed readiness and support. A teacher confirms the fit through a practical trial.",
  },
  };
 
@@ -125,7 +121,7 @@ export default async function RecommendPage({
  <BreadcrumbSchema
  items={[
  { name: bcLabel("Home", locale), url: `${SITE_URL}/${locale}` },
- { name: bcLabel("Course finder", locale), url: `${SITE_URL}/${locale}/recommend` },
+ { name: locale === "ar" ? "مستوى البداية" : "Starting level finder", url: `${SITE_URL}/${locale}/recommend` },
  ]}
  />
  <script

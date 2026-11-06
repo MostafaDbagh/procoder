@@ -1,0 +1,86 @@
+{
+  "date": "2026-11-06",
+  "feature": "Five-level recommendation assessment",
+  "status": "software_checks_passed_educational_and_browser_review_pending",
+  "scope": {
+    "frontend": "Single guided conversation, one missing question per turn, bilingual answer buttons, suggested level first, optional profile summary, and crawlable explanatory content. No form or tabs.",
+    "backend": "Confirmed age, experience, observed readiness and support determine a provisional stage; current courses are filtered by mapped stage, age and difficulty. AI classifies concerns but does not author placement advice."
+  },
+  "checks": [
+    {
+      "name": "Focused backend tests",
+      "command": "npm run test:recommendation",
+      "passed": 60,
+      "failed": 0
+    },
+    {
+      "name": "Exhaustive assessment matrix",
+      "cases": 2160,
+      "dimensions": [
+        "ages 3–20",
+        "5 experience answers",
+        "6 readiness answers",
+        "4 support answers"
+      ],
+      "result": "passed; included in focused tests"
+    },
+    {
+      "name": "Missing answer combinations",
+      "cases": 15,
+      "result": "passed; included in focused tests"
+    },
+    {
+      "name": "Isolated HTTP integration",
+      "command": "node --test test/recommend-http.integration.test.js",
+      "passed": 7,
+      "failed": 0,
+      "environment": "127.0.0.1 only; synthetic child profiles; database and AI providers mocked"
+    },
+    {
+      "name": "Frontend repository checks",
+      "command": "npm test",
+      "result": "passed",
+      "existing_unrelated_lint_warnings": 14
+    },
+    {
+      "name": "Conversational frontend and proxy regression tests",
+      "command": "npm run test:recommendation",
+      "passed": 4,
+      "failed": 0
+    },
+    {
+      "name": "Production build",
+      "command": "NEXT_PUBLIC_API_URL= npm run build",
+      "result": "passed"
+    }
+  ],
+  "verified_failure_modes": [
+    "missing or unknown answers",
+    "conflicting readiness and experience",
+    "out-of-band ages",
+    "chat age contradicting confirmed form age",
+    "no mapped compatible course",
+    "catalog outage",
+    "parser outage",
+    "malformed or adversarial AI output",
+    "unverified AI evidence",
+    "provider error and timeout",
+    "invalid API payloads",
+    "private catalog fields excluded from responses"
+  ],
+  "limitations": [
+    "Tests establish implementation invariants, not educational validity or individual child suitability. The new placement rubric requires review by the StemTechLab educational team before production use.",
+    "Actual placement remains provisional and is confirmed through teacher observation; the system does not diagnose children.",
+    "Browser end-to-end interaction and responsive visual checks were unavailable in this environment. Request reset/cancellation changes passed type and lint checks but still need browser interaction testing.",
+    "The full existing backend suite was attempted but MongoDB DNS/network access and sandbox listener restrictions blocked unrelated integration tests. The new isolated HTTP tests passed with localhost access.",
+    "No live model quality evaluation or real-child-data testing was performed. Model outputs are bounded to evidence-backed concern codes and application-owned replies.",
+    "No deployment or production database migration was performed. Catalog courses without an official stlLevel are intentionally not recommended.",
+    "Current-run visual audit blocked: native Chrome capture timed out. No screenshot-based or mobile visual sign-off for the final conversational interface."
+  ],
+  "reference": "https://developers.openai.com/api/docs/guides/prompt-engineering",
+  "local_preview": {
+    "frontend": "http://127.0.0.1:3011/en/recommend",
+    "http_status": 200,
+    "backend": "Cannot connect to configured MongoDB Atlas cluster; local backend not listening"
+  }
+}

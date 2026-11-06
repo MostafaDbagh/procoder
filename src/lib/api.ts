@@ -325,10 +325,21 @@ export interface ChildProfile {
  special_needs: string | null;
 }
 
-export interface LearningPathStep {
- phase: "now" | "next" | "future";
- slug: string;
- title: { en: string; ar: string } | string;
+export interface ReadinessAnswers {
+ age?: number;
+ experience?: "none" | "beginner" | "intermediate" | "advanced" | "unsure";
+ readiness?: "sequences" | "guided" | "independent" | "open_ended" | "specialization" | "unsure";
+ support?: "frequent" | "occasional" | "independent" | "unsure";
+}
+
+export interface LevelAssessment {
+ version: string;
+ status: "needs_information" | "review_required" | "provisional";
+ suggestedLevel: "explorer" | "builder" | "creator" | "innovator" | "pro" | null;
+ reasons: string[];
+ considerations: string[];
+ missingFields: (keyof ReadinessAnswers)[];
+ nextStep: string;
 }
 
 export interface ConversationTurn {
@@ -336,19 +347,28 @@ export interface ConversationTurn {
  content: string;
 }
 
+export interface NextReadinessQuestion {
+ field: keyof ReadinessAnswers;
+ prompt: string;
+ options: { value: string; label: string }[];
+}
+
 export interface RecommendResponse {
+ nextQuestion?: NextReadinessQuestion | null;
  ids: string[];
+ courses?: APICourse[];
  message: string;
  profile?: ChildProfile;
- confidence?: number;
  followUpQuestions?: string[];
- learningPath?: LearningPathStep[];
+ assessment?: LevelAssessment;
+ assessmentAnswers?: ReadinessAnswers;
+ courseAvailability?: "available" | "no_match" | "pending_assessment" | "unavailable";
 }
 
 export function getAIRecommendation(
  message: string,
  locale: string,
- options?: { signal?: AbortSignal; conversationHistory?: ConversationTurn[] }
+ options?: { signal?: AbortSignal; conversationHistory?: ConversationTurn[]; assessment?: ReadinessAnswers }
 ): Promise<RecommendResponse> {
  return request<RecommendResponse>("/recommend", {
  method: "POST",
@@ -356,6 +376,7 @@ export function getAIRecommendation(
   message,
   locale,
   conversationHistory: options?.conversationHistory ?? [],
+  assessment: options?.assessment,
  }),
  signal: options?.signal,
  });
