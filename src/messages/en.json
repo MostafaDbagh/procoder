@@ -117,7 +117,7 @@
     "r4Title": "A parent dashboard that actually shows progress",
     "r4Desc": "Track lessons, get notifications, read reports, and see exactly what your child is building. You're never in the dark.",
     "r5Title": "Fully bilingual — Arabic & English",
-    "r5Desc": "Your child learns in the language they're most comfortable in. Switch any time — same quality, same teachers.",
+    "r5Desc": "Explore our website in Arabic or English. Confirm the teaching language and teacher availability for your chosen course before booking.",
     "r6Title": "Free trial, per-course pricing",
     "r6Desc": "Start with a free class to see the fit. Pay only for what your child takes — no monthly subscription locking you in.",
     "cta": "See what we built for parents"
@@ -1003,7 +1003,7 @@
       },
       {
         "q": "What if my child misses a session?",
-        "a": "Life happens! Missed sessions can be rescheduled at no extra cost. Just let us know 24 hours in advance and we'll find the next available slot."
+        "a": "You can reschedule a class at no extra cost by letting us know at least 4 hours before it starts. We'll help you find the next available slot."
       },
       {
         "q": "What equipment is needed?",
@@ -1011,7 +1011,7 @@
       },
       {
         "q": "How many students are in each class?",
-        "a": "We keep groups small — typically 3 to 5 students — so every child gets personal attention and can ask questions freely."
+        "a": "We keep groups small — a maximum of 3 students — so every child gets personal attention and can ask questions freely."
       },
       {
         "q": "What is your refund policy?",
@@ -1324,7 +1324,7 @@
     "whatsappInfo": "+971 50 224 9596",
     "whatsappLabel": "Chat on WhatsApp",
     "locationInfo": "Dubai, UAE",
-    "hoursInfo": "Sun - Fri: 9 AM - 8 PM",
+    "hoursInfo": "Sun - Fri: 9 AM - 8 PM (UAE time, UTC+4)",
     "emailUsLabel": "Email Us",
     "callUsLabel": "Call Us",
     "locationLabel": "Location",
@@ -1773,7 +1773,7 @@
   },
   "homeCta": {
     "title": "Unlock Your Child's <hl1>Coding</hl1> <hl2>Potential</hl2> Today",
-    "description": "Live 1-on-1 coding classes for kids ages 5–18, taught by expert mentors with personalized learning paths.",
+    "description": "Live coding classes for children, with a maximum of 3 students per class. Check each course for its age range and prerequisites.",
     "tag1": "Scratch",
     "tag2": "Python",
     "tag3": "AI",

@@ -1,3 +1,4 @@
+import { RelatedGuides } from "@/components/RelatedGuides";
 import { SITE_URL } from "@/lib/seo";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -47,7 +48,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
  modifiedTime: post.updatedAt ?? post.publishedAt,
  authors: [post.author.name],
  tags: post.tags,
- images: cover ? [{ url: cover }] : [{ url: `${SITE_URL}/og?locale=${lang}`, width: 1200, height: 630, alt: "StemTechLab" }],
+ images: cover ? [{ url: cover, alt: post.title[lang] }] : [{ url: `${SITE_URL}/og?locale=${lang}`, width: 1200, height: 630, alt: "StemTechLab" }],
  },
  twitter: {
  card: "summary_large_image",
@@ -94,7 +95,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ loc
  "@type": "BlogPosting",
  headline: post.title[lang],
  description: post.excerpt[lang],
- author: { "@type": post.author.name.trim().toLowerCase() === "stemtechlab team" ? "Organization" : "Person", name: post.author.name },
+ author: { "@type": post.author.name.trim().toLowerCase() === "stemtechlab team" ? "Organization" : "Person", name: post.author.name, ...(post.author.name.trim().toLowerCase() === "stemtechlab team" ? { url: siteUrl(lang, "/about") } : {}) },
  datePublished: post.publishedAt,
  dateModified: post.updatedAt ?? post.publishedAt,
  publisher: { "@type": "Organization", name: "StemTechLab", url: SITE_URL },
@@ -105,6 +106,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ loc
  }}
  />
  <BlogDetailClient post={post} relatedCourses={relatedCourses} bodyHtml={bodyHtml} />
+ <RelatedGuides locale={locale} courseSlugs={[...relatedSlugs]} excludeSlug={slug} />
  </>
  );
 }

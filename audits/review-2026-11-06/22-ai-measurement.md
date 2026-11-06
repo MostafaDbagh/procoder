@@ -1,0 +1,24 @@
+# Auditor 22 — AI visibility measurement validity
+
+Reviewed 6 November 2026. Evidence: `../ai-visibility-audit-2026-11-05.md`, `../ai-search-benchmark.json`, today's discovery JSON and `search-retrieval-notes.md`. No consumer assistant runs or application changes performed in this review.
+
+## Findings
+
+1. **P2 — Existing consumer results are a pilot, not a recommendation-share baseline.** November 5 contains one English prompt per ChatGPT, Perplexity and Gemini. Personalization was uncontrolled, exact model versions were unknown, and Perplexity's submitted wording differed. Preserve the observations, but do not aggregate them into an AI visibility score or infer a stable platform preference. The ChatGPT brand mention explicitly questioned fit and was neither a recommendation nor citation. Perplexity's full source drawer was not exported, so absence from its answer does not establish absence from all retrieved sources.
+
+2. **P2 — The prepared benchmark needs an explicit scope and prompt version before execution.** `ai-search-benchmark.json` lists five engines; the November 5 plan names three. Ten prompts × three repetitions means **90 runs for three engines**, or **150 for five**. Its final English and Arabic prompts concern similar trial/language decisions but are not exact translations. Preserve them as separate intent probes, or prepare a reviewed matched pair before comparing language effects. Do not silently alter wording between rounds. The recorded status correctly says runs were not performed.
+
+3. **P2 — HTTP access, public retrieval and consumer answers must remain separate measures.** Today's 36 successful declared-user-agent probes establish sampled fetchability, not provider-IP access, ranking or recommendation. Today's `site:` queries retrieve brand pages but are deliberately domain-constrained; they cannot measure unprompted discovery. Older retrieved homepage wording versus current HTML establishes a freshness discrepancy, not the cause of an assistant's selection or a Google index timestamp.
+
+## Repeatable bilingual protocol
+
+- Freeze a versioned copy of the existing ten prompts and choose three or five engines explicitly. For a compact first round use the three engines already observed: ChatGPT, Gemini and Perplexity, **90 completed runs**. Preserve the five English and five Arabic texts verbatim; record the final pair as related, not a controlled translation pair.
+- Use one fresh conversation per run. Record timestamp with timezone, language, region, account tier, visible model/mode, search state and personalization/memory state where inspectable. If a setting or model is unavailable, record `unknown`; do not claim it was controlled. Verify the actual submitted text before scoring. Randomize prompt order and spread the three repetitions across comparable recorded sessions; do not repeat until a favorable answer appears.
+- Request web retrieval consistently using a fixed language-matched suffix if needed: English “Search the web and cite sources.” / Arabic “ابحث في الويب واذكر المصادر.” Version this addition and apply it to every relevant run. Save the complete answer, conversation link or export, displayed citations, and any source drawer that can be captured.
+- Score each run independently: **mention** = recognizable brand named, even negatively; **recommendation** = included as a suitable option to consider, not merely discussed or rejected; **owned-site citation** = an actual link to a StemTechLab page; **third-party citation** = a linked external page supporting a claim about the brand. Record those separately. Store ordering only if the answer has meaningful ordered recommendations. Check factual claims against dated authoritative product facts; flag unresolved contradictions instead of choosing a convenient version.
+- Keep branded verification prompts in a separate dataset, for example EN “What does StemTechLab currently offer children in the UAE? Verify class format, ages and trial details with sources.” / AR “ما الخدمات التي تقدمها StemTechLab حالياً للأطفال في الإمارات؟ تحقق من شكل الحصص والأعمار والتجربة مع ذكر المصادر.” These test factual retrieval, not discovery share.
+- Report counts and denominators separately by engine, language and intent. Failed/unavailable runs are missing data, not absence. Describe rates as results for this fixed sample, not population-wide visibility. Record substantive site edits and repeat the same protocol after an explicitly chosen observation window; model changes, freshness and personalization remain confounders, so before/after correlation alone is not causal proof.
+
+## Limits
+
+No new ChatGPT, Gemini, Perplexity, Claude or Grok answer was obtained. No API output is substituted for consumer product behavior. No stable ranking, citation gain, Google AI Overview traffic or statistical confidence is claimed. The proposed repetitions help expose variability but do not eliminate account or platform dependence.

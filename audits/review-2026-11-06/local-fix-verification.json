@@ -1,0 +1,80 @@
+[
+  {
+    "path": "/en",
+    "status": 200,
+    "details": 13,
+    "oldClassSize": false,
+    "relatedGuides": false,
+    "catalogState": null,
+    "catalogCount": null
+  },
+  {
+    "path": "/ar",
+    "status": 200,
+    "details": 13,
+    "oldClassSize": false,
+    "relatedGuides": false,
+    "catalogState": null,
+    "catalogCount": null
+  },
+  {
+    "path": "/en/about",
+    "status": 200,
+    "details": 8,
+    "retry_after_dev_recompile": true
+  },
+  {
+    "path": "/ar/about",
+    "status": 200,
+    "details": 8,
+    "oldClassSize": false,
+    "relatedGuides": false,
+    "catalogState": null,
+    "catalogCount": null
+  },
+  {
+    "path": "/en/courses/python",
+    "status": 200,
+    "details": 5,
+    "oldClassSize": false,
+    "relatedGuides": true,
+    "catalogState": null,
+    "catalogCount": null
+  },
+  {
+    "path": "/ar/courses/python",
+    "status": 200,
+    "details": 5,
+    "oldClassSize": false,
+    "relatedGuides": true,
+    "catalogState": null,
+    "catalogCount": null
+  },
+  {
+    "path": "/en/blogs/minecraft-coding-for-kids",
+    "status": 200,
+    "details": 0,
+    "oldClassSize": false,
+    "relatedGuides": true,
+    "catalogState": null,
+    "catalogCount": null
+  },
+  {
+    "path": "/ar/blogs/minecraft-coding-for-kids",
+    "status": 200,
+    "details": 0,
+    "oldClassSize": false,
+    "relatedGuides": true,
+    "catalogState": null,
+    "catalogCount": null
+  },
+  {
+    "path": "/llms.txt",
+    "status": 200,
+    "details": 0,
+    "oldClassSize": false,
+    "relatedGuides": false,
+    "catalogState": "populated",
+    "catalogCount": "13"
+  }
+]

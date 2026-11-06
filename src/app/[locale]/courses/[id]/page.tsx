@@ -1,3 +1,5 @@
+import { RelatedGuides } from "@/components/RelatedGuides";
+import { courseDescription } from "@/lib/course-metadata";
 import { CourseParentGuide } from "@/components/CourseParentGuide";
 import { coursePublicTitle } from "@/lib/course-positioning";
 import { SITE_URL } from "@/lib/seo";
@@ -51,13 +53,6 @@ export async function generateMetadata({
  return map[level]?.[l] ?? level;
  };
 
- // Truncate body to leave room for the appended stats (age, level, duration)
- const truncate = (s: string, max: number) => {
- const text = s.replace(/\s+/g, " ").trim();
- if (text.length <= max) return text;
- const boundary = text.lastIndexOf(" ", max - 1);
- return text.slice(0, boundary > 0 ? boundary : max - 1) + "…";
- };
 
  if (apiCourse) {
  title = lang === "ar" ? apiCourse.title.ar : apiCourse.title.en;
@@ -67,8 +62,7 @@ export async function generateMetadata({
  const suffix = lang === "ar"
  ? ` للأعمار ${ageRange}. مستوى ${lvl}، ${apiCourse.lessons} درسًا على مدى ${apiCourse.durationWeeks} أسابيع.`
  : ` For ages ${ageRange}. ${lvl} level, ${apiCourse.lessons} lessons over ${apiCourse.durationWeeks} weeks.`;
- const body = truncate(rawBody || title, 165 - suffix.length);
- seoDescription = body + suffix;
+ seoDescription = courseDescription(rawBody, coursePublicTitle(id, title, lang), suffix);
  } else {
  const sc = staticCourse!;
  title = ct(sc.titleKey);
@@ -78,8 +72,7 @@ export async function generateMetadata({
  const suffix = lang === "ar"
  ? ` للأعمار ${ageRange}. مستوى ${lvl}، ${sc.lessons} درسًا على مدى ${sc.durationWeeks} أسابيع.`
  : ` For ages ${ageRange}. ${lvl} level, ${sc.lessons} lessons over ${sc.durationWeeks} weeks.`;
- const description = truncate(rawDesc || title, 165 - suffix.length);
- seoDescription = description + suffix;
+ seoDescription = courseDescription(rawDesc, title, suffix);
  }
 
  title = coursePublicTitle(id, title, lang);
@@ -91,7 +84,7 @@ export async function generateMetadata({
  : `${staticCourse!.ageMin}-${staticCourse!.ageMax}`;
  const brandedTitle = lang === "ar"
  ? `${title} | دورة أونلاين للأعمار ${ages} | ستم تك لاب`
- : `${title} | Online Course for Ages ${ages} | StemTechLab`;
+ : `${title} | ${/^Online\b/i.test(title) ? "Ages" : "Online Course for Ages"} ${ages} | StemTechLab`;
  const coverImage = apiCourse?.imageUrl ? new URL(apiCourse.imageUrl, SITE_URL).href : undefined;
  const fallbackOg = `${SITE_URL}/og?locale=${lang}&title=${encodeURIComponent(title)}&cat=${encodeURIComponent(apiCourse?.category ?? staticCourse?.category ?? "")}`;
  const ogImages = coverImage
@@ -220,6 +213,7 @@ export default async function CourseDetailPage({
  stageKey={apiCourse?.stlLevel || undefined}
  parentGuide={apiCourse ? <CourseParentGuide slug={id} locale={locale} /> : null}
  />
+ <RelatedGuides locale={locale} courseSlugs={[id]} />
  </>
  );
 }

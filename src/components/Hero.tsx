@@ -62,7 +62,7 @@ export function Hero() {
  <div className="hidden sm:block absolute inset-0 -z-10 overflow-hidden">
  <Image
  src="/images/hero-bg.webp"
- alt="StemTechLab — kids learning coding, robotics and AI through hands-on STEM classes"
+ alt=""
  fill
  priority
  sizes="100vw"

@@ -1,0 +1,17 @@
+# Auditor 24 — Server reliability, cache and error behavior
+
+6 November 2026. Source review of server API fetching, sitemap, course/blog routes, homepage and revalidation. Fresh parent crawl returned 200 for all 106 sitemap URLs. No production failure was induced and no application code changed.
+
+## Findings
+
+1. **P2 — Runtime cache resilience remains unproven by the regression suite.** `src/lib/server-api.ts:390–412` and `src/app/sitemap.ts:147–154` deliberately cache successful snapshots; entity transport failures throw instead of being treated as missing content. These are strong controls. However, `scripts/seo-regression.test.mjs:11,213` mocks `unstable_cache` as a direct function call, so those tests cannot establish actual warm-cache preservation, cold-cache response status, streaming behavior or deployment recovery. Add controlled integration verification against the installed production build: warm success → unavailable upstream → recovery, plus cold unavailable upstream and genuine 404. Record HTTP status and body, sitemap completeness and recovered freshness. This is a test gap, not a demonstrated outage or soft-404 defect.
+
+2. **P2, conditional — Homepage can silently lose category discovery during a cold catalog failure.** `getCoursesISR()` returns null on cache failure (`src/lib/server-api.ts:404–406`); homepage converts null to an empty course list before deriving available categories (`src/app/[locale]/page.tsx:70–85`). Unlike the course catalog page, which throws on unavailable data (`courses/page.tsx:86–87`), the homepage continues rendering. This keeps the brand page available but can remove useful catalog-derived navigation during failure. Verify the rendered fallback in a controlled cold-cache scenario and choose an explicit policy: preserve known-good discovery links, show a truthful temporary state, or fail the affected section. Do not fabricate a fallback catalog or assume today's healthy production page has this defect.
+
+3. **P3 — Freshness should be checked end to end after CMS changes.** Revalidation invalidates catalog/blog/sitemap tags, locale layout and discovery routes (`src/app/api/revalidate/route.ts:61–66`), a positive implementation. The response reports `revalidated: true` (`:85`) without verifying the subsequently served public representations. Establish an operational check after representative catalog edits: page body, metadata, schema, sitemap and both LLM files must converge to the same approved facts. Do not treat a successful invalidation request or IndexNow notification as proof of immediate indexing. No stale production record was demonstrated by this review.
+
+## Positive controls and limits
+
+Single-course and single-blog fetches distinguish upstream 404 from unavailability (`server-api.ts:181–197,303–318`); course catalog and blog archive reject unavailable data rather than publish an empty archive. Sitemap validates pagination/duplicates and bounds the whole blog traversal (`sitemap.ts:18–56`), then caches a complete snapshot. Request timeouts are present on the inspected public fetches.
+
+No host logs, actual cache contents, outage history, production deployment configuration or response streaming trace was inspected. Vercel MISS is not itself an SEO failure, and HTTP probe duration is not a Core Web Vitals result. Do not attribute historical impression losses to these conditional risks without incident evidence.

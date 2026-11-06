@@ -1,0 +1,42 @@
+[
+  {
+    "slug": "minecraft-coding-for-kids",
+    "status": 200,
+    "allFieldsMatch": true
+  },
+  {
+    "slug": "coding-competitions-for-kids",
+    "status": 200,
+    "allFieldsMatch": true
+  },
+  {
+    "slug": "why-every-child-should-learn-coding",
+    "status": 200,
+    "allFieldsMatch": true
+  },
+  {
+    "slug": "best-age-to-start-coding",
+    "status": 200,
+    "allFieldsMatch": true
+  },
+  {
+    "slug": "teaching-arabic-to-children-in-digital-age",
+    "status": 200,
+    "allFieldsMatch": true
+  },
+  {
+    "slug": "5-benefits-of-robotics-for-children",
+    "status": 200,
+    "allFieldsMatch": true
+  },
+  {
+    "slug": "scratch-vs-python-which-is-right-for-your-child",
+    "status": 200,
+    "allFieldsMatch": true
+  },
+  {
+    "slug": "game-development-for-kids-complete-guide",
+    "status": 200,
+    "allFieldsMatch": true
+  }
+]

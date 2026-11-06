@@ -1,5 +1,6 @@
 "use client";
 
+import { courseCount } from "@/lib/course-count";
 import React from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { formatCoursePrice } from "@/lib/formatCoursePrice";
@@ -234,11 +235,11 @@ export const CourseCard = React.memo(function CourseCard({ course, index = 0, ti
  <div className="flex items-center gap-4 text-xs text-muted mb-5">
  <span className="flex items-center gap-1.5">
  <BookOpen className="w-3.5 h-3.5" />
- {course.lessons} {ct("lessons")}
+ {courseCount(course.lessons, "lessons", locale)}
  </span>
  <span className="flex items-center gap-1.5">
  <Clock className="w-3.5 h-3.5" />
- {course.durationWeeks} {ct("duration")}
+ {courseCount(course.durationWeeks, "weeks", locale)}
  </span>
  <span className="flex items-center gap-1.5">
  <Users className="w-3.5 h-3.5" />

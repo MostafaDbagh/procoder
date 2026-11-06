@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local pre-edit database snapshots
+audits/**/blog-editorial-before.json

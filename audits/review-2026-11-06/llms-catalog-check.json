@@ -1,0 +1,42 @@
+[
+  {
+    "path": "llms.txt",
+    "status": 200,
+    "course_slugs": [
+      "aiadvanced",
+      "aifoundation",
+      "algo-intro",
+      "mobappdev",
+      "motionstorylab",
+      "pcep",
+      "programming1",
+      "programming2",
+      "python",
+      "robotics",
+      "web-advanced",
+      "web-beginner",
+      "web-intermediate"
+    ],
+    "course_count": 13
+  },
+  {
+    "path": "llms-full.txt",
+    "status": 200,
+    "course_slugs": [
+      "aiadvanced",
+      "aifoundation",
+      "algo-intro",
+      "mobappdev",
+      "motionstorylab",
+      "pcep",
+      "programming1",
+      "programming2",
+      "python",
+      "robotics",
+      "web-advanced",
+      "web-beginner",
+      "web-intermediate"
+    ],
+    "course_count": 13
+  }
+]

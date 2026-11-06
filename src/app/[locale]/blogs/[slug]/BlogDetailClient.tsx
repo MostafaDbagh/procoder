@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+import { blogCategoryLabel, readingTime } from "@/lib/blog-labels";
 import { useEffect } from "react";
 import { useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
@@ -12,7 +14,6 @@ import {
  ArrowLeft,
  Clock,
  Eye,
- Tag,
  Calendar,
  User,
  Share2,
@@ -69,7 +70,7 @@ export default function BlogDetailClient({ post, relatedCourses, bodyHtml }: Pro
  <motion.header initial={false} animate={{ opacity: 1, y: 0 }} className="mb-10">
  {/* Category */}
  <span className="inline-block text-xs font-semibold px-3 py-1 rounded-full bg-primary/10 text-primary capitalize mb-4">
- {post.category}
+ {blogCategoryLabel(post.category, lang)}
  </span>
 
  <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-5">
@@ -80,7 +81,7 @@ export default function BlogDetailClient({ post, relatedCourses, bodyHtml }: Pro
  <div className="flex flex-wrap items-center gap-4 text-sm text-muted mb-6">
  <span className="flex items-center gap-1.5">
  <User className="w-4 h-4" />
- {post.author.name}
+ {post.author.name.trim().toLowerCase() === "stemtechlab team" ? <Link href="/about" className="hover:underline">{lang === "ar" ? "فريق ستم تك لاب" : post.author.name}</Link> : post.author.name}
  </span>
  {publishDate && (
  <span className="flex items-center gap-1.5">
@@ -90,7 +91,7 @@ export default function BlogDetailClient({ post, relatedCourses, bodyHtml }: Pro
  )}
  <span className="flex items-center gap-1.5">
  <Clock className="w-4 h-4" />
- {post.readTimeMinutes} {lang === "ar" ? "دقائق قراءة" : "min read"}
+ {readingTime(post.readTimeMinutes, lang)}
  </span>
  <span className="flex items-center gap-1.5">
  <Eye className="w-4 h-4" />
@@ -102,29 +103,14 @@ export default function BlogDetailClient({ post, relatedCourses, bodyHtml }: Pro
  </button>
  </div>
 
- {/* Tags */}
- {post.tags.length > 0 && (
- <div className="flex flex-wrap gap-2">
- {post.tags.map((tag) => (
- <span key={tag} className="flex items-center gap-1 text-xs text-muted bg-surface border border-border px-2.5 py-1 rounded-full">
- <Tag className="w-3 h-3" />
- {tag}
- </span>
- ))}
- </div>
- )}
  </motion.header>
 
  {/* Cover image */}
  {safeCoverImage(post.coverImage) && (
  <motion.div initial={false} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="mb-10">
- {/* eslint-disable-next-line @next/next/no-img-element */}
- <img
- src={safeCoverImage(post.coverImage)}
- alt={post.title[lang] ?? ""}
- loading="eager"
- className="w-full aspect-video object-contain bg-surface rounded-2xl border border-border"
- />
+ <div className="relative aspect-video overflow-hidden rounded-2xl border border-border bg-surface">
+ <Image src={safeCoverImage(post.coverImage)!} alt={post.title[lang] ?? ""} fill sizes="(max-width: 768px) 100vw, 736px" className="object-contain" />
+ </div>
  </motion.div>
  )}
 
@@ -143,16 +129,6 @@ export default function BlogDetailClient({ post, relatedCourses, bodyHtml }: Pro
  prose-a:text-primary prose-a:no-underline hover:prose-a:underline"
  dangerouslySetInnerHTML={{ __html: bodyHtml }}
  />
-
- {/* Region targeting (SEO text) */}
- {post.targetRegions.length > 0 && (
- <div className="bg-surface rounded-2xl border border-border p-5 mb-10">
- <p className="text-xs text-muted">
- <strong>{lang === "ar" ? "المناطق المستهدفة:" : "Available in:"}</strong>{" "}
- {post.targetRegions.join(", ")}
- </p>
- </div>
- )}
 
  {/* CTA */}
  <div className="bg-primary rounded-2xl p-8 text-center mb-12">

@@ -12,7 +12,7 @@ export const revalidate = 21600;
 function validDate(value?: string): Date | undefined {
  if (!value) return undefined;
  const date = new Date(value);
- return Number.isNaN(date.getTime()) ? undefined : date;
+ return Number.isNaN(date.getTime()) || date.getTime() > Date.now() ? undefined : date;
 }
 
 async function getBlogSlugsForSitemap(): Promise<{ slug: string; lastModified?: string }[]> {

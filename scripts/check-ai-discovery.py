@@ -128,6 +128,11 @@ def probe(base, canonical_origin, path, agent, timeout):
             result['content_type'] = response.headers.get('Content-Type', '')
             result['cache'] = response.headers.get('x-vercel-cache')
             result['request_id'] = response.headers.get('x-vercel-id')
+            if path in ('/llms.txt', '/llms-full.txt'):
+                result['catalog_state'] = response.headers.get('X-Catalog-State', 'unknown')
+                result['catalog_count'] = response.headers.get('X-Catalog-Count')
+                if result['catalog_state'] == 'fallback':
+                    result['warnings'] = ['AI catalog is serving a link-only fallback; investigate sustained degradation']
             data = response.read(2_000_001)
             if len(data) > 2_000_000:
                 result['errors'].append('Response exceeds 2 MB inspection limit')

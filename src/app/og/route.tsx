@@ -12,18 +12,19 @@ async function loadArabicFont(): Promise<ArrayBuffer | null> {
     const css = await fetch(
       "https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=block",
       {
+        signal: AbortSignal.timeout(3000),
         headers: {
           "User-Agent":
             "Mozilla/5.0 (Windows NT 5.1; rv:14.0) Gecko/20100101 Firefox/14.0.1",
         },
       }
-    ).then((r) => r.text());
+    ).then((r) => { if (!r.ok) throw new Error("Font stylesheet unavailable"); return r.text(); });
 
     // Extract the first url(...) from the CSS
     const match = css.match(/url\(([^)]+)\)/);
     if (!match?.[1]) return null;
 
-    return await fetch(match[1]).then((r) => r.arrayBuffer());
+    return await fetch(match[1], { signal: AbortSignal.timeout(3000) }).then((r) => { if (!r.ok) throw new Error("Font unavailable"); return r.arrayBuffer(); });
   } catch {
     return null;
   }

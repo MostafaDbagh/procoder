@@ -49,7 +49,7 @@ const meta = {
 export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
  const { locale } = await params;
  const lang = locale === "ar" ? "ar" : "en";
- const { page, category, path } = await getArchive(searchParams);
+ const { data, page, category, path } = await getArchive(searchParams);
  const categoryLabel = lang === "ar" ? ({ coding: "البرمجة", robotics: "الروبوتات", arabic: "العربية", stem: "العلوم", parenting: "التربية", general: "عام" } as Record<string, string>)[category] : category;
  const suffix = `${category !== "all" ? ` — ${categoryLabel}` : ""}${page > 1 ? (lang === "ar" ? ` — الصفحة ${page}` : ` — Page ${page}`) : ""}`;
  const fullTitle = lang === "ar"
@@ -59,6 +59,7 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
  title: { absolute: fullTitle },
  description: meta[lang].description,
  alternates: buildAlternates(lang, path),
+ ...(data.items.length === 0 ? { robots: { index: false, follow: true } } : {}),
  openGraph: { title: meta[lang].title, description: meta[lang].description, url: siteUrl(lang, path), type: "website", siteName: "StemTechLab", locale: lang === "ar" ? "ar_AE" : "en_US", alternateLocale: lang === "ar" ? "en_US" : "ar_AE", images: [{ url: `${SITE_URL}/og?locale=${lang}`, width: 1200, height: 630, alt: "StemTechLab" }] },
  twitter: { card: "summary_large_image", title: meta[lang].title, description: meta[lang].description },
  };

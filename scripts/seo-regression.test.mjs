@@ -226,7 +226,7 @@ test('blog archive cache only accepts usable inventories and preserves query iso
 test('confirmed course deletion returns not found even for a legacy fallback slug', async () => {
  const notFound=()=>{throw new Error('NOT_FOUND');};
  const page=load('src/app/[locale]/courses/[id]/page.tsx',{
-  '@/components/CourseParentGuide':{}, '@/lib/course-positioning':{},
+  '@/components/CourseParentGuide':{}, '@/lib/course-positioning':{}, '@/components/RelatedGuides':{}, '@/lib/course-metadata':{},
   'next/navigation':{notFound}, 'next-intl/server':{setRequestLocale:()=>{}},
   '@/data/courses':{courses:[{id:'robotics'}]}, './CourseDetailContent':{},
   '@/components/StructuredData':{}, '@/lib/arabicSlugs':{resolveArabicSlug:s=>s,isArabicSlug:()=>false},
@@ -235,4 +235,45 @@ test('confirmed course deletion returns not found even for a legacy fallback slu
  const props={params:Promise.resolve({locale:'en',id:'robotics'})};
  await assert.rejects(()=>page.generateMetadata(props),/NOT_FOUND/);
  await assert.rejects(()=>page.default(props),/NOT_FOUND/);
+});
+
+test('all parent answers exist in initial HTML inside native disclosures', () => {
+ const { renderToStaticMarkup } = resolveModule('react-dom/server');
+ const { createElement } = resolveModule('react');
+ for (const lang of ['en','ar']) {
+  const messages=JSON.parse(fs.readFileSync(`src/messages/${lang}.json`,'utf8')).parentQuestions;
+  const component=load('src/components/ParentQuestions.tsx',{
+   'next-intl':{useTranslations:()=>key=>key.split('.').reduce((v,k)=>v[k],messages)},
+   '@/components/BrainPatterns':{BrainPattern:()=>null},
+   '@/components/LocalizedLink':{LocalizedLink:({children,...props})=>createElement('a',props,children)},
+  }).ParentQuestions;
+  const html=renderToStaticMarkup(createElement(component));
+  for(let i=1;i<=12;i++) {
+   const escaped=renderToStaticMarkup(createElement('p',null,messages[`q${i}`].answer));
+   assert.ok(html.includes(escaped.slice(3,-4)), `Missing ${lang} answer ${i}`);
+  }
+  assert.equal((html.match(/<details/g)||[]).length,13);
+ }
+});
+
+test('malformed or duplicate AI catalog entries use a safe fallback', async () => {
+ const good={slug:'python',title:{en:'Python'},skills:{en:['loops']},ageMin:8};
+ for(const payload of [[null],[{slug:'bad/path'}],[good,good],[{...good,title:{en:42}}],[{...good,skills:{en:'loops'}}],[{...good,lessons:-1}]]) {
+  const catalog=load('src/lib/llms-catalog.ts',{'./server-api':{serverApiRoot:()=> 'https://example.test/api'}},{fetch:async()=>({ok:true,json:async()=>payload})});
+  assert.equal(await catalog.getCatalogForLlms(),null);
+ }
+ const catalog=load('src/lib/llms-catalog.ts',{'./server-api':{} });
+ assert.equal(catalog.validLlmsCatalog([good]),true);
+});
+
+test('course snippets retain complete sentences instead of cut promises',()=>{
+ const {courseDescription}=load('src/lib/course-metadata.ts');
+ assert.equal(courseDescription('Build a game! Then learn loops.','Python',' Ages 8–13.'),'Build a game! Ages 8–13.');
+ assert.equal(courseDescription('Learn '+ 'coding '.repeat(80),'Python',' Ages 8–13.'),'Python. Ages 8–13.');
+ assert.equal(courseDescription('ابنِ لعبة. ثم تعلم التكرار.','بايثون',' للأعمار 8–13.'),'ابنِ لعبة. للأعمار 8–13.');
+});
+
+test('malformed bilingual blog records fail as unavailable, not empty indexed articles',async()=>{
+ const api=load('src/lib/server-api.ts',{'./mediaUrls':load('src/lib/mediaUrls.ts')},{fetch:async()=>({ok:true,status:200,json:async()=>({slug:'example',title:{en:'Title',ar:'عنوان'},excerpt:{en:'Intro',ar:'مقدمة'},body:{en:'Text',ar:''},author:{name:'Team'},tags:[],targetRegions:[],relatedCourses:[]})})});
+ await assert.rejects(()=>api.getBlogPostISR('example'),/invalid blog post/);
 });

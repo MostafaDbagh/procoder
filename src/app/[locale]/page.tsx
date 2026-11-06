@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { SITE_URL } from "@/lib/seo";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
@@ -82,7 +83,11 @@ export default async function HomePage({
  <LearningJourney />
  <ParentQuestions />
  <WhyUs />
- <CategorySection categories={cmsCategories} availableSlugs={availableSlugs} />
+ {allCourses === null ? <section className="mx-auto max-w-5xl px-4 py-12 text-center">
+ <h2 className="mb-3 text-2xl font-bold">{locale === "ar" ? "استكشف الدورات" : "Explore courses"}</h2>
+ <p className="mb-4 text-muted">{locale === "ar" ? "تعذر تحميل تفاصيل الدورات الآن. يمكنك زيارة دليل الدورات أو التواصل معنا للمساعدة." : "Course details are temporarily unavailable here. Visit the course catalog or contact us for help."}</p>
+ <Link className="font-semibold text-primary underline" href={`/${locale}/courses`}>{locale === "ar" ? "دليل الدورات" : "Course catalog"}</Link>
+ </section> : <CategorySection categories={cmsCategories} availableSlugs={availableSlugs} />}
  <HowItWorks />
  <CTABanner />
  <ExplorerFloatBubble />

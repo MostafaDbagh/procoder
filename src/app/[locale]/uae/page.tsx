@@ -1,3 +1,4 @@
+import { courseCount } from "@/lib/course-count";
 import { coursePublicTitle } from "@/lib/course-positioning";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -87,7 +88,7 @@ export default async function UAEPage({ params }: { params: Promise<{ locale: st
    <section className="mb-12"><h2 className="text-2xl font-bold mb-4">{c.planning}</h2><ul className="list-disc ps-6 space-y-3 text-muted leading-relaxed">{c.steps.map(step => <li key={step}>{step}</li>)}</ul></section>
    <section className="mb-12">
     <h2 className="text-2xl font-bold mb-4">{c.courses}</h2><p className="text-muted leading-relaxed mb-6">{c.courseIntro}</p>
-    <ul className="divide-y divide-border border-y border-border">{(courses ?? []).map(course => <li key={course.slug} className="py-5"><h3 className="text-lg font-semibold mb-2"><Link className={linkClass} href={`/${lang}/courses/${course.slug}`}>{coursePublicTitle(course.slug, course.title[lang], lang)}</Link></h3><p className="text-sm text-muted">{c.ages} {course.ageMin}–{course.ageMax} · {({ en: { beginner: "Beginner", intermediate: "Intermediate", advanced: "Advanced" }, ar: { beginner: "مبتدئ", intermediate: "متوسط", advanced: "متقدم" } }[lang] as Record<string, string>)[course.level] ?? course.level} · {course.lessons} {c.lessons} · {course.durationWeeks} {c.weeks}</p>{course.skills?.[lang]?.length > 0 && <p className="mt-3 text-sm text-muted leading-relaxed"><span className="font-semibold">{c.skills}: </span>{course.skills[lang].join(lang === "ar" ? "، " : ", ")}</p>}</li>)}</ul>
+    <ul className="divide-y divide-border border-y border-border">{(courses ?? []).map(course => <li key={course.slug} className="py-5"><h3 className="text-lg font-semibold mb-2"><Link className={linkClass} href={`/${lang}/courses/${course.slug}`}>{coursePublicTitle(course.slug, course.title[lang], lang)}</Link></h3><p className="text-sm text-muted">{c.ages} {course.ageMin}–{course.ageMax} · {({ en: { beginner: "Beginner", intermediate: "Intermediate", advanced: "Advanced" }, ar: { beginner: "مبتدئ", intermediate: "متوسط", advanced: "متقدم" } }[lang] as Record<string, string>)[course.level] ?? course.level} · {courseCount(course.lessons, "lessons", lang)} · {courseCount(course.durationWeeks, "weeks", lang)}</p>{course.skills?.[lang]?.length > 0 && <p className="mt-3 text-sm text-muted leading-relaxed"><span className="font-semibold">{c.skills}: </span>{course.skills[lang].join(lang === "ar" ? "، " : ", ")}</p>}</li>)}</ul>
     {!courses?.length && <p className="text-muted my-4">{c.empty}</p>}
     <Link href={`/${lang}/courses`} className={`${linkClass} inline-block mt-6`}>{c.catalog}</Link>
    </section>

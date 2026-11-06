@@ -314,7 +314,11 @@ async function fetchBlogSnapshot(slug: string): Promise<APIBlogPost | null> {
  if (res.status === 404) return null;
  if (!res.ok) throw new ApiUnavailableError(`blog post "${slug}" (HTTP ${res.status})`);
  const post = (await res.json()) as APIBlogPost;
- if (!post || typeof post.slug !== "string" || !post.title || !post.body || !post.author) throw new ApiUnavailableError(`invalid blog post "${slug}"`);
+ if (!post || post.slug !== slug || !post.author || typeof post.author.name !== "string" || !post.author.name.trim() ||
+     ![post.title, post.excerpt, post.body].every(value => value && ["en", "ar"].every(lang => typeof value[lang as "en" | "ar"] === "string" && value[lang as "en" | "ar"].trim())) ||
+     ![post.tags, post.targetRegions, post.relatedCourses].every(value => Array.isArray(value) && value.every(item => typeof item === "string"))) {
+  throw new ApiUnavailableError(`invalid blog post "${slug}"`);
+ }
  return post;
 }
 

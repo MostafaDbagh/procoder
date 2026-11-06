@@ -1,0 +1,139 @@
+# StemTechLab — Course information
+> Live online coding and STEM classes for children in the UAE and other GCC countries.
+
+## Delivery and enrollment
+Classes are online. Each course page lists its age range, level, lessons and learning goals. Parents should confirm the current price, teaching language, equipment requirements and UAE-time schedule before enrollment.
+
+- English UAE guide: https://www.stemtechlab.com/en/uae
+- دليل الإمارات بالعربية: https://www.stemtechlab.com/ar/uae
+- English catalog: https://www.stemtechlab.com/en/courses
+- الدورات بالعربية: https://www.stemtechlab.com/ar/courses
+- Free trial: https://www.stemtechlab.com/en/free-trial
+- Questions and answers: https://www.stemtechlab.com/en/faq
+- Team and background: https://www.stemtechlab.com/en/about
+- Contact: https://www.stemtechlab.com/en/contact
+- Privacy: https://www.stemtechlab.com/en/privacy
+- Short index: https://www.stemtechlab.com/llms.txt
+
+## Choosing a course
+Start with the child's age, prior experience and interests. The course finder provides advisory suggestions, and parents make the enrollment decision. Availability and suitability should be confirmed with the team.
+
+## Complete Course Catalog (13 live courses)
+
+### Mobile App Development (1 course)
+
+**Create Your First Mobile App**
+- Ages: 8–14 | Level: beginner | Duration: 12 weeks | Lessons: 22
+- From idea to app—your child builds real technology!
+In this hands-on course, students explore how mobile apps are created step by step. They learn to design user-friendly interfaces, understand UI/UX, and build layouts using wireframes. Students discover mobile hardware, media tools, and online safety, then apply logic through variables and data. The course ends with building a real Health Tracker App and a final project.
+- Skills: Logical Thinking, Programming, Coding, Problem Solving, UI/UX Design, Creativity, App Design, Wireframing, Digital Literacy, Data Handling, Online Safety Awareness
+- English page: https://www.stemtechlab.com/en/courses/mobappdev
+- Arabic page: https://www.stemtechlab.com/ar/courses/mobappdev
+
+---
+
+### Programming (4 courses)
+
+**Advanced Programming**
+- Ages: 8–14 | Level: beginner | Duration: 12 weeks | Lessons: 22
+- As students progress into the complexities of variables, sequences, and loops, they move toward the goal of "analytical application." This course focuses heavily on decomposition—the ability to break down a daunting, multi-layered project into small, manageable components. British academic research shows that this structural approach to programming significantly boosts a child’s general academic independence, as they learn to simulate real-world systems through code. By the end of Level 2, students are no longer just following tutorials; they are designing original digital architectures with efficiency and precision.
+- Skills: Variable Manipulation, Complex Problem Decomposition, Iterative Logic, Architectural Thinking, Real-world System Simulation, Code Optimization, Data Abstraction
+- English page: https://www.stemtechlab.com/en/courses/programming2
+- Arabic page: https://www.stemtechlab.com/ar/courses/programming2
+
+**Online Python for Kids**
+- Ages: 8–13 | Level: beginner | Duration: 12 weeks | Lessons: 22
+- From first lines of code to real creative projects!
+In this engaging Python course, students start with the basics of programming such as calculations, variables, and text handling. They gradually build strong logical thinking by working with lists, data structures, conditions, and loops. Students then explore creativity through drawing with Turtle graphics, learn how to organize code using functions, and discover how real programs are built using objects and reusable logic. By the end, they confidently create interactive and structured programs using core Python skills.
+- Skills: Logical Thinking, Programming, Problem Solving, Coding, Algorithmic Thinking, Creativity, Debugging
+- English page: https://www.stemtechlab.com/en/courses/python
+- Arabic page: https://www.stemtechlab.com/ar/courses/python
+
+**PCEP Certification Prep**
+- Ages: 13–18 | Level: advanced | Duration: 12 weeks | Lessons: 24
+- Welcome to the next step in your programming journey. Designed for young innovators aged 13 to 18, this course bridges the gap between basic coding and professional text-based Python. We transition students from visual, block-based logic into strict Python syntax, perfectly preparing them for the official PCEP (Certified Entry-Level Python Programmer) exam. Beyond passing the test, students will build a strong foundation in event-driven programming. Expect a clean, noise-free learning environment focused on pure logic, efficient code, and building tomorrow's innovators.
+- Skills: Python Syntax Mastery, Code Tracing, Algorithmic Thinking, Data Structure Management, Control Flow Logic, Function Design, Error Handling, Event-Driven Programming Fundamentals
+- English page: https://www.stemtechlab.com/en/courses/pcep
+- Arabic page: https://www.stemtechlab.com/ar/courses/pcep
+
+**Programming Foundations**
+- Ages: 6–10 | Level: beginner | Duration: 12 weeks | Lessons: 22
+- In this foundational stage, students transition from passive technology consumers to active creators by mastering the core concept of algorithms—precise, step-by-step instructions. Following the UK Key Stage 1 (KS1) standards, the curriculum emphasizes "logical reasoning" and the vital skill of debugging. By learning to predict outcomes and systematically fix errors, children develop the cognitive resilience needed to solve problems before they even touch a keyboard. This level instills a "builder’s mindset," ensuring that every young learner views technology as a canvas for their own imagination rather than a mystery they simply observe.
+- Skills: Algorithms, logical reasoning, debugging, sequencing, computational thinking, problem-solving, pattern recognition, digital literacy, persistence, creative design.
+- English page: https://www.stemtechlab.com/en/courses/programming1
+- Arabic page: https://www.stemtechlab.com/ar/courses/programming1
+
+---
+
+### Web Development (3 courses)
+
+**My First Website**
+- Ages: 8–12 | Level: beginner | Duration: 8 weeks | Lessons: 10
+- In this fun beginner course, your child will create their very first real website! 🎉
+They’ll learn how to build colorful pages using HTML and CSS, add pictures, buttons, and cool designs, and proudly share their creation with family and friends. A magical first step into the world of coding! 💻✨
+- Skills: Learn HTML basics, Style with colorful CSS, Add images and colors, Create fun buttons & links, Write headings & text, Make simple page layouts, Build my first website, Share my website online
+- English page: https://www.stemtechlab.com/en/courses/web-beginner
+- Arabic page: https://www.stemtechlab.com/ar/courses/web-beginner
+
+**Web Design & Styling**
+- Ages: 11–14 | Level: intermediate | Duration: 10 weeks | Lessons: 16
+- Your child is ready for the next challenge. In this course, they'll move beyond the basics and start building real, professional-looking websites that work beautifully on every screen — phones, tablets, and desktops. They'll learn to think like a designer, craft layouts that impress, and feel the pride of showing friends and family something they built entirely on their own.
+- Skills: HTML5 & CSS3, Flexbox layouts, Responsive design, CSS animations, Navigation menus, Forms & inputs, Google Fonts & icons, Multi-page websites
+- English page: https://www.stemtechlab.com/en/courses/web-intermediate
+- Arabic page: https://www.stemtechlab.com/ar/courses/web-intermediate
+
+**Full Web Developer**
+- Ages: 14–18 | Level: advanced | Duration: 14 weeks | Lessons: 24
+- This is where your hero becomes a true web developer. JavaScript, live interactions, real APIs, and complete projects they can put in a portfolio — skills that open doors to internships, competitions, and the future they want to build.
+- Skills: JavaScript & DOM, Fetch & live APIs, Interactive projects, Portfolio-ready websites, Event listeners, Local storage, CSS Grid & Flexbox, Deploying to the web
+- English page: https://www.stemtechlab.com/en/courses/web-advanced
+- Arabic page: https://www.stemtechlab.com/ar/courses/web-advanced
+
+---
+
+### Algorithms (2 courses)
+
+**Algorithms Adventure**
+- Ages: 6–10 | Level: beginner | Duration: 6 weeks | Lessons: 8
+- Train your child to think like a problem solver!
+In this interactive online course, students learn how to break down problems, follow step-by-step solutions, and think logically through fun activities and challenges. They explore sequencing, conditions, loops, and debugging while creating their own simple algorithms and games.
+- Skills: Algorithmic Thinking, Logical Thinking, Problem Solving, Pattern Recognition, Debugging, Creativity
+- English page: https://www.stemtechlab.com/en/courses/algo-intro
+- Arabic page: https://www.stemtechlab.com/ar/courses/algo-intro
+
+**Motion & Story Lab**
+- Ages: 6–8 | Level: beginner | Duration: 8 weeks | Lessons: 10
+- From idea to animation—your child brings stories to life! In this hands-on course, students explore the foundations of animation and visual storytelling. They learn how characters, backgrounds, movement, timing, and sequences work together to create engaging scenes. Students experiment with animation techniques using Wick Editor, then apply their skills to create short animated stories. The course ends with creative projects where students bring their own ideas to life through animation.
+- Skills: Animation Fundamentals, Visual Storytelling, Creativity, Sequencing, Problem Solving, Digital Skills, Attention to Detail, Self-Expression
+- English page: https://www.stemtechlab.com/en/courses/motionstorylab
+- Arabic page: https://www.stemtechlab.com/ar/courses/motionstorylab
+
+---
+
+### Artificial Intelligence (2 courses)
+
+**Advanced AI Engineering**
+- Ages: 10–15 | Level: intermediate | Duration: 12 weeks | Lessons: 22
+- Level 2 transitions into the engineering behind advanced AI, exploring Decision Trees and the fundamental logic of Neural Networks. Aligned with UK Key computing standards, students learn how to refine model accuracy through iterative training and explore the basics of Natural Language Processing (NLP). The course emphasizes "Algorithmic Accountability," teaching students how to design AI that solves complex, real-world problems ethically and efficiently. They emerge as true innovators, capable of prototyping AI solutions that think, adapt, and predict outcomes with precision.
+- Skills: Neural Network Logic, Decision Trees, Natural Language Processing, Iterative Optimization, Predictive Modeling.
+- English page: https://www.stemtechlab.com/en/courses/aiadvanced
+- Arabic page: https://www.stemtechlab.com/ar/courses/aiadvanced
+
+**AI Engineering Foundation**
+- Ages: 9–14 | Level: beginner | Duration: 12 weeks | Lessons: 22
+- In this introductory building stage, students shift from coding with fixed rules to training models with data. They learn the core mechanics of Machine Learning by building their own image, text, and sound recognition systems. Based on the British "Experience AI" framework, this level focuses on the "Data-Model-Action" loop, ensuring students understand how to curate datasets and identify the impact of bias in AI design. By the end, they aren't just consumers of AI; they are builders who understand the architecture behind intelligent reactions to human input.
+- Skills: Machine Learning, Dataset Curation, Pattern Detection, Model Training, Algorithmic Ethics.
+- English page: https://www.stemtechlab.com/en/courses/aifoundation
+- Arabic page: https://www.stemtechlab.com/ar/courses/aifoundation
+
+---
+
+### Robotics (1 course)
+
+**Online Robotics for Kids**
+- Ages: 7–10 | Level: beginner | Duration: 10 weeks | Lessons: 20
+- Build, control, and think like a real robotics engineer!
+In this interactive course, students explore how robots move, sense, and make decisions. They learn core robotics concepts such as movement, sensors, logic, loops, and variables, then apply them through virtual simulations and challenges. By the end, students can design and control robots to solve real-world problems.
+- Skills: Robotics Understanding, Sensors & Actuators, Control Systems, Navigation & Movement, Data Handling, System Design
+- English page: https://www.stemtechlab.com/en/courses/robotics
+- Arabic page: https://www.stemtechlab.com/ar/courses/robotics

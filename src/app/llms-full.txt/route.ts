@@ -11,10 +11,13 @@ function bodyBytesLength(text: string) {
 
 export async function GET() {
  const base = getSiteBase();
- const body = formatLlmsFull(base, await getCatalogForLlms());
+ const catalog = await getCatalogForLlms();
+ const body = formatLlmsFull(base, catalog);
  return new Response(body, {
  headers: {
  "Content-Type": "text/plain; charset=utf-8",
+ "X-Catalog-State": catalog ? "populated" : "fallback",
+ "X-Catalog-Count": String(catalog?.length ?? 0),
  "Cache-Control": "public, max-age=60, s-maxage=300, stale-while-revalidate=60",
  },
  });
@@ -22,7 +25,8 @@ export async function GET() {
 
 export async function HEAD() {
  const base = getSiteBase();
- const body = formatLlmsFull(base, await getCatalogForLlms());
+ const catalog = await getCatalogForLlms();
+ const body = formatLlmsFull(base, catalog);
  return llmsHeadResponse(bodyBytesLength(body));
 }
 

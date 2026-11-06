@@ -63,7 +63,6 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  const isMobileRef = useRef(false);
  const [isMobile, setIsMobile] = useState(false);
  const [currentPage, setCurrentPage] = useState(0);
- const [expandedBio, setExpandedBio] = useState<string | null>(null);
 
  useEffect(() => {
  const check = () => {
@@ -149,11 +148,6 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
  style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
  >
  {teamRows.map((member, i) => {
- const isExpanded = expandedBio === member.key;
- const bioSnippet =
- member.bio.length > 120
- ? `${member.bio.slice(0, 120)}… `
- : `${member.bio} `;
  return (
  <motion.div
  key={member.key}
@@ -256,20 +250,10 @@ function MeetOurStarsCarousel({ teamRows }: { teamRows: StarRow[] }) {
 
  {/* Bio */}
  {member.bio ? (
- <p className="text-sm leading-relaxed text-muted">
- {isExpanded ? member.bio : bioSnippet}
- {member.bio.length > 120 ? (
- <button
- type="button"
- onClick={() =>
- setExpandedBio(isExpanded ? null : member.key)
- }
- className="font-semibold text-primary hover:underline cursor-pointer inline ms-1"
- >
- {isExpanded ? t("starsShowLess") : t("starsReadMore")}
- </button>
- ) : null}
- </p>
+ <details className="text-sm leading-relaxed text-muted">
+ <summary className="cursor-pointer rounded font-semibold text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary">{t("starsReadMore")}</summary>
+ <p className="mt-2">{member.bio}</p>
+ </details>
  ) : null}
  </article>
  </motion.div>

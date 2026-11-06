@@ -1,5 +1,6 @@
 "use client";
 
+import { blogCategoryLabel, readingTime } from "@/lib/blog-labels";
 import { useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { BlogListResponse, APIBlogPost } from "@/lib/server-api";
@@ -150,11 +151,11 @@ function BlogCard({ post, lang, index }: { post: APIBlogPost; lang: "en" | "ar";
  {/* Category + meta */}
  <div className="flex items-center gap-2 mb-3">
  <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full capitalize ${categoryColors[post.category] || categoryColors.general}`}>
- {post.category}
+ {blogCategoryLabel(post.category, lang)}
  </span>
  <span className="flex items-center gap-1 text-xs text-muted">
  <Clock className="w-3 h-3" />
- {post.readTimeMinutes} min
+ {readingTime(post.readTimeMinutes, lang)}
  </span>
  <span className="flex items-center gap-1 text-xs text-muted">
  <Eye className="w-3 h-3" />

@@ -1,5 +1,6 @@
 "use client";
 
+import { courseCount } from "@/lib/course-count";
 import { coursePublicTitle } from "@/lib/course-positioning";
 import { useState, type ReactNode, type ElementType } from "react";
 import Image from "next/image";
@@ -236,8 +237,8 @@ export default function CourseDetailContent({
  const info = [
  { icon: Users, label: t("ageGroup"), value: `${course.ageMin}–${course.ageMax}` },
  { icon: BarChart3, label: t("level"), value: common(course.level as "beginner" | "intermediate" | "advanced") },
- { icon: Clock, label: t("duration"), value: `${course.durationWeeks} ${common("duration")}` },
- { icon: BookOpen, label: t("lessons"), value: `${course.lessons} ${common("lessons")}` },
+ { icon: Clock, label: t("duration"), value: courseCount(course.durationWeeks, "weeks", locale) },
+ { icon: BookOpen, label: t("lessons"), value: courseCount(course.lessons, "lessons", locale) },
  ];
 
  const { icon: HeroIcon, gradient: iconGrad } = resolveCategoryHero(course.category);
