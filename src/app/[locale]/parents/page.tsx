@@ -10,12 +10,12 @@ import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
 
 const meta = {
  en: {
- title: "Choosing Coding Classes for Kids in the UAE | Parent Guide",
+ title: "Coding & STEM Classes for Kids: Parent Guide",
  description:
  "Compare coding, Python and robotics courses for your child. A practical UAE parent checklist for readiness, trial lessons, equipment and learning progress.",
  },
  ar: {
- title: "دليل اختيار دورات البرمجة للأطفال في الإمارات",
+ title: "دليل ولي الأمر لتعلّم البرمجة والتقنية للأطفال",
  description:
  "دليل عملي لأولياء الأمور في الإمارات لمقارنة البرمجة وبايثون والروبوتات، وتقييم استعداد الطفل وتجهيز الأجهزة والاستفادة من الحصة التجريبية.",
  },

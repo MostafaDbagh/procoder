@@ -1,17 +1,15 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { AnimatedSection, AnimatedCard } from "@/components/AnimatedSection";
-import { AuthModal } from "@/components/AuthModal";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { FutureThinkersSection } from "@/components/FutureThinkersSection";
 import { BrainPattern } from "@/components/BrainPatterns";
 import { motion } from "framer-motion";
 import {
  CheckCircle2,
- UserPlus,
+ Compass,
  Star,
  LayoutDashboard,
 } from "lucide-react";
@@ -30,8 +28,6 @@ export default function ParentsContent() {
  const t = useTranslations("parents");
  const locale = useLocale();
  const isArabic = locale === "ar";
- const [authOpen, setAuthOpen] = useState(false);
- const [authTab] = useState<"signup" | "login">("login");
 
  const trustCards = [
  { icon: BarChartIcon, title: t("trust1Title"), desc: t("trust1Desc"), bubble: "bg-blue-400/10 border-blue-400/30" },
@@ -57,7 +53,7 @@ export default function ParentsContent() {
  ];
 
  const dmHref = (key: "dm1" | "dm2" | "dm3" | "dm4" | "dm5" | "dm6") =>
- `/recommend?q=${encodeURIComponent(t(key).replace(/\n/g, " "))}`;
+ ({ dm1: "/recommend", dm2: "/learning-path", dm3: "/parents#learning-approach", dm4: "/parents#learning-approach", dm5: "/parents#parent-questions", dm6: "/parents#parent-progress" }[key]);
 
  return (
  <div>
@@ -95,7 +91,7 @@ export default function ParentsContent() {
  {/* Image — hidden on mobile and tablet, full bg on xl+ */}
  <Image
  src="/images/parent-bg.webp"
- alt="StemTechLab for parents — AI course matching and parent dashboard for tracking your child's learning"
+ alt=""
  fill
  priority
  sizes="100vw"
@@ -176,14 +172,13 @@ export default function ParentsContent() {
  </p>
 
  <div className="flex flex-col gap-2 xl:gap-3 max-w-xs">
- <button
- type="button"
- onClick={() => setAuthOpen(true)}
+ <LocalizedLink
+ href="/recommend"
  className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-2.5 xl:py-3 rounded-2xl bg-primary text-white font-semibold text-sm xl:text-base shadow-md shadow-primary/10 hover:shadow-lg hover:scale-[1.02] transition-all"
  >
- <UserPlus className="w-4 h-4 xl:w-5 xl:h-5 shrink-0" />
- {t("heroCta")} / {t("loginLink")}
- </button>
+ <Compass className="w-4 h-4 xl:w-5 xl:h-5 shrink-0" />
+ {t("heroCta")}
+ </LocalizedLink>
  <LocalizedLink
  href="/parent/login"
  className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-2.5 xl:py-3 rounded-2xl border-2 border-border bg-surface text-foreground font-semibold text-sm xl:text-base shadow-sm transition-all hover:border-primary/45 hover:bg-primary/[0.06] hover:text-primary hover:shadow-md hover:scale-[1.02] dark:hover:bg-primary/10"
@@ -227,10 +222,10 @@ export default function ParentsContent() {
  </div>
  </section>
 
- <FutureThinkersSection />
+ <div id="learning-approach" className="scroll-mt-24"><FutureThinkersSection /></div>
 
  {/* ═══ WHY PARENTS TRUST US ═══ */}
- <section className="relative overflow-hidden py-20 sm:py-28 bg-surface/50">
+ <section id="parent-questions" className="relative overflow-hidden py-20 sm:py-28 bg-surface/50 scroll-mt-24">
  <BrainPattern variant="rubik" />
  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
  <AnimatedSection className="text-center mb-14">
@@ -251,11 +246,15 @@ export default function ParentsContent() {
  </AnimatedCard>
  ))}
  </div>
+ <nav aria-label={t("trustTitle")} className="mt-8 flex flex-wrap justify-center gap-6 text-sm font-semibold text-primary underline underline-offset-4">
+ <LocalizedLink href="/privacy">{t("privacyLink")}</LocalizedLink>
+ <LocalizedLink href="/contact">{t("contactLink")}</LocalizedLink>
+ </nav>
  </div>
  </section>
 
  {/* ═══ DASHBOARD PREVIEW ═══ */}
- <section className="relative overflow-hidden py-20 sm:py-28">
+ <section id="parent-progress" className="relative overflow-hidden py-20 sm:py-28 scroll-mt-24">
  <BrainPattern variant="lego" />
  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
  <AnimatedSection className="text-center mb-14">
@@ -313,12 +312,6 @@ export default function ParentsContent() {
  </div>
  </section>
 
- {/* Auth Modal */}
- <AuthModal
- open={authOpen}
- onClose={() => setAuthOpen(false)}
- defaultTab={authTab}
- />
  </div>
  );
 }
