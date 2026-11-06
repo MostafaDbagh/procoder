@@ -1,6 +1,6 @@
 import { coursePublicTitle } from "./course-positioning";
 import { SITE_URL } from "@/lib/seo";
-import { LLMS_FULL_TEMPLATE } from "./llms-full-template";
+import { LLMS_FULL_TEMPLATE, LLMS_OVERVIEW } from "./llms-full-template";
 
 /** Canonical origin for LLM files (no trailing slash). */
 export function getSiteBase(): string {
@@ -82,10 +82,7 @@ export function formatLlmsShort(base: string, courses: LlmsCourse[] | null = nul
  return `# StemTechLab — Live online coding and STEM classes for children
 > Online classes for families in the UAE and other GCC countries. English and Arabic website. Course ages, prerequisites and availability vary by course.
 
-## Learning from the UAE
-Families in the UAE can join online from home. Confirm the class language, schedule in UAE time, equipment and current price with the team before enrolling.
-- [UAE parent guide in English](${base}/en/uae)
-- [دورات الأطفال في الإمارات](${base}/ar/uae)
+${LLMS_OVERVIEW.replace(/\{\{BASE\}\}/g, base)}
 
 ## Courses
 Subjects in the live catalog: ${formatSubjectList(courses)}.
@@ -101,6 +98,9 @@ ${formatCourseList(courses, base)}
 - [حصة تجريبية مجانية](${base}/ar/free-trial)
 - [Course finder](${base}/en/recommend): advisory suggestions; a parent chooses whether to enroll.
 - [Frequently asked questions](${base}/en/faq)
+- [Parent dashboard and learning updates](${base}/en/parents)
+- [Blog and parent guides](${base}/en/blogs)
+- [Monthly creative challenge](${base}/en/challenge)
 - [About the team](${base}/en/about)
 - [Contact](${base}/en/contact)
 - [Privacy](${base}/en/privacy)

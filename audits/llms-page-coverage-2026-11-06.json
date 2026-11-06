@@ -1,0 +1,145 @@
+{
+  "date": "2026-11-06",
+  "scope": "Repository-based public-page and feature coverage review for llms.txt and llms-full.txt; not a new live crawl of every page or authenticated student-account test.",
+  "pages": [
+    {
+      "path": "",
+      "page": "Homepage",
+      "coverage": "Live classes, project learning, course selection and parent involvement"
+    },
+    {
+      "path": "/uae",
+      "page": "UAE guide",
+      "coverage": "Online attendance, equipment, language, scheduling and class-size context"
+    },
+    {
+      "path": "/courses",
+      "page": "Catalog and course detail template",
+      "coverage": "Live catalog remains dynamic; titles, age, level, duration, lessons, skills and descriptions retained"
+    },
+    {
+      "path": "/recommend",
+      "page": "Course Finder",
+      "coverage": "Dedicated explanation of inputs, matching, 2–3 suggestions, follow-up questions, learning path, free access and parent decision"
+    },
+    {
+      "path": "/learning-path",
+      "page": "Journey overview",
+      "coverage": "Five stages, placement guidance, subject pathways and role of AI"
+    },
+    {
+      "path": "/learning-path/explorer",
+      "page": "Explorer",
+      "coverage": "Ages 5–8 guidance; sequencing and guided play"
+    },
+    {
+      "path": "/learning-path/builder",
+      "page": "Builder",
+      "coverage": "Ages 8–10 guidance; instructions, programs and prototypes"
+    },
+    {
+      "path": "/learning-path/creator",
+      "page": "Creator",
+      "coverage": "Ages 9–12 guidance; complete projects and debugging"
+    },
+    {
+      "path": "/learning-path/innovator",
+      "page": "Innovator",
+      "coverage": "Ages 11–14 guidance; combining technologies to solve problems"
+    },
+    {
+      "path": "/learning-path/pro",
+      "page": "Pro",
+      "coverage": "Ages 13–18 guidance; independent specialization projects"
+    },
+    {
+      "path": "/parents",
+      "page": "Parent guide",
+      "coverage": "Progress tracking, teacher notes, attendance, updates and family involvement"
+    },
+    {
+      "path": "/dashboard",
+      "page": "Private parent dashboard implementation",
+      "coverage": "Reviewed source only: enrollments, progress, notes, recordings, homework, badges, upcoming classes and feedback; no student records accessed or published"
+    },
+    {
+      "path": "/parent/login",
+      "page": "Parent account entry",
+      "coverage": "Enrollment-linked access described; private routes remain excluded from indexing"
+    },
+    {
+      "path": "/free-trial",
+      "page": "Trial",
+      "coverage": "60-minute trial, no card, maximum 3 students, recording and feedback"
+    },
+    {
+      "path": "/faq",
+      "page": "FAQ",
+      "coverage": "Class delivery, maximum 3 students, 4-hour rescheduling and enrollment questions"
+    },
+    {
+      "path": "/about",
+      "page": "About",
+      "coverage": "Teaching approach and independent use of AI tools; no invented endorsements"
+    },
+    {
+      "path": "/blogs",
+      "page": "Blog archive and article route",
+      "coverage": "Linked as dated parent guides; not an assertion that every individual article was reviewed in this update"
+    },
+    {
+      "path": "/challenge",
+      "page": "Creative challenge",
+      "coverage": "Free activity and optional email subscription"
+    },
+    {
+      "path": "/contact",
+      "page": "Contact",
+      "coverage": "Course suitability, enrollment and support questions"
+    },
+    {
+      "path": "/careers",
+      "page": "Careers",
+      "coverage": "Current roles and application requirements"
+    },
+    {
+      "path": "/privacy",
+      "page": "Privacy",
+      "coverage": "Linked policy source; sensitive student data omitted"
+    },
+    {
+      "path": "/terms",
+      "page": "Terms",
+      "coverage": "Linked policy source for enrollment/service terms"
+    }
+  ],
+  "sources": [
+    "src/lib/seo.ts PUBLIC_STATIC_PATHS",
+    "src/messages/en.json",
+    "src/data/journeyLevels.ts",
+    "src/app/[locale]/recommend/page.tsx",
+    "src/components/HowOurAIWorks.tsx",
+    "src/app/[locale]/learning-path/LearningPathIndex.tsx",
+    "src/app/[locale]/learning-path/[level]/page.tsx",
+    "src/app/[locale]/parents/ParentsContent.tsx",
+    "src/app/[locale]/dashboard/DashboardContent.tsx",
+    "src/app/[locale]/blogs/page.tsx",
+    "src/app/[locale]/contact/page.tsx",
+    "src/app/[locale]/careers/page.tsx"
+  ],
+  "decisions": [
+    "Use shared overview so both discovery files explain the same offering.",
+    "Retain live catalog fetching and safe fallback; do not hardcode retired course URLs.",
+    "Distinguish journey age guidance from individual course eligibility.",
+    "Describe learning notifications without inventing delivery guarantees; public copy varies between weekly reports and monthly stories.",
+    "Keep curriculum pathway examples separate from currently available courses.",
+    "Describe private dashboard capabilities without exposing records or enabling crawling of private routes."
+  ],
+  "validation": {
+    "typescript": "pass",
+    "seo_tests": 26,
+    "discovery_tests": 5,
+    "diff_check": "pass"
+  },
+  "deployment": "Local changes only; not pushed or deployed."
+}
