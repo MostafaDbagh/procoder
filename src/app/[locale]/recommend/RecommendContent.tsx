@@ -201,7 +201,7 @@ function LearningPathTimeline({
    <div className="flex items-center gap-2 mb-3">
     <Sparkles className="w-4 h-4 text-primary" />
     <span className="text-xs font-semibold uppercase tracking-wide text-muted">
-     {isAr ? "مسار التعلم المقترح" : "Suggested learning path"}
+     {isAr ? "المستوى المقترح" : "Suggested learning path"}
     </span>
    </div>
    <div className="relative">
