@@ -22,6 +22,7 @@ export default function LearningPathIndex({
   const nav = useTranslations("nav");
   const locale = useLocale();
   const pathways = t.raw("pathways") as Pathway[];
+  const faqs = t.raw("faqs") as { question: string; answer: string }[];
 
   return (
     <div className="py-10 sm:py-16">
@@ -72,6 +73,8 @@ export default function LearningPathIndex({
           <div>
             <h2 className="font-bold">{t("ageNoteTitle")}</h2>
             <p className="mt-1 text-sm leading-relaxed text-muted">{t("ageNote")}</p>
+            <LocalizedLink href="/recommend" className="mt-4 inline-flex min-h-11 items-center rounded-full bg-primary px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary">{t("finderCta")}</LocalizedLink>
+            <p className="mt-2 text-sm text-muted">{t("finderHint")}</p>
           </div>
         </section>
 
@@ -127,6 +130,17 @@ export default function LearningPathIndex({
               </div>
             ))}
           </dl>
+        </section>
+        <section className="mx-auto mt-14 max-w-3xl" aria-labelledby="learning-path-faq">
+          <h2 id="learning-path-faq" className="mb-5 text-2xl font-bold">{t("faqHeading")}</h2>
+          <div className="divide-y divide-border border-y border-border">
+            {faqs.map(faq => (
+              <details key={faq.question} className="py-4">
+                <summary className="cursor-pointer rounded-lg py-2 font-semibold focus-visible:outline-2 focus-visible:outline-primary">{faq.question}</summary>
+                <p className="mt-2 pb-2 text-sm leading-relaxed text-muted">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
         </section>
       </div>
     </div>

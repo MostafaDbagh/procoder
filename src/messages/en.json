@@ -136,47 +136,47 @@
   },
   "journey": {
     "meta": {
-      "pageTitle": "Learning Path — Five Stages for Kids 5–18 | StemTechLab",
-      "pageDesc": "A structured five-stage learning journey for ages 5–18: Explorer, Builder, Creator, Innovator, Pro. See what each stage develops and where your child fits."
+      "pageTitle": "STEM Learning Path for Kids Ages 5–18 | StemTechLab",
+      "pageDesc": "Explore five STEM learning levels for ages 5–18, from playful discovery to independent projects in coding, robotics and AI. Find your child’s starting point."
     },
     "index": {
       "eyebrow": "The StemTechLab journey",
-      "title": "A structured learning journey",
-      "subtitle": "We do not teach children a list of tools. We build their ability to think, create, solve, and innovate — and introduce technology at the right stage to help them do it.",
-      "intro": "Every child moves through five stages. Each one develops a distinct set of capabilities and prepares your child for the next. Choose a stage to see what it develops, who it suits, and what your child should be able to do by the end of it.",
+      "title": "A STEM learning path",
+      "subtitle": "From playful discoveries to projects they can call their own. Explore five levels of thinking, coding, robotics and AI for children ages 5–18.",
+      "intro": "Start with what your child can do today. Each level builds on earlier skills, but your child does not have to begin at the first one. Explore the goals and examples to find a useful starting point.",
       "progression": "Explore → Build → Create → Innovate → Specialize",
-      "levelsHeading": "The five stages",
-      "stepLabel": "Stage {n}",
+      "levelsHeading": "Five learning levels, room to grow",
+      "stepLabel": "Level {n}",
       "coursesCount": "{count, plural, =0 {Courses coming soon} =1 {# learning experience} other {# learning experiences}}",
-      "viewLevel": "See this stage",
-      "ageNoteTitle": "About the age ranges",
-      "ageNote": "Age bands are planning guidance, not strict eligibility. Placement also considers readiness, prior experience, interests, and demonstrated skills. If your child sits between two stages, ask us and we will help you choose.",
-      "pathwaysHeading": "Pathways, not a catalogue",
-      "pathwaysIntro": "Your child does not need to complete every course in a stage. After the shared foundations, they can go deeper in the direction that interests them while still progressing through the same underlying skills.",
+      "viewLevel": "Explore this level",
+      "ageNoteTitle": "Which level should my child start with?",
+      "ageNote": "Use the age ranges as a guide, then consider experience, what your child can do independently, and the support they need. If their age and readiness point to different levels, a teacher can help confirm the fit.",
+      "pathwaysHeading": "Follow what sparks their curiosity",
+      "pathwaysIntro": "Your child does not need to take every course. These examples show how interests can develop into more challenging projects. The activities and courses available depend on the level.",
       "pathways": [
         {
-          "name": "Games",
-          "steps": "Scratch L1 → Scratch L2 → Python Game Design → Pygame → Game Capstone"
+          "name": "Game creation",
+          "steps": "Explore sequences and rules, build a playable game, then test and improve the experience."
         },
         {
-          "name": "AI",
-          "steps": "AI Discovery Lab → AI L2 → Applied AI → Advanced AI → AI Capstone"
+          "name": "Artificial intelligence",
+          "steps": "Discover what AI can do, explore examples and data, then build and evaluate an AI project."
         },
         {
           "name": "Robotics",
-          "steps": "Robotics L1 → Robotics L2 → Robotics L3 → Advanced Robotics Project"
+          "steps": "Connect instructions to movement, combine sensors and code, then test a robot against a practical challenge."
         },
         {
-          "name": "Web & Apps",
-          "steps": "My First Website → Mobile App → Interactive Web Development → Digital Product Project"
+          "name": "Websites and apps",
+          "steps": "Create a simple page, add interactions, then build a digital project for a particular audience."
         },
         {
-          "name": "Python",
-          "steps": "Python for Kids → Python Game Design → Advanced Python → PCEP / Python Capstone"
+          "name": "Python programming",
+          "steps": "Practise the basics, combine them in small programs, then plan and develop a larger project."
         }
       ],
-      "aiHeading": "AI across the journey",
-      "aiIntro": "AI is not saved for the final stage. It is introduced early as awareness and deepens as your child’s programming, data, and critical-thinking skills develop.",
+      "aiHeading": "How AI learning develops across the levels",
+      "aiIntro": "AI learning starts with curiosity about what machines can and cannot do. More advanced activities build on programming, data and the ability to question results.",
       "aiRoles": {
         "explorer": "Awareness — what machines can and cannot do",
         "builder": "Explore and use — vision, speech, and image recognition in simple projects",
@@ -187,7 +187,24 @@
       "mapHint": "Hover a stop — or tab through them — to read about each stage.",
       "mapLabel": "The five stages of the journey",
       "startHere": "Start here",
-      "titleLine2": "that grows with your child"
+      "titleLine2": "that grows with your child",
+      "finderCta": "Find my child’s starting level",
+      "finderHint": "A short guided conversation, using what you already know about your child.",
+      "faqHeading": "Questions parents often ask",
+      "faqs": [
+        {
+          "question": "Does my child need coding experience?",
+          "answer": "The early levels introduce thinking skills through stories, play and guided activities. Children with experience can explore a later starting level based on what they can demonstrate."
+        },
+        {
+          "question": "Does every child follow the same timeline?",
+          "answer": "The five levels describe a progression of skills, not a fixed calendar. Readiness for the next level depends on the child’s work and the support they still need."
+        },
+        {
+          "question": "What is the difference between a level and a course?",
+          "answer": "A level describes the skills your child is practising. A course provides activities in a subject such as coding or robotics. Open a level to see its goals and the learning experiences currently listed."
+        }
+      ]
     },
     "buttons": {
       "overview": "Journey overview",

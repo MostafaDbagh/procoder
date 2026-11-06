@@ -7,7 +7,6 @@ import { ApiUnavailableError, getCoursesISR } from "@/lib/server-api";
 import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
 import {
   JOURNEY_LEVELS,
-  JOURNEY_LEVEL_META,
   type JourneyLevel,
 } from "@/data/journeyLevels";
 
