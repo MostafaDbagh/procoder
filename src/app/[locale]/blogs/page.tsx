@@ -38,7 +38,7 @@ const meta = {
  en: {
  title: "Blog — Tips, Guides & News for Parents",
  description:
- "Practical guides for parents: choosing your child’s first coding course, when to start robotics, and the STEM skills that matter most by age (6–18).",
+ "Practical guides for parents: choosing your child’s first coding course, when to start robotics, and the STEM skills that matter most at different ages.",
  },
  ar: {
  title: "المدونة — نصائح وأدلة وأخبار للوالدين",

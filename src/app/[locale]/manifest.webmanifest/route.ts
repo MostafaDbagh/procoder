@@ -21,7 +21,7 @@ const MANIFESTS: Record<"en" | "ar", Manifest> = {
  name: "StemTechLab — Kids Coding, STEM & Arabic",
  short_name: "StemTechLab",
  description:
- "Live online classes for kids 6–18 in coding, robotics, algorithms & Arabic. UAE & GCC.",
+ "Live online classes for kids 5–18 in coding, robotics, algorithms & Arabic. UAE & GCC.",
  lang: "en",
  dir: "ltr",
  scope: "/en/",
@@ -41,7 +41,7 @@ const MANIFESTS: Record<"en" | "ar", Manifest> = {
  name: "ستم تك لاب — البرمجة وSTEM والعربية للأطفال",
  short_name: "ستم تك لاب",
  description:
- "حصص مباشرة للأطفال ٦–١٨ في البرمجة والروبوتات والخوارزميات والعربية. الإمارات ودول الخليج.",
+ "حصص مباشرة للأطفال ٥–١٨ في البرمجة والروبوتات والخوارزميات والعربية. الإمارات ودول الخليج.",
  lang: "ar",
  dir: "rtl",
  scope: "/ar/",

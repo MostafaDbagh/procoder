@@ -1,0 +1,134 @@
+{
+  "checked_date": "2026-11-07",
+  "pages": [
+    {
+      "url": "https://www.stemtechlab.com/en/parents",
+      "status": 200,
+      "title": "Coding & STEM Classes for Kids: Parent Guide | StemTechLab",
+      "description": "Compare coding, Python and robotics courses for your child. A practical UAE parent checklist for readiness, trial lessons, equipment and learning progress.",
+      "robots": "index, follow",
+      "x_robots_tag": null,
+      "links": [
+        {
+          "rel": "canonical",
+          "href": "https://www.stemtechlab.com/en/parents"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "en",
+          "href": "https://www.stemtechlab.com/en/parents"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "ar",
+          "href": "https://www.stemtechlab.com/ar/parents"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "x-default",
+          "href": "https://www.stemtechlab.com/en/parents"
+        }
+      ],
+      "in_sitemap": true,
+      "google_allowed": true,
+      "bing_allowed": true
+    },
+    {
+      "url": "https://www.stemtechlab.com/ar/parents",
+      "status": 200,
+      "title": "دليل ولي الأمر لتعلّم البرمجة والتقنية للأطفال | ستم تك لاب",
+      "description": "دليل عملي لأولياء الأمور في الإمارات لمقارنة البرمجة وبايثون والروبوتات، وتقييم استعداد الطفل وتجهيز الأجهزة والاستفادة من الحصة التجريبية.",
+      "robots": "index, follow",
+      "x_robots_tag": null,
+      "links": [
+        {
+          "rel": "canonical",
+          "href": "https://www.stemtechlab.com/ar/parents"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "en",
+          "href": "https://www.stemtechlab.com/en/parents"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "ar",
+          "href": "https://www.stemtechlab.com/ar/parents"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "x-default",
+          "href": "https://www.stemtechlab.com/en/parents"
+        }
+      ],
+      "in_sitemap": true,
+      "google_allowed": true,
+      "bing_allowed": true
+    },
+    {
+      "url": "https://www.stemtechlab.com/en/learning-path",
+      "status": 200,
+      "title": "STEM Learning Path for Kids Ages 5–18 | StemTechLab",
+      "description": "Explore five STEM learning levels for ages 5–18, from playful discovery to independent projects in coding, robotics and AI. Find your child’s starting point.",
+      "robots": "index, follow",
+      "x_robots_tag": null,
+      "links": [
+        {
+          "rel": "canonical",
+          "href": "https://www.stemtechlab.com/en/learning-path"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "en",
+          "href": "https://www.stemtechlab.com/en/learning-path"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "ar",
+          "href": "https://www.stemtechlab.com/ar/learning-path"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "x-default",
+          "href": "https://www.stemtechlab.com/en/learning-path"
+        }
+      ],
+      "in_sitemap": true,
+      "google_allowed": true,
+      "bing_allowed": true
+    },
+    {
+      "url": "https://www.stemtechlab.com/ar/learning-path",
+      "status": 200,
+      "title": "مسار تعلّم STEM للأطفال من ٥ إلى ١٨ سنة | ستم تك لاب",
+      "description": "اكتشف خمسة مستويات لتعلّم البرمجة والروبوتات والذكاء الاصطناعي للأطفال من ٥ إلى ١٨ سنة، من الاستكشاف باللعب إلى المشاريع المستقلة. اختر نقطة بداية لطفلك.",
+      "robots": "index, follow",
+      "x_robots_tag": null,
+      "links": [
+        {
+          "rel": "canonical",
+          "href": "https://www.stemtechlab.com/ar/learning-path"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "en",
+          "href": "https://www.stemtechlab.com/en/learning-path"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "ar",
+          "href": "https://www.stemtechlab.com/ar/learning-path"
+        },
+        {
+          "rel": "alternate",
+          "hreflang": "x-default",
+          "href": "https://www.stemtechlab.com/en/learning-path"
+        }
+      ],
+      "in_sitemap": true,
+      "google_allowed": true,
+      "bing_allowed": true
+    }
+  ],
+  "submission_status": "pending_browser_attempts"
+}

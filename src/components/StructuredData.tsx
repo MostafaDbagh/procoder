@@ -31,7 +31,7 @@ export function OrganizationSchema() {
  legalName: "StemTechLab",
  alternateName: ["STEM Tech Lab", "Stem Tech Lab"],
  description:
- "Live online STEM and coding classes for children ages 6–18 in the UAE and other GCC countries. Bilingual English/Arabic interface, AI-powered course matching, and small-group classes. Programming, Robotics, Algorithms, AI, Web and Mobile Development. Built for families in the UAE and GCC. Live instruction, parent dashboard, free trial.",
+ "Live online STEM and coding classes for children ages 5–18 in the UAE and other GCC countries. Bilingual English/Arabic interface, AI-powered course matching, and small-group classes. Programming, Robotics, Algorithms, AI, Web and Mobile Development. Built for families in the UAE and GCC. Live instruction, parent dashboard, free trial.",
  url: SITE_URL,
  logo: `${SITE_URL}/logo.svg`,
  image: `${SITE_URL}/og`,
@@ -99,8 +99,8 @@ export function WebsiteSchema({ locale = "en" }: { locale?: string } = {}) {
  url: SITE_URL,
  description:
  lang === "ar"
- ? "حصص مباشرة للأطفال في البرمجة والروبوتات والخوارزميات والذكاء الاصطناعي (٦–١٨). واجهة عربية وإنجليزية. الإمارات ودول الخليج."
- : "Live kids’ classes in programming, robotics, algorithms & AI (ages 6–18). Bilingual English/Arabic interface. UAE & GCC.",
+ ? "حصص مباشرة للأطفال في البرمجة والروبوتات والخوارزميات والذكاء الاصطناعي (٥–١٨). واجهة عربية وإنجليزية. الإمارات ودول الخليج."
+ : "Live kids’ classes in programming, robotics, algorithms & AI (ages 5–18). Bilingual English/Arabic interface. UAE & GCC.",
  inLanguage: ["en", "ar"],
  publisher: { "@id": ORG_ID },
 
@@ -160,19 +160,18 @@ export function CourseFinderApplicationSchema({ locale = "en" }: { locale?: stri
  const data: Record<string, unknown> = {
  "@context": "https://schema.org",
  "@type": "WebApplication",
- name: "StemTechLab Course Finder",
+ name: "StemTechLab Starting Level Finder",
  url: `${SITE_URL}/${lang}/recommend`,
  applicationCategory: "EducationalApplication",
  operatingSystem: "Any (web browser)",
  inLanguage: ["en", "ar"],
  offers: { "@type": "Offer", price: "0", priceCurrency: "USD", description: "Free to use; course enrollment is separate." },
- description:
- "Bilingual (English/Arabic) tool that suggests live STEM and coding courses for children ages 6–18. Uses server-side OpenAI API and DeepSeek API integrations to generate advisory recommendations from parent or guardian inputs.",
+ description: "English and Arabic guided conversation offering provisional guidance across five learning levels for ages 5–18. Uses parent-reported age, experience, readiness and support needs. A teacher helps confirm the fit; individual courses have their own entry requirements.",
  featureList: [
- "OpenAI API integration (server-side) for natural-language course suggestions",
- "DeepSeek API integration (server-side) for course suggestions",
- "Structured form and optional chat input",
- "Bilingual English and Arabic UI",
+ "Reuses details already shared and asks one missing question at a time",
+ "Application rules determine the provisional suggested level",
+ "Uncertain or conflicting information leads to clarification or teacher review",
+ "Compatible published courses shown when available",
  ],
  provider: { "@type": "Organization", name: "StemTechLab", url: SITE_URL },
  isAccessibleForFree: true,
@@ -199,7 +198,7 @@ export function EducationalServiceSchema({ locale = "en" }: { locale?: string } 
  audience: {
  "@type": "EducationalAudience",
  educationalRole: "student",
- suggestedMinAge: 6,
+ suggestedMinAge: 5,
  suggestedMaxAge: 18,
  },
  availableChannel: {

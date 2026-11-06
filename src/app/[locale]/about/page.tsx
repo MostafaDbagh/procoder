@@ -11,14 +11,14 @@ import { buildAlternates, siteUrl, bcLabel } from "@/lib/seo";
 
 const meta = {
  en: {
- title: "About StemTechLab | AI STEM Platform for Kids (6–18)",
+ title: "About StemTechLab | AI STEM Platform for Kids (5–18)",
  description:
- "AI course matching finds the right fit for each child. Live STEM & coding classes for ages 6–18, certified teachers, max 3 students, and a parent dashboard.",
+ "Meet StemTechLab: live online coding, robotics and AI, with five learning levels for ages 5–18. Explore a starting point and check course entry requirements.",
  },
  ar: {
  title: "عن ستم تك لاب | منصة STEM ذكية للأطفال",
  description:
- "تستخدم ستم تك لاب الذكاء الاصطناعي لاختيار الدورة الأنسب لكل طفل. دروس مباشرة في STEM والبرمجة للأعمار ٦–١٨، معلمون معتمدون، حد أقصى ٣ طلاب، ولوحة متابعة لولي الأمر.",
+ "تعرّف على ستم تك لاب: برمجة وروبوتات وذكاء اصطناعي أونلاين، مع خمسة مستويات للأعمار ٥–١٨. استكشف نقطة بداية وراجع متطلبات القبول لكل دورة.",
  },
 };
 

@@ -4,14 +4,14 @@ StemTechLab provides live online coding and STEM education for children and teen
 
 The website is available in English and Arabic. Teaching language, timetable and equipment depend on the chosen course and group. Individual course pages are the source for enrollment age ranges and prerequisites; the broader learning journey includes planning guidance for ages 5–18.
 
-## AI Course Finder — choosing a starting course
-The free AI Course Finder (also called the Smart Course Finder) helps parents connect a child's interests and experience to courses in the current catalog. No login is required.
-1. Describe the child in English or Arabic, or use the short form: age, interests, previous coding experience, current skill level and learning goals. For example: “My 9-year-old loves robots and is new to coding.”
-2. The finder interprets the description and compares the profile with live courses by age fit, experience and interests.
-3. It suggests up to 2–3 courses with explanations of why they may fit, and can ask follow-up questions when information is incomplete.
-4. It provides a personalized learning path to help parents consider next steps. Parents can review course details, request a trial or discuss suitability with the team.
+## Starting Level Finder — provisional guidance
+The free finder helps parents explore a starting point among Explorer, Builder, Creator, Innovator and Pro. No login is required.
+1. Describe one child in English or Arabic. Details already shared are reused.
+2. Answer one missing question at a time about age, previous experience, observed readiness and support needs.
+3. Application rules suggest a provisional level. Missing or conflicting answers lead to clarification; uncertain answers may need teacher review.
+4. Compatible published courses may be shown when available. A teacher helps confirm the starting point through a practical trial.
 
-The finder is an advisory matching tool, not a final placement assessment. Human teachers deliver the lessons. Progress tracking after enrollment belongs to the parent dashboard, not the course finder. Using the finder is free; enrollment in a paid course is separate. Avoid entering sensitive personal information about a child in a course-finder message.
+AI may help interpret parent text and classify concerns; it cannot override placement rules. Depending on configuration, messages and relevant context may be processed through OpenAI, Anthropic or DeepSeek APIs. Avoid sensitive personal information and consult the Privacy Policy before using the finder. Parents may browse courses without using it. Course-specific age ranges and prerequisites still apply. Lessons are taught by human instructors; dashboard records are separate from the finder.
 - [Use the Course Finder in English]({{BASE}}/en/recommend)
 - [منتقي الدورات بالعربية]({{BASE}}/ar/recommend)
 
@@ -40,7 +40,7 @@ The dashboard tracks learning activity and teacher-recorded progress; it is not 
 
 ## Live classes, trial and rescheduling
 - Classes are live, online and interactive, with a maximum of 3 students in a group; private one-to-one options are also described on the site.
-- The free trial is a 60-minute live class, with no card or commitment required. The trial page includes a recording and personalized teacher feedback. Submit a request and the team arranges a suitable time.
+- Request a free trial without a card. The team confirms availability, duration, teaching language and private or small-group format. Ask whether a recording is available and who may access it.
 - Rescheduling is available at no extra cost with at least 4 hours' notice before class. Confirm the next available slot with the team.
 - A laptop or desktop, stable internet and audio are needed. Confirm course-specific software and whether robotics uses simulation or physical equipment before buying materials.
 - Check the selected course's price and billing currency, prerequisites, teaching language and schedule before paying. A free trial or free finder does not make the full course free.
@@ -70,7 +70,7 @@ These are curriculum directions, not fixed packages or guaranteed certification 
 - [Homepage]({{BASE}}/en): introduction to live teaching, learning options, the course finder and support for families. [العربية]({{BASE}}/ar).
 - [UAE classes]({{BASE}}/en/uae): attending from Dubai, Abu Dhabi, Sharjah or elsewhere in the UAE; preparation, language, equipment and comparing courses. [العربية]({{BASE}}/ar/uae).
 - [Course catalog]({{BASE}}/en/courses): current courses; individual pages provide age range, level, lessons, duration, goals and enrollment information. [العربية]({{BASE}}/ar/courses).
-- [Course Finder]({{BASE}}/en/recommend): free conversational or form-based help choosing a course. [العربية]({{BASE}}/ar/recommend).
+- [Course Finder]({{BASE}}/en/recommend): free guided conversation to explore a provisional starting level. [العربية]({{BASE}}/ar/recommend).
 - [Learning path]({{BASE}}/en/learning-path): the five stages, subject pathways, placement guidance and links to each stage. [العربية]({{BASE}}/ar/learning-path).
 - [For parents]({{BASE}}/en/parents): choosing a starting point, learning updates, dashboard features and staying involved. [العربية]({{BASE}}/ar/parents).
 - [Free trial]({{BASE}}/en/free-trial): trial inclusions and a request form; a request is separate from paid enrollment. [العربية]({{BASE}}/ar/free-trial).

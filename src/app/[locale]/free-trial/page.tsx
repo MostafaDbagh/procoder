@@ -12,12 +12,12 @@ const meta = {
   en: {
     title: "Free Trial Class for Kids — Coding & Robotics | StemTechLab",
     description:
-      "Book your child's free 60-minute live class with a certified instructor — no credit card, no commitment. Coding and robotics for ages 6–18.",
+      "Request a free live trial for your child. Our team confirms availability, teaching language and class format. Explore a suitable STEM starting point.",
   },
   ar: {
     title: "حصة مجانية للأطفال | برمجة وروبوتات",
     description:
-      "احجز حصة مجانية ٦٠ دقيقة لطفلك — معلم معتمد، مجموعة صغيرة، بدون بطاقة ائتمان. برمجة وروبوتات للأعمار ٦–١٨. الأماكن محدودة.",
+      "اطلب حصة تجريبية مجانية لطفلك. يؤكّد الفريق التوفّر ولغة التدريس وصيغة الحصة. استكشف نقطة بداية مناسبة في البرمجة والعلوم والتقنية.",
   },
 };
 

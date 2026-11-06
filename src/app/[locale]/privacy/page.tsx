@@ -11,12 +11,12 @@ const meta = {
  en: {
  title: "Privacy Policy",
  description:
- "How StemTechLab collects, stores, and protects parent and child data, our COPPA-aware practices, third-party AI disclosure, and how to request deletion.",
+ "How StemTechLab collects, stores, and protects parent and child data, third-party AI processing, and how to request deletion.",
  },
  ar: {
  title: "سياسة الخصوصية",
  description:
- "كيف تجمع ستم تك لاب بيانات أولياء الأمور والأطفال وتحميها، توافقنا مع COPPA، الإفصاح عن مزودي الذكاء الاصطناعي، وكيفية طلب حذف البيانات.",
+ "كيف تجمع ستم تك لاب بيانات أولياء الأمور والأطفال وتحميها، المعالجة عبر مزوّدي الذكاء الاصطناعي، وكيفية طلب حذف البيانات.",
  },
 };
 

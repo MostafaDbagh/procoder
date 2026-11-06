@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
  name: "StemTechLab — Kids Coding, STEM & Arabic | منصة ستم تك لاب",
  short_name: "StemTechLab",
  description:
- "Live online classes for kids 6–18 in coding, robotics, algorithms & Arabic. حصص مباشرة للأطفال في البرمجة والروبوتات والعربية.",
+ "Live online classes for kids 5–18 in coding, robotics, algorithms & Arabic. حصص مباشرة للأطفال في البرمجة والروبوتات والعربية.",
  lang: "en",
  dir: "ltr",
  scope: "/",
