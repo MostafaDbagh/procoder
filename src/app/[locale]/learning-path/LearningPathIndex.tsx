@@ -4,7 +4,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { JOURNEY_LEVEL_LIST, type JourneyLevel } from "@/data/journeyLevels";
 import JourneyStoneTrail from "@/components/journey/JourneyStoneTrail";
 import { LocalizedLink } from "@/components/LocalizedLink";
-import { ArrowLeft, Info, Route, BrainCircuit } from "lucide-react";
+import { ArrowLeft, Info, Route, BrainCircuit, ChevronDown } from "lucide-react";
 
 
 interface Pathway {
@@ -131,13 +131,16 @@ export default function LearningPathIndex({
             ))}
           </dl>
         </section>
-        <section className="mx-auto mt-14 max-w-3xl" aria-labelledby="learning-path-faq">
-          <h2 id="learning-path-faq" className="mb-5 text-2xl font-bold">{t("faqHeading")}</h2>
+        <section className="mt-14 text-start" aria-labelledby="learning-path-faq">
+          <h2 id="learning-path-faq" className="mb-5 text-2xl font-extrabold tracking-tight">{t("faqHeading")}</h2>
           <div className="divide-y divide-border border-y border-border">
             {faqs.map(faq => (
-              <details key={faq.question} className="py-4">
-                <summary className="cursor-pointer rounded-lg py-2 font-semibold focus-visible:outline-2 focus-visible:outline-primary">{faq.question}</summary>
-                <p className="mt-2 pb-2 text-sm leading-relaxed text-muted">{faq.answer}</p>
+              <details key={faq.question} className="group">
+                <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 rounded-lg py-5 text-start font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary [&::-webkit-details-marker]:hidden">
+                  <span className="min-w-0">{faq.question}</span>
+                  <ChevronDown aria-hidden="true" className="h-5 w-5 shrink-0 text-muted group-open:rotate-180 motion-safe:transition-transform" />
+                </summary>
+                <p className="max-w-3xl pe-9 pb-5 text-sm leading-relaxed text-muted">{faq.answer}</p>
               </details>
             ))}
           </div>
