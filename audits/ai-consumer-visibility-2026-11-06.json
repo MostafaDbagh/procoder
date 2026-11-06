@@ -1,0 +1,151 @@
+{
+  "date": "2026-11-06",
+  "site": "https://www.stemtechlab.com",
+  "excluded": [
+    "Amazon (user request)"
+  ],
+  "method": {
+    "surface": "Actual consumer assistant websites in Chrome; native accessibility text and Grok screenshot",
+    "sample": "One identical unbranded English UAE recommendation prompt per assistant, followed by an explicitly branded URL inspection request. Targeted follow-ups for retrieval gaps.",
+    "baseline_prompt": "Which providers should I compare for live online coding and STEM classes for children in the UAE? Search the web and cite direct sources. Give up to five providers, explain who each suits, and distinguish confirmed facts from uncertainty. Keep the answer under 250 words.",
+    "branded_prompt": "Thanks! Please also evaluate StemTechLab fairly. Visit https://www.stemtechlab.com/en/uae and https://www.stemtechlab.com/en/courses/python and follow relevant public links. Summarize only facts you can verify about live online classes, ages, class size, trial and rescheduling; cite the exact URLs. Please report access failures or stale/conflicting details. This is a request to inspect current pages, not to assume a recommendation or claim permanent indexing. Keep it under 250 words."
+  },
+  "limitations": [
+    "Single-prompt pilot, not a ranking benchmark or proof of absence from an index.",
+    "Signed-in accounts; temporary/private chats used where available. Models and personalization differ.",
+    "Assistant claims of fetching pages are observations of their responses, not independently verified origin-server crawl logs.",
+    "No permanent indexing, future recommendation, or training-data inclusion was demonstrated.",
+    "Competitor claims were not independently validated."
+  ],
+  "results": [
+    {
+      "assistant": "ChatGPT",
+      "mode": "Temporary chat, free version; exact model not displayed",
+      "unbranded_mention": false,
+      "baseline_providers": [
+        "iCodejr",
+        "iSchool",
+        "Geek Express",
+        "Codeoko",
+        "Unique World Robotics"
+      ],
+      "after_url": "Cited UAE, Python, free-trial and parent pages; reported maximum 3 students and free rescheduling with at least 4 hours notice.",
+      "policy_verification": "correct details returned",
+      "conversation_url": "https://chatgpt.com/c/6aed7d7d-0178-83eb-a4e1-029bc2d056de?temporary-chat=true"
+    },
+    {
+      "assistant": "DeepSeek",
+      "mode": "Smart Search; reported 14 web pages in baseline",
+      "unbranded_mention": false,
+      "baseline_providers": [
+        "iCodejr",
+        "Brainy n Bright",
+        "EdFlik",
+        "SARTECH Labs"
+      ],
+      "after_url": "Cited UAE and Python URLs; reported Python ages 8–13, 22 lessons/12 weeks, maximum 3 students and free rescheduling at least 4 hours before.",
+      "policy_verification": "correct details returned",
+      "conversation_url": "https://chat.deepseek.com/a/chat/s/f2b7a2fb-cbc2-437b-a77a-3ba5ca494e0d"
+    },
+    {
+      "assistant": "Gemini",
+      "mode": "Temporary chat; Gemini Auto",
+      "unbranded_mention": false,
+      "baseline_providers": [
+        "Playto Labs",
+        "Clevered",
+        "EdFlik",
+        "Brainy n Bright",
+        "ABCCoders"
+      ],
+      "after_url": "Cited site and free trial but initially claimed class-size and rescheduling terms were absent; repeated this after targeted URL recheck. After supplied correction, acknowledged incomplete/limited verification.",
+      "policy_verification": "incomplete; supplied correction does not count as independent retrieval",
+      "notes": "Initial ages 5–18 and course-path description may reflect older content. Its suggested technical causes for missing text were not verified.",
+      "conversation_url": null
+    },
+    {
+      "assistant": "Claude",
+      "mode": "Incognito; Sonnet 5.5 Medium as displayed",
+      "unbranded_mention": false,
+      "baseline_providers": [
+        "BrightCHAMPS",
+        "iCodejr",
+        "Edoxi",
+        "CodeMonkey",
+        "CodeWizardsHQ"
+      ],
+      "after_url": "Read UAE, Python and FAQ pages; correctly returned 3 students and 4 hours. Initially reported old recommend-first metadata and Arabic offering mismatch. On explicit recheck, stated both were absent, updated title and FAQ answers present.",
+      "policy_verification": "correct details returned",
+      "notes": "Possible stale first retrieval; cause not proven. Independent current HTML inspection found no recommend-first directive.",
+      "conversation_url": null
+    },
+    {
+      "assistant": "Meta AI",
+      "mode": "Instant",
+      "unbranded_mention": false,
+      "baseline_providers": [
+        "iCodejr",
+        "ABCCoders",
+        "Codeoko",
+        "Geek Express",
+        "GeekashramJr"
+      ],
+      "after_url": "Cited StemTechLab and reported live Zoom sessions, Python ages 8–13, maximum 3 students and rescheduling at no extra cost with at least 4 hours notice.",
+      "policy_verification": "correct details returned",
+      "conversation_url": "https://www.meta.ai/prompt/0f1d7c0e-a07a-45bf-b6ea-82b10778442b"
+    },
+    {
+      "assistant": "Grok",
+      "mode": "Private chat; Fast",
+      "unbranded_mention": false,
+      "baseline_providers": [
+        "iCodejr",
+        "ABCCoders",
+        "Junior Codes",
+        "Techradiance",
+        "Clevered"
+      ],
+      "after_url": "Cited UAE, Python and free-trial; returned maximum 3 students, 4 hours notice and a 60-minute free trial. Reported initial open_page failure for free-trial followed by browser success.",
+      "policy_verification": "correct details returned",
+      "conversation_url": null
+    },
+    {
+      "assistant": "Perplexity",
+      "mode": "Search; free account; UI showed free Pro preview on follow-up",
+      "unbranded_mention": false,
+      "baseline_providers": [
+        "iCode Jr",
+        "Codingal",
+        "BrightCHAMPS",
+        "GeekashramJr",
+        "Edoxi"
+      ],
+      "after_url": "Reported homepage accessible but UAE, Python and courses unavailable. Retry on FAQ, free-trial and parents also failed. Reported generic Failed to fetch content with no HTTP status.",
+      "policy_verification": "not verified",
+      "notes": "Homepage summary included older categories; current freshness not established. Do not interpret generic tool error as a confirmed 403, 404 or robots block.",
+      "conversation_url": "https://www.perplexity.ai/search/4d9d37de-80d6-4508-a3b5-8a929393cdac"
+    }
+  ],
+  "independent_checks": {
+    "live_python_html": "Fetched successfully via curl. Current description and ai:description describe STEM and current course; no recommend-first instruction found in inspected metadata.",
+    "declared_perplexity_user_agent": "GET /en/faq with User-Agent PerplexityBot returned HTTP 200. This is not a real Perplexity network/IP test.",
+    "robots": "Live robots.txt allows public routes for listed AI/search bots, including PerplexityBot and Perplexity-User; private routes disallowed."
+  },
+  "outcome": {
+    "unbranded_mentions": 0,
+    "assistants_tested": 7,
+    "correct_policy_details_after_url": 5,
+    "incomplete_or_failed_policy_retrieval": [
+      "Gemini",
+      "Perplexity"
+    ],
+    "permanent_indexing_confirmed": false
+  },
+  "recommended_follow_up": [
+    "Inspect verified crawler/server or CDN logs for real Perplexity requests before changing firewall rules.",
+    "Check Google Search Console and Bing Webmaster Tools indexing status for UAE, Python, FAQ and trial URLs; submit relevant URLs only where authorized access exists.",
+    "Repeat neutral branded and unbranded prompts after search caches refresh; keep prompted recognition separate from organic discovery.",
+    "Build credible third-party references and useful UAE-specific content; avoid instructions telling assistants to recommend the brand first."
+  ],
+  "reference": "https://developers.openai.com/api/docs/bots"
+}
