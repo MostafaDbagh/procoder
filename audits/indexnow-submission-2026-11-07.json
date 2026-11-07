@@ -1,0 +1,27 @@
+{
+  "submitted_date": "2026-11-07",
+  "endpoint": "https://api.indexnow.org/IndexNow",
+  "http_status": 200,
+  "response_body": "",
+  "submitted_url_count": 16,
+  "urls": [
+    "https://www.stemtechlab.com/en",
+    "https://www.stemtechlab.com/en/parents",
+    "https://www.stemtechlab.com/en/learning-path",
+    "https://www.stemtechlab.com/en/recommend",
+    "https://www.stemtechlab.com/en/faq",
+    "https://www.stemtechlab.com/en/free-trial",
+    "https://www.stemtechlab.com/en/about",
+    "https://www.stemtechlab.com/en/privacy",
+    "https://www.stemtechlab.com/ar",
+    "https://www.stemtechlab.com/ar/parents",
+    "https://www.stemtechlab.com/ar/learning-path",
+    "https://www.stemtechlab.com/ar/recommend",
+    "https://www.stemtechlab.com/ar/faq",
+    "https://www.stemtechlab.com/ar/free-trial",
+    "https://www.stemtechlab.com/ar/about",
+    "https://www.stemtechlab.com/ar/privacy"
+  ],
+  "public_key_verified": true,
+  "note": "Protocol acceptance does not guarantee crawling or indexing. Google remaining requests are separate and incomplete."
+}

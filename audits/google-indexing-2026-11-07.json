@@ -1,0 +1,51 @@
+{
+  "checked_date": "2026-11-07",
+  "property": "https://www.stemtechlab.com/",
+  "report_last_updated": "2026-10-23",
+  "indexed": 44,
+  "not_indexed": 105,
+  "reasons": {
+    "page_with_redirect": 10,
+    "server_error_5xx": 9,
+    "not_found_404": 8,
+    "alternative_proper_canonical": 2,
+    "duplicate_without_selected_canonical": 1,
+    "discovered_currently_not_indexed": 48,
+    "crawled_currently_not_indexed": 27
+  },
+  "sitemap": {
+    "url": "https://www.stemtechlab.com/sitemap.xml",
+    "submission": "confirmed_success",
+    "submitted": "2026-11-07",
+    "last_read": "2026-11-07",
+    "discovered_pages": 106
+  },
+  "indexing_requests_confirmed": [
+    {
+      "url": "https://www.stemtechlab.com/en/parents",
+      "previous_status": "Crawled - currently not indexed",
+      "confirmation": "Indexing requested. URL was added to a priority crawl queue."
+    },
+    {
+      "url": "https://www.stemtechlab.com/ar/parents",
+      "previous_status": "Crawled - currently not indexed",
+      "confirmation": "Indexing requested. URL was added to a priority crawl queue."
+    },
+    {
+      "url": "https://www.stemtechlab.com/ar/courses/robotics",
+      "previous_status": "Crawled - currently not indexed",
+      "confirmation": "Indexing requested. URL was added to a priority crawl queue."
+    }
+  ],
+  "already_on_google": [
+    "https://www.stemtechlab.com/en/learning-path",
+    "https://www.stemtechlab.com/ar/learning-path",
+    "https://www.stemtechlab.com/en/recommend",
+    "https://www.stemtechlab.com/ar/recommend"
+  ],
+  "incomplete": {
+    "next_url": "https://www.stemtechlab.com/ar/contact",
+    "reason": "Search Console inspection stalled retrieving data; browser reconnect and reload did not recover it. No request confirmed for this URL. Remaining non-indexed URLs have not all been individually inspected or submitted. Nine reported server-error URLs have not been individually rechecked."
+  },
+  "note": "Request acceptance is not confirmation that Google has indexed a URL. Redirects, alternate canonical URLs and deleted URLs should not be indiscriminately submitted."
+}
