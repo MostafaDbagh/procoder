@@ -1,4 +1,3 @@
-import { ParentCourseChecklist } from "@/components/ParentCourseChecklist";
 import { SITE_URL } from "@/lib/seo";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
@@ -74,7 +73,6 @@ export default async function ParentsPage({
  ]}
  />
  <ParentsContent />
- <ParentCourseChecklist locale={locale} />
  </>
  );
 }

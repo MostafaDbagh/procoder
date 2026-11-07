@@ -1,317 +1,81 @@
-"use client";
-
-import Image from "next/image";
-import { useLocale, useTranslations } from "next-intl";
-import { AnimatedSection, AnimatedCard } from "@/components/AnimatedSection";
+import { useTranslations } from "next-intl";
 import { LocalizedLink } from "@/components/LocalizedLink";
-import { FutureThinkersSection } from "@/components/FutureThinkersSection";
-import { BrainPattern } from "@/components/BrainPatterns";
-import { motion } from "framer-motion";
-import {
- CheckCircle2,
- Compass,
- Star,
- LayoutDashboard,
-} from "lucide-react";
-import { ChatHeartIcon } from "@/components/icons/PillarIcons";
-import {
- BarChartIcon,
- BellNotifyIcon,
- ReportIcon,
- ShieldSafeIcon,
- CalendarIcon,
- ClockTimeIcon,
- VideoCameraIcon,
-} from "@/components/icons/KidIcons";
+import { ArrowRight, ChevronDown, Compass, LayoutDashboard } from "lucide-react";
+
+type GuideItem = { title: string; body: string };
 
 export default function ParentsContent() {
- const t = useTranslations("parents");
- const locale = useLocale();
- const isArabic = locale === "ar";
+  const t = useTranslations("parents");
+  const steps = t.raw("guide.steps") as GuideItem[];
+  const questions = t.raw("guide.questions") as GuideItem[];
+  const stepLinks = ["/recommend", "/learning-path", "/free-trial"];
+  const stepLabels = [t("heroCta"), t("guide.levelsLink"), t("guide.trialLink")];
+  const linkStyle = "inline-flex min-h-11 items-center gap-2 rounded font-semibold text-purple-emphasis underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary";
 
- const trustCards = [
- { icon: BarChartIcon, title: t("trust1Title"), desc: t("trust1Desc"), bubble: "bg-blue-400/10 border-blue-400/30" },
- { icon: BellNotifyIcon, title: t("trust2Title"), desc: t("trust2Desc"), bubble: "bg-amber-400/10 border-amber-400/30" },
- { icon: ReportIcon, title: t("trust3Title"), desc: t("trust3Desc"), bubble: "bg-violet-400/10 border-violet-400/30" },
- { icon: ShieldSafeIcon, title: t("trust4Title"), desc: t("trust4Desc"), bubble: "bg-emerald-400/10 border-emerald-400/30" },
- { icon: CalendarIcon, title: t("trust5Title"), desc: t("trust5Desc"), bubble: "bg-rose-400/10 border-rose-400/30" },
- { icon: ChatHeartIcon, title: t("trust6Title"), desc: t("trust6Desc"), bubble: "bg-teal-400/10 border-teal-400/30" },
- ];
+  return (
+    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+      <header className="max-w-3xl">
+        <p className="mb-4 text-sm font-semibold text-purple-emphasis">{t("badge")}</p>
+        <h1 className="text-3xl font-extrabold leading-tight tracking-tight sm:text-5xl">
+          {t("heroTitleLead")} {t("heroTitleHighlight")}
+        </h1>
+        <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted">{t("guide.intro")}</p>
+        <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
+          <LocalizedLink href="/recommend" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-purple-emphasis px-6 py-3 font-semibold text-white hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary">
+            <Compass className="h-5 w-5 shrink-0" aria-hidden="true" />
+            {t("heroCta")}
+          </LocalizedLink>
+          <LocalizedLink href="/contact" className={linkStyle}>{t("contactLink")}</LocalizedLink>
+        </div>
+        <p className="mt-3 text-sm leading-relaxed text-muted">{t("guide.finderHint")}</p>
+      </header>
 
- const dashItems = [
- { icon: BarChartIcon, text: t("dash1") },
- { icon: BellNotifyIcon, text: t("dash2") },
- { icon: ReportIcon, text: t("dash3") },
- { icon: ClockTimeIcon, text: t("dash4") },
- { icon: ShieldSafeIcon, text: t("dash5") },
- { icon: VideoCameraIcon, text: t("dash6") },
- ];
+      <section id="choosing-a-course" aria-labelledby="parent-course-heading" className="mt-14 scroll-mt-24 border-t border-border pt-10">
+        <h2 id="parent-course-heading" className="text-2xl font-bold">{t("guide.stepsHeading")}</h2>
+        <ol className="mt-6 grid gap-6 md:grid-cols-3">
+          {steps.map((step, index) => (
+            <li key={step.title} className="flex flex-col rounded-2xl border border-border bg-surface p-6">
+              <span aria-hidden="true" className="mb-4 flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 font-bold text-purple-emphasis">{index + 1}</span>
+              <h3 className="text-lg font-bold">{step.title}</h3>
+              <p className="mb-4 mt-2 text-sm leading-relaxed text-muted">{step.body}</p>
+              <LocalizedLink href={stepLinks[index]} className={`${linkStyle} mt-auto self-start text-sm`}>
+                {stepLabels[index]}<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0 rtl:rotate-180" />
+              </LocalizedLink>
+            </li>
+          ))}
+        </ol>
+      </section>
 
- const promises = [
- t("promise1"), t("promise2"), t("promise3"),
- t("promise4"), t("promise5"), t("promise6"),
- ];
+      <section id="learning-approach" aria-labelledby="learning-approach-heading" className="mt-12 scroll-mt-24 max-w-3xl">
+        <h2 id="learning-approach-heading" className="text-2xl font-bold">{t("guide.approachTitle")}</h2>
+        <p className="mt-3 leading-relaxed text-muted">{t("guide.approachBody")}</p>
+      </section>
 
- const dmHref = (key: "dm1" | "dm2" | "dm3" | "dm4" | "dm5" | "dm6") =>
- ({ dm1: "/recommend", dm2: "/learning-path", dm3: "/parents#learning-approach", dm4: "/parents#learning-approach", dm5: "/parents#parent-questions", dm6: "/parents#parent-progress" }[key]);
+      <section id="parent-questions" aria-labelledby="parent-questions-heading" className="mt-12 scroll-mt-24">
+        <h2 id="parent-questions-heading" className="mb-5 text-2xl font-bold">{t("guide.questionsHeading")}</h2>
+        <div className="divide-y divide-border border-y border-border">
+          {questions.map(question => (
+            <details key={question.title} className="group">
+              <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 rounded-lg py-5 text-start font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary [&::-webkit-details-marker]:hidden">
+                <span>{question.title}</span>
+                <ChevronDown aria-hidden="true" className="h-5 w-5 shrink-0 text-muted group-open:rotate-180 motion-safe:transition-transform" />
+              </summary>
+              <p className="max-w-3xl pe-9 pb-5 text-sm leading-relaxed text-muted">{question.body}</p>
+            </details>
+          ))}
+        </div>
+        <LocalizedLink href="/privacy" className={`${linkStyle} mt-4 text-sm`}>{t("privacyLink")}</LocalizedLink>
+      </section>
 
- return (
- <div>
- {/* ═══ HERO ═══ */}
- <section dir="ltr" className="relative overflow-hidden w-full [container-type:inline-size] min-h-screen xl:min-h-0 py-12 xl:py-0 xl:aspect-[1448/1086]">
- {/* Mobile and tablet decorative bg — same vibe as the home hero */}
- <div className="xl:hidden absolute inset-0 -z-10">
- <div className="absolute inset-0 bg-gradient-to-br from-purple/10 via-primary/5 to-background" />
- <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-purple/20 blur-3xl" />
- <div className="absolute -bottom-24 -left-16 w-72 h-72 rounded-full bg-primary/15 blur-3xl" />
- <div className="absolute top-1/3 right-1/4 w-40 h-40 rounded-full bg-pink/10 blur-3xl" />
- <div
- className="absolute inset-0 opacity-[0.18]"
- style={{
- backgroundImage:
- "radial-gradient(circle, rgba(124,58,237,0.4) 1px, transparent 1px)",
- backgroundSize: "22px 22px",
- }}
- />
- <svg className="absolute top-8 right-8 w-10 h-10 text-purple/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
- <path strokeLinecap="round" strokeLinejoin="round" d="M8 10l-4 4 4 4M16 10l4 4-4 4M14 4l-4 16" />
- </svg>
- <svg className="absolute bottom-12 right-10 w-9 h-9 text-primary/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
- <rect x="4" y="4" width="6" height="6" rx="1" />
- <rect x="14" y="4" width="6" height="6" rx="1" />
- <rect x="4" y="14" width="6" height="6" rx="1" />
- <rect x="14" y="14" width="6" height="6" rx="1" />
- </svg>
- <svg className="absolute bottom-32 left-6 w-8 h-8 text-pink/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
- <circle cx="12" cy="12" r="3" />
- <path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3" strokeLinecap="round" />
- </svg>
- </div>
-
- {/* Image — hidden on mobile and tablet, full bg on xl+ */}
- <Image
- src="/images/parent-bg.webp"
- alt=""
- fill
- priority
- sizes="100vw"
- className="hidden xl:block object-contain object-center -z-10"
- />
-
- {/* Decision Map text overlays — desktop only, positioned on the empty boxes in the image */}
- <div className="hidden xl:block absolute inset-0 pointer-events-none">
- <h2
- className="absolute -translate-x-1/2 -translate-y-1/2 text-center font-display font-extrabold whitespace-nowrap text-[2.2cqw] m-0"
- style={{ top: "14%", left: "68%", color: "#16234F" }}
- >
- {t("dmTitle")}
- </h2>
- <p
- className="absolute -translate-x-1/2 -translate-y-1/2 text-center whitespace-nowrap text-[1.15cqw] m-0"
- style={{ top: "18%", left: "68%", color: "rgb(63, 72, 104)" }}
- >
- {t("dmSubtitle")}
- </p>
- {/* Text regions exclude the illustrated icons and scale with the artwork. */}
- {([
- { key: "dm1", top: "26.5%", left: "56.2%", width: "10.5%" },
- { key: "dm2", top: "26.5%", left: "86%", width: "11.5%" },
- { key: "dm3", top: "43%", left: "50.5%", width: "10%" },
- { key: "dm4", top: "44%", left: "88%", width: "10%" },
- { key: "dm5", top: "59.5%", left: "53.5%", width: "8%" },
- { key: "dm6", top: "60.5%", left: "87%", width: "11%" },
- ] as const).map(({ key, ...position }) => (
- <LocalizedLink
- key={key}
- href={dmHref(key)}
- className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
- style={position}
- >
- <h3 dir="auto" className="text-center font-bold leading-snug text-[1.15cqw] m-0" style={{ color: "#16234F" }}>
- {t(key).replace(/\n/g, " ")}
- </h3>
- </LocalizedLink>
- ))}
- <LocalizedLink href="/recommend" className="absolute -translate-x-1/2 -translate-y-1/2 w-[13%] pointer-events-auto" style={{ top: "73%", left: "67%" }}>
- <p dir="auto" className="text-center font-bold whitespace-pre-line text-[1.15cqw] leading-snug m-0" style={{ color: "#16234F" }}>{t("dmAnotherConcern")}</p>
- </LocalizedLink>
- </div>
-
- <div className="relative xl:absolute xl:inset-0 xl:flex xl:items-start">
- <div className="max-w-7xl mx-auto xl:h-full w-full">
- <motion.div
- initial={{ opacity: 0, x: -20 }}
- animate={{ opacity: 1, x: 0 }}
- transition={{ duration: 0.6 }}
- className="px-4 xl:px-0 mt-8 xl:mt-0 xl:pt-16 max-w-full xl:max-w-[36%]"
- >
- <h1
- dir="auto"
- className={`font-display font-extrabold leading-[1.1] tracking-tight text-[38px] md:text-[42px] lg:text-[48px] xl:text-[54px] ${isArabic ? "xl:mt-28" : ""}`}
- style={{ color: "#16234F" }}
- >
- <span className="block">{t("heroTitleLead")}</span>
- <span className="block" style={{ color: "#8B6CFF" }}>
- {t("heroTitleHighlight")}
- </span>
- </h1>
-
- {/* Purple divider line per spec */}
- <div className={`h-1 w-16 rounded-full mt-3 mb-3 xl:my-3 ${isArabic ? "ml-auto" : ""}`} style={{ backgroundColor: "#8B6CFF" }} />
-
- <p
- dir="auto"
- className="leading-relaxed mb-6 xl:mb-4 text-[18px] md:text-[20px] lg:text-[24px] xl:text-[24px]"
- style={{ color: "#3F4868" }}
- >
- {t.rich("heroSubtitle", {
- em: (chunks) => (
- <span style={{ color: "#8B6CFF", fontWeight: 600 }}>{chunks}</span>
- ),
- })}
- </p>
-
- <div className="flex flex-col gap-2 xl:gap-3 max-w-xs">
- <LocalizedLink
- href="/recommend"
- className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-2.5 xl:py-3 rounded-2xl bg-primary text-white font-semibold text-sm xl:text-base shadow-md shadow-primary/10 hover:shadow-lg hover:scale-[1.02] transition-all"
- >
- <Compass className="w-4 h-4 xl:w-5 xl:h-5 shrink-0" />
- {t("heroCta")}
- </LocalizedLink>
- <LocalizedLink
- href="/parent/login"
- className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-2.5 xl:py-3 rounded-2xl border-2 border-border bg-surface text-foreground font-semibold text-sm xl:text-base shadow-sm transition-all hover:border-primary/45 hover:bg-primary/[0.06] hover:text-primary hover:shadow-md hover:scale-[1.02] dark:hover:bg-primary/10"
- >
- <LayoutDashboard className="w-4 h-4 xl:w-5 xl:h-5 shrink-0" aria-hidden />
- <span>{t("openDashboard")}</span>
- </LocalizedLink>
- </div>
- </motion.div>
- </div>
- </div>
- </section>
-
- {/* ═══ DECISION MAP — mobile and tablet semantic version (desktop sees the absolute overlays above) ═══ */}
- <section className="xl:hidden px-4 pt-6 pb-12">
- <div className="bg-surface rounded-2xl border border-border p-6">
- <h2
- className="font-display font-extrabold text-center text-[26px] leading-tight mb-2 m-0"
- style={{ color: "#16234F" }}
- >
- {t("dmTitle")}
- </h2>
- <p className="text-sm text-center mb-6 m-0" style={{ color: "rgb(63, 72, 104)" }}>
- {t("dmSubtitle")}
- </p>
- <ul className="space-y-3 list-none p-0 m-0">
- {(["dm1", "dm2", "dm3", "dm4", "dm5", "dm6"] as const).map((k) => (
- <li key={k}>
- <LocalizedLink href={dmHref(k)} className="flex items-start gap-3 hover:opacity-80 transition-opacity">
- <span className="mt-2 w-1.5 h-1.5 shrink-0 rounded-full bg-primary" aria-hidden />
- <h3 className="text-base font-bold leading-snug m-0" style={{ color: "#16234F" }}>
- {t(k).replace(/\n/g, " ")}
- </h3>
- </LocalizedLink>
- </li>
- ))}
- </ul>
- <LocalizedLink href="/recommend" className="block text-sm text-center mt-6 hover:opacity-80 transition-opacity" style={{ color: "rgb(63, 72, 104)" }}>
- {t("dmAnotherConcern").replace(/\n/g, " ")}
- </LocalizedLink>
- </div>
- </section>
-
- <div id="learning-approach" className="scroll-mt-24"><FutureThinkersSection /></div>
-
- {/* ═══ WHY PARENTS TRUST US ═══ */}
- <section id="parent-questions" className="relative overflow-hidden py-20 sm:py-28 bg-surface/50 scroll-mt-24">
- <BrainPattern variant="rubik" />
- <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
- <AnimatedSection className="text-center mb-14">
- <h2 className="text-3xl sm:text-4xl font-bold mb-4">{t("trustTitle")}</h2>
- <p className="text-muted text-lg max-w-2xl mx-auto">{t("trustSubtitle")}</p>
- </AnimatedSection>
-
- <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
- {trustCards.map((card, i) => (
- <AnimatedCard key={i} delay={i * 0.08}>
- <article className="bg-surface rounded-2xl border border-border p-7 h-full">
- <div className={`w-16 h-16 rounded-2xl border-2 ${card.bubble} flex items-center justify-center mb-5`}>
- <card.icon className="w-10 h-10" />
- </div>
- <h3 className="text-lg font-semibold mb-2">{card.title}</h3>
- <p className="text-muted text-sm leading-relaxed">{card.desc}</p>
- </article>
- </AnimatedCard>
- ))}
- </div>
- <nav aria-label={t("trustTitle")} className="mt-8 flex flex-wrap justify-center gap-6 text-sm font-semibold text-primary underline underline-offset-4">
- <LocalizedLink href="/privacy">{t("privacyLink")}</LocalizedLink>
- <LocalizedLink href="/contact">{t("contactLink")}</LocalizedLink>
- </nav>
- </div>
- </section>
-
- {/* ═══ DASHBOARD PREVIEW ═══ */}
- <section id="parent-progress" className="relative overflow-hidden py-20 sm:py-28 scroll-mt-24">
- <BrainPattern variant="lego" />
- <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
- <AnimatedSection className="text-center mb-14">
- <h2 className="text-3xl sm:text-4xl font-bold mb-4">{t("dashTitle")}</h2>
- <p className="text-muted text-lg max-w-2xl mx-auto">{t("dashSubtitle")}</p>
- </AnimatedSection>
-
- <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-4xl mx-auto">
- {dashItems.map((item, i) => (
- <motion.div
- key={i}
- initial={{ opacity: 0, y: 15 }}
- whileInView={{ opacity: 1, y: 0 }}
- viewport={{ once: true }}
- transition={{ delay: i * 0.08 }}
- className="flex items-center gap-4 bg-surface rounded-2xl border border-border p-5"
- >
- <div className="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center shrink-0">
- <item.icon className="w-9 h-9" />
- </div>
- <p className="text-sm font-medium">{item.text}</p>
- </motion.div>
- ))}
- </div>
- </div>
- </section>
-
- {/* ═══ OUR PROMISE ═══ */}
- <section className="relative overflow-hidden py-20 sm:py-28 bg-surface/50">
- <BrainPattern variant="brain" />
- <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
- <AnimatedSection className="text-center mb-14">
- <div className="flex justify-center mb-4">
- <Star className="w-10 h-10 text-amber-400 fill-amber-400/30" />
- </div>
- <h2 className="text-3xl sm:text-4xl font-bold mb-3">{t("promiseTitle")}</h2>
- <p className="text-muted text-lg">{t("promiseSubtitle")}</p>
- </AnimatedSection>
-
- <div className="space-y-4">
- {promises.map((p, i) => (
- <motion.div
- key={i}
- initial={{ opacity: 0, x: -15 }}
- whileInView={{ opacity: 1, x: 0 }}
- viewport={{ once: true }}
- transition={{ delay: i * 0.08 }}
- className="flex items-start gap-4 bg-surface rounded-2xl border border-border p-5"
- >
- <CheckCircle2 className="w-6 h-6 text-emerald-500 shrink-0 mt-0.5" />
- <p className="font-medium">{p}</p>
- </motion.div>
- ))}
- </div>
- </div>
- </section>
-
- </div>
- );
+      <aside id="parent-progress" aria-labelledby="parent-progress-heading" className="mt-12 flex scroll-mt-24 flex-col gap-5 rounded-2xl border border-border bg-surface p-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="max-w-2xl">
+          <h2 id="parent-progress-heading" className="text-lg font-bold">{t("guide.enrolledTitle")}</h2>
+          <p className="mt-2 text-sm leading-relaxed text-muted">{t("guide.enrolledBody")}</p>
+        </div>
+        <LocalizedLink href="/parent/login" className={`${linkStyle} shrink-0 text-sm`}>
+          <LayoutDashboard className="h-5 w-5 shrink-0" aria-hidden="true" />{t("openDashboard")}
+        </LocalizedLink>
+      </aside>
+    </div>
+  );
 }

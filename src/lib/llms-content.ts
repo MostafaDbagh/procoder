@@ -98,7 +98,7 @@ ${formatCourseList(courses, base)}
 - [حصة تجريبية مجانية](${base}/ar/free-trial)
 - [Course finder](${base}/en/recommend): advisory suggestions; a parent chooses whether to enroll.
 - [Frequently asked questions](${base}/en/faq)
-- [Parent dashboard and learning updates](${base}/en/parents)
+- [Parent guide: starting levels, lessons and progress](${base}/en/parents)
 - [Blog and parent guides](${base}/en/blogs)
 - [Monthly creative challenge](${base}/en/challenge)
 - [About the team](${base}/en/about)

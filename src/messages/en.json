@@ -1591,7 +1591,55 @@
     "orLogin": "Already have an account?",
     "loginLink": "Log in",
     "privacyLink": "Read our privacy policy",
-    "contactLink": "Ask the team a question"
+    "contactLink": "Ask the team a question",
+    "guide": {
+      "intro": "Live online coding, robotics and AI for children ages 5–18. Start with what your child can do today, then choose a course with guidance from the team.",
+      "finderHint": "No account needed. The suggested level is a starting point for a teacher to confirm.",
+      "stepsHeading": "A simple way to get started",
+      "levelsLink": "Explore the five levels",
+      "trialLink": "Request a free trial",
+      "steps": [
+        {
+          "title": "Tell us about your child",
+          "body": "Share their age, experience and what they can do independently. The guided conversation asks for the information still needed."
+        },
+        {
+          "title": "Understand their starting level",
+          "body": "Explore Explorer, Builder, Creator, Innovator and Pro. Age ranges are a guide; readiness and the support your child needs also matter."
+        },
+        {
+          "title": "Try a lesson and confirm the fit",
+          "body": "Request a trial. The team will confirm availability and lesson details, and help you choose an appropriate course."
+        }
+      ],
+      "approachTitle": "Look for thinking you can see",
+      "approachBody": "A useful project is one your child can explain: what they tried, what went wrong and what they changed. Encourage small improvements and ask the teacher which skills they are practising next.",
+      "questionsHeading": "Before your first lesson",
+      "questions": [
+        {
+          "title": "Does my child need coding experience?",
+          "body": "No coding experience is needed for the early levels. Individual courses have their own entry requirements. Share what your child has tried so the team can help confirm a suitable start."
+        },
+        {
+          "title": "What equipment will we need?",
+          "body": "Plan for a computer, reliable internet and a quiet space. Ask about software and device requirements for the chosen course. For robotics, check whether it uses simulations or physical equipment before buying anything."
+        },
+        {
+          "title": "What should I confirm before booking?",
+          "body": "Confirm the teaching language, class format, lesson length, price, lesson count and absence or cancellation terms. For UAE families, confirm the time in UAE time (UTC+4). The website is available in English and Arabic; confirm the teaching language separately."
+        },
+        {
+          "title": "How are privacy and AI tools handled?",
+          "body": "Ask which tools the course uses, how sessions are supervised and who can access any recordings. In the level finder, avoid names, school details and sensitive information. If AI assistance is enabled, messages and relevant context may be processed by the providers described in our privacy policy."
+        },
+        {
+          "title": "How can I follow my child’s progress?",
+          "body": "Ask your child to show a project and explain one change they made. Agree with the teacher on feedback and next steps. After enrollment, the parent dashboard shows learning records as the team adds or shares them."
+        }
+      ],
+      "enrolledTitle": "Already enrolled?",
+      "enrolledBody": "Open your parent dashboard for course details, progress and feedback when available. Use the details linked to your child’s enrollment."
+    }
   },
   "courseData": {
     "scratch_title": "Scratch Programming",

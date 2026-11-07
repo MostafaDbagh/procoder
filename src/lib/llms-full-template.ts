@@ -29,14 +29,14 @@ Stage pages explain the learning goals and offer a preliminary fit check, a requ
 - [Learning journey and subject pathways]({{BASE}}/en/learning-path)
 - [مسار التعلّم بالعربية]({{BASE}}/ar/learning-path)
 
-## For parents — progress, updates and the parent dashboard
-Parents stay involved after enrollment through a private dashboard linked to their children's enrollments. It brings together lesson progress, upcoming classes, attendance history, instructor notes, homework and feedback, earned badges, and available session recordings. Parents can see what their child has completed, review teacher observations, revisit recorded lessons and follow the next learning steps.
+## For parents — choosing a starting point
+The parent guide explains a simple sequence: share the child's age and experience, explore the five learning levels, then request a trial and confirm course fit with the team. The level finder does not require an account, and its suggestion is a starting point for a teacher to confirm.
 
-StemTechLab keeps parents informed through learning updates and notifications, including absence notices and new teacher notes. The parent guide describes progress reports, class reminders and teacher communication. Learning summaries can cover what the child worked on, skills practiced, improvements and the next suggested step. Confirm the communication channel and reporting arrangements with the team.
+The guide answers practical questions about experience, equipment, teaching language, lesson arrangements, privacy and following progress. Parents should confirm course-specific requirements before buying equipment or booking. Website language does not establish teaching language.
 
-The dashboard tracks learning activity and teacher-recorded progress; it is not continuous monitoring of a child's device or behavior. Account access is for enrolled families. Individual student records, recordings and messages are private and are not part of this public discovery index.
-- [Parent guide and dashboard features]({{BASE}}/en/parents)
-- [دليل الوالدين]({{BASE}}/ar/parents)
+Enrolled families can use the private parent dashboard for course details, progress and feedback when available. Records appear as the team adds or shares them. Individual student records, recordings and messages are private and are not part of this public discovery index.
+- [Parent guide: choosing a starting point]({{BASE}}/en/parents)
+- [دليل ولي الأمر لاختيار البداية المناسبة]({{BASE}}/ar/parents)
 
 ## Live classes, trial and rescheduling
 - Classes are live, online and interactive, with a maximum of 3 students in a group; private one-to-one options are also described on the site.
