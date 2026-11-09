@@ -24,7 +24,7 @@ export function Hero() {
  const isArabic = locale === "ar";
 
  return (
- <section dir="ltr" className="relative overflow-hidden py-16 sm:py-12 lg:py-16 min-h-[90vh] sm:min-h-[640px] md:min-h-[720px] lg:min-h-[820px] xl:min-h-[920px] flex items-center sm:block">
+ <section dir={isArabic ? "rtl" : "ltr"} className="relative overflow-hidden py-16 sm:py-12 lg:py-16 min-h-[90vh] sm:min-h-[640px] md:min-h-[720px] lg:min-h-[820px] xl:min-h-[920px] flex items-center sm:block">
  {/* Mobile-only decorative bg — soft lavender wash + floating glows + tiny tech glyphs, echoing the desktop poster's vibe */}
  <div className="sm:hidden absolute inset-0 -z-10">
  <div className="absolute inset-0 bg-gradient-to-br from-purple/10 via-primary/5 to-background" />
@@ -66,7 +66,7 @@ export function Hero() {
  fill
  priority
  sizes="100vw"
- className="object-cover object-center"
+ className={`object-cover object-center ${isArabic ? "-scale-x-100" : ""}`}
  />
  </div>
 
@@ -103,7 +103,7 @@ export function Hero() {
  })}
  </p>
 
- <div className={`flex flex-col xl:flex-row items-stretch xl:items-center gap-3 sm:gap-4 w-full xl:w-auto max-w-[420px] xl:max-w-none ${isArabic ? "ml-auto xl:justify-end" : ""}`}>
+ <div dir="ltr" className={`flex flex-col items-stretch xl:items-center gap-3 sm:gap-4 w-full xl:w-auto max-w-[420px] xl:max-w-none ${isArabic ? "ml-auto xl:flex-row-reverse" : "xl:flex-row"}`}>
  <LocalizedLink
  href="/courses"
  className={`inline-flex items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto min-h-[56px] sm:min-h-0 px-6 sm:px-7 lg:px-9 py-3 sm:py-4 lg:py-5 rounded-2xl bg-primary text-white font-semibold shadow-lg shadow-primary/10 hover:shadow-xl hover:shadow-primary/15 transition-all duration-300 hover:scale-[1.02] whitespace-nowrap ${isArabic ? "flex-row-reverse" : ""}`}
