@@ -54,8 +54,10 @@ export function Footer() {
  <div className="mb-3">
  <Image src="/logo.png" alt="StemTechLab" width={120} height={71} className="object-contain" />
  </div>
- <p className="text-muted text-sm leading-7 mb-5 max-w-sm">
- {t("description")}
+ <p className="mb-5 max-w-sm text-sm leading-7 text-muted">
+ {t("description").split("\n").map((line) => (
+ <span key={line} className="block text-balance">{line}</span>
+ ))}
  </p>
  <div className="flex items-center gap-3">
   <a aria-label="Facebook" href="https://www.facebook.com/share/1D3FrzK2N9/" target="_blank" rel="noopener noreferrer"
