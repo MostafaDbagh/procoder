@@ -54,7 +54,7 @@ export function Footer() {
  <div className="mb-3">
  <Image src="/logo.png" alt="StemTechLab" width={120} height={71} className="object-contain" />
  </div>
- <p className="mb-5 max-w-sm text-lg lg:text-base leading-7 text-muted">
+ <p className="mb-5 max-w-sm text-base leading-7 text-muted">
  {t("description").split("\n").map((line) => (
  <span key={line} className="block text-balance">{line}</span>
  ))}
@@ -90,48 +90,48 @@ export function Footer() {
 
  {/* Quick Links */}
  <div>
- <h3 className="font-semibold mb-4 text-xl lg:text-lg">
+ <h3 className="font-semibold mb-4 text-lg">
  {t("quickLinks")}
  </h3>
  <ul className="space-y-1">
- <li><LocalizedLink href="/uae" className="inline-flex min-h-11 items-center py-2 text-lg lg:text-base leading-relaxed text-muted hover:text-primary transition-colors">{lang === "ar" ? "دورات أونلاين في الإمارات" : "Online classes in the UAE"}</LocalizedLink></li>
- <li><LocalizedLink href="/courses" className="inline-flex min-h-11 items-center py-2 text-lg lg:text-base leading-relaxed text-muted hover:text-primary transition-colors">{nav("courses")}</LocalizedLink></li>
- <li><LocalizedLink href="/recommend" className="inline-flex min-h-11 items-center py-2 text-lg lg:text-base leading-relaxed text-muted hover:text-primary transition-colors">{nav("recommend")}</LocalizedLink></li>
- <li><LocalizedLink href="/free-trial" className="inline-flex min-h-11 items-center py-2 text-lg lg:text-base leading-relaxed text-muted hover:text-primary transition-colors">{nav("freeTrial")}</LocalizedLink></li>
- <li><LocalizedLink href="/challenge" className="inline-flex min-h-11 items-center py-2 text-lg lg:text-base leading-relaxed text-muted hover:text-primary transition-colors">{nav("challenge")}</LocalizedLink></li>
- <li><LocalizedLink href="/blogs" className="inline-flex min-h-11 items-center py-2 text-lg lg:text-base leading-relaxed text-muted hover:text-primary transition-colors">{nav("blog")}</LocalizedLink></li>
- <li><LocalizedLink href="/about" className="inline-flex min-h-11 items-center py-2 text-lg lg:text-base leading-relaxed text-muted hover:text-primary transition-colors">{lang === "ar" ? "من نحن" : "About us"}</LocalizedLink></li>
- <li><LocalizedLink href="/careers" className="inline-flex min-h-11 items-center py-2 text-lg lg:text-base leading-relaxed text-muted hover:text-primary transition-colors">{lang === "ar" ? "الوظائف" : "Careers"}</LocalizedLink></li>
- <li><LocalizedLink href="/faq" className="inline-flex min-h-11 items-center py-2 text-lg lg:text-base leading-relaxed text-muted hover:text-primary transition-colors">{nav("faq")}</LocalizedLink></li>
+ <li><LocalizedLink href="/uae" className="inline-flex min-h-11 items-center py-2 text-base leading-relaxed text-muted hover:text-primary transition-colors">{lang === "ar" ? "دورات أونلاين في الإمارات" : "Online classes in the UAE"}</LocalizedLink></li>
+ <li><LocalizedLink href="/courses" className="inline-flex min-h-11 items-center py-2 text-base leading-relaxed text-muted hover:text-primary transition-colors">{nav("courses")}</LocalizedLink></li>
+ <li><LocalizedLink href="/recommend" className="inline-flex min-h-11 items-center py-2 text-base leading-relaxed text-muted hover:text-primary transition-colors">{nav("recommend")}</LocalizedLink></li>
+ <li><LocalizedLink href="/free-trial" className="inline-flex min-h-11 items-center py-2 text-base leading-relaxed text-muted hover:text-primary transition-colors">{nav("freeTrial")}</LocalizedLink></li>
+ <li><LocalizedLink href="/challenge" className="inline-flex min-h-11 items-center py-2 text-base leading-relaxed text-muted hover:text-primary transition-colors">{nav("challenge")}</LocalizedLink></li>
+ <li><LocalizedLink href="/blogs" className="inline-flex min-h-11 items-center py-2 text-base leading-relaxed text-muted hover:text-primary transition-colors">{nav("blog")}</LocalizedLink></li>
+ <li><LocalizedLink href="/about" className="inline-flex min-h-11 items-center py-2 text-base leading-relaxed text-muted hover:text-primary transition-colors">{lang === "ar" ? "من نحن" : "About us"}</LocalizedLink></li>
+ <li><LocalizedLink href="/careers" className="inline-flex min-h-11 items-center py-2 text-base leading-relaxed text-muted hover:text-primary transition-colors">{lang === "ar" ? "الوظائف" : "Careers"}</LocalizedLink></li>
+ <li><LocalizedLink href="/faq" className="inline-flex min-h-11 items-center py-2 text-base leading-relaxed text-muted hover:text-primary transition-colors">{nav("faq")}</LocalizedLink></li>
  </ul>
  </div>
 
  {/* Categories */}
  <div>
- <h3 className="font-semibold mb-4 text-xl lg:text-lg">
+ <h3 className="font-semibold mb-4 text-lg">
  {t("categories")}
  </h3>
  <ul className="space-y-1">
- <li><LocalizedLink href="/courses?category=programming" className="inline-flex min-h-11 items-center py-2 text-lg lg:text-base leading-relaxed text-muted hover:text-primary transition-colors">{cats("programming")}</LocalizedLink></li>
- <li><LocalizedLink href="/courses?category=robotics" className="inline-flex min-h-11 items-center py-2 text-lg lg:text-base leading-relaxed text-muted hover:text-primary transition-colors">{cats("robotics")}</LocalizedLink></li>
- <li><LocalizedLink href="/courses?category=algorithms" className="inline-flex min-h-11 items-center py-2 text-lg lg:text-base leading-relaxed text-muted hover:text-primary transition-colors">{cats("algorithms")}</LocalizedLink></li>
- <li><LocalizedLink href="/courses?category=artificial-intelligence" className="inline-flex min-h-11 items-center py-2 text-lg lg:text-base leading-relaxed text-muted hover:text-primary transition-colors">{cats("artificial-intelligence")}</LocalizedLink></li>
- <li><LocalizedLink href="/courses?category=mobile-app-development" className="inline-flex min-h-11 items-center py-2 text-lg lg:text-base leading-relaxed text-muted hover:text-primary transition-colors">{cats("mobile-development")}</LocalizedLink></li>
- <li><LocalizedLink href="/courses?category=web-development" className="inline-flex min-h-11 items-center py-2 text-lg lg:text-base leading-relaxed text-muted hover:text-primary transition-colors">{cats("web-development")}</LocalizedLink></li>
+ <li><LocalizedLink href="/courses?category=programming" className="inline-flex min-h-11 items-center py-2 text-base leading-relaxed text-muted hover:text-primary transition-colors">{cats("programming")}</LocalizedLink></li>
+ <li><LocalizedLink href="/courses?category=robotics" className="inline-flex min-h-11 items-center py-2 text-base leading-relaxed text-muted hover:text-primary transition-colors">{cats("robotics")}</LocalizedLink></li>
+ <li><LocalizedLink href="/courses?category=algorithms" className="inline-flex min-h-11 items-center py-2 text-base leading-relaxed text-muted hover:text-primary transition-colors">{cats("algorithms")}</LocalizedLink></li>
+ <li><LocalizedLink href="/courses?category=artificial-intelligence" className="inline-flex min-h-11 items-center py-2 text-base leading-relaxed text-muted hover:text-primary transition-colors">{cats("artificial-intelligence")}</LocalizedLink></li>
+ <li><LocalizedLink href="/courses?category=mobile-app-development" className="inline-flex min-h-11 items-center py-2 text-base leading-relaxed text-muted hover:text-primary transition-colors">{cats("mobile-development")}</LocalizedLink></li>
+ <li><LocalizedLink href="/courses?category=web-development" className="inline-flex min-h-11 items-center py-2 text-base leading-relaxed text-muted hover:text-primary transition-colors">{cats("web-development")}</LocalizedLink></li>
  </ul>
  </div>
 
  {/* Reach Out */}
  <div className="col-span-full min-w-0 md:col-span-1">
  <div className="rounded-2xl bg-primary/5 p-5 text-center md:text-start">
- <h3 className="mb-2 text-xl lg:text-lg font-bold">
+ <h3 className="mb-2 text-lg font-bold">
  {t("stayUpdated")}
  </h3>
- <p className="text-lg lg:text-base text-muted leading-7 mb-4">
+ <p className="text-base text-muted leading-7 mb-4">
  {t("stayUpdatedSubtitle")}
  </p>
  {subDone ? (
-  <div role="status" className="flex items-center gap-2 text-emerald-500 text-lg lg:text-base font-medium mb-6">
+  <div role="status" className="flex items-center gap-2 text-emerald-500 text-base font-medium mb-6">
    <CheckCircle2 className="w-4 h-4" />
    {t("subscribeSuccess")}
   </div>
@@ -152,26 +152,26 @@ export function Footer() {
     onBlur={(e) => setEmailErr(emailError(e.target.value, lang))}
     placeholder={t("emailPlaceholder")}
     aria-invalid={!!emailErr}
-    className={`w-full min-w-0 flex-1 bg-transparent sm:w-auto px-3 py-3 text-lg lg:text-base text-foreground placeholder:text-muted focus:outline-none text-left ${lang === "ar" ? "placeholder:text-right placeholder:[direction:rtl] placeholder-shown:text-right" : "placeholder:text-left"}`}
+    className={`w-full min-w-0 flex-1 bg-transparent sm:w-auto px-3 py-3 text-base text-foreground placeholder:text-muted focus:outline-none text-left ${lang === "ar" ? "placeholder:text-right placeholder:[direction:rtl] placeholder-shown:text-right" : "placeholder:text-left"}`}
    />
    <button
     type="submit"
     disabled={subLoading}
-    className="shrink-0 inline-flex min-h-11 items-center justify-center gap-2 px-4 py-3 rounded-lg bg-primary text-white text-lg lg:text-base font-semibold hover:bg-primary-hover transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60"
+    className="shrink-0 inline-flex min-h-11 items-center justify-center gap-2 px-4 py-3 rounded-lg bg-primary text-white text-base font-semibold hover:bg-primary-hover transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60"
    >
     <span>{subLoading ? "..." : t("subscribe")}</span>
    </button>
    </div>
-   {emailErr && <p id="footer-email-error" role="alert" className="mt-2 text-base lg:text-sm text-red-500">{emailErr}</p>}
+   {emailErr && <p id="footer-email-error" role="alert" className="mt-2 text-sm text-red-500">{emailErr}</p>}
   </form>
  )}
 
  </div>
  <div className="mt-6 text-center md:text-start">
- <h3 className="mb-3 text-xl lg:text-lg font-bold">{t("contactUs")}</h3>
+ <h3 className="mb-3 text-lg font-bold">{t("contactUs")}</h3>
  <ul className="mx-auto flex w-fit max-w-full flex-col gap-1 md:mx-0">
   <li>
-   <a href={`tel:${t("phone").replace(/\s/g, "")}`} className="flex min-h-11 items-center gap-3 text-lg lg:text-base text-foreground hover:text-primary transition-colors group">
+   <a href={`tel:${t("phone").replace(/\s/g, "")}`} className="flex min-h-11 items-center gap-3 text-base text-foreground hover:text-primary transition-colors group">
     <span className="flex h-8 w-8 shrink-0 items-center justify-center text-primary">
      <Phone className="w-4 h-4" aria-hidden />
     </span>
@@ -179,7 +179,7 @@ export function Footer() {
    </a>
   </li>
   <li>
-   <a href={`mailto:${t("email")}`} className="flex min-h-11 items-center gap-3 text-lg lg:text-base text-foreground hover:text-primary transition-colors group break-all">
+   <a href={`mailto:${t("email")}`} className="flex min-h-11 items-center gap-3 text-base text-foreground hover:text-primary transition-colors group break-all">
     <span className="flex h-8 w-8 shrink-0 items-center justify-center text-primary">
      <Mail className="w-4 h-4" aria-hidden />
     </span>
@@ -194,28 +194,28 @@ export function Footer() {
 
  <nav aria-label={t("memberAccess")} className="mt-8 border-t border-border pt-6 sm:mt-10">
  <div className="mx-auto max-w-lg text-center">
- <h3 className="mb-4 text-xl lg:text-lg font-bold">{t("memberAccess")}</h3>
+ <h3 className="mb-4 text-lg font-bold">{t("memberAccess")}</h3>
  <div className="grid grid-cols-1 min-[400px]:grid-cols-2 gap-3">
- <LocalizedLink href="/parent/login" className="flex min-h-16 flex-col items-center justify-center gap-2 rounded-xl border border-border px-3 py-4 text-lg lg:text-base font-medium transition-colors hover:border-primary/40 hover:bg-primary/5 sm:flex-row">
+ <LocalizedLink href="/parent/login" className="flex min-h-16 flex-col items-center justify-center gap-2 rounded-xl border border-border px-3 py-4 text-base font-medium transition-colors hover:border-primary/40 hover:bg-primary/5 sm:flex-row">
  <LayoutDashboard className="h-5 w-5 shrink-0 text-primary" aria-hidden />{t("parentDashboardLink")}
  </LocalizedLink>
- <LocalizedLink href="/instructor/login" className="flex min-h-16 flex-col items-center justify-center gap-2 rounded-xl border border-border px-3 py-4 text-lg lg:text-base font-medium transition-colors hover:border-primary/40 hover:bg-primary/5 sm:flex-row">
+ <LocalizedLink href="/instructor/login" className="flex min-h-16 flex-col items-center justify-center gap-2 rounded-xl border border-border px-3 py-4 text-base font-medium transition-colors hover:border-primary/40 hover:bg-primary/5 sm:flex-row">
  <GraduationCap className="h-5 w-5 shrink-0 text-primary" aria-hidden />{t("instructorPortalLink")}
  </LocalizedLink>
  </div>
- <Link href="/admin/login" className="mt-2 inline-flex min-h-11 items-center justify-center gap-2 text-base lg:text-sm text-muted transition-colors hover:text-primary">
+ <Link href="/admin/login" className="mt-2 inline-flex min-h-11 items-center justify-center gap-2 text-sm text-muted transition-colors hover:text-primary">
  <Shield className="h-3.5 w-3.5" aria-hidden />{t("adminLoginLink")}
  </Link>
  </div>
  </nav>
 
  <div className="mt-6 pt-5 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3 sm:mt-8 sm:pt-6 sm:gap-4">
- <p className="text-center text-base lg:text-sm leading-relaxed text-muted sm:text-start">
+ <p className="text-center text-sm leading-relaxed text-muted sm:text-start">
  &copy; {new Date().getFullYear()} StemTechLab. {t("rights")}
  </p>
  <ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
- <li><LocalizedLink href="/privacy" className="text-lg lg:text-base text-muted hover:text-primary transition-colors">{t("privacy")}</LocalizedLink></li>
- <li><LocalizedLink href="/terms" className="text-lg lg:text-base text-muted hover:text-primary transition-colors">{t("terms")}</LocalizedLink></li>
+ <li><LocalizedLink href="/privacy" className="text-base text-muted hover:text-primary transition-colors">{t("privacy")}</LocalizedLink></li>
+ <li><LocalizedLink href="/terms" className="text-base text-muted hover:text-primary transition-colors">{t("terms")}</LocalizedLink></li>
  </ul>
  </div>
  </div>
