@@ -85,13 +85,13 @@ body {
 
 /* Arabic pages: Cairo for correct glyph rendering across all devices */
 :lang(ar) body {
-  font-family: Tahoma, Arial, sans-serif;
+  font-family: var(--font-cairo), system-ui, sans-serif;
 }
 :lang(ar) .font-display,
 :lang(ar) h1,
 :lang(ar) h2,
 :lang(ar) h3 {
-  font-family: Tahoma, Arial, sans-serif;
+  font-family: var(--font-cairo), system-ui, sans-serif;
 }
 
 /* Smooth scroll */

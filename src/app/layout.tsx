@@ -3,9 +3,16 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { headers } from "next/headers";
 import Script from "next/script";
+import { Cairo } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
+const cairo = Cairo({
+ variable: "--font-cairo",
+ subsets: ["arabic", "latin"],
+ weight: ["400", "600", "700"],
+ display: "swap",
+});
 
 /** stem-Be origin for preconnect only (no secrets). Set NEXT_PUBLIC_API_ORIGIN in production; omit in git. */
 const API_PRECONNECT = process.env.NEXT_PUBLIC_API_ORIGIN?.trim().replace(/\/$/, "") || "";
@@ -99,7 +106,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
  const dir = locale === "ar" ? "rtl" : "ltr";
 
  return (
- <html lang={locale} dir={dir} className="h-full antialiased" suppressHydrationWarning>
+ <html lang={locale} dir={dir} className={`${cairo.variable} h-full antialiased`} suppressHydrationWarning>
  <head>
  {/* Performance: preconnect to stem-Be when NEXT_PUBLIC_API_ORIGIN is set (never hardcode deploy URLs) */}
  {API_PRECONNECT ? (
