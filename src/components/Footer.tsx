@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { sendContactMessage } from "@/lib/api";
-import { Mail, Phone, ArrowRight, CheckCircle2, LayoutDashboard, GraduationCap, Shield } from "lucide-react";
+import { Mail, Phone, CheckCircle2, LayoutDashboard, GraduationCap, Shield } from "lucide-react";
 import { emailError, isValidEmail } from "@/lib/validation";
 
 export function Footer() {
@@ -120,11 +120,12 @@ export function Footer() {
  </div>
 
  {/* Reach Out */}
- <div className="col-span-2 min-w-0 border-t border-border pt-8 md:col-span-1 md:border-t-0 md:pt-0">
- <h3 className="font-semibold mb-4 text-sm sm:text-base">
+ <div className="col-span-2 min-w-0 md:col-span-1">
+ <div className="rounded-2xl bg-primary/5 p-5 text-center md:text-start">
+ <h3 className="mb-2 text-lg font-bold">
  {t("stayUpdated")}
  </h3>
- <p className="text-sm text-muted leading-relaxed mb-4">
+ <p className="text-sm text-muted leading-7 mb-4">
  {t("stayUpdatedSubtitle")}
  </p>
  {subDone ? (
@@ -133,8 +134,9 @@ export function Footer() {
    {t("subscribeSuccess")}
   </div>
  ) : (
- <form onSubmit={handleSubscribe} className="space-y-2 mb-4">
+ <form onSubmit={handleSubscribe} dir={lang === "ar" ? "rtl" : "ltr"} className="text-start">
    <label htmlFor="footer-email" className="sr-only">{t("emailPlaceholder")}</label>
+   <div className={`flex items-center gap-1 rounded-xl border bg-surface p-1 focus-within:ring-2 focus-within:ring-primary/20 ${emailErr ? "border-red-500" : "border-border focus-within:border-primary"}`}>
    <input
     id="footer-email"
     name="email"
@@ -148,33 +150,35 @@ export function Footer() {
     onBlur={(e) => setEmailErr(emailError(e.target.value, lang))}
     placeholder={t("emailPlaceholder")}
     aria-invalid={!!emailErr}
-    className={`w-full px-5 py-3 rounded-xl bg-background border text-sm text-foreground placeholder:text-muted outline-none transition-all ${emailErr ? "border-red-500 focus:border-red-500" : "border-border focus:border-primary"}`}
+    className={`min-w-0 flex-1 bg-transparent px-3 py-3 text-sm text-foreground placeholder:text-muted focus:outline-none text-left ${lang === "ar" ? "placeholder:text-right placeholder:[direction:rtl] placeholder-shown:text-right" : "placeholder:text-left"}`}
    />
-   {emailErr && <p id="footer-email-error" role="alert" className="text-xs text-red-500 px-2">{emailErr}</p>}
    <button
     type="submit"
     disabled={subLoading}
-    className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary-hover transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60"
+    className="shrink-0 inline-flex min-h-11 items-center justify-center gap-2 px-4 py-3 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-hover transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60"
    >
     <span>{subLoading ? "..." : t("subscribe")}</span>
-    <ArrowRight className="w-4 h-4 rtl:rotate-180" aria-hidden />
    </button>
+   </div>
+   {emailErr && <p id="footer-email-error" role="alert" className="mt-2 text-xs text-red-500">{emailErr}</p>}
   </form>
  )}
 
- <h3 className="font-semibold mb-3 mt-6">{t("contactUs")}</h3>
- <ul className="space-y-3">
+ </div>
+ <div className="mt-6 text-center md:text-start">
+ <h3 className="mb-3 text-base font-bold">{t("contactUs")}</h3>
+ <ul className="mx-auto flex w-fit flex-col gap-1 md:mx-0">
   <li>
-   <a href={`tel:${t("phone").replace(/\s/g, "")}`} className="flex items-center gap-3 text-sm text-muted hover:text-primary transition-colors group">
-    <span className="w-10 h-10 shrink-0 rounded-full bg-primary/10 flex items-center justify-center text-primary transition-colors group-hover:bg-primary/15">
+   <a href={`tel:${t("phone").replace(/\s/g, "")}`} className="flex min-h-11 items-center gap-3 text-sm text-foreground hover:text-primary transition-colors group">
+    <span className="flex h-8 w-8 shrink-0 items-center justify-center text-primary">
      <Phone className="w-4 h-4" aria-hidden />
     </span>
     <span dir="ltr" className="text-start">{t("phone")}</span>
    </a>
   </li>
   <li>
-   <a href={`mailto:${t("email")}`} className="flex items-center gap-3 text-sm text-muted hover:text-primary transition-colors group break-all">
-    <span className="w-10 h-10 shrink-0 rounded-full bg-primary/10 flex items-center justify-center text-primary transition-colors group-hover:bg-primary/15">
+   <a href={`mailto:${t("email")}`} className="flex min-h-11 items-center gap-3 text-sm text-foreground hover:text-primary transition-colors group break-all">
+    <span className="flex h-8 w-8 shrink-0 items-center justify-center text-primary">
      <Mail className="w-4 h-4" aria-hidden />
     </span>
     <span dir="ltr">{t("email")}</span>
@@ -182,25 +186,26 @@ export function Footer() {
   </li>
  </ul>
  </div>
+ </div>
 
  </div>
 
- <div className="mt-10 border-t border-border pt-6 sm:mt-12">
- <nav aria-label={t("memberAccess")} className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
- <p className="text-sm font-semibold">{t("memberAccess")}</p>
- <div className="flex flex-wrap gap-x-6 gap-y-1">
- <LocalizedLink href="/parent/login" className="inline-flex min-h-11 items-center gap-2 text-sm text-muted transition-colors hover:text-primary">
- <LayoutDashboard className="h-4 w-4" aria-hidden />{t("parentDashboardLink")}
+ <nav aria-label={t("memberAccess")} className="mt-8 border-t border-border pt-6 sm:mt-10">
+ <div className="mx-auto max-w-lg text-center">
+ <h3 className="mb-4 text-base font-bold">{t("memberAccess")}</h3>
+ <div className="grid grid-cols-2 gap-3">
+ <LocalizedLink href="/parent/login" className="flex min-h-16 flex-col items-center justify-center gap-2 rounded-xl border border-border px-3 py-4 text-sm font-medium transition-colors hover:border-primary/40 hover:bg-primary/5 sm:flex-row">
+ <LayoutDashboard className="h-5 w-5 shrink-0 text-primary" aria-hidden />{t("parentDashboardLink")}
  </LocalizedLink>
- <LocalizedLink href="/instructor/login" className="inline-flex min-h-11 items-center gap-2 text-sm text-muted transition-colors hover:text-primary">
- <GraduationCap className="h-4 w-4" aria-hidden />{t("instructorPortalLink")}
+ <LocalizedLink href="/instructor/login" className="flex min-h-16 flex-col items-center justify-center gap-2 rounded-xl border border-border px-3 py-4 text-sm font-medium transition-colors hover:border-primary/40 hover:bg-primary/5 sm:flex-row">
+ <GraduationCap className="h-5 w-5 shrink-0 text-primary" aria-hidden />{t("instructorPortalLink")}
  </LocalizedLink>
- <Link href="/admin/login" className="inline-flex min-h-11 items-center gap-2 text-sm text-muted transition-colors hover:text-primary">
- <Shield className="h-4 w-4" aria-hidden />{t("adminLoginLink")}
+ </div>
+ <Link href="/admin/login" className="mt-2 inline-flex min-h-11 items-center justify-center gap-2 text-xs text-muted transition-colors hover:text-primary">
+ <Shield className="h-3.5 w-3.5" aria-hidden />{t("adminLoginLink")}
  </Link>
  </div>
  </nav>
- </div>
 
  <div className="mt-6 pt-5 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3 sm:mt-8 sm:pt-6 sm:gap-4">
  <p className="text-center text-xs leading-relaxed text-muted sm:text-start">
