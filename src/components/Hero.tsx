@@ -78,13 +78,15 @@ export function Hero() {
  className="relative w-full px-4 sm:ps-[6%] lg:ps-[7%] sm:pe-4 sm:w-[50%] lg:w-[46%] xl:w-[44%]"
  >
  <h1
- dir="auto"
- className={`font-display font-extrabold text-[36px] sm:text-[36px] md:text-[40px] lg:text-[48px] xl:text-[56px] ${isArabic ? "leading-[1.4] tracking-normal" : "leading-[1.25] tracking-tight"}`}
+ dir={isArabic ? "rtl" : "ltr"}
+ className={`font-display ${isArabic ? "font-bold text-[28px] sm:text-[30px] md:text-[34px] lg:text-[40px] xl:text-[46px] leading-[1.5] tracking-normal" : "font-extrabold text-[36px] sm:text-[36px] md:text-[40px] lg:text-[48px] xl:text-[56px] leading-[1.25] tracking-tight"}`}
  style={{ color: "#16234F" }}
  >
- <span className="block">{t("titleLead")}</span>
- <span className="block" style={{ color: "#8B6CFF" }}>
- {t("titleHighlight")}
+ <span className={`block ${isArabic ? "text-balance" : ""}`}>
+ {t.rich("titleLead", { latin: (chunks) => <bdi dir="ltr">{chunks}</bdi> })}
+ </span>
+ <span className={`block ${isArabic ? "mt-2 text-[0.85em] font-semibold text-balance" : ""}`} style={{ color: "#8B6CFF" }}>
+ {t.rich("titleHighlight", { keep: (chunks) => <span className="whitespace-nowrap">{chunks}</span> })}
  </span>
  </h1>
 
