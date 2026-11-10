@@ -396,7 +396,7 @@ mobile?: boolean;
  href={switchHref}
  dir="ltr"
  aria-label={isAr ? "Switch to English" : "Switch to Arabic"}
- style={{ fontFamily: "var(--font-nunito), var(--font-geist-sans), sans-serif" }}
+ style={{ fontFamily: '"Trebuchet MS", Arial, sans-serif' }}
 className={`relative flex items-center rounded-full p-[3px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80
  shadow-[0_2px_10px_rgba(0,0,0,0.08),0_1px_3px_rgba(0,0,0,0.06)] dark:shadow-[0_2px_10px_rgba(0,0,0,0.25),0_1px_3px_rgba(0,0,0,0.15)]
  hover:shadow-[0_4px_18px_rgba(167,139,250,0.25),0_2px_6px_rgba(0,0,0,0.10)] dark:hover:shadow-[0_4px_18px_rgba(167,139,250,0.30),0_2px_6px_rgba(0,0,0,0.20)]
