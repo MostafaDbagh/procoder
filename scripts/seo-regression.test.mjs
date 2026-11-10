@@ -44,6 +44,7 @@ test('AI indexes resolve every placeholder and contain only live supplied course
  const llms = load('src/lib/llms-content.ts', {'./llms-full-template': template, './course-positioning': load('src/lib/course-positioning.ts')});
  for (const text of [llms.formatLlmsShort('https://example.com', [{slug:'python', title:{en:'Python'}}]), llms.formatLlmsFull('https://example.com', [{slug:'python', title:{en:'Python'}}])]) {
   assert.ok(text.includes('https://example.com/en/uae'));
+  assert.ok(text.includes('https://example.com/ar/uae'));
   assert.ok(text.includes('https://example.com/en/courses/python'));
   assert.ok(!text.includes('{{'));
   assert.ok(!/recommend.*first|kit.*deliver/i.test(text));
@@ -276,4 +277,39 @@ test('course snippets retain complete sentences instead of cut promises',()=>{
 test('malformed bilingual blog records fail as unavailable, not empty indexed articles',async()=>{
  const api=load('src/lib/server-api.ts',{'./mediaUrls':load('src/lib/mediaUrls.ts')},{fetch:async()=>({ok:true,status:200,json:async()=>({slug:'example',title:{en:'Title',ar:'عنوان'},excerpt:{en:'Intro',ar:'مقدمة'},body:{en:'Text',ar:''},author:{name:'Team'},tags:[],targetRegions:[],relatedCourses:[]})})});
  await assert.rejects(()=>api.getBlogPostISR('example'),/invalid blog post/);
+});
+
+
+test('course and service audiences support age properties without guessing teaching language', () => {
+ const schema = load('src/components/StructuredData.tsx', {'next-intl/server': {}, '@/lib/formatCoursePrice': load('src/lib/formatCoursePrice.ts'), '@/data/faqKeys': { ALL_FAQ_KEYS: [] }});
+ const course = schema.buildCourseSchema({name:'Python',description:'Learn coding',url:'https://example.com/ar/courses/python',ageMin:8,ageMax:13,level:'beginner',lessons:10,durationWeeks:5}, 'ar');
+ assert.ok(course.audience['@type'].includes('PeopleAudience'));
+ assert.equal(course.audience.suggestedMinAge, 8);
+ assert.equal(course.inLanguage, undefined);
+ assert.equal(course.hasCourseInstance[0].inLanguage, undefined);
+ assert.equal(course.mainEntityOfPage.inLanguage, 'ar');
+ const service = schema.EducationalServiceSchema().props.data;
+ assert.ok(service.audience['@type'].includes('PeopleAudience'));
+ assert.ok(service.areaServed.some(country => country.name === 'Oman'));
+});
+
+test('missing AI catalog does not invent live subject availability', () => {
+ const template = load('src/lib/llms-full-template.ts');
+ const llms = load('src/lib/llms-content.ts', {'./llms-full-template':template, './course-positioning':load('src/lib/course-positioning.ts')});
+ for (const catalog of [null, []]) {
+  const text = llms.formatLlmsShort('https://example.com', catalog);
+  assert.ok(text.includes('Check the live course catalog for current subjects and availability'));
+  assert.ok(!text.includes('Subjects in the live catalog:'));
+ }
+});
+
+test('robots allows exact public sign-in pages while retaining private route blocks', () => {
+ const rules = load('src/app/robots.ts').default().rules[0];
+ for (const path of ['/admin/login','/en/instructor/login','/ar/instructor/login','/en/parent/login','/ar/parent/login']) {
+  assert.ok(rules.allow.includes(path+'$'));
+ }
+ for (const path of ['/admin/','/en/dashboard/','/ar/dashboard/','/en/instructor/','/ar/instructor/']) {
+  assert.ok(rules.disallow.includes(path));
+  assert.ok(!rules.allow.includes(path));
+ }
 });

@@ -2,10 +2,10 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
  return {
- name: "StemTechLab — Kids Coding, STEM & Arabic | منصة ستم تك لاب",
+ name: "StemTechLab — Kids Coding, STEM & AI | منصة ستم تك لاب",
  short_name: "StemTechLab",
  description:
- "Live online classes for kids 5–18 in coding, robotics, algorithms & Arabic. حصص مباشرة للأطفال في البرمجة والروبوتات والعربية.",
+ "Live online classes for kids 5–18 in coding, robotics, algorithms & AI. حصص مباشرة للأطفال في البرمجة والروبوتات والذكاء الاصطناعي.",
  lang: "en",
  dir: "ltr",
  scope: "/",

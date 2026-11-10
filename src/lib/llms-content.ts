@@ -71,7 +71,7 @@ export function formatSubjectList(courses: LlmsCourse[] | null): string {
  const cats = Array.from(
  new Set((courses ?? []).map((c) => c.category).filter(Boolean) as string[])
  );
- if (cats.length === 0) return "**Programming**, **Robotics**, and **AI**";
+ if (cats.length === 0) return "Check the live course catalog for current subjects and availability";
  const labels = cats.map((c) => `**${categoryLabel(c)}**`);
  return labels.length === 1
  ? labels[0]
@@ -85,7 +85,7 @@ export function formatLlmsShort(base: string, courses: LlmsCourse[] | null = nul
 ${LLMS_OVERVIEW.replace(/\{\{BASE\}\}/g, base)}
 
 ## Courses
-Subjects in the live catalog: ${formatSubjectList(courses)}.
+${courses?.length ? "Subjects in the live catalog: " : ""}${formatSubjectList(courses)}.
 ${formatCourseList(courses, base)}
 
 ## Parent resources
@@ -93,6 +93,8 @@ ${formatCourseList(courses, base)}
 - [الصفحة الرئيسية](${base}/ar)
 - [Course catalog](${base}/en/courses)
 - [الدورات](${base}/ar/courses)
+- [UAE parent guide](${base}/en/uae)
+- [دليل أولياء الأمور في الإمارات](${base}/ar/uae)
 - [Learning path](${base}/en/learning-path)
 - [Free trial](${base}/en/free-trial)
 - [حصة تجريبية مجانية](${base}/ar/free-trial)

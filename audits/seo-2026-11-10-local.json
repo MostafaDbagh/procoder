@@ -1,0 +1,73 @@
+[
+  {
+    "path": "/en",
+    "status": 200,
+    "error": null,
+    "canonical": "https://www.stemtechlab.com/en",
+    "schema_errors": []
+  },
+  {
+    "path": "/ar",
+    "status": 200,
+    "error": null,
+    "canonical": "https://www.stemtechlab.com/ar",
+    "schema_errors": []
+  },
+  {
+    "path": "/en/parents",
+    "status": 200,
+    "error": null,
+    "canonical": "https://www.stemtechlab.com/en/parents",
+    "schema_errors": []
+  },
+  {
+    "path": "/ar/parents",
+    "status": 200,
+    "error": null,
+    "canonical": "https://www.stemtechlab.com/ar/parents",
+    "schema_errors": []
+  },
+  {
+    "path": "/en/courses",
+    "status": null,
+    "error": "HTTP Error 500: Internal Server Error",
+    "canonical": null,
+    "schema_errors": null
+  },
+  {
+    "path": "/ar/courses",
+    "status": null,
+    "error": "HTTP Error 500: Internal Server Error",
+    "canonical": null,
+    "schema_errors": null
+  },
+  {
+    "path": "/en/learning-path/explorer",
+    "status": null,
+    "error": "HTTP Error 500: Internal Server Error",
+    "canonical": null,
+    "schema_errors": null
+  },
+  {
+    "path": "/ar/learning-path/explorer",
+    "status": null,
+    "error": "HTTP Error 500: Internal Server Error",
+    "canonical": null,
+    "schema_errors": null
+  },
+  {
+    "path": "/llms.txt",
+    "status": 200,
+    "expected_content": true
+  },
+  {
+    "path": "/llms-full.txt",
+    "status": 200,
+    "expected_content": true
+  },
+  {
+    "path": "/robots.txt",
+    "status": 200,
+    "expected_content": true
+  }
+]

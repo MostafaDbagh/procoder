@@ -21,11 +21,6 @@ export async function generateMetadata({
  robots: PRIVATE_APP_ROBOTS,
  alternates: {
  canonical: `${SITE_URL}/${lang}/parent/login`,
- languages: {
- en: `${SITE_URL}/en/parent/login`,
- ar: `${SITE_URL}/ar/parent/login`,
- "x-default": `${SITE_URL}/en/parent/login`,
- },
  },
  };
 }

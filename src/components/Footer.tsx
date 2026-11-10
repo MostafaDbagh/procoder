@@ -47,9 +47,9 @@ export function Footer() {
  return (
  <footer className="relative backdrop-blur-2xl bg-surface/60 dark:bg-surface/45 border-t border-white/40 dark:border-white/10 shadow-[0_-2px_10px_rgba(0,0,0,0.04)] dark:shadow-[0_-2px_10px_rgba(0,0,0,0.3)]">
  <div className="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
- <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+ <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
  {/* Brand */}
- <div>
+ <div className="col-span-2 lg:col-span-1 min-w-0">
  <div className="mb-4">
  <Image src="/logo.png" alt="StemTechLab" width={100} height={59} className="object-contain" />
  </div>
@@ -86,7 +86,7 @@ export function Footer() {
  </div>
 
  {/* Quick Links */}
- <div>
+ <div className="min-w-0">
  <h3 className="font-bold mb-4 flex items-center gap-2">
  <span className="w-2.5 h-2.5 rounded-full bg-primary" />
  {t("quickLinks")}
@@ -105,7 +105,7 @@ export function Footer() {
  </div>
 
  {/* Categories */}
- <div>
+ <div className="min-w-0">
  <h3 className="font-bold mb-4 flex items-center gap-2">
  <span className="w-2.5 h-2.5 rounded-full bg-pink" />
  {t("categories")}
@@ -121,7 +121,7 @@ export function Footer() {
  </div>
 
  {/* Reach Out */}
- <div>
+ <div className="col-span-2 lg:col-span-1 min-w-0">
  <h3 className="font-bold mb-3 flex items-center gap-2">
  <Rocket className="w-5 h-5 text-primary" aria-hidden />
  {t("stayUpdated")}

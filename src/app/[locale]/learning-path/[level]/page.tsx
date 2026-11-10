@@ -104,7 +104,7 @@ export default async function LevelPage({
     name: `${t("meta.name")} — ${t("meta.tagline")}`,
     description: t("seo.pageDesc"),
     url,
-    inLanguage: lang,
+    mainEntityOfPage: { "@type": "WebPage", "@id": url, inLanguage: lang },
     educationalLevel: t("meta.name"),
     typicalAgeRange: `${meta.ageMin}-${meta.ageMax}`,
     teaches: Array.isArray(habits) ? habits.map((h) => h.name) : undefined,
@@ -116,7 +116,6 @@ export default async function LevelPage({
     hasCourseInstance: {
       "@type": "CourseInstance",
       courseMode: "online",
-      inLanguage: lang,
     },
   };
 

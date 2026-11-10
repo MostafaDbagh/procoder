@@ -19,7 +19,10 @@ import xml.etree.ElementTree as ET
 AGENTS = ('Googlebot', 'bingbot', 'OAI-SearchBot', 'ChatGPT-User',
           'Claude-SearchBot', 'Claude-User', 'PerplexityBot', 'Perplexity-User')
 PAGES = ('/en', '/ar', '/en/uae', '/ar/uae', '/en/courses/robotics',
-         '/ar/courses/robotics', '/en/courses/python', '/ar/courses/python')
+         '/ar/courses/robotics', '/en/courses/python', '/ar/courses/python',
+         '/en/parents', '/ar/parents', '/en/recommend', '/ar/recommend',
+         '/en/learning-path', '/ar/learning-path',
+         '/en/learning-path/explorer', '/ar/learning-path/explorer')
 
 
 class Page(HTMLParser):

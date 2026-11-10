@@ -29,9 +29,9 @@ export function OrganizationSchema() {
  "@id": ORG_ID,
  name: "StemTechLab",
  legalName: "StemTechLab",
- alternateName: ["STEM Tech Lab", "Stem Tech Lab"],
+ alternateName: ["STEM Tech Lab", "Stem Tech Lab", "ستم تك لاب"],
  description:
- "Live online STEM and coding classes for children ages 5–18 in the UAE and other GCC countries. Bilingual English/Arabic interface, AI-powered course matching, and small-group classes. Programming, Robotics, Algorithms, AI, Web and Mobile Development. Built for families in the UAE and GCC. Live instruction, parent dashboard, free trial.",
+ "Live online STEM and coding classes for children ages 5–18 in the UAE and other GCC countries. Bilingual English/Arabic interface, provisional starting-level guidance confirmed by a teacher, and small-group classes. Programming, Robotics, Algorithms, AI, Web and Mobile Development. Built for families in the UAE and GCC. Live instruction, parent dashboard, free trial.",
  url: SITE_URL,
  logo: `${SITE_URL}/logo.svg`,
  image: `${SITE_URL}/og`,
@@ -49,6 +49,7 @@ export function OrganizationSchema() {
  "Qatar",
  "Kuwait",
  "Bahrain",
+ "Oman",
  ].map((name) => ({ "@type": "Country", name })),
  address: {
  "@type": "PostalAddress",
@@ -194,9 +195,10 @@ export function EducationalServiceSchema({ locale = "en" }: { locale?: string } 
  "Qatar",
  "Kuwait",
  "Bahrain",
+ "Oman",
  ].map((name) => ({ "@type": "Country", name })),
  audience: {
- "@type": "EducationalAudience",
+ "@type": ["EducationalAudience", "PeopleAudience"],
  educationalRole: "student",
  suggestedMinAge: 5,
  suggestedMaxAge: 18,
@@ -275,13 +277,13 @@ export function buildCourseSchema(course: CourseListSchemaItem, locale = "en") {
  educationalLevel: course.level,
   timeRequired: `P${course.durationWeeks}W`,
  audience: {
- "@type": "EducationalAudience",
+ "@type": ["EducationalAudience", "PeopleAudience"],
  educationalRole: "student",
  suggestedMinAge: course.ageMin,
  suggestedMaxAge: course.ageMax,
  },
- // The page language does not establish the teaching language of a course.
- inLanguage: locale,
+ // Describe the page language without inventing a teaching language.
+ mainEntityOfPage: { "@type": "WebPage", "@id": course.url, inLanguage: locale },
  ...(course.imageUrl ? { image: new URL(course.imageUrl, SITE_URL).href } : {}),
  ...(course.skills?.length ? { teaches: course.skills } : {}),
  ...(offer ? { offers: offer } : {}),

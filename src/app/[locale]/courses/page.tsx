@@ -1,3 +1,4 @@
+import { coursePublicTitle } from "@/lib/course-positioning";
 import { SITE_URL } from "@/lib/seo";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
@@ -16,7 +17,7 @@ const meta = {
  en: {
  title: "Kids’ Coding & STEM Courses Online (5–18)",
  description:
- "Live coding & STEM courses for kids 5–18: Python, Robotics, Algorithms, AI, Web & Mobile Development. Certified teachers, small groups. Free trial.",
+ "Live coding & STEM courses for kids 5–18: Python, Robotics, Algorithms, AI, Web & Mobile Development. Live instruction, small groups. Free trial.",
  },
  ar: {
  title: "دورات برمجة وSTEM للأطفال أونلاين ٥–١٨",
@@ -87,7 +88,7 @@ export default async function CoursesPage({
  if (apiCourses === null) throw new ApiUnavailableError("course catalog page");
  const schemaCourses: CourseListSchemaItem[] =
  apiCourses.map((course) => ({
- name: course.title[lang],
+ name: coursePublicTitle(course.slug, course.title[lang], lang),
  description: course.description[lang],
  url: siteUrl(lang, `/courses/${course.slug}`),
  ageMin: course.ageMin,

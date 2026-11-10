@@ -42,6 +42,13 @@ const AI_AND_SEARCH_BOTS = [
 ] as const;
 
 const PUBLIC_CRAWL_ALLOW = [
+ // Public login pages must be crawlable so their noindex can be read.
+ // Exact matches do not unblock private dashboards or other app routes.
+ "/admin/login$",
+ "/en/instructor/login$",
+ "/ar/instructor/login$",
+ "/en/parent/login$",
+ "/ar/parent/login$",
  "/",
  "/llms.txt",
  "/llms-full.txt",
