@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 
@@ -16,6 +16,7 @@ const STEP_Y = ["42%", "38%", "34%", "30%", "26%"];
 
 export function LearningJourney() {
  const t = useTranslations("learningJourney");
+ const locale = useLocale();
 
  const steps = [
  { number: "01", label: t("step1Label"), desc: t("step1Desc"), color: STEP_COLORS[0], x: STEP_X[0], y: STEP_Y[0] },
@@ -29,10 +30,11 @@ export function LearningJourney() {
 
  return (
  <section
- dir="ltr"
+ dir={locale === "ar" ? "rtl" : "ltr"}
  className="relative overflow-hidden pt-0 pb-0 font-display"
  aria-labelledby="learning-journey-title"
  >
+ <h2 id="learning-journey-title" className="sr-only">{t("title")}</h2>
  {/* Desktop: full-width bg image + absolutely-positioned text labels under each icon */}
  <div className="hidden min-[786px]:block relative w-full aspect-[1280/737]">
  <Image
@@ -115,18 +117,17 @@ export function LearningJourney() {
  {/* Mobile / tablet: compact step cards; the desktop infographic has no useful
      readable detail at phone widths and was creating a large empty band. */}
  <div className="min-[786px]:hidden">
- <ol className="mx-auto grid max-w-5xl grid-cols-2 gap-x-5 gap-y-7 px-5 pt-8 sm:grid-cols-3 sm:gap-x-8 sm:gap-y-9 sm:px-8">
+ <ol className="mx-auto grid max-w-xl grid-cols-2 gap-x-6 gap-y-8 px-6 py-8 sm:gap-x-12 sm:gap-y-10 sm:px-8">
  {steps.map((step) => (
- <li key={step.number} className="min-w-0 rounded-2xl border border-border/70 bg-surface/70 p-4 shadow-sm sm:p-5">
+ <li key={step.number} className="flex min-w-0 flex-col items-center px-2 text-center last:col-span-2 last:mx-auto last:w-1/2">
  <div
- className="inline-flex items-center justify-center w-8 h-8 rounded-full text-[11px] font-bold tracking-wider mb-2"
+ className="inline-flex items-center justify-center w-11 h-11 rounded-full text-sm font-bold tracking-wider mb-3"
  style={{ backgroundColor: step.color + "1f", color: step.color }}
  >
  {step.number}
  </div>
  <h3
- className="font-display font-bold text-[15px] sm:text-[17px] uppercase tracking-wide mb-1 leading-tight"
- style={{ color: "#16234F" }}
+ className="font-display font-bold text-xl sm:text-2xl mb-2 leading-relaxed text-foreground"
  >
  {step.label}
  </h3>
@@ -135,8 +136,7 @@ export function LearningJourney() {
  style={{ backgroundColor: step.color, opacity: 0.6 }}
  />
  <p
- className="text-[13px] sm:text-[14px] leading-snug whitespace-pre-line"
- style={{ color: "#3F4868" }}
+ className="text-sm sm:text-base leading-relaxed whitespace-pre-line text-muted"
  >
  {step.desc}
  </p>
@@ -151,7 +151,7 @@ export function LearningJourney() {
  {flow.map((word, i) => (
  <div key={word} className="flex items-center gap-3">
  <span
- className="text-[13px] sm:text-[15px] font-bold tracking-[0.25em] uppercase"
+ className="text-xs sm:text-sm font-semibold ltr:tracking-widest ltr:uppercase"
  style={{ color: "#8B6CFF" }}
  >
  {word}
@@ -168,8 +168,7 @@ export function LearningJourney() {
  </div>
 
  <p
- className="text-center text-[16px] sm:text-[18px] md:text-[20px]"
- style={{ color: "#3F4868" }}
+ className="text-center text-base sm:text-lg leading-relaxed text-muted"
  >
  {t("closingLead")}{" "}
  <span style={{ color: "#8B6CFF", fontWeight: 700 }}>
