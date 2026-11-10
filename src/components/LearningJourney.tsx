@@ -112,20 +112,12 @@ export function LearningJourney() {
  </div>
  </div>
 
- {/* Mobile / tablet: full-width image, then a responsive grid of steps */}
+ {/* Mobile / tablet: compact step cards; the desktop infographic has no useful
+     readable detail at phone widths and was creating a large empty band. */}
  <div className="min-[786px]:hidden">
- <div className="relative w-full aspect-[1280/737]">
- <Image
- src="/images/ladder.webp"
- alt="StemTechLab learning journey: Ask, Break Down, Test, Build, Improve — five steps that turn curiosity into real skills"
- fill
- sizes="100vw"
- className="object-cover"
- />
- </div>
- <ol className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-6 px-4 mt-6 sm:mt-10">
+ <ol className="mx-auto grid max-w-5xl grid-cols-2 gap-x-5 gap-y-7 px-5 pt-8 sm:grid-cols-3 sm:gap-x-8 sm:gap-y-9 sm:px-8">
  {steps.map((step) => (
- <li key={step.number} className="min-w-0">
+ <li key={step.number} className="min-w-0 rounded-2xl border border-border/70 bg-surface/70 p-4 shadow-sm sm:p-5">
  <div
  className="inline-flex items-center justify-center w-8 h-8 rounded-full text-[11px] font-bold tracking-wider mb-2"
  style={{ backgroundColor: step.color + "1f", color: step.color }}
@@ -154,8 +146,8 @@ export function LearningJourney() {
  </div>
 
  {/* Mobile only: flow chips + tagline below the image */}
- <div className="min-[786px]:hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
- <div className="mt-10 sm:mt-14 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 mb-3">
+ <div className="min-[786px]:hidden max-w-7xl mx-auto px-4 pb-8 sm:px-6 sm:pb-12 lg:px-8">
+ <div className="mt-7 sm:mt-10 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 mb-3">
  {flow.map((word, i) => (
  <div key={word} className="flex items-center gap-3">
  <span

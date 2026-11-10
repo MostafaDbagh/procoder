@@ -46,14 +46,14 @@ export function Footer() {
 
  return (
  <footer className="relative backdrop-blur-2xl bg-surface/60 dark:bg-surface/45 border-t border-white/40 dark:border-white/10 shadow-[0_-2px_10px_rgba(0,0,0,0.04)] dark:shadow-[0_-2px_10px_rgba(0,0,0,0.3)]">
- <div className="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
- <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+ <div className="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+ <div className="grid grid-cols-2 items-start gap-x-5 gap-y-7 sm:grid-cols-2 sm:gap-8 lg:grid-cols-4">
  {/* Brand */}
- <div>
- <div className="mb-4">
+ <div className="col-span-2 sm:col-span-1">
+ <div className="mb-3">
  <Image src="/logo.png" alt="StemTechLab" width={100} height={59} className="object-contain" />
  </div>
- <p className="text-muted text-sm leading-relaxed mb-5 max-w-[290px]">
+ <p className="text-muted text-xs sm:text-sm leading-relaxed mb-4 max-w-[290px]">
  {t("description")}
  </p>
  <div className="flex items-center gap-3">
@@ -87,46 +87,46 @@ export function Footer() {
 
  {/* Quick Links */}
  <div>
- <h3 className="font-bold mb-4 flex items-center gap-2">
+ <h3 className="font-bold mb-3 flex items-center gap-2 text-sm sm:text-base">
  <span className="w-2.5 h-2.5 rounded-full bg-primary" />
  {t("quickLinks")}
  </h3>
- <ul className="space-y-2.5">
- <li><LocalizedLink href="/uae" className="text-sm text-muted hover:text-primary transition-colors">{lang === "ar" ? "دورات أونلاين في الإمارات" : "Online classes in the UAE"}</LocalizedLink></li>
- <li><LocalizedLink href="/courses" className="text-sm text-muted hover:text-primary transition-colors">{nav("courses")}</LocalizedLink></li>
- <li><LocalizedLink href="/recommend" className="text-sm text-muted hover:text-primary transition-colors">{nav("recommend")}</LocalizedLink></li>
- <li><LocalizedLink href="/free-trial" className="text-sm text-muted hover:text-primary transition-colors">{nav("freeTrial")}</LocalizedLink></li>
- <li><LocalizedLink href="/challenge" className="text-sm text-muted hover:text-primary transition-colors">{nav("challenge")}</LocalizedLink></li>
- <li><LocalizedLink href="/blogs" className="text-sm text-muted hover:text-primary transition-colors">{nav("blog")}</LocalizedLink></li>
- <li><LocalizedLink href="/about" className="text-sm text-muted hover:text-primary transition-colors">{lang === "ar" ? "من نحن" : "About us"}</LocalizedLink></li>
- <li><LocalizedLink href="/careers" className="text-sm text-muted hover:text-primary transition-colors">{lang === "ar" ? "الوظائف" : "Careers"}</LocalizedLink></li>
- <li><LocalizedLink href="/faq" className="text-sm text-muted hover:text-primary transition-colors">{nav("faq")}</LocalizedLink></li>
+ <ul className="space-y-2 sm:space-y-2.5">
+ <li><LocalizedLink href="/uae" className="text-xs sm:text-sm text-muted hover:text-primary transition-colors">{lang === "ar" ? "دورات أونلاين في الإمارات" : "Online classes in the UAE"}</LocalizedLink></li>
+ <li><LocalizedLink href="/courses" className="text-xs sm:text-sm text-muted hover:text-primary transition-colors">{nav("courses")}</LocalizedLink></li>
+ <li><LocalizedLink href="/recommend" className="text-xs sm:text-sm text-muted hover:text-primary transition-colors">{nav("recommend")}</LocalizedLink></li>
+ <li><LocalizedLink href="/free-trial" className="text-xs sm:text-sm text-muted hover:text-primary transition-colors">{nav("freeTrial")}</LocalizedLink></li>
+ <li><LocalizedLink href="/challenge" className="text-xs sm:text-sm text-muted hover:text-primary transition-colors">{nav("challenge")}</LocalizedLink></li>
+ <li><LocalizedLink href="/blogs" className="text-xs sm:text-sm text-muted hover:text-primary transition-colors">{nav("blog")}</LocalizedLink></li>
+ <li><LocalizedLink href="/about" className="text-xs sm:text-sm text-muted hover:text-primary transition-colors">{lang === "ar" ? "من نحن" : "About us"}</LocalizedLink></li>
+ <li><LocalizedLink href="/careers" className="text-xs sm:text-sm text-muted hover:text-primary transition-colors">{lang === "ar" ? "الوظائف" : "Careers"}</LocalizedLink></li>
+ <li><LocalizedLink href="/faq" className="text-xs sm:text-sm text-muted hover:text-primary transition-colors">{nav("faq")}</LocalizedLink></li>
  </ul>
  </div>
 
  {/* Categories */}
  <div>
- <h3 className="font-bold mb-4 flex items-center gap-2">
+ <h3 className="font-bold mb-3 flex items-center gap-2 text-sm sm:text-base">
  <span className="w-2.5 h-2.5 rounded-full bg-pink" />
  {t("categories")}
  </h3>
- <ul className="space-y-2.5">
- <li><LocalizedLink href="/courses?category=programming" className="text-sm text-muted hover:text-primary transition-colors">{cats("programming")}</LocalizedLink></li>
- <li><LocalizedLink href="/courses?category=robotics" className="text-sm text-muted hover:text-primary transition-colors">{cats("robotics")}</LocalizedLink></li>
- <li><LocalizedLink href="/courses?category=algorithms" className="text-sm text-muted hover:text-primary transition-colors">{cats("algorithms")}</LocalizedLink></li>
- <li><LocalizedLink href="/courses?category=artificial-intelligence" className="text-sm text-muted hover:text-primary transition-colors">{cats("artificial-intelligence")}</LocalizedLink></li>
- <li><LocalizedLink href="/courses?category=mobile-app-development" className="text-sm text-muted hover:text-primary transition-colors">{cats("mobile-development")}</LocalizedLink></li>
- <li><LocalizedLink href="/courses?category=web-development" className="text-sm text-muted hover:text-primary transition-colors">{cats("web-development")}</LocalizedLink></li>
+ <ul className="space-y-2 sm:space-y-2.5">
+ <li><LocalizedLink href="/courses?category=programming" className="text-xs sm:text-sm text-muted hover:text-primary transition-colors">{cats("programming")}</LocalizedLink></li>
+ <li><LocalizedLink href="/courses?category=robotics" className="text-xs sm:text-sm text-muted hover:text-primary transition-colors">{cats("robotics")}</LocalizedLink></li>
+ <li><LocalizedLink href="/courses?category=algorithms" className="text-xs sm:text-sm text-muted hover:text-primary transition-colors">{cats("algorithms")}</LocalizedLink></li>
+ <li><LocalizedLink href="/courses?category=artificial-intelligence" className="text-xs sm:text-sm text-muted hover:text-primary transition-colors">{cats("artificial-intelligence")}</LocalizedLink></li>
+ <li><LocalizedLink href="/courses?category=mobile-app-development" className="text-xs sm:text-sm text-muted hover:text-primary transition-colors">{cats("mobile-development")}</LocalizedLink></li>
+ <li><LocalizedLink href="/courses?category=web-development" className="text-xs sm:text-sm text-muted hover:text-primary transition-colors">{cats("web-development")}</LocalizedLink></li>
  </ul>
  </div>
 
  {/* Reach Out */}
  <div>
- <h3 className="font-bold mb-3 flex items-center gap-2">
+ <h3 className="font-bold mb-3 flex items-center gap-2 text-sm sm:text-base">
  <Rocket className="w-5 h-5 text-primary" aria-hidden />
  {t("stayUpdated")}
  </h3>
- <p className="text-sm text-muted leading-relaxed mb-4">
+ <p className="text-xs sm:text-sm text-muted leading-relaxed mb-3">
  {t("stayUpdatedSubtitle")}
  </p>
  {subDone ? (
@@ -135,7 +135,7 @@ export function Footer() {
    {t("subscribeSuccess")}
   </div>
  ) : (
-  <form onSubmit={handleSubscribe} className="space-y-2 mb-6">
+ <form onSubmit={handleSubscribe} className="space-y-2 mb-4">
    <input
     type="email"
     required
@@ -181,13 +181,13 @@ export function Footer() {
 
  </div>
 
- <div className="mt-10 pt-8 border-t border-border">
- <div className="rounded-2xl border border-border bg-background/60 dark:bg-background/30 px-4 py-6 sm:px-8 sm:py-7">
- <p className="text-center text-[0.7rem] sm:text-xs font-semibold uppercase tracking-[0.12em] text-muted mb-5">
+ <div className="mt-7 border-t border-border pt-6 sm:mt-10 sm:pt-8">
+ <div className="rounded-2xl border border-border bg-background/60 dark:bg-background/30 px-3 py-4 sm:px-8 sm:py-7">
+ <p className="text-center text-[0.65rem] sm:text-xs font-semibold uppercase tracking-[0.12em] text-muted mb-3 sm:mb-5">
  {t("memberAccess")}
  </p>
  <nav
- className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center justify-center gap-3"
+ className="grid grid-cols-1 gap-2 sm:flex sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-3"
  aria-label={t("memberAccess")}
  >
  <LocalizedLink
@@ -221,7 +221,7 @@ export function Footer() {
  </div>
  </div>
 
- <div className="mt-8 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
+ <div className="mt-6 pt-5 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3 sm:mt-8 sm:pt-6 sm:gap-4">
  <p className="text-sm text-muted">
  &copy; {new Date().getFullYear()} StemTechLab. {t("rights")}
  </p>
