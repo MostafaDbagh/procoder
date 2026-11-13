@@ -883,7 +883,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  {step < STEPS ? (
  <button
  type="button"
- dir="ltr"
+ dir={locale === "ar" ? "rtl" : "ltr"}
  onClick={() => {
  if (canNext()) { setStepAttempted(false); setStep(step + 1); return; }
  // On step 1, surface inline validation errors so the user can see what's wrong.
