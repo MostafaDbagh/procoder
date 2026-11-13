@@ -546,7 +546,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  onBlur={(e) => setFieldErrors((p) => ({ ...p, phone: publicPhoneError(e.target.value, valLang) }))}
  placeholder={t("phonePlaceholder")}
  aria-invalid={!!fieldErrors.phone || (stepAttempted && !form.phone)}
- className={`${(stepAttempted && !form.phone) || fieldErrors.phone ? inputErrCls : inputCls} text-left`}
+ className={(stepAttempted && !form.phone) || fieldErrors.phone ? inputErrCls : inputCls}
  dir="ltr"
  />
  {fieldErrors.phone ? (

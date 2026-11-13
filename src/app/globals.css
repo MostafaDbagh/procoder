@@ -2,6 +2,21 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Contact values keep their LTR character order, but align with the page locale.
+   Apply outside the utility layer so field-level text-left cannot break Arabic. */
+input:is([type="email"], [type="tel"]) {
+  direction: ltr;
+  text-align: left;
+}
+
+html[dir="rtl"] input:is([type="email"], [type="tel"]) {
+  text-align: right;
+}
+
+input:is([type="email"], [type="tel"])::placeholder {
+  text-align: inherit;
+}
+
 /* Journey map layout gate. Below this — every phone, tablet and touch laptop —
    JourneyStoneTrail renders as a vertical rail with all five explanations
    permanently visible, so hover is never required to read anything. */
