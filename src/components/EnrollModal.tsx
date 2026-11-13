@@ -883,6 +883,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  {step < STEPS ? (
  <button
  type="button"
+ dir="ltr"
  onClick={() => {
  if (canNext()) { setStepAttempted(false); setStep(step + 1); return; }
  // On step 1, surface inline validation errors so the user can see what's wrong.
@@ -901,7 +902,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  : "bg-border text-muted cursor-not-allowed"
  }`}
  >
- {t("next")}
+ <span dir={locale === "ar" ? "rtl" : "ltr"}>{t("next")}</span>
  {locale === "ar" ? <ArrowLeft className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
  </button>
  ) : (
