@@ -110,7 +110,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
 
  // Celebrate when enrollment completes — multiple confetti bursts in brand colors.
  useEffect(() => {
- if (!success) return;
+ if (!open || !success) return;
  let cancelled = false;
  const timers: ReturnType<typeof setTimeout>[] = [];
  (async () => {
@@ -134,7 +134,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  cancelled = true;
  timers.forEach(clearTimeout);
  };
- }, [success]);
+ }, [open, success]);
 
  const set = (key: string, value: string | boolean | string[]) =>
  setForm((p) => ({ ...p, [key]: value }));
@@ -268,6 +268,9 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
 
  const stepIcons = [User, Baby, Clock, FileText];
  const stepKeys = ["stepParent", "stepChild", "stepSchedule", "stepAdditional"] as const;
+
+ // Closing must unmount immediately, including the repeating success animations.
+ if (!open) return null;
 
  return (
  <AnimatePresence>
@@ -441,6 +444,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  {t("successDesc")}
  </motion.p>
  <motion.button
+ type="button"
  initial={{ opacity: 0, scale: 0.9 }}
  animate={{ opacity: 1, scale: 1 }}
  transition={{ delay: 0.75, type: "spring", stiffness: 280, damping: 16 }}
