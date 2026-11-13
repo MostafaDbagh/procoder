@@ -25,7 +25,7 @@ import {
  type PromoQuoteResponse,
 } from "@/lib/api";
 import { formatCoursePrice } from "@/lib/formatCoursePrice";
-import { emailError, phoneError, isValidEmail, isValidUAEPhone } from "@/lib/validation";
+import { emailError, publicPhoneError, isValidEmail, isValidPublicPhone } from "@/lib/validation";
 
 interface EnrollModalProps {
  open: boolean;
@@ -254,7 +254,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  form.email &&
  isValidEmail(form.email) &&
  form.phone &&
- isValidUAEPhone(form.phone) &&
+ isValidPublicPhone(form.phone) &&
  form.relationship
  );
  case 2:
@@ -540,10 +540,10 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  set("phone", e.target.value);
  if (fieldErrors.phone) setFieldErrors((p) => ({ ...p, phone: "" }));
  }}
- onBlur={(e) => setFieldErrors((p) => ({ ...p, phone: phoneError(e.target.value, valLang) }))}
+ onBlur={(e) => setFieldErrors((p) => ({ ...p, phone: publicPhoneError(e.target.value, valLang) }))}
  placeholder={t("phonePlaceholder")}
  aria-invalid={!!fieldErrors.phone || (stepAttempted && !form.phone)}
- className={(stepAttempted && !form.phone) || fieldErrors.phone ? inputErrCls : inputCls}
+ className={`${(stepAttempted && !form.phone) || fieldErrors.phone ? inputErrCls : inputCls} ${locale === "ar" ? "text-right" : "text-left"}`}
  dir="ltr"
  />
  {fieldErrors.phone ? (
@@ -867,7 +867,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  </AnimatePresence>
 
  {/* Navigation */}
- <div className="flex items-center justify-between mt-8 pt-5 border-t border-border">
+ <div dir="ltr" className="flex items-center justify-between mt-8 pt-5 border-t border-border">
  {step > 1 ? (
  <button
  type="button"
@@ -889,7 +889,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  if (step === 1) {
  setFieldErrors({
  email: form.email && !isValidEmail(form.email) ? emailError(form.email, valLang) : "",
- phone: form.phone && !isValidUAEPhone(form.phone) ? phoneError(form.phone, valLang) : "",
+ phone: form.phone && !isValidPublicPhone(form.phone) ? publicPhoneError(form.phone, valLang) : "",
  });
  }
  setStepAttempted(true);
