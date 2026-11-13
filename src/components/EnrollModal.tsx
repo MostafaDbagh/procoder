@@ -902,7 +902,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  }`}
  >
  {t("next")}
- <ArrowRight className="w-4 h-4" />
+ {locale === "ar" ? <ArrowLeft className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
  </button>
  ) : (
  <button
