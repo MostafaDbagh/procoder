@@ -17,6 +17,8 @@ import {
  Star,
  PartyPopper,
 } from "lucide-react";
+import Image from "next/image";
+import { StyledSelect } from "./StyledSelect";
 import { Mascot } from "./Mascot";
 
 import {
@@ -40,10 +42,6 @@ const inputCls =
  "w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted focus:border-primary transition-all outline-none";
 const inputErrCls =
  "w-full px-4 py-3 rounded-xl bg-background border border-red-400 text-foreground placeholder:text-muted focus:border-red-400 focus:ring-2 focus:ring-red-400/20 transition-all outline-none";
-const selectCls =
- "w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground focus:border-primary transition-all outline-none";
-const selectErrCls =
- "w-full px-4 py-3 rounded-xl bg-background border border-red-400 text-foreground focus:border-red-400 focus:ring-2 focus:ring-red-400/20 transition-all outline-none";
 const labelCls = "block text-sm font-medium mb-2";
 const errSpan = <span className="mt-1 text-xs text-red-500 font-medium">This field is required</span>;
 
@@ -294,7 +292,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  animate={{ opacity: 1, scale: 1, y: 0 }}
  exit={{ opacity: 0, scale: 0.9, y: 20 }}
  transition={{ type: "spring", damping: 25, stiffness: 300 }}
- className="relative bg-surface rounded-2xl border border-border shadow-2xl w-full max-w-2xl max-h-[92vh] overflow-y-auto"
+ className={`relative bg-surface rounded-2xl border border-border shadow-2xl w-full max-h-[92vh] overflow-y-auto max-w-4xl`}
  >
  {/* Header */}
  <div className="sticky top-0 z-10 bg-surface border-b border-border rounded-t-2xl">
@@ -449,7 +447,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  whileHover={{ scale: 1.05, rotate: [-1, 1, 0] }}
  whileTap={{ scale: 0.97 }}
  onClick={handleClose}
- className="inline-flex items-center gap-2 px-9 py-3 rounded-2xl bg-gradient-to-r from-primary via-violet-500 to-pink-500 text-white font-bold shadow-lg shadow-primary/30 hover:shadow-xl transition-shadow"
+ className="inline-flex items-center gap-2 px-9 py-3 rounded-2xl bg-primary text-white font-bold shadow-sm hover:bg-primary/90 transition-colors"
  >
  <PartyPopper className="w-4 h-4" />
  {t("close")}
@@ -478,17 +476,18 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  initial={{ opacity: 0, x: 30 }}
  animate={{ opacity: 1, x: 0 }}
  exit={{ opacity: 0, x: -30 }}
- className="space-y-4"
+ className="grid items-center gap-6 md:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)]"
  >
+ <div className="min-w-0 space-y-4">
  <div className="mb-5">
  <h3 className="text-lg font-semibold">{t("parentInfoTitle")}</h3>
  <p className="text-sm text-muted">{t("parentInfoDesc")}</p>
  </div>
- <div className="grid sm:grid-cols-2 gap-4">
+ 
  <div>
- <label className={labelCls}>{t("parentName")} *</label>
+ <label htmlFor="enroll-parentName" className={labelCls}>{t("parentName")} *</label>
  <input
- type="text"
+ id="enroll-parentName" type="text"
  required
  data-testid="enroll-parent-name"
  value={form.parentName}
@@ -498,22 +497,22 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  />
  {stepAttempted && !form.parentName && errSpan}
  </div>
- <div>
- <label className={labelCls}>{t("relationship")} *</label>
- <select required value={form.relationship} onChange={(e) => set("relationship", e.target.value)} className={stepAttempted && !form.relationship ? selectErrCls : selectCls}>
- <option value="">{t("selectRelation")}</option>
- <option value="mother">{t("mother")}</option>
- <option value="father">{t("father")}</option>
- <option value="guardian">{t("guardian")}</option>
- <option value="other">{t("other")}</option>
- </select>
+ <fieldset>
+ <legend className={labelCls}>{t("relationship")} *</legend>
+ <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+ {(["father", "mother", "guardian", "other"] as const).map((relation) => (
+ <label key={relation} className="relative cursor-pointer">
+ <input type="radio" name="relationship" value={relation} required checked={form.relationship === relation} onChange={() => set("relationship", relation)} className="peer sr-only" />
+ <span className="flex min-h-11 items-center justify-center rounded-full border border-border px-2 text-sm peer-checked:border-[#A38CF3] peer-checked:bg-[#A38CF3] peer-checked:text-white peer-focus-visible:ring-2 peer-focus-visible:ring-primary">{t(relation)}</span>
+ </label>
+ ))}
+ </div>
  {stepAttempted && !form.relationship && errSpan}
- </div>
- </div>
+ </fieldset>
  <div>
- <label className={labelCls}>{t("parentEmail")} *</label>
+ <label htmlFor="enroll-parentEmail" className={labelCls}>{t("parentEmail")} *</label>
  <input
- type="email"
+ id="enroll-parentEmail" type="email" dir="ltr"
  required
  value={form.email}
  onChange={(e) => {
@@ -530,9 +529,9 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  ) : (stepAttempted && !form.email && errSpan)}
  </div>
  <div>
- <label className={labelCls}>{t("phone")} *</label>
+ <label htmlFor="enroll-phone" className={labelCls}>{t("phone")} *</label>
  <input
- type="tel"
+ id="enroll-phone" type="tel"
  inputMode="tel"
  required
  value={form.phone}
@@ -543,13 +542,15 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  onBlur={(e) => setFieldErrors((p) => ({ ...p, phone: publicPhoneError(e.target.value, valLang) }))}
  placeholder={t("phonePlaceholder")}
  aria-invalid={!!fieldErrors.phone || (stepAttempted && !form.phone)}
- className={`${(stepAttempted && !form.phone) || fieldErrors.phone ? inputErrCls : inputCls} ${locale === "ar" ? "text-right" : "text-left"}`}
+ className={`${(stepAttempted && !form.phone) || fieldErrors.phone ? inputErrCls : inputCls} text-left`}
  dir="ltr"
  />
  {fieldErrors.phone ? (
  <span className="mt-1 text-xs text-red-500 font-medium">{fieldErrors.phone}</span>
  ) : (stepAttempted && !form.phone && errSpan)}
  </div>
+ </div>
+ <Image src="/images/enrollment-family.webp" width={625} height={637} sizes="320px" alt="" className="order-first mx-auto h-20 w-auto max-w-full object-contain md:order-none md:h-auto md:w-full" />
  </motion.div>
  )}
 
@@ -560,8 +561,9 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  initial={{ opacity: 0, x: 30 }}
  animate={{ opacity: 1, x: 0 }}
  exit={{ opacity: 0, x: -30 }}
- className="space-y-4"
+ className="grid items-start gap-4 md:grid-cols-[minmax(0,1.65fr)_minmax(0,1fr)] md:gap-6"
  >
+ <div className="min-w-0 space-y-4">
  <div className="mb-5">
  <h3 className="text-lg font-semibold">{t("childInfoTitle")}</h3>
  <p className="text-sm text-muted">{t("childInfoDesc")}</p>
@@ -574,47 +576,27 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  </div>
  <div>
  <label className={labelCls}>{t("childAge")} *</label>
- <select required value={form.childAge} onChange={(e) => set("childAge", e.target.value)} className={stepAttempted && !form.childAge ? selectErrCls : selectCls}>
- <option value="">{t("selectAge")}</option>
- {Array.from({ length: 13 }, (_, i) => i + 6).map((a) => (
- <option key={a} value={a}>{a}</option>
- ))}
- </select>
+ <StyledSelect label={t("childAge")} dir={locale === "ar" ? "rtl" : "ltr"} value={form.childAge} placeholder={t("selectAge")} options={Array.from({ length: 13 }, (_, i) => ({ value: String(i + 6), label: String(i + 6) }))} onChange={(value) => set("childAge", value)} required invalid={stepAttempted && !form.childAge} />
  {stepAttempted && !form.childAge && errSpan}
  </div>
  </div>
  <div className="grid sm:grid-cols-2 gap-4">
  <div>
  <label className={labelCls}>{t("childGender")}</label>
- <select value={form.childGender} onChange={(e) => set("childGender", e.target.value)} className={selectCls}>
- <option value="">{t("selectGender")}</option>
- <option value="male">{t("male")}</option>
- <option value="female">{t("female")}</option>
- <option value="prefer_not">{t("preferNot")}</option>
- </select>
+ <StyledSelect label={t("childGender")} dir={locale === "ar" ? "rtl" : "ltr"} value={form.childGender} placeholder={t("selectGender")} options={[{ value: "male", label: t("male") }, { value: "female", label: t("female") }, { value: "prefer_not", label: t("preferNot") }]} onChange={(value) => set("childGender", value)} />
  </div>
  <div>
  <label className={labelCls}>{t("gradeLevel")} *</label>
- <select required value={form.gradeLevel} onChange={(e) => set("gradeLevel", e.target.value)} className={stepAttempted && !form.gradeLevel ? selectErrCls : selectCls}>
- <option value="">{t("selectGrade")}</option>
- <option value="1-3">{t("grade1_3")}</option>
- <option value="4-6">{t("grade4_6")}</option>
- <option value="7-9">{t("grade7_9")}</option>
- <option value="10-12">{t("grade10_12")}</option>
- </select>
+ <StyledSelect label={t("gradeLevel")} dir={locale === "ar" ? "rtl" : "ltr"} value={form.gradeLevel} placeholder={t("selectGrade")} options={[{ value: "1-3", label: t("grade1_3") }, { value: "4-6", label: t("grade4_6") }, { value: "7-9", label: t("grade7_9") }, { value: "10-12", label: t("grade10_12") }]} onChange={(value) => set("gradeLevel", value)} required invalid={stepAttempted && !form.gradeLevel} />
  {stepAttempted && !form.gradeLevel && errSpan}
  </div>
  </div>
  <div>
  <label className={labelCls}>{t("previousExperience")}</label>
- <select value={form.previousExperience} onChange={(e) => set("previousExperience", e.target.value)} className={selectCls}>
- <option value="">{t("selectExperience")}</option>
- <option value="none">{t("expNone")}</option>
- <option value="some">{t("expSome")}</option>
- <option value="moderate">{t("expModerate")}</option>
- <option value="experienced">{t("expExperienced")}</option>
- </select>
+ <StyledSelect label={t("previousExperience")} dir={locale === "ar" ? "rtl" : "ltr"} value={form.previousExperience} placeholder={t("selectExperience")} options={[{ value: "none", label: t("expNone") }, { value: "some", label: t("expSome") }, { value: "moderate", label: t("expModerate") }, { value: "experienced", label: t("expExperienced") }]} onChange={(value) => set("previousExperience", value)} />
  </div>
+ </div>
+ <Image src="/images/enrollment-child.webp" width={625} height={625} sizes="320px" alt="" className="order-first mx-auto h-20 w-auto max-w-full object-contain md:order-none md:h-auto md:w-full md:self-center" />
  </motion.div>
  )}
 
@@ -625,8 +607,9 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  initial={{ opacity: 0, x: 30 }}
  animate={{ opacity: 1, x: 0 }}
  exit={{ opacity: 0, x: -30 }}
- className="space-y-4"
+ className="grid items-start gap-4 md:grid-cols-[minmax(0,1.65fr)_minmax(0,1fr)] md:gap-6"
  >
+ <div className="min-w-0 space-y-4">
  <div className="mb-5">
  <h3 className="text-lg font-semibold">{t("scheduleTitle")}</h3>
  <p className="text-sm text-muted">{t("scheduleDesc")}</p>
@@ -673,26 +656,15 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  </div>
  <div>
  <label className={labelCls}>{t("sessionFormat")}</label>
- <select
- disabled
- value={form.sessionFormat}
- className={`${selectCls} opacity-80 cursor-not-allowed`}
- aria-label={t("sessionFormat")}
- >
- <option value="online_live">{t("onlineLive")}</option>
- </select>
+ <StyledSelect label={t("sessionFormat")} dir={locale === "ar" ? "rtl" : "ltr"} value={form.sessionFormat} placeholder={t("sessionFormat")} options={[{ value: "online_live", label: t("onlineLive") }]} disabled />
  <p className="mt-1 text-xs text-muted">{t("sessionFormatOnlineOnly")}</p>
  </div>
  <div>
  <label className={labelCls}>{t("startDate")}</label>
- <select value={form.startDate} onChange={(e) => set("startDate", e.target.value)} className={selectCls}>
- <option value="">{t("selectStartDate")}</option>
- <option value="asap">{t("asap")}</option>
- <option value="next_week">{t("nextWeek")}</option>
- <option value="next_month">{t("nextMonth")}</option>
- <option value="specific">{t("specificDate")}</option>
- </select>
+ <StyledSelect label={t("startDate")} dir={locale === "ar" ? "rtl" : "ltr"} value={form.startDate} placeholder={t("selectStartDate")} options={[{ value: "asap", label: t("asap") }, { value: "next_week", label: t("nextWeek") }, { value: "next_month", label: t("nextMonth") }, { value: "specific", label: t("specificDate") }]} onChange={(value) => set("startDate", value)} />
  </div>
+ </div>
+ <Image src="/images/enrollment-schedule.webp" width={625} height={625} sizes="320px" alt="" className="order-first mx-auto h-20 w-auto max-w-full object-contain md:order-none md:h-auto md:w-full md:self-center" />
  </motion.div>
  )}
 
@@ -703,13 +675,39 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  initial={{ opacity: 0, x: 30 }}
  animate={{ opacity: 1, x: 0 }}
  exit={{ opacity: 0, x: -30 }}
- className="space-y-4"
+ className="grid items-start gap-4 md:grid-cols-[minmax(0,1.65fr)_minmax(0,1fr)] md:gap-6"
  >
- <div className="mb-5">
+ <div className="min-w-0 space-y-3">
+ <div>
  <h3 className="text-lg font-semibold">{t("additionalTitle")}</h3>
  <p className="text-sm text-muted">{t("additionalDesc")}</p>
  </div>
- <div className="rounded-xl border border-border bg-background/50 p-4 space-y-3">
+ <div className="grid gap-3 sm:grid-cols-2">
+ <div>
+ <label className="block text-sm font-medium mb-1.5">{t("learningGoals")}</label>
+ <textarea rows={4} value={form.learningGoals} onChange={(e) => set("learningGoals", e.target.value)} placeholder={t("goalsPlaceholder")} className={`${inputCls} resize-y text-sm leading-5`} />
+ </div>
+ <div>
+ <label className="block text-sm font-medium mb-1.5">{t("specialNeeds")}</label>
+ <textarea rows={4} value={form.specialNeeds} onChange={(e) => set("specialNeeds", e.target.value)} placeholder={t("needsPlaceholder")} className={`${inputCls} resize-y text-sm leading-5`} />
+ </div>
+ </div>
+ <div>
+ <label className="block text-sm font-medium mb-1.5">{t("howDidYouHear")}</label>
+ <StyledSelect label={t("howDidYouHear")} dir={locale === "ar" ? "rtl" : "ltr"} value={form.howDidYouHear} placeholder={t("selectSourceOptional")} options={[{ value: "social_media", label: t("socialMedia") }, { value: "friend", label: t("friend") }, { value: "school", label: t("school") }, { value: "search", label: t("searchEngine") }, { value: "other", label: t("other") }]} onChange={(value) => set("howDidYouHear", value)} />
+ </div>
+ <div className="space-y-2">
+ <label className="flex items-start gap-3 cursor-pointer">
+ <input type="checkbox" checked={form.agreeTerms} onChange={(e) => set("agreeTerms", e.target.checked)} className="mt-0.5 h-4 w-4 shrink-0 rounded border-border text-primary accent-primary" />
+ <span className="text-sm text-muted leading-5">{t("agreeTerms")} *</span>
+ </label>
+ {stepAttempted && !form.agreeTerms && errSpan}
+ <label className="flex items-start gap-3 cursor-pointer">
+ <input type="checkbox" checked={form.agreePhotos} onChange={(e) => set("agreePhotos", e.target.checked)} className="mt-0.5 h-4 w-4 shrink-0 rounded border-border text-primary accent-primary" />
+ <span className="text-sm text-muted leading-5">{t("agreePhotos")}</span>
+ </label>
+ </div>
+ <div className="rounded-xl border border-border bg-background/50 p-3 space-y-2">
  <p className="text-sm font-semibold">{t("priceBreakdownTitle")}</p>
  {quoteLoading && !priceQuote ? (
  <p className="text-xs text-muted">{t("promoChecking")}</p>
@@ -832,42 +830,14 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  </p>
  ) : null}
  </div>
- <div>
- <label className={labelCls}>{t("learningGoals")}</label>
- <textarea rows={3} value={form.learningGoals} onChange={(e) => set("learningGoals", e.target.value)} placeholder={t("goalsPlaceholder")} className={`${inputCls} resize-none`} />
  </div>
- <div>
- <label className={labelCls}>{t("specialNeeds")}</label>
- <textarea rows={2} value={form.specialNeeds} onChange={(e) => set("specialNeeds", e.target.value)} placeholder={t("needsPlaceholder")} className={`${inputCls} resize-none`} />
- </div>
- <div>
- <label className={labelCls}>{t("howDidYouHear")}</label>
- <select value={form.howDidYouHear} onChange={(e) => set("howDidYouHear", e.target.value)} className={selectCls}>
- <option value="">{t("selectSourceOptional")}</option>
- <option value="social_media">{t("socialMedia")}</option>
- <option value="friend">{t("friend")}</option>
- <option value="school">{t("school")}</option>
- <option value="search">{t("searchEngine")}</option>
- <option value="other">{t("other")}</option>
- </select>
- </div>
- <div className="space-y-3 pt-2">
- <label className="flex items-start gap-3 cursor-pointer">
- <input type="checkbox" checked={form.agreeTerms} onChange={(e) => set("agreeTerms", e.target.checked)} className="mt-1 w-4 h-4 rounded border-border text-primary accent-primary" />
- <span className="text-sm text-muted leading-relaxed">{t("agreeTerms")} *</span>
- </label>
- {stepAttempted && !form.agreeTerms && errSpan}
- <label className="flex items-start gap-3 cursor-pointer">
- <input type="checkbox" checked={form.agreePhotos} onChange={(e) => set("agreePhotos", e.target.checked)} className="mt-1 w-4 h-4 rounded border-border text-primary accent-primary" />
- <span className="text-sm text-muted leading-relaxed">{t("agreePhotos")}</span>
- </label>
- </div>
+ <Image src="/images/enrollment-details.webp" width={625} height={625} sizes="320px" alt="" className="order-first mx-auto h-20 w-auto max-w-full object-contain md:order-none md:h-auto md:w-full md:self-center" />
  </motion.div>
  )}
  </AnimatePresence>
 
  {/* Navigation */}
- <div dir="ltr" className="flex items-center justify-between mt-8 pt-5 border-t border-border">
+ <div dir="ltr" className={`flex items-center justify-between border-t border-border ${step === 4 ? "mt-4 pt-3" : "mt-8 pt-5"}`}>
  {step > 1 ? (
  <button
  type="button"

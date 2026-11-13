@@ -17,7 +17,7 @@ import {
   type APICourse,
   type ExplorerAnswerDetail,
 } from "@/lib/api";
-import { isValidEmail } from "@/lib/validation";
+import { isValidEmail, isValidPublicPhone, publicPhoneError } from "@/lib/validation";
 import {
   runExplorerFit,
   type ExplorerAnswers,
@@ -1268,7 +1268,7 @@ function RegisterForm({
   const emailValid = isValidEmail(form.email);
   const valid =
     form.fullName.trim() &&
-    form.phone.trim() &&
+    isValidPublicPhone(form.phone) &&
     emailValid &&
     form.childName.trim() &&
     form.childAge &&
@@ -1377,10 +1377,10 @@ function RegisterForm({
                 dir="ltr"
                 value={form.phone}
                 onChange={(e) => set("phone", e.target.value)}
-                className={attempted && !form.phone.trim() ? inputErrCls : inputCls}
+                className={attempted && !isValidPublicPhone(form.phone) ? inputErrCls : inputCls}
               />
-              {attempted && !form.phone.trim() && (
-                <p className="mt-1 text-xs text-red-500">{t("start.errors.required")}</p>
+              {attempted && !isValidPublicPhone(form.phone) && (
+                <p className="mt-1 text-xs text-red-500">{publicPhoneError(form.phone, locale === "ar" ? "ar" : "en") || t("start.errors.required")}</p>
               )}
             </div>
             <div>

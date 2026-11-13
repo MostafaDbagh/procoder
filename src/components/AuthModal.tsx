@@ -14,6 +14,7 @@ import {
  GraduationCap,
  ShieldCheck,
 } from "lucide-react";
+import { isValidPublicPhone } from "@/lib/validation";
 import { apiRoot } from "@/lib/api";
 import { PasswordInput } from "@/components/PasswordInput";
 
@@ -113,8 +114,8 @@ export function AuthModal({
  }
  const name = signupForm.name.trim();
  const email = signupForm.email.trim();
- const phoneDigits = signupForm.phone.replace(/\D/g, "");
- if (name.length < 2 || (!emailLooksValid(email) && phoneDigits.length < 8)) {
+ const phoneValid = isValidPublicPhone(signupForm.phone);
+ if (name.length < 2 || (!emailLooksValid(email) && !phoneValid)) {
  setSignupEligibility("idle");
  setSignupMatchedChildren([]);
  return;
@@ -166,7 +167,7 @@ export function AuthModal({
  signupEligibility === "yes" &&
  signupForm.name.trim().length >= 2 &&
  emailLooksValid(signupForm.email) &&
- signupForm.phone.trim().length > 0 &&
+ isValidPublicPhone(signupForm.phone) &&
  signupForm.password.length >= 8;
 
  const handleSignup = async (e: React.FormEvent) => {
@@ -451,7 +452,7 @@ export function AuthModal({
 
  {signupEligibility === "no" &&
  signupForm.name.trim().length >= 2 &&
- (emailLooksValid(signupForm.email) || signupForm.phone.replace(/\D/g, "").length >= 8) && (
+ (emailLooksValid(signupForm.email) || isValidPublicPhone(signupForm.phone)) && (
  <div className="flex gap-3 items-start bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/40 rounded-2xl px-4 py-3.5">
  <span className="text-amber-500 text-base leading-none mt-0.5">⚠</span>
  <p className="text-sm text-amber-700 dark:text-amber-400">{t("signupNoEnrollment")}</p>

@@ -15,7 +15,7 @@ import { sendContactMessage } from "@/lib/api";
 import { BrainPattern } from "./BrainPatterns";
 import { Mascot } from "./Mascot";
 import { KidSendIcon } from "./icons/KidIcons";
-import { emailError, phoneError, isValidEmail, isValidUAEPhone } from "@/lib/validation";
+import { emailError, publicPhoneError, isValidEmail, isValidPublicPhone } from "@/lib/validation";
 
 const FEATURES = [
  { icon: Video, key: "feature1" },
@@ -39,7 +39,7 @@ export function CTABanner() {
  e.preventDefault();
  if (loading) return;
  const emailErr = isValidEmail(form.email) ? "" : emailError(form.email || "_", lang);
- const phoneErr = form.phone && !isValidUAEPhone(form.phone) ? phoneError(form.phone, lang) : "";
+ const phoneErr = form.phone && !isValidPublicPhone(form.phone) ? publicPhoneError(form.phone, lang) : "";
  if (emailErr || phoneErr) {
  setErrors({ email: emailErr, phone: phoneErr });
  return;
@@ -206,7 +206,7 @@ export function CTABanner() {
  setForm({ ...form, phone: e.target.value });
  if (errors.phone) setErrors({ ...errors, phone: "" });
  }}
- onBlur={(e) => setErrors({ ...errors, phone: phoneError(e.target.value, lang) })}
+ onBlur={(e) => setErrors({ ...errors, phone: publicPhoneError(e.target.value, lang) })}
  placeholder={t("formPhonePlaceholder")}
  aria-invalid={!!errors.phone}
  className={`w-full px-4 py-3 rounded-xl bg-background border placeholder:text-muted outline-none transition-all ${lang === "ar" ? "text-right" : ""} ${errors.phone ? "border-red-500 focus:border-red-500" : "border-border focus:border-primary"}`}
