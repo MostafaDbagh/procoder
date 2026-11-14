@@ -85,6 +85,31 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  const [quoteLoading, setQuoteLoading] = useState(false);
  const [quoteErr, setQuoteErr] = useState("");
 
+ useEffect(() => {
+ if (!open) return;
+ const root = document.documentElement;
+ const body = document.body;
+ const previous = {
+ rootOverflow: root.style.overflow,
+ rootOverscroll: root.style.overscrollBehavior,
+ bodyOverflow: body.style.overflow,
+ bodyPadding: body.style.paddingRight,
+ };
+ const scrollbarWidth = window.innerWidth - root.clientWidth;
+ if (scrollbarWidth > 0) {
+ body.style.paddingRight = `${parseFloat(getComputedStyle(body).paddingRight) + scrollbarWidth}px`;
+ }
+ root.style.overflow = "hidden";
+ root.style.overscrollBehavior = "none";
+ body.style.overflow = "hidden";
+ return () => {
+ root.style.overflow = previous.rootOverflow;
+ root.style.overscrollBehavior = previous.rootOverscroll;
+ body.style.overflow = previous.bodyOverflow;
+ body.style.paddingRight = previous.bodyPadding;
+ };
+ }, [open]);
+
  const refreshQuote = useCallback(
  async (code?: string) => {
  setQuoteLoading(true);
@@ -295,7 +320,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  animate={{ opacity: 1, scale: 1, y: 0 }}
  exit={{ opacity: 0, scale: 0.9, y: 20 }}
  transition={{ type: "spring", damping: 25, stiffness: 300 }}
- className={`relative bg-surface rounded-2xl border border-border shadow-2xl w-full max-h-[92vh] overflow-y-auto max-w-4xl`}
+ className={`relative bg-surface rounded-2xl border border-border shadow-2xl w-full max-h-[92vh] overflow-y-auto overscroll-contain max-w-4xl`}
  >
  {/* Header */}
  <div className="sticky top-0 z-10 bg-surface border-b border-border rounded-t-2xl">
@@ -554,7 +579,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  ) : (stepAttempted && !form.phone && errSpan)}
  </div>
  </div>
- <Image src="/images/enrollment-family.webp" width={625} height={637} sizes="320px" alt="" className="order-first mx-auto h-20 w-auto max-w-full object-contain md:order-none md:h-auto md:w-full" />
+ <Image src="/images/enrollment-parent-contact.webp" width={625} height={625} sizes="320px" alt="" className="order-first mx-auto h-20 w-auto max-w-full object-contain md:order-none md:h-auto md:w-full" />
  </motion.div>
  )}
 
@@ -600,7 +625,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  <StyledSelect label={t("previousExperience")} dir={locale === "ar" ? "rtl" : "ltr"} value={form.previousExperience} placeholder={t("selectExperience")} options={[{ value: "none", label: t("expNone") }, { value: "some", label: t("expSome") }, { value: "moderate", label: t("expModerate") }, { value: "experienced", label: t("expExperienced") }]} onChange={(value) => set("previousExperience", value)} />
  </div>
  </div>
- <Image src="/images/enrollment-child.webp" width={625} height={625} sizes="320px" alt="" className="order-first mx-auto h-20 w-auto max-w-full object-contain md:order-none md:h-auto md:w-full md:self-center" />
+ <Image src="/images/enrollment-child-laptop.webp" width={625} height={625} sizes="320px" alt="" className="order-first mx-auto h-20 w-auto max-w-full object-contain md:order-none md:h-auto md:w-full md:self-center" />
  </motion.div>
  )}
 
@@ -835,7 +860,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  ) : null}
  </div>
  </div>
- <Image src="/images/enrollment-details.webp" width={625} height={625} sizes="320px" alt="" className="order-first mx-auto h-20 w-auto max-w-full object-contain md:order-none md:h-auto md:w-full md:self-center" />
+ <Image src="/images/enrollment-details-international.webp" width={625} height={625} sizes="320px" alt="" className="order-first mx-auto h-20 w-auto max-w-full object-contain md:order-none md:h-auto md:w-full md:self-center" />
  </motion.div>
  )}
  </AnimatePresence>

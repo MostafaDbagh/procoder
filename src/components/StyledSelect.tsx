@@ -30,7 +30,17 @@ export function StyledSelect({ label, value, options, onChange, placeholder, dis
   return () => document.removeEventListener("pointerdown", close);
  }, [expanded]);
  useEffect(() => {
-  if (expanded) menu.current?.querySelector(`[data-option-index="${active}"]`)?.scrollIntoView({ block: "nearest" });
+  if (!expanded) return;
+  const list = menu.current;
+  const option = list?.querySelector<HTMLElement>(`[data-option-index="${active}"]`);
+  if (!list || !option) return;
+  // Scroll only the menu; scrollIntoView can also move the page behind a modal.
+  const bounds = list.getBoundingClientRect();
+  const item = option.getBoundingClientRect();
+  const top = bounds.top + list.clientTop;
+  const bottom = top + list.clientHeight;
+  if (item.top < top) list.scrollTop -= top - item.top;
+  else if (item.bottom > bottom) list.scrollTop += item.bottom - bottom;
  }, [active, expanded]);
  const choose = (index: number) => {
   onChange?.(options[index].value);
