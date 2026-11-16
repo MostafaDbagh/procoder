@@ -1,0 +1,448 @@
+{
+  "base": "http://127.0.0.1:3118",
+  "checks_passed": 81,
+  "javascript_required": false,
+  "results": [
+    {
+      "bot": "Googlebot",
+      "path": "/en",
+      "passed": true
+    },
+    {
+      "bot": "Googlebot",
+      "path": "/ar",
+      "passed": true
+    },
+    {
+      "bot": "Googlebot",
+      "path": "/en/recommend",
+      "passed": true
+    },
+    {
+      "bot": "Googlebot",
+      "path": "/ar/recommend",
+      "passed": true
+    },
+    {
+      "bot": "Googlebot",
+      "path": "/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "Googlebot",
+      "path": "/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "Googlebot",
+      "path": "/.well-known/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "Googlebot",
+      "path": "/.well-known/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "Googlebot",
+      "path": "/ai-plugin.json",
+      "passed": true
+    },
+    {
+      "bot": "OAI-SearchBot",
+      "path": "/en",
+      "passed": true
+    },
+    {
+      "bot": "OAI-SearchBot",
+      "path": "/ar",
+      "passed": true
+    },
+    {
+      "bot": "OAI-SearchBot",
+      "path": "/en/recommend",
+      "passed": true
+    },
+    {
+      "bot": "OAI-SearchBot",
+      "path": "/ar/recommend",
+      "passed": true
+    },
+    {
+      "bot": "OAI-SearchBot",
+      "path": "/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "OAI-SearchBot",
+      "path": "/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "OAI-SearchBot",
+      "path": "/.well-known/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "OAI-SearchBot",
+      "path": "/.well-known/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "OAI-SearchBot",
+      "path": "/ai-plugin.json",
+      "passed": true
+    },
+    {
+      "bot": "PerplexityBot",
+      "path": "/en",
+      "passed": true
+    },
+    {
+      "bot": "PerplexityBot",
+      "path": "/ar",
+      "passed": true
+    },
+    {
+      "bot": "PerplexityBot",
+      "path": "/en/recommend",
+      "passed": true
+    },
+    {
+      "bot": "PerplexityBot",
+      "path": "/ar/recommend",
+      "passed": true
+    },
+    {
+      "bot": "PerplexityBot",
+      "path": "/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "PerplexityBot",
+      "path": "/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "PerplexityBot",
+      "path": "/.well-known/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "PerplexityBot",
+      "path": "/.well-known/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "PerplexityBot",
+      "path": "/ai-plugin.json",
+      "passed": true
+    },
+    {
+      "bot": "Claude-SearchBot",
+      "path": "/en",
+      "passed": true
+    },
+    {
+      "bot": "Claude-SearchBot",
+      "path": "/ar",
+      "passed": true
+    },
+    {
+      "bot": "Claude-SearchBot",
+      "path": "/en/recommend",
+      "passed": true
+    },
+    {
+      "bot": "Claude-SearchBot",
+      "path": "/ar/recommend",
+      "passed": true
+    },
+    {
+      "bot": "Claude-SearchBot",
+      "path": "/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "Claude-SearchBot",
+      "path": "/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "Claude-SearchBot",
+      "path": "/.well-known/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "Claude-SearchBot",
+      "path": "/.well-known/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "Claude-SearchBot",
+      "path": "/ai-plugin.json",
+      "passed": true
+    },
+    {
+      "bot": "meta-externalagent",
+      "path": "/en",
+      "passed": true
+    },
+    {
+      "bot": "meta-externalagent",
+      "path": "/ar",
+      "passed": true
+    },
+    {
+      "bot": "meta-externalagent",
+      "path": "/en/recommend",
+      "passed": true
+    },
+    {
+      "bot": "meta-externalagent",
+      "path": "/ar/recommend",
+      "passed": true
+    },
+    {
+      "bot": "meta-externalagent",
+      "path": "/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "meta-externalagent",
+      "path": "/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "meta-externalagent",
+      "path": "/.well-known/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "meta-externalagent",
+      "path": "/.well-known/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "meta-externalagent",
+      "path": "/ai-plugin.json",
+      "passed": true
+    },
+    {
+      "bot": "meta-externalfetcher",
+      "path": "/en",
+      "passed": true
+    },
+    {
+      "bot": "meta-externalfetcher",
+      "path": "/ar",
+      "passed": true
+    },
+    {
+      "bot": "meta-externalfetcher",
+      "path": "/en/recommend",
+      "passed": true
+    },
+    {
+      "bot": "meta-externalfetcher",
+      "path": "/ar/recommend",
+      "passed": true
+    },
+    {
+      "bot": "meta-externalfetcher",
+      "path": "/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "meta-externalfetcher",
+      "path": "/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "meta-externalfetcher",
+      "path": "/.well-known/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "meta-externalfetcher",
+      "path": "/.well-known/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "meta-externalfetcher",
+      "path": "/ai-plugin.json",
+      "passed": true
+    },
+    {
+      "bot": "meta-webindexer",
+      "path": "/en",
+      "passed": true
+    },
+    {
+      "bot": "meta-webindexer",
+      "path": "/ar",
+      "passed": true
+    },
+    {
+      "bot": "meta-webindexer",
+      "path": "/en/recommend",
+      "passed": true
+    },
+    {
+      "bot": "meta-webindexer",
+      "path": "/ar/recommend",
+      "passed": true
+    },
+    {
+      "bot": "meta-webindexer",
+      "path": "/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "meta-webindexer",
+      "path": "/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "meta-webindexer",
+      "path": "/.well-known/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "meta-webindexer",
+      "path": "/.well-known/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "meta-webindexer",
+      "path": "/ai-plugin.json",
+      "passed": true
+    },
+    {
+      "bot": "facebookexternalhit",
+      "path": "/en",
+      "passed": true
+    },
+    {
+      "bot": "facebookexternalhit",
+      "path": "/ar",
+      "passed": true
+    },
+    {
+      "bot": "facebookexternalhit",
+      "path": "/en/recommend",
+      "passed": true
+    },
+    {
+      "bot": "facebookexternalhit",
+      "path": "/ar/recommend",
+      "passed": true
+    },
+    {
+      "bot": "facebookexternalhit",
+      "path": "/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "facebookexternalhit",
+      "path": "/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "facebookexternalhit",
+      "path": "/.well-known/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "facebookexternalhit",
+      "path": "/.well-known/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "facebookexternalhit",
+      "path": "/ai-plugin.json",
+      "passed": true
+    },
+    {
+      "bot": "Grok",
+      "path": "/en",
+      "passed": true
+    },
+    {
+      "bot": "Grok",
+      "path": "/ar",
+      "passed": true
+    },
+    {
+      "bot": "Grok",
+      "path": "/en/recommend",
+      "passed": true
+    },
+    {
+      "bot": "Grok",
+      "path": "/ar/recommend",
+      "passed": true
+    },
+    {
+      "bot": "Grok",
+      "path": "/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "Grok",
+      "path": "/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "Grok",
+      "path": "/.well-known/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "Grok",
+      "path": "/.well-known/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "Grok",
+      "path": "/ai-plugin.json",
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "User-agent simulation does not verify requests from actual vendor IPs or inclusion in AI answers.",
+    "Grok is a compatibility probe; no official xAI crawler token was verified."
+  ],
+  "live_discovery_checks": [
+    {
+      "user_agent": "meta-webindexer",
+      "status": 200,
+      "robots_allows": true,
+      "new_positioning_present": true
+    },
+    {
+      "user_agent": "meta-externalagent",
+      "status": 200,
+      "robots_allows": true,
+      "new_positioning_present": true
+    },
+    {
+      "user_agent": "meta-externalfetcher",
+      "status": 200,
+      "robots_allows": true,
+      "new_positioning_present": true
+    },
+    {
+      "user_agent": "facebookexternalhit",
+      "status": 200,
+      "robots_allows": true,
+      "new_positioning_present": true
+    },
+    {
+      "user_agent": "Grok",
+      "status": 200,
+      "robots_allows": true,
+      "new_positioning_present": true
+    }
+  ]
+}

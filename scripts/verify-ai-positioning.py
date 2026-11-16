@@ -9,7 +9,7 @@ import urllib.robotparser
 from html.parser import HTMLParser
 
 BASE = sys.argv[1].rstrip('/') if len(sys.argv) > 1 else 'http://127.0.0.1:3118'
-BOTS = ['Googlebot', 'OAI-SearchBot', 'PerplexityBot', 'Claude-SearchBot']
+BOTS = ['Googlebot', 'OAI-SearchBot', 'PerplexityBot', 'Claude-SearchBot', 'meta-externalagent', 'meta-externalfetcher', 'meta-webindexer', 'facebookexternalhit', 'Grok']
 PATHS = ['/en', '/ar', '/en/recommend', '/ar/recommend', '/llms.txt', '/llms-full.txt', '/.well-known/llms.txt', '/.well-known/llms-full.txt', '/ai-plugin.json']
 
 class Page(HTMLParser):

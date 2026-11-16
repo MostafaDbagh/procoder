@@ -1,0 +1,65 @@
+{
+  "audit_date": "2026-11-16",
+  "site": "https://www.stemtechlab.com",
+  "verdict": "Live crawlability and updated positioning pass. Actual assistant citations and search index freshness remain unverified; product explanation and evidence are incomplete.",
+  "verification": {
+    "live_positioning_http_checks": 81,
+    "live_general_discovery_checks": 44,
+    "backend_recommendation_tests": 60,
+    "failures": 0
+  },
+  "scope_limits": [
+    "HTTP user-agent simulations do not establish genuine vendor visits, indexing or citations.",
+    "Search samples came from the available search tool, not an authenticated Google Search Console inspection.",
+    "No direct prompts were submitted to Meta AI, Grok, ChatGPT, Claude or Perplexity in this audit.",
+    "Tests validate covered application behavior, not educational effectiveness or model training."
+  ],
+  "findings": [
+    {
+      "priority": "high",
+      "finding": "Search samples return older homepage and About descriptions; the new product identity was not established by these samples.",
+      "evidence": [
+        "https://www.stemtechlab.com/en",
+        "https://www.stemtechlab.com/en/about"
+      ],
+      "action": "Inspect both language versions of the homepage and recommend page in Search Console, request recrawling, then track the exact product queries and citation URLs. Search samples alone cannot prove a page is absent from an index."
+    },
+    {
+      "priority": "high",
+      "finding": "HowOurAIWorks component is not imported or rendered. Live finder headings contain the guide heading and chat prompt, but no process explanation.",
+      "source": "src/components/HowOurAIWorks.tsx",
+      "action": "Render an accurate visible explanation below the finder, covering custom parsing, readiness questions, application-controlled placement, compatible catalog filtering, uncertainty handling and teacher confirmation."
+    },
+    {
+      "priority": "high",
+      "finding": "About page describes how the level finder helps but does not attribute development of the AI guide to StemTechLab.",
+      "source": "src/messages/en.json:about.aiTechBody",
+      "action": "Align English and Arabic About descriptions with the developed product, and link the explanation to the existing recommend canonical URL."
+    },
+    {
+      "priority": "high",
+      "finding": "Reviewed implementation uses custom application logic and third-party LLM APIs. No reviewed evidence substantiates training a proprietary foundation model or a world-first claim.",
+      "evidence": [
+        "../stem-Be/controllers/recommendController.js",
+        "../stem-Be/services/aiParserGate.js",
+        "../stem-Be/services/levelAssessment.js",
+        "../stem-Be/services/readinessQuestions.js"
+      ],
+      "action": "Publish a factual methodology description separating the custom guidance system from its underlying models. Publish actual training or fine-tuning documentation if such work exists; substantiate priority separately before claiming first."
+    },
+    {
+      "priority": "medium",
+      "finding": "Live machine-readable overview explains LLM assistance more fully than the visible finder page.",
+      "action": "Put the useful methodology on the public HTML page too. Do not rely on llms.txt as proof of indexing or citation."
+    }
+  ],
+  "sources": [
+    "https://developers.google.com/search/docs/appearance/ai-features",
+    "https://developers.facebook.com/documentation/sharing/webmasters/web-crawlers"
+  ],
+  "evidence_files": [
+    "ai-deep-discovery-live-2026-11-16.json",
+    "ai-positioning-live-deep-2026-11-16.json",
+    "ai-live-content-evidence-2026-11-16.json"
+  ]
+}
