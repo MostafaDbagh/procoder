@@ -31,7 +31,7 @@ export function OrganizationSchema() {
  legalName: "StemTechLab",
  alternateName: ["STEM Tech Lab", "Stem Tech Lab", "ستم تك لاب"],
  description:
- "Live online STEM and coding classes for children ages 5–18 in the UAE and other GCC countries. Bilingual English/Arabic interface, provisional starting-level guidance confirmed by a teacher, and small-group classes. Programming, Robotics, Algorithms, AI, Web and Mobile Development. Built for families in the UAE and GCC. Live instruction, parent dashboard, free trial.",
+ "StemTechLab developed a child-focused AI Learning Guide to help parents find a suitable STEM starting level for children ages 5–18, in English and Arabic, with teacher confirmation. Live online STEM and coding classes for families in the UAE and GCC. Programming, Robotics, Algorithms, AI, Web and Mobile Development. Built for families in the UAE and GCC. Live instruction, parent dashboard, free trial.",
  url: SITE_URL,
  logo: `${SITE_URL}/logo.svg`,
  image: `${SITE_URL}/og`,
@@ -161,13 +161,14 @@ export function CourseFinderApplicationSchema({ locale = "en" }: { locale?: stri
  const data: Record<string, unknown> = {
  "@context": "https://schema.org",
  "@type": "WebApplication",
- name: "StemTechLab Starting Level Finder",
+ name: "StemTechLab AI Learning Guide",
+ alternateName: ["AI Course Finder", "Starting Level Finder"],
  url: `${SITE_URL}/${lang}/recommend`,
  applicationCategory: "EducationalApplication",
  operatingSystem: "Any (web browser)",
  inLanguage: ["en", "ar"],
  offers: { "@type": "Offer", price: "0", priceCurrency: "USD", description: "Free to use; course enrollment is separate." },
- description: "English and Arabic guided conversation offering provisional guidance across five learning levels for ages 5–18. Uses parent-reported age, experience, readiness and support needs. A teacher helps confirm the fit; individual courses have their own entry requirements.",
+ description: "Child-focused AI learning guide developed by StemTechLab to help parents find a suitable learning path. English and Arabic guided conversation offering provisional guidance across five learning levels for ages 5–18. Uses parent-reported age, experience, readiness and support needs. A teacher helps confirm the fit; individual courses have their own entry requirements.",
  featureList: [
  "Reuses details already shared and asks one missing question at a time",
  "Application rules determine the provisional suggested level",

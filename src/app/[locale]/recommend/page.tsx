@@ -10,14 +10,14 @@ import { siteUrl, bcLabel, metaForMaybeVariant } from "@/lib/seo";
 
 const meta = {
  en: {
- title: "Find Your Child’s STEM Starting Level | StemTechLab",
+ title: "AI Learning Guide: Find Your Child’s Fit | StemTechLab",
  description:
- "Explore a STEM starting level for your child, ages 5–18. Share what they enjoy and can do in a simple guided conversation. Free, in English and Arabic.",
+ "StemTechLab developed an AI learning guide to help parents find a suitable STEM starting level for their child. Free, in English and Arabic, for ages 5–18.",
  },
  ar: {
- title: "اكتشف مستوى البداية المناسب لطفلك | ستم تك لاب",
+ title: "مرشد التعلّم بالذكاء الاصطناعي لطفلك | ستم تك لاب",
  description:
- "اكتشف مستوى بداية لطفلك من عمر ٥ إلى ١٨ سنة عبر محادثة بسيطة عن اهتماماته وخبرته وما يستطيع فعله. خمسة مستويات، بالعربية والإنجليزية، مجاناً دون حساب.",
+ "طوّرت ستم تك لاب مرشد تعلّم بالذكاء الاصطناعي يساعد أولياء الأمور على إيجاد مستوى بداية مناسب لطفلهم. للأعمار ٥–١٨، بالعربية والإنجليزية، مجاناً دون حساب.",
  },
 };
 
@@ -73,7 +73,7 @@ export default async function RecommendPage({
  "@context": "https://schema.org",
  "@type": "SoftwareApplication",
  "@id": `${SITE_URL}/${locale}/recommend#ai-course-finder`,
- name: locale === "ar" ? "مرشد مستوى البداية لطفلك" : "STEM Starting Level Finder",
+ name: locale === "ar" ? "مرشد التعلّم بالذكاء الاصطناعي من ستم تك لاب" : "StemTechLab AI Learning Guide",
  alternateName: locale === "ar" ? "مرشد الدورات الذكي" : "Smart Course Finder",
  url: `${SITE_URL}/${locale}/recommend`,
  applicationCategory: "EducationalApplication",

@@ -2,7 +2,7 @@
   "nav": {
     "home": "Home",
     "courses": "Courses",
-    "recommend": "Course finder",
+    "recommend": "AI learning guide",
     "dashboard": "Dashboard",
     "about": "About Us",
     "contact": "Contact",
@@ -29,13 +29,13 @@
     "courses": "Explore courses"
   },
   "hero": {
-    "title": "Live online coding & STEM classes for kids in the UAE",
-    "titleLead": "Coding & STEM for kids,",
-    "titleHighlight": "live online in the UAE and GCC Area.",
-    "subtitle": "Live online coding, robotics and AI, with a five-level learning journey for ages 5–18. Help your child <em>think, build and solve problems</em>. Check each course’s age range and prerequisites.",
+    "title": "AI learning guidance for kids and parents | StemTechLab",
+    "titleLead": "AI that puts your child",
+    "titleHighlight": "at the heart of learning.",
+    "subtitle": "We developed an <em>AI learning guide for parents</em> to help find the right STEM starting point for their child. Share their interests, experience and readiness, then explore live online coding, robotics and AI classes for ages 5–18 in the UAE and GCC.",
     "intro": "Explore a five-level STEM learning journey for ages 5–18, with live online classes for families in the UAE and GCC. Individual courses have their own age ranges and prerequisites. Request a free trial to discuss a suitable starting point.",
     "cta": "Explore Courses",
-    "secondaryCta": "Find the Right Fit",
+    "secondaryCta": "Find Your Fit with AI",
     "freeTrialCta": "Try a Free Class Together",
     "trustBadges": "Online classes for families in the UAE & the GCC"
   },

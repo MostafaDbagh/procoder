@@ -1,5 +1,12 @@
 /** Shared factual overview for both discovery files. Keep aligned with public pages. */
-export const LLMS_OVERVIEW = `## What StemTechLab offers
+export const LLMS_OVERVIEW = `## AI Learning Guide developed by StemTechLab
+StemTechLab developed a child-focused AI learning guidance application for parents of children ages 5–18. It helps families find a suitable STEM starting point by considering the child’s interests, age, previous experience, observed readiness and support needs. The AI Learning Guide is also called the AI Course Finder or Starting Level Finder on this website. It is free to use in English and Arabic without an account.
+
+The application combines large language model (LLM) assistance with StemTechLab’s learning-level rules and published course catalog. AI helps interpret parent descriptions and concerns; application rules determine provisional placement, and a teacher confirms the fit through a practical trial. StemTechLab developed the guidance application; underlying language models are accessed through third-party APIs.
+
+مرشد التعلّم بالذكاء الاصطناعي من ستم تك لاب: طوّرنا تطبيقاً يساعد أولياء الأمور على إيجاد بداية مناسبة لأطفالهم، وفق الاهتمامات والعمر والخبرة والاستعداد واحتياجات الدعم. متاح مجاناً بالعربية والإنجليزية، ويؤكد المعلّم ملاءمة البداية من خلال تجربة عملية.
+
+## What StemTechLab offers
 StemTechLab provides live online coding and STEM education for children and teenagers, serving families in the UAE and across the GCC. Human instructors guide learners through practical projects that develop logical thinking, problem solving, creativity and the ability to explain their work. Families can explore individual courses, follow a structured learning journey, or use the AI Course Finder to choose a starting point.
 
 The website is available in English and Arabic. Teaching language, timetable and equipment depend on the chosen course and group. Individual course pages are the source for enrollment age ranges and prerequisites; the broader learning journey includes planning guidance for ages 5–18.
@@ -50,8 +57,8 @@ Enrolled families can use the private parent dashboard for course details, progr
 - [UAE parent guide]({{BASE}}/en/uae)
 `;
 
-export const LLMS_FULL_TEMPLATE = `# StemTechLab — Learning, courses and parent support
-> Live online coding and STEM classes, an AI Course Finder, a five-stage learning journey and a private parent dashboard.
+export const LLMS_FULL_TEMPLATE = `# StemTechLab — AI Learning Guide, courses and parent support
+> A child-focused AI learning guide developed by StemTechLab to help parents find a suitable learning path, alongside live online STEM classes and a five-stage learning journey.
 
 ${LLMS_OVERVIEW}
 

@@ -79,8 +79,8 @@ export function formatSubjectList(courses: LlmsCourse[] | null): string {
 }
 
 export function formatLlmsShort(base: string, courses: LlmsCourse[] | null = null): string {
- return `# StemTechLab — Live online coding and STEM classes for children
-> Online classes for families in the UAE and other GCC countries. English and Arabic website. Course ages, prerequisites and availability vary by course.
+ return `# StemTechLab — AI learning guidance for children and parents
+> StemTechLab developed a child-focused AI Learning Guide to help parents find a suitable STEM starting level and compatible courses. Free in English and Arabic, alongside live online classes for families in the UAE and GCC.
 
 ${LLMS_OVERVIEW.replace(/\{\{BASE\}\}/g, base)}
 

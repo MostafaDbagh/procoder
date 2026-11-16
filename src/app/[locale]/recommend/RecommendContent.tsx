@@ -247,9 +247,9 @@ export default function RecommendContent({ initialCourses }: Props) {
    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
     <header className="text-center mb-7 sm:mb-9">
      <div className="flex justify-center mb-2"><Mascot pose="wave" size={88} /></div>
-     <p className="text-sm font-semibold text-primary mb-3">{locale === "ar" ? "بداية صغيرة، اكتشافات كبيرة" : "Small beginnings. Big discoveries."}</p>
-     <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4 text-balance">{locale === "ar" ? "لنجد نقطة البداية المناسبة لطفلك" : "Find your child’s STEM starting point"}</h1>
-     <p className="text-muted text-base sm:text-lg max-w-xl mx-auto text-pretty">{locale === "ar" ? "أخبرنا قليلاً عن طفلك. نساعدك على استكشاف مستوى يناسب ما يستطيع فعله الآن، خطوة بخطوة." : "Tell us a little about your child. Together, we’ll explore a level that fits what they can do today, one step at a time."}</p>
+     <p className="text-sm font-semibold text-primary mb-3">{locale === "ar" ? "طوّرته ستم تك لاب للأطفال وأولياء الأمور" : "Developed by StemTechLab for children and parents"}</p>
+     <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4 text-balance">{locale === "ar" ? "مرشد تعلّم ذكي لإيجاد البداية المناسبة لطفلك" : "An AI learning guide to find your child’s fit"}</h1>
+     <p className="text-muted text-base sm:text-lg max-w-xl mx-auto text-pretty">{locale === "ar" ? "طوّرنا هذا المرشد بالذكاء الاصطناعي لمساعدة أولياء الأمور على اختيار بداية تناسب اهتمام الطفل وخبرته واستعداده. شارك ما يستطيع طفلك فعله، واستكشف مستوى ودورات مناسبة. يؤكد المعلّم الملاءمة من خلال تجربة عملية." : "We developed this AI learning guide to help parents choose a starting point around their child’s interests, experience and readiness. Share what your child can do, then explore a suitable level and compatible courses. A teacher confirms the fit through a practical trial."}</p>
      <p className="mt-4 text-xs sm:text-sm text-muted">{locale === "ar" ? "للأعمار ٥–١٨ · مجاني · دون حساب" : "Ages 5–18 · Free to use · No account needed"}</p>
     </header>
 

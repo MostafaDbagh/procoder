@@ -1,0 +1,187 @@
+{
+  "base": "http://127.0.0.1:3118",
+  "checks_passed": 36,
+  "javascript_required": false,
+  "results": [
+    {
+      "bot": "Googlebot",
+      "path": "/en",
+      "passed": true
+    },
+    {
+      "bot": "Googlebot",
+      "path": "/ar",
+      "passed": true
+    },
+    {
+      "bot": "Googlebot",
+      "path": "/en/recommend",
+      "passed": true
+    },
+    {
+      "bot": "Googlebot",
+      "path": "/ar/recommend",
+      "passed": true
+    },
+    {
+      "bot": "Googlebot",
+      "path": "/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "Googlebot",
+      "path": "/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "Googlebot",
+      "path": "/.well-known/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "Googlebot",
+      "path": "/.well-known/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "Googlebot",
+      "path": "/ai-plugin.json",
+      "passed": true
+    },
+    {
+      "bot": "OAI-SearchBot",
+      "path": "/en",
+      "passed": true
+    },
+    {
+      "bot": "OAI-SearchBot",
+      "path": "/ar",
+      "passed": true
+    },
+    {
+      "bot": "OAI-SearchBot",
+      "path": "/en/recommend",
+      "passed": true
+    },
+    {
+      "bot": "OAI-SearchBot",
+      "path": "/ar/recommend",
+      "passed": true
+    },
+    {
+      "bot": "OAI-SearchBot",
+      "path": "/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "OAI-SearchBot",
+      "path": "/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "OAI-SearchBot",
+      "path": "/.well-known/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "OAI-SearchBot",
+      "path": "/.well-known/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "OAI-SearchBot",
+      "path": "/ai-plugin.json",
+      "passed": true
+    },
+    {
+      "bot": "PerplexityBot",
+      "path": "/en",
+      "passed": true
+    },
+    {
+      "bot": "PerplexityBot",
+      "path": "/ar",
+      "passed": true
+    },
+    {
+      "bot": "PerplexityBot",
+      "path": "/en/recommend",
+      "passed": true
+    },
+    {
+      "bot": "PerplexityBot",
+      "path": "/ar/recommend",
+      "passed": true
+    },
+    {
+      "bot": "PerplexityBot",
+      "path": "/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "PerplexityBot",
+      "path": "/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "PerplexityBot",
+      "path": "/.well-known/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "PerplexityBot",
+      "path": "/.well-known/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "PerplexityBot",
+      "path": "/ai-plugin.json",
+      "passed": true
+    },
+    {
+      "bot": "Claude-SearchBot",
+      "path": "/en",
+      "passed": true
+    },
+    {
+      "bot": "Claude-SearchBot",
+      "path": "/ar",
+      "passed": true
+    },
+    {
+      "bot": "Claude-SearchBot",
+      "path": "/en/recommend",
+      "passed": true
+    },
+    {
+      "bot": "Claude-SearchBot",
+      "path": "/ar/recommend",
+      "passed": true
+    },
+    {
+      "bot": "Claude-SearchBot",
+      "path": "/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "Claude-SearchBot",
+      "path": "/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "Claude-SearchBot",
+      "path": "/.well-known/llms.txt",
+      "passed": true
+    },
+    {
+      "bot": "Claude-SearchBot",
+      "path": "/.well-known/llms-full.txt",
+      "passed": true
+    },
+    {
+      "bot": "Claude-SearchBot",
+      "path": "/ai-plugin.json",
+      "passed": true
+    }
+  ]
+}

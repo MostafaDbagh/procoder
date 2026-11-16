@@ -16,14 +16,14 @@ import { buildAlternates, siteUrl } from "@/lib/seo";
 
 const meta = {
  en: {
- title: "Online Coding Classes for Kids in the UAE | StemTechLab",
+ title: "AI Learning Guide for Parents & Kids | StemTechLab",
  description:
- "Live online coding, robotics and AI classes for kids ages 5–18 in the UAE. Small groups, English and Arabic support, and a free trial from home.",
+ "Meet the AI learning guide we developed to help parents find a suitable STEM path for kids ages 5–18. English and Arabic guidance, plus live online classes.",
  },
  ar: {
- title: "دورات برمجة للأطفال في الإمارات أونلاين",
+ title: "مرشد تعلّم بالذكاء الاصطناعي للأطفال وأولياء الأمور",
  description:
- "دورات برمجة وروبوتات وذكاء اصطناعي للأطفال ٥–١٨ في الإمارات. حصص مباشرة أونلاين، مجموعات صغيرة، ودعم بالعربية والإنجليزية. ابدأ بتجربة مجانية.",
+ "طوّرنا مرشد تعلّم بالذكاء الاصطناعي يساعد أولياء الأمور على إيجاد مسار مناسب لأطفالهم من ٥ إلى ١٨ سنة. إرشاد بالعربية والإنجليزية وحصص مباشرة أونلاين.",
  },
 };
 

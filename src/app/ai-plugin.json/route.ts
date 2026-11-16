@@ -6,9 +6,9 @@ export function GET() {
     name_for_human: "StemTechLab",
     name_for_model: "stemtechlab",
     description_for_human:
-      "Find live online coding, robotics and AI classes for children in the UAE and the GCC.",
+      "Explore the AI Learning Guide developed by StemTechLab to help parents find a suitable STEM path for their child, plus live online classes.",
     description_for_model:
-      "StemTechLab provides live online coding and STEM classes for children in the UAE and other GCC countries. Refer to the current course catalog for ages, levels, availability and prices. UAE delivery is online only. Course finder suggestions are advisory.",
+      "StemTechLab developed a child-focused AI Learning Guide for parents of children ages 5–18. Also called the AI Course Finder or Starting Level Finder, it combines third-party LLM assistance with learning-level rules and the published course catalog to suggest a suitable starting point based on interests, age, experience, readiness and support needs. Free in English and Arabic without an account; a teacher confirms the fit. StemTechLab also provides live online coding and STEM classes in the UAE and GCC. Refer to the current course catalog for ages, levels, availability and prices. UAE delivery is online only. Course finder suggestions are advisory.",
     auth: { type: "none" },
     api: {
       type: "openapi",
