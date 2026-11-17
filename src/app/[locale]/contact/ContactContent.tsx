@@ -150,7 +150,7 @@ export default function ContactContent() {
  <div className="grid sm:grid-cols-2 gap-5">
  <div>
  <label htmlFor="contact-field-1" className="block text-sm font-medium mb-2">
- {t("nameLabel")} <span className="text-red-500">*</span>
+ {t("nameLabel")} <span className="text-primary">*</span>
  </label>
  <input id="contact-field-1"
  type="text"
@@ -163,7 +163,7 @@ export default function ContactContent() {
  </div>
  <div>
  <label htmlFor="contact-field-2" className="block text-sm font-medium mb-2">
- {t("emailLabel")} <span className="text-red-500">*</span>
+ {t("emailLabel")} <span className="text-primary">*</span>
  </label>
  <input id="contact-field-2"
  type="email"
@@ -188,7 +188,7 @@ export default function ContactContent() {
  <div className="grid sm:grid-cols-2 gap-5">
  <div>
  <label htmlFor="contact-field-3" className="block text-sm font-medium mb-2">
- {t("phoneLabel")} <span className="text-red-500">*</span>
+ {t("phoneLabel")} <span className="text-primary">*</span>
  </label>
  <input id="contact-field-3"
  type="tel"
@@ -225,7 +225,7 @@ export default function ContactContent() {
  </div>
  <div className="flex-1 flex flex-col min-h-[140px]">
  <label htmlFor="contact-field-5" className="block text-sm font-medium mb-2">
- {t("messageLabel")} <span className="text-red-500">*</span>
+ {t("messageLabel")} <span className="text-primary">*</span>
  </label>
  <textarea id="contact-field-5"
  required

@@ -147,7 +147,7 @@ export default function FreeTrialContent() {
 
                   <div>
                     <label htmlFor="free-trial-field-1" className="block text-sm font-semibold mb-2">
-                      {tc("formNameLabel")} <span className="text-red-500">*</span>
+                      {tc("formNameLabel")} <span className="text-primary">*</span>
                     </label>
                     <input id="free-trial-field-1"
                       type="text"
@@ -160,7 +160,7 @@ export default function FreeTrialContent() {
                   </div>
                   <div>
                     <label htmlFor="free-trial-field-2" className="block text-sm font-semibold mb-2">
-                      {tc("formEmailLabel")} <span className="text-red-500">*</span>
+                      {tc("formEmailLabel")} <span className="text-primary">*</span>
                     </label>
                     <input id="free-trial-field-2"
                       type="email"
@@ -194,7 +194,7 @@ export default function FreeTrialContent() {
                   </div>
                   <div>
                     <label htmlFor="free-trial-field-4" className="block text-sm font-semibold mb-2">
-                      {tc("formPhoneLabel")} <span className="text-red-500">*</span>
+                      {tc("formPhoneLabel")} <span className="text-primary">*</span>
                     </label>
                     <input id="free-trial-field-4"
                       type="tel"

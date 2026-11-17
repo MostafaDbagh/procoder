@@ -408,28 +408,28 @@ export function AuthModal({
  <div className="space-y-5">
  <div>
  <label className={`block text-xs font-semibold uppercase tracking-wide text-muted mb-2 ${labelAlign}`}>
- {t("nameLabel")} <span className="text-red-500">*</span>
+ {t("nameLabel")} <span className="text-primary">*</span>
  </label>
  <input type="text" required value={signupForm.name} onChange={(e) => setSignupForm({ ...signupForm, name: e.target.value })} placeholder={t("namePlaceholder")} className={inputCls} />
  </div>
 
  <div>
  <label className={`block text-xs font-semibold uppercase tracking-wide text-muted mb-2 ${labelAlign}`}>
- {t("emailLabel")} <span className="text-red-500">*</span>
+ {t("emailLabel")} <span className="text-primary">*</span>
  </label>
  <input type="email" required value={signupForm.email} onChange={(e) => setSignupForm({ ...signupForm, email: e.target.value })} placeholder={t("emailPlaceholder")} className={inputCls} />
  </div>
 
  <div>
  <label className={`block text-xs font-semibold uppercase tracking-wide text-muted mb-2 ${labelAlign}`}>
- {t("phoneLabel")} <span className="text-red-500">*</span>
+ {t("phoneLabel")} <span className="text-primary">*</span>
  </label>
  <input type="tel" required value={signupForm.phone} onChange={(e) => setSignupForm({ ...signupForm, phone: e.target.value })} placeholder={t("phonePlaceholder")} className={inputCls} />
  </div>
 
  <div>
  <label className={`block text-xs font-semibold uppercase tracking-wide text-muted mb-2 ${labelAlign}`}>
- {t("passwordLabel")} <span className="text-red-500">*</span>
+ {t("passwordLabel")} <span className="text-primary">*</span>
  </label>
  <PasswordInput
  required
@@ -631,7 +631,7 @@ export function AuthModal({
 
  <div>
  <label className={`mb-2 block text-sm font-medium ${labelAlign}`}>
- {t("emailLabel")} <span className="text-red-500">*</span>
+ {t("emailLabel")} <span className="text-primary">*</span>
  </label>
  <input
  type="email"
@@ -871,7 +871,7 @@ export function AuthModal({
 
  <div>
  <label className={`mb-2 block text-sm font-medium ${labelAlign}`}>
- {isRtl ? "كلمة المرور الجديدة" : "New password"} <span className="text-red-500">*</span>
+ {isRtl ? "كلمة المرور الجديدة" : "New password"} <span className="text-primary">*</span>
  </label>
  <PasswordInput
  required
@@ -885,7 +885,7 @@ export function AuthModal({
 
  <div>
  <label className={`mb-2 block text-sm font-medium ${labelAlign}`}>
- {isRtl ? "تأكيد كلمة المرور" : "Confirm password"} <span className="text-red-500">*</span>
+ {isRtl ? "تأكيد كلمة المرور" : "Confirm password"} <span className="text-primary">*</span>
  </label>
  <PasswordInput
  required

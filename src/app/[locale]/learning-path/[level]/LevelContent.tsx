@@ -979,7 +979,7 @@ function Segmented({
 }) {
   return (
     <div>
-      <label className={labelCls}>{label} *</label>
+      <label className={labelCls}>{label} <span className="text-primary">*</span></label>
       <div className="flex flex-wrap gap-2">
         {options.map((o) => (
           <button
@@ -1146,7 +1146,7 @@ function ContactForm({
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className={labelCls}>{t("start.contactForm.parentName")} *</label>
+            <label className={labelCls}>{t("start.contactForm.parentName")} <span className="text-primary">*</span></label>
             <input
               type="text"
               value={form.parentName}
@@ -1158,7 +1158,7 @@ function ContactForm({
             )}
           </div>
           <div>
-            <label className={labelCls}>{t("start.contactForm.email")} *</label>
+            <label className={labelCls}>{t("start.contactForm.email")} <span className="text-primary">*</span></label>
             <input
               type="email"
               dir="ltr"
@@ -1358,7 +1358,7 @@ function RegisterForm({
             {t("start.registerForm.parentSection")}
           </legend>
           <div>
-            <label className={labelCls}>{t("start.registerForm.fullName")} *</label>
+            <label className={labelCls}>{t("start.registerForm.fullName")} <span className="text-primary">*</span></label>
             <input
               type="text"
               value={form.fullName}
@@ -1371,7 +1371,7 @@ function RegisterForm({
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className={labelCls}>{t("start.registerForm.phone")} *</label>
+              <label className={labelCls}>{t("start.registerForm.phone")} <span className="text-primary">*</span></label>
               <input
                 type="tel"
                 dir="ltr"
@@ -1384,7 +1384,7 @@ function RegisterForm({
               )}
             </div>
             <div>
-              <label className={labelCls}>{t("start.registerForm.email")} *</label>
+              <label className={labelCls}>{t("start.registerForm.email")} <span className="text-primary">*</span></label>
               <input
                 type="email"
                 dir="ltr"
@@ -1406,7 +1406,7 @@ function RegisterForm({
           </legend>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className={labelCls}>{t("start.registerForm.childName")} *</label>
+              <label className={labelCls}>{t("start.registerForm.childName")} <span className="text-primary">*</span></label>
               <input
                 type="text"
                 value={form.childName}
@@ -1418,7 +1418,7 @@ function RegisterForm({
               )}
             </div>
             <div>
-              <label className={labelCls}>{t("start.registerForm.childAge")} *</label>
+              <label className={labelCls}>{t("start.registerForm.childAge")} <span className="text-primary">*</span></label>
               <select
                 value={form.childAge}
                 onChange={(e) => set("childAge", e.target.value)}

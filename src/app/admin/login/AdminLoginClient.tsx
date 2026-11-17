@@ -64,7 +64,7 @@ export default function AdminLoginClient({ idleSignOut = false }: { idleSignOut?
  <form onSubmit={onSubmit} className="space-y-5">
  <div>
  <label className="mb-2 block text-sm font-medium text-foreground">
- Email <span className="text-red-500">*</span>
+ Email <span className="text-primary">*</span>
  </label>
  <input
  type="email"
@@ -78,7 +78,7 @@ export default function AdminLoginClient({ idleSignOut = false }: { idleSignOut?
  </div>
  <div>
  <label className="mb-2 block text-sm font-medium text-foreground">
- Username <span className="text-red-500">*</span>
+ Username <span className="text-primary">*</span>
  </label>
  <input
  type="text"
@@ -92,7 +92,7 @@ export default function AdminLoginClient({ idleSignOut = false }: { idleSignOut?
  </div>
  <div>
  <label className="mb-2 block text-sm font-medium text-foreground">
- Password <span className="text-red-500">*</span>
+ Password <span className="text-primary">*</span>
  </label>
  <PasswordInput
  autoComplete="current-password"

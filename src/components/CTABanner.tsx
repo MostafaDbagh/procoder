@@ -154,7 +154,7 @@ export function CTABanner() {
  <form onSubmit={handleSubmit} className="space-y-4">
  <div>
  <label className="block text-sm font-semibold mb-2">
- {t("formNameLabel")} <span className="text-red-500">*</span>
+ {t("formNameLabel")} <span className="text-primary">*</span>
  </label>
  <input
  type="text"
@@ -167,7 +167,7 @@ export function CTABanner() {
  </div>
  <div>
  <label className="block text-sm font-semibold mb-2">
- {t("formEmailLabel")} <span className="text-red-500">*</span>
+ {t("formEmailLabel")} <span className="text-primary">*</span>
  </label>
  <input
  type="email"
@@ -200,7 +200,7 @@ export function CTABanner() {
  </div>
  <div>
  <label className="block text-sm font-semibold mb-2">
- {t("formPhoneLabel")} <span className="text-red-500">*</span>
+ {t("formPhoneLabel")} <span className="text-primary">*</span>
  </label>
  <input
  type="tel"

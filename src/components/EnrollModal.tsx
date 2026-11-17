@@ -514,7 +514,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  </div>
  
  <div>
- <label htmlFor="enroll-parentName" className={labelCls}>{t("parentName")} *</label>
+ <label htmlFor="enroll-parentName" className={labelCls}>{t("parentName")} <span className="text-primary">*</span></label>
  <input
  id="enroll-parentName" type="text"
  required
@@ -527,7 +527,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  {stepAttempted && !form.parentName && errSpan}
  </div>
  <fieldset>
- <legend className={labelCls}>{t("relationship")} *</legend>
+ <legend className={labelCls}>{t("relationship")} <span className="text-primary">*</span></legend>
  <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
  {(["father", "mother", "guardian", "other"] as const).map((relation) => (
  <label key={relation} className="relative cursor-pointer">
@@ -539,7 +539,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  {stepAttempted && !form.relationship && errSpan}
  </fieldset>
  <div>
- <label htmlFor="enroll-parentEmail" className={labelCls}>{t("parentEmail")} *</label>
+ <label htmlFor="enroll-parentEmail" className={labelCls}>{t("parentEmail")} <span className="text-primary">*</span></label>
  <input
  id="enroll-parentEmail" type="email" dir="ltr"
  required
@@ -558,7 +558,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  ) : (stepAttempted && !form.email && errSpan)}
  </div>
  <div>
- <label htmlFor="enroll-phone" className={labelCls}>{t("phone")} *</label>
+ <label htmlFor="enroll-phone" className={labelCls}>{t("phone")} <span className="text-primary">*</span></label>
  <input
  id="enroll-phone" type="tel"
  inputMode="tel"
@@ -599,12 +599,12 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  </div>
  <div className="grid sm:grid-cols-2 gap-4">
  <div>
- <label className={labelCls}>{t("childName")} *</label>
+ <label className={labelCls}>{t("childName")} <span className="text-primary">*</span></label>
  <input type="text" required value={form.childName} onChange={(e) => set("childName", e.target.value)} placeholder={t("childNamePlaceholder")} className={stepAttempted && !form.childName ? inputErrCls : inputCls} />
  {stepAttempted && !form.childName && errSpan}
  </div>
  <div>
- <label className={labelCls}>{t("childAge")} *</label>
+ <label className={labelCls}>{t("childAge")} <span className="text-primary">*</span></label>
  <StyledSelect label={t("childAge")} dir={locale === "ar" ? "rtl" : "ltr"} value={form.childAge} placeholder={t("selectAge")} options={Array.from({ length: 13 }, (_, i) => ({ value: String(i + 6), label: String(i + 6) }))} onChange={(value) => set("childAge", value)} required invalid={stepAttempted && !form.childAge} />
  {stepAttempted && !form.childAge && errSpan}
  </div>
@@ -615,7 +615,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  <StyledSelect label={t("childGender")} dir={locale === "ar" ? "rtl" : "ltr"} value={form.childGender} placeholder={t("selectGender")} options={[{ value: "male", label: t("male") }, { value: "female", label: t("female") }, { value: "prefer_not", label: t("preferNot") }]} onChange={(value) => set("childGender", value)} />
  </div>
  <div>
- <label className={labelCls}>{t("gradeLevel")} *</label>
+ <label className={labelCls}>{t("gradeLevel")} <span className="text-primary">*</span></label>
  <StyledSelect label={t("gradeLevel")} dir={locale === "ar" ? "rtl" : "ltr"} value={form.gradeLevel} placeholder={t("selectGrade")} options={[{ value: "1-3", label: t("grade1_3") }, { value: "4-6", label: t("grade4_6") }, { value: "7-9", label: t("grade7_9") }, { value: "10-12", label: t("grade10_12") }]} onChange={(value) => set("gradeLevel", value)} required invalid={stepAttempted && !form.gradeLevel} />
  {stepAttempted && !form.gradeLevel && errSpan}
  </div>
@@ -644,7 +644,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  <p className="text-sm text-muted">{t("scheduleDesc")}</p>
  </div>
  <div>
- <label className={labelCls}>{t("preferredDays")} *</label>
+ <label className={labelCls}>{t("preferredDays")} <span className="text-primary">*</span></label>
  {stepAttempted && form.preferredDays.length === 0 && errSpan}
  <div className="flex flex-wrap gap-2">
  {(["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] as const).map((day) => (
@@ -664,7 +664,7 @@ export function EnrollModal({ open, onClose, courseTitle, courseId }: EnrollModa
  </div>
  </div>
  <div>
- <label className={labelCls}>{t("preferredTime")} *</label>
+ <label className={labelCls}>{t("preferredTime")} <span className="text-primary">*</span></label>
  {stepAttempted && !form.preferredTime && errSpan}
  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
  {(["morning", "afternoon", "evening", "flexible"] as const).map((time) => (
