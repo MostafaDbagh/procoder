@@ -15,7 +15,7 @@ import { sendContactMessage } from "@/lib/api";
 import { BrainPattern } from "./BrainPatterns";
 import { Mascot } from "./Mascot";
 import { KidSendIcon } from "./icons/KidIcons";
-import { emailError, publicPhoneError, isValidEmail, isValidPublicPhone } from "@/lib/validation";
+import { emailError, publicPhoneError, isValidEmail } from "@/lib/validation";
 
 const FEATURES = [
  { icon: Video, key: "feature1" },
@@ -35,11 +35,15 @@ export function CTABanner() {
  const [loading, setLoading] = useState(false);
  const [done, setDone] = useState(false);
 
+ const phoneError = (value: string) => !value.trim()
+ ? (lang === "ar" ? "يرجى إدخال رقم الهاتف" : "Please enter your phone number")
+ : publicPhoneError(value, lang);
+
  const handleSubmit = async (e: React.FormEvent) => {
  e.preventDefault();
  if (loading) return;
  const emailErr = isValidEmail(form.email) ? "" : emailError(form.email || "_", lang);
- const phoneErr = form.phone && !isValidPublicPhone(form.phone) ? publicPhoneError(form.phone, lang) : "";
+ const phoneErr = phoneError(form.phone);
  if (emailErr || phoneErr) {
  setErrors({ email: emailErr, phone: phoneErr });
  return;
@@ -196,17 +200,18 @@ export function CTABanner() {
  </div>
  <div>
  <label className="block text-sm font-semibold mb-2">
- {t("formPhoneLabel")}
+ {t("formPhoneLabel")} <span className="text-red-500">*</span>
  </label>
  <input
  type="tel"
+ required
  inputMode="tel"
  value={form.phone}
  onChange={(e) => {
  setForm({ ...form, phone: e.target.value });
  if (errors.phone) setErrors({ ...errors, phone: "" });
  }}
- onBlur={(e) => setErrors({ ...errors, phone: publicPhoneError(e.target.value, lang) })}
+ onBlur={(e) => setErrors({ ...errors, phone: phoneError(e.target.value) })}
  placeholder={t("formPhonePlaceholder")}
  aria-invalid={!!errors.phone}
  className={`w-full px-4 py-3 rounded-xl bg-background border placeholder:text-muted outline-none transition-all ${lang === "ar" ? "text-right" : ""} ${errors.phone ? "border-red-500 focus:border-red-500" : "border-border focus:border-primary"}`}

@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { ChatHeartIcon } from "@/components/icons/PillarIcons";
 import { VideoCameraIcon, GiftBoxIcon, SmileIcon } from "@/components/icons/KidIcons";
-import { emailError, publicPhoneError, isValidEmail, isValidPublicPhone } from "@/lib/validation";
+import { emailError, publicPhoneError, isValidEmail } from "@/lib/validation";
 
 export default function FreeTrialContent() {
   const t = useTranslations("freeTrial");
@@ -44,13 +44,17 @@ export default function FreeTrialContent() {
   const [hp, setHp] = useState("");
   const [formLoadedAt] = useState(() => Date.now());
 
+  const phoneError = (value: string) => !value.trim()
+    ? (lang === "ar" ? "يرجى إدخال رقم الهاتف" : "Please enter your phone number")
+    : publicPhoneError(value, lang);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitError("");
     if (sending) return;
-    // Validate before submit — email is required, phone is optional but must be valid if filled
+    // Validate required email and phone before submitting.
     const emailErr = isValidEmail(form.email) ? "" : emailError(form.email || "_", lang);
-    const phoneErr = form.phone && !isValidPublicPhone(form.phone) ? publicPhoneError(form.phone, lang) : "";
+    const phoneErr = phoneError(form.phone);
     if (emailErr || phoneErr) {
       setErrors({ email: emailErr, phone: phoneErr });
       return;
@@ -190,17 +194,18 @@ export default function FreeTrialContent() {
                   </div>
                   <div>
                     <label htmlFor="free-trial-field-4" className="block text-sm font-semibold mb-2">
-                      {tc("formPhoneLabel")}
+                      {tc("formPhoneLabel")} <span className="text-red-500">*</span>
                     </label>
                     <input id="free-trial-field-4"
                       type="tel"
+                      required
                       inputMode="tel"
                       value={form.phone}
                       onChange={(e) => {
                         setForm({ ...form, phone: e.target.value });
                         if (errors.phone) setErrors({ ...errors, phone: "" });
                       }}
-                      onBlur={(e) => setErrors({ ...errors, phone: publicPhoneError(e.target.value, lang) })}
+                      onBlur={(e) => setErrors({ ...errors, phone: phoneError(e.target.value) })}
                       placeholder={tc("formPhonePlaceholder")}
                       aria-invalid={!!errors.phone}
  aria-describedby={errors.phone ? "free-trial-phone-error" : undefined}

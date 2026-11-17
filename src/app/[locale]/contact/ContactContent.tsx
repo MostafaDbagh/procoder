@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
-import { emailError, publicPhoneError, isValidEmail, isValidPublicPhone } from "@/lib/validation";
+import { emailError, publicPhoneError, isValidEmail } from "@/lib/validation";
 import { AnimatedSection } from "@/components/AnimatedSection";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { motion } from "framer-motion";
@@ -52,13 +52,17 @@ export default function ContactContent() {
  const [formLoadedAt] = useState(() => Date.now());
  const [hp, setHp] = useState("");
 
+ const phoneError = (value: string) => !value.trim()
+ ? (lang === "ar" ? "يرجى إدخال رقم الهاتف" : "Please enter your phone number")
+ : publicPhoneError(value, lang);
+
  const handleSubmit = async (e: React.FormEvent) => {
  e.preventDefault();
     setSubmitError("");
     if (sending) return;
  if (cooldown) return;
  const emailErr = isValidEmail(form.email) ? "" : emailError(form.email || "_", lang);
- const phoneErr = form.phone && !isValidPublicPhone(form.phone) ? publicPhoneError(form.phone, lang) : "";
+ const phoneErr = phoneError(form.phone);
  if (emailErr || phoneErr) {
  setErrors({ email: emailErr, phone: phoneErr });
  return;
@@ -180,21 +184,22 @@ export default function ContactContent() {
  )}
  </div>
  </div>
- {/* Row 2: Phone (optional) + Subject — one row on sm+ */}
+ {/* Row 2: Phone + Subject — one row on sm+ */}
  <div className="grid sm:grid-cols-2 gap-5">
  <div>
  <label htmlFor="contact-field-3" className="block text-sm font-medium mb-2">
- {t("phoneLabel")}
+ {t("phoneLabel")} <span className="text-red-500">*</span>
  </label>
  <input id="contact-field-3"
  type="tel"
+ required
  inputMode="tel"
  value={form.phone}
  onChange={(e) => {
  setForm({ ...form, phone: e.target.value });
  if (errors.phone) setErrors({ ...errors, phone: "" });
  }}
- onBlur={(e) => setErrors({ ...errors, phone: publicPhoneError(e.target.value, lang) })}
+ onBlur={(e) => setErrors({ ...errors, phone: phoneError(e.target.value) })}
  placeholder={t("phonePlaceholder")}
  aria-invalid={!!errors.phone}
  aria-describedby={errors.phone ? "contact-phone-error" : undefined}
